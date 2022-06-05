@@ -1,4 +1,4 @@
-package com.uni.kh;
+package com.uni.wt;
 
 import java.text.DateFormat;
 import java.util.Date;
