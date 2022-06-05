@@ -16,42 +16,31 @@
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<!-- resources 경로를 등록 : 정적파일을 호출하는 request URL에 대해 defaultServlet으로 위임 -->
 	<resources mapping="/resources/**" location="/resources/" />
-
-	<!-- thymeleaf View 설정 -->
-	<beans:bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
-	  <beans:property name="prefix" value="/WEB-INF/views/"/>
-	  <beans:property name="suffix" value=".html"/>
-	  <beans:property name="templateMode" value="HTML5"/>
-	  <beans:property name="characterEncoding" value="UTF-8"/>
-	  <beans:property name="cacheable" value="false"/>
+	
+	<beans:bean id="templateResolver" class="org.thymeleaf.spring3.templateresolver.SpringResourceTemplateResolver">
+	 	<beans:property name="prefix" value="/WEB-INF/views/" />
+	  	<beans:property name="suffix" value=".html" />
+	  	<beans:property name="templateMode" value="HTML5" />
+	  	<beans:property name="cacheable" value="true" />	
+	</beans:bean>
+		
+	<beans:bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
+	    <beans:property name="templateResolver" ref="templateResolver" />
 	</beans:bean>
 	 
-	<!-- thymeleaf laytout을 쓰기위해 3rd Party 추가 -->
-	<beans:bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
-	  <beans:property name="templateResolver" ref="templateResolver"/>
-	  <beans:property name="additionalDialects">
-	    <beans:set>
-	      <beans:bean class="nz.net.ultraq.thymeleaf.LayoutDialect">
-	    </beans:bean></beans:set>
-	  </beans:property>
+	<beans:bean class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
+	    <beans:property name="characterEncoding" value="UTF-8" />
+	    <beans:property name="templateEngine" ref="templateEngine" />
 	</beans:bean>
-		 
-	<!-- thymeleaf laytout ViewResolver 설정 -->
-	<beans:bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
-	  <beans:property name="templateEngine" ref="templateEngine"/>
-	  <beans:property name="characterEncoding" value="UTF-8"/>
-	  <beans:property name="order" value="1"/>
-	</beans:bean>
-	
 	<!-- 등록된 bean을 조회하는 범위 -->
-	<context:component-scan base-package="com.uni.spring" />
+	<context:component-scan base-package="com.uni.kh" />
 	
-	<beans:bean id="commonExceptionHandler" class="com.uni.spring.common.CommonExceptionHandler"/>
+	<!--<beans:bean id="commonExceptionHandler" class="com.uni.kh.common.CommonExceptionHandler"/>-->
 	
   	<!-- <interceptors>
 		<interceptor>
 			<mapping path="/*"/>
-			<beans:bean id = "testInterceptor" class="com.uni.spring.common.interceptor.TestInterceptor"/>
+			<beans:bean id = "testInterceptor" class="com.uni.kh.common.interceptor.TestInterceptor"/>
 		</interceptor>
 	</interceptors> -->
 
