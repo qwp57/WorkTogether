@@ -10,18 +10,52 @@
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
 	<!-- Enables the Spring MVC @Controller programming model -->
+	<!-- 자바 클래스에 있는 어노테이션을 처리하게 하는 옵션 -->
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<!-- resources 경로를 등록 : 정적파일을 호출하는 request URL에 대해 defaultServlet으로 위임 -->
 	<resources mapping="/resources/**" location="/resources/" />
 
-	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
-	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-		<beans:property name="prefix" value="/WEB-INF/views/" />
-		<beans:property name="suffix" value=".jsp" />
+	<!-- thymeleaf View 설정 -->
+	<beans:bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+	  <beans:property name="prefix" value="/WEB-INF/views/"/>
+	  <beans:property name="suffix" value=".html"/>
+	  <beans:property name="templateMode" value="HTML5"/>
+	  <beans:property name="characterEncoding" value="UTF-8"/>
+	  <beans:property name="cacheable" value="false"/>
+	</beans:bean>
+	 
+	<!-- thymeleaf laytout을 쓰기위해 3rd Party 추가 -->
+	<beans:bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+	  <beans:property name="templateResolver" ref="templateResolver"/>
+	  <beans:property name="additionalDialects">
+	    <beans:set>
+	      <beans:bean class="nz.net.ultraq.thymeleaf.LayoutDialect">
+	    </beans:bean></beans:set>
+	  </beans:property>
+	</beans:bean>
+		 
+	<!-- thymeleaf laytout ViewResolver 설정 -->
+	<beans:bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+	  <beans:property name="templateEngine" ref="templateEngine"/>
+	  <beans:property name="characterEncoding" value="UTF-8"/>
+	  <beans:property name="order" value="1"/>
 	</beans:bean>
 	
-	<context:component-scan base-package="com.uni.kh" />
+	<!-- 등록된 bean을 조회하는 범위 -->
+	<context:component-scan base-package="com.uni.spring" />
+	
+	<beans:bean id="commonExceptionHandler" class="com.uni.spring.common.CommonExceptionHandler"/>
+	
+  	<!-- <interceptors>
+		<interceptor>
+			<mapping path="/*"/>
+			<beans:bean id = "testInterceptor" class="com.uni.spring.common.interceptor.TestInterceptor"/>
+		</interceptor>
+	</interceptors> -->
+
+		
 	
 	
 	
