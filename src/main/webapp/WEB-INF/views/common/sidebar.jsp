@@ -1,11 +1,13 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
- <div th:fragment="sidebar" class="main-sidebar">
+ <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             <a href="index.html">Stisla</a>
