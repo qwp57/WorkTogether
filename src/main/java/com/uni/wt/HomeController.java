@@ -36,4 +36,20 @@ public class HomeController {
 		return "index";
 	}
 	
+	@RequestMapping("/header")
+	public String header() {
+		return "header";
+	}
+	
+	@RequestMapping("/sidebar")
+	public String sidebar() {
+		return "sidebar";
+	}
+	
+	@RequestMapping("/test")
+	public String test() {
+		return "test";
+	}
+	
+	
 }
