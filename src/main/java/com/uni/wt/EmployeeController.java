@@ -39,6 +39,11 @@ public class EmployeeController {
 		return "common/main";
 	}
 	
+
+	@RequestMapping("/test")
+	public String test() {
+		return "project/test";
+	}
 	@RequestMapping(value="/ws")
 	public String workstate() {
 		return "workstate/myWorkState";
@@ -59,6 +64,7 @@ public class EmployeeController {
 		
 	}
 	
+
 	
 	
 }
