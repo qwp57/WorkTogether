@@ -200,7 +200,6 @@
     		<version>3.0.15.RELEASE</version>
 		</dependency>
 
-
 		<dependency>
 			<groupId>org.thymeleaf</groupId>
 			<artifactId>thymeleaf-spring3</artifactId>
@@ -215,6 +214,12 @@
 		
 		
 		
+		<!-- https://mvnrepository.com/artifact/org.springframework/springloaded -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>springloaded</artifactId>
+		    <version>1.2.8.RELEASE</version>
+		</dependency>
 		
 		
 
