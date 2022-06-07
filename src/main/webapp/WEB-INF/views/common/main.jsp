@@ -144,51 +144,37 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- 결재 대기 문서 -->
             <div class="section-body">
-
                 <div class="row mt-sm-4 body3">
                     <div class="col-12 col-md-10 col-lg-12">
                         <div class="card h-100">
                             <div class="card-body">
-                                <div id="time_Main">
-                                    <div id="time_Title">근무 체크</div>
-
-                                    <div id="current_Date"></div>
-
-                                    <div id="current_Status">
-                                        <div class="time_status" id="current_Time"></div>
-                                        <div class="time_status" id="status_Change">근무중</div>
-                                    </div>
-
-                                    <div id="Click_io_img">
-                                        <div class="Io_Click">
-                                            <input type="image" class="ioImg" id="startTime"
-                                                   src="${ pageContext.servletContext.contextPath }/resources/img/buttonArrow.png"
-                                                   alt="sdf">
-                                            <div>출근하기</div>
-                                            <div id="startTime_area">00:00:00</div>
-                                        </div>
-                                        <div class="Io_Click">
-                                            <input type="image" class="ioImg" id="endTime"
-                                                   src="${ pageContext.servletContext.contextPath }/resources/img/upArrow.png">
-                                            <div>퇴근하기</div>
-                                            <div id="endTime_area">00:00:00</div>
-                                        </div>
-                                    </div>
-
-                                    <div id="status_button">
-                                        <div id="status_button_1">
-                                            <button class="click_status" id="click_status_1">근무</button>
-                                            <button class="click_status" id="click_status_2">회의</button>
-                                        </div>
-                                        <div id="status_button_2">
-                                            <button class="click_status" id="click_status_3">외출</button>
-                                            <button class="click_status" id="click_status_4">외근</button>
-                                            <%//Date now = new Date();%>
-                                        </div>
-                                    </div>
-
-                                </div>
+                                <h4 class="text-left">결재 대기 문서</h4>
+                                <hr>
+								<table class="table">
+									<thead class="thead-light">
+										<tr>
+											<th style="width:15%">기안일</th>
+											<th style="width:15%">결재양식</th>
+											<th style="width:10%">긴급</th>
+											<th style="width:35%">제목</th>
+											<th style="width:10%">첨부</th>
+											<th style="width:15%">결재상태</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>2022-06-07</td>
+											<td>일반품의서</td>
+											<td>-</td>
+											<td>기안서-업무협조</td>
+											<td>1</td>
+											<td><button type="button" class="btn btn-primary">결재완료</button></td>
+										</tr>
+									</tbody>
+								</table>                              
                             </div>
                         </div>
                     </div>
@@ -198,6 +184,8 @@
     </div>
 </div>
 </div>
+
+<jsp:include page="../common/footer.jsp"/>
 
 </body>
 </html>
