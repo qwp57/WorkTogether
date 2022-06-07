@@ -39,6 +39,32 @@ public class EmployeeController {
 		return "common/main";
 	}
 	
+
+	@RequestMapping("/test")
+	public String test() {
+		return "project/test";
+	}
+	@RequestMapping(value="/ws")
+	public String workstate() {
+		return "workstate/myWorkState";
+		
+		
+	}
+	@RequestMapping(value="/tws")
+	public String teamworkstate() {
+		return "workstate/teamWorkState";
+		
+		
+	}
+	
+	@RequestMapping(value="/vws")
+	public String myvacation() {
+		return "workstate/myvacation";
+		
+		
+	}
+	
+
 	
 	
 }
