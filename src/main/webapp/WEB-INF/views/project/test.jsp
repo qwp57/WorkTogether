@@ -160,10 +160,10 @@ body {
 	justify-content: center;
 	}
 #totalProjectEditBar{
-	width: 900%;
-	text-align:center;
+	z-index: 5;
+	width: 100%;
 	position: fixed;
-	background-color: blue;
+	text-align: center;
 }
 #totalEditButton li{
 	display:inline-block;
@@ -175,16 +175,18 @@ body {
 	
 </style>
 <body>
-	<nav id="totalProjectEditBar" class="navbar bg-primary" style="display: block;" hidden>
-         <a class="navbar-brand" href="#">test</a>
-       	 <a class="navbar-brand" href="#">My App</a>
-            <a class="navbar-brand" href="#">My App</a>
-        <div id="totalEditSelect" class="menu-text-popup-1">
+	<div id="totalProjectEditBar">
+	<nav class="navbar bg-primary" style="display: block;" >
+         <a class="navbar-brand" href="#">색상 설정</a>
+       	 <a class="navbar-brand" href="#">프로젝트 태그 설정</a>
+        
+	    <a href="https://flow.team/main.act#" id="editBarCloseButton" class="main-container-close-button-1"></a>
+	    <div id="totalEditSelect" class="menu-text-popup-1">
             <span class="select-count">0개 프로젝트가 선택되었습니다.</span>
             <em class="select-clear">선택취소</em>
         </div>
-	    <a href="https://flow.team/main.act#" id="editBarCloseButton" class="main-container-close-button-1"></a>
 	</nav>
+	</div>
 	<div class="main-content">
 		<div style="height: 50px"></div>
 	
