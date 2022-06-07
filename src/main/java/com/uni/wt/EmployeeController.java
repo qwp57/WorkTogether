@@ -39,6 +39,10 @@ public class EmployeeController {
 		return "common/main";
 	}
 	
+	@RequestMapping("/test")
+	public String test() {
+		return "project/test";
+	}
 	
 	
 }
