@@ -33,7 +33,6 @@ body {
 	width: 100%;
 }
 
-
 /* CARDS */
 .cards {
 	display: flex;
@@ -64,6 +63,7 @@ body {
 	-text: white;
 	margin: 20px;
 	padding: 20px;
+	margin-left: 28px;
 	width: 60px;
 	height: 60px;
 	border-radius: 10px;
@@ -72,6 +72,27 @@ body {
 	color: #ffffff;
 	-text: white;
 }
+
+.color-1 {
+	background: #3C3B3D;
+}
+
+.color-2 {
+	background: #EC87C0;
+}
+
+.color-3 {
+	background: #5D9CEC;
+}
+
+.color-4 {
+	background: #6b10ec;
+}
+
+.color-5 {
+	background: #76cf0e;
+}
+
 .card:hover {
 	box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.4);
 	transform: scale(1.01);
@@ -181,7 +202,7 @@ body {
 }
 
 #totalProjectEditBar {
-	z-index: 5000;
+	z-index: 1000;
 	width: 100%;
 	position: fixed;
 	text-align: center;
@@ -200,53 +221,73 @@ body {
 	display: block;
 	position: relative;
 	left: 50%;
-	top: 150%;
+	top: 130%;
 	width: 300px;
 	height: 50px;
 	line-height: 40px;
-	border: 5px solid #6777ef;
+	border: 3px solid #6777ef;
 	border-radius: 25px;
 	font-family: 'Nanum Gothic', sans-serif;
 	color: #6777ef;
 }
-.select-clear{
+
+.select-clear {
 	color: red;
+}
+#tagTable{
+	text-align: center;
+	 width: 100%; 
+	 height: 100px;
+	 font-size: large;
 }
 #tagTable tr {
 	height: 50px;
 }
-.listViewTable{
+
+.listViewTable {
 	text-align: center;
 	font-size: large;
 }
-.listViewTable tr:hover{
+
+.listViewTable tr:hover, #tagTable tr:hover {
 	border-radius: 20px;
-	background-color:white;
+	background-color: white;
 	transform: scale(1.01);
 }
-.listViewTable tr{
+ #tagTable tr:hover, .fa-plus:hover{
+ 	color: #6777ef;
+ }
+
+.listViewTable tr {
 	border-radius: 20px;
 }
-.favoYellow{
- 	color: #f3da35;
+
+.favoYellow {
+	color: #f3da35;
 }
-.favoWhite{
+
+.favoWhite {
 	color: #white;
 }
 
-#editBarClose, .select-clear, .card, .listViewTable tr, .fa-cog, .fa-th-list, .fa-th-large{
-	cursor:pointer
+#editBarClose, .select-clear, .card, .listViewTable tr, .fa-cog,
+	.fa-th-list, .fa-th-large, .fa-ellipsis-v , .fa-plus{
+	cursor: pointer
+}
+.modal-content{
+	z-index: 1001;
 }
 </style>
 <body>
-	<div id="totalProjectEditBar" style="display: none;" >
+	<div id="totalProjectEditBar" style="display: none;">
 		<nav id="test" class="navbar bg-primary"
 			style="display: block; height: 100px; text-align: center;">
 			<br> <i class='fa fa-paint-brush fa-lg' style='color: white'></i>
 			<a class="navbar-brand" href="#" id="color">색상 설정</a> <i
 				class='fa fa-tags fa-lg' style='color: white'></i> <a
-				class="navbar-brand" href="#" id="tag">프로젝트 태그 설정</a>
-			<a id="editBarClose"><i class='fa fa-window-close fa-2x' style='color: white'></i></a>
+				class="navbar-brand" href="#" id="tag">프로젝트 태그 설정</a> <a
+				id="editBarClose"><i class='fa fa-window-close fa-2x'
+				style='color: white'></i></a>
 			<div style="height: 80px;"></div>
 
 		</nav>
@@ -275,7 +316,7 @@ body {
 					<i class='fa fa-th-list fa-2x'></i>
 				</div>
 				<div class="menuIcon">
-					<i class='fa fa-th-large fa-2x' style="color:black"></i>
+					<i class='fa fa-th-large fa-2x' style="color: black"></i>
 				</div>
 			</div>
 		</div>
@@ -283,66 +324,68 @@ body {
 			<div style="height: 30px"></div>
 			<h3>즐겨찾기</h3>
 			<div class="cards">
-			
+
 				<c:forEach var="index" begin="1" end="5">
 					<div class="card card-${index }">
-					<div class="card__icon">
-						<i class='fa fa-star fa-2x favoYellow'></i>
-					</div>
-					<div class="card__check" style="display: none;">
-						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" id="card${index }">
-							<label class="custom-control-label" for="card${index }"></label>
+						<div class="card__icon">
+							<i class='fa fa-star fa-2x favoYellow'></i>
 						</div>
+						<div class="card__check pjCheck" style="display: none;">
+							<div class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input pjCheckAll"
+									id="card${index }"> <label class="custom-control-label"
+									for="card${index }"></label>
+							</div>
+						</div>
+						<h2 class="card__title">테스트</h2>
+						<p class="card__count">
+							<a class="card__link"></a><i class='fa fa-user'
+								style='color: white'>&nbsp;7</i>
+						</p>
+						<p class="card__date">
+							<a class="card__link"><i class='fa fa-flag'
+								style='color: white'></i>&nbsp;2022-06-02</a>
+						</p>
 					</div>
-					<h2 class="card__title">테스트</h2>
-					<p class="card__count">
-						<a class="card__link"></a><i class='fa fa-user'
-							style='color: white'>&nbsp;7</i>
-					</p>
-					<p class="card__date">
-						<a class="card__link"><i class='fa fa-flag'
-							style='color: white'></i>&nbsp;2022-06-02</a>
-					</p>
-				</div>
 				</c:forEach>
 
-			<div style="width:100%; height: 30px"></div>
-			<h3>참여중</h3>
-				<div style="width:100%; height: 30px"></div>
-			<div class="cards">
-				<c:forEach var="index" begin="6" end="12">
-				<div class="card">
-					<div class="card__icon">
-						<i class='fa fa-star fa-2x favoWhite'></i>
-					</div>
-						<div class="card__check" style="display: none;">
-						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" id="card${index }">
-							<label class="custom-control-label" for="card${index }"></label>
+				<div style="width: 100%; height: 30px"></div>
+				<h3>참여중</h3>
+				<div style="width: 100%; height: 30px"></div>
+				<div class="cards">
+					<c:forEach var="index" begin="6" end="12">
+						<div class="card">
+							<div class="card__icon">
+								<i class='fa fa-star fa-2x favoWhite'></i>
+							</div>
+							<div class="card__check pjCheck" style="display: none;">
+								<div class="custom-control custom-checkbox">
+									<input type="checkbox" class="custom-control-input pjCheckAll"
+										id="card${index }"> <label
+										class="custom-control-label" for="card${index }"></label>
+								</div>
+							</div>
+							<h3 class="card__title">테스트</h3>
+							<p class="card__count">
+								<a class="card__link"><i class='fa fa-user'
+									style='color: white'></i>&nbsp;7</a>
+							</p>
+							<p class="card__date">
+								<a class="card__link"><i class='fa fa-flag'
+									style='color: white'></i>&nbsp;2022-06-02</a>
+							</p>
 						</div>
-					</div>
-					<h3 class="card__title">테스트</h3>
-					<p class="card__count">
-						<a class="card__link"><i class='fa fa-user'
-							style='color: white'></i>&nbsp;7</a>
-					</p>
-					<p class="card__date">
-						<a class="card__link"><i class='fa fa-flag'
-							style='color: white'></i>&nbsp;2022-06-02</a>
-					</p>
+					</c:forEach>
+
+
 				</div>
-				</c:forEach>
-			
-			
+
 			</div>
-
 		</div>
 	</div>
-</div>
 
 
-		<div class="main-content listView">
+	<div class="main-content listView" style="display: none">
 		<div style="height: 50px"></div>
 		<button class="btn btn-secondary" id="newPj">+ 새 프로젝트</button>
 
@@ -371,127 +414,105 @@ body {
 				<table class="listViewTable">
 					<c:forEach var="index" begin="1" end="5">
 						<tr style="width: 100%">
-							<td>
-							<div class="custom-control custom-checkbox" style="display: none;">
-								<input type="checkbox" class="custom-control-input" id="list${index }">
-								<label class="custom-control-label" for="list${index }"></label>
-							</div>
-						</td>
-							<td><div class="colors lists card-${index }"></div></td>
-							<td style="width: 10%"><i class='icon fa fa-star fa-2x favoYellow'></i></td>
+							<td style="width: 10%">
+								<div class="custom-control custom-checkbox pjCheck"
+									style="display: none;">
+									<input type="checkbox" class="custom-control-input pjCheckAll"
+										id="list${index }"> <label
+										class="custom-control-label" for="list${index }"></label>
+								</div>
+							</td>
+							<td><div class="colors lists color-${index }"></div></td>
+							<td style="width: 10%"><i
+								class='icon fa fa-star fa-2x favoYellow'></i></td>
 							<th style="width: 40%">테스트</th>
-							<td style="width: 20%"><a class="card__link"><i class='fa fa-user'></i>&nbsp;7</a></td>
-							<td style="width: 30%"><a class="card__link"><i class='fa fa-flag'></i>&nbsp;2022-06-02</a></td>
+							<td style="width: 20%"><a class="card__link"><i
+									class='fa fa-user'></i>&nbsp;7</a></td>
+							<td style="width: 30%"><a class="card__link"><i
+									class='fa fa-flag'></i>&nbsp;2022-06-02</a></td>
 						</tr>
 					</c:forEach>
 				</table>
-			<div style="width:100%; height: 30px"></div>
-			<h3>참여중</h3>
-				<div style="width:100%; height: 30px"></div>
+				<div style="width: 100%; height: 30px"></div>
+				<h3>참여중</h3>
+				<div style="width: 100%; height: 30px"></div>
 				<table class="listViewTable">
-				<c:forEach var="index" begin="6" end="12">
-					<tr style="width: 100%">
+					<c:forEach var="index" begin="6" end="12">
+
+						<tr style="width: 100%">
+							<td>
+								<div class="custom-control custom-checkbox pjCheck"
+									style="display: none;">
+									<input type="checkbox" class="custom-control-input pjCheckAll"
+										id="list${index }"> <label
+										class="custom-control-label" for="list${index }"></label>
+								</div>
+							</td>
 							<td><div class="colors lists list"></div></td>
-							<td style="width: 10%"><i class='icon fa fa-star fa-2x favoWhite'></i></td>
+							<td style="width: 10%"><i
+								class='icon fa fa-star fa-2x favoWhite'></i></td>
 							<th style="width: 40%">테스트</th>
-						<td style="width: 20%"><a class="card__link"><i class='fa fa-user'></i>&nbsp;7</a></td>
-							<td style="width: 30%"><a class="card__link"><i class='fa fa-flag'></i>&nbsp;2022-06-02</a></td>
+							<td style="width: 20%"><a class="card__link"><i
+									class='fa fa-user'></i>&nbsp;7</a></td>
+							<td style="width: 30%"><a class="card__link"><i
+									class='fa fa-flag'></i>&nbsp;2022-06-02</a></td>
 						</tr>
-				</c:forEach>
-			
+					</c:forEach>
+
 				</table>
 
+			</div>
 		</div>
 	</div>
-</div>
 
-	
-	
-	
-	
-	
+
+
+
+
+
 
 	<!-- 태그 모달창 -->
 	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
 	<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
-	<div class="modal" id="tagModal" data-backdrop="static"
+	<div class="modal fade"  id="tagModal" data-backdrop="static"
 		data-keyboard="false">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content row">
 				<!-- modal header : 제목 -->
 				<div class="modal-header">
-					<span><h3 class="modal-title text-left">프로젝트 폴더 설정</h3></span> <span><input
+					<span><h3 class="modal-title text-left">프로젝트 태그 설정</h3></span> <span><input
 						type="image" data-dismiss="modal"
 						src="resources/assets/img/close.png/" style="width: 20px"></span>
 				</div>
 				<!-- modal body : 내용 -->
 				<form class="form" id="test">
 					<div class="modal-body">
-						<table id="tagTable"
-							style="text-align: center; width: 100%; height: 100px;">
-							<tr>
-								<td></td>
-								<th style="width: 50%">테스트</th>
-								<td>
-									<div class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input" id="tag1">
-										<label class="custom-control-label" for="tag1"></label>
-									</div>
-								</td>
-								<td>
-									<div class="dropdown d-inline mr-2">
-										<button class="btn btn-primary dropdown-toggle" type="button"
-											id="dropdownMenuButton" data-toggle="dropdown"
-											aria-haspopup="true" aria-expanded="false"></button>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#">수정</a> <a
-												class="dropdown-item" href="#">삭제</a>
+						<table id="tagTable">
+							<c:forEach var="index" begin="1" end="5">
+								<tr>
+									<td><i class='fa fa-tag fa-lg'></i>
+									</td>
+									<th style="width: 50%">테스트</th>
+									<td style="width: 20%; text-align: right">
+										<div class="custom-control custom-checkbox">
+											<input type="checkbox" class="custom-control-input"
+												id="tag${index }"> <label
+												class="custom-control-label" for="tag${index }"></label>
 										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td></td>
-								<th style="width: 50%">테스트</th>
-								<td>
-									<div class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input" id="tag2">
-										<label class="custom-control-label" for="tag2"></label>
-									</div>
-								</td>
-								<td>
-									<div class="dropdown d-inline mr-2">
-										<button class="btn btn-primary dropdown-toggle" type="button"
-											id="dropdownMenuButton" data-toggle="dropdown"
-											aria-haspopup="true" aria-expanded="false"></button>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#">수정</a> <a
-												class="dropdown-item" href="#">삭제</a>
+									</td>
+									<td style="width: 15%; text-align: right">
+										<div class="dropdown d-inline mr-2">
+											<i class='fa fa-ellipsis-v fa-lg' data-toggle="dropdown"
+												aria-haspopup="true" aria-expanded="false" style="width: 30px"></i>
+
+											<div id="editDelete" class="dropdown-menu">
+												<a class="dropdown-item" href="#">수정</a> <a
+													class="dropdown-item" href="#">삭제</a>
+											</div>
 										</div>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td></td>
-								<th style="width: 50%">테스트</th>
-								<td>
-									<div class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input" id="tag3">
-										<label class="custom-control-label" for="tag3"></label>
-									</div>
-								</td>
-								<td>
-									<div class="dropdown d-inline mr-2">
-										<button class="btn btn-primary dropdown-toggle" type="button"
-											id="dropdownMenuButton" data-toggle="dropdown"
-											aria-haspopup="true" aria-expanded="false"></button>
-										<div class="dropdown-menu">
-											<a class="dropdown-item" href="#">수정</a> <a
-												class="dropdown-item" href="#">삭제</a>
-										</div>
-									</div>
-								</td>
-							</tr>
+									</td>
+								</tr>
+							</c:forEach>
 						</table>
 						<br>
 						<div class="col-lg-12 text-center">
@@ -512,7 +533,7 @@ body {
 	<!-- 색상 모달창 -->
 	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
 	<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
-	<div class="modal" id="colorModal" data-backdrop="static"
+	<div class="modal fade" id="colorModal" data-backdrop="static"
 		data-keyboard="false" style="text-align: center;">
 		<div class="modal-dialog modal-lg modal-dialog-centered">
 			<div class="modal-content row">
@@ -528,20 +549,20 @@ body {
 						<table id="colorTable" style="text-align: center; width: 100%;">
 							<tr>
 								<c:forEach var="index" begin="1" end="6">
-									<td><div class="colors"></div>
-										<div class="custom-control custom-checkbox">
-											<input type="checkbox" class="custom-control-input"
-												id="color${index}"> <label
+									<td><div class="colors color-${index }"></div>
+										<div class="custom-control custom-radio">
+											<input type="radio" name="customRadio"
+												class="custom-control-input" id="color${index}"> <label
 												class="custom-control-label" for="color${index}"></label>
 										</div></td>
 								</c:forEach>
 							</tr>
 							<tr>
 								<c:forEach var="index" begin="7" end="12">
-									<td><div class="colors"></div>
-										<div class="custom-control custom-checkbox">
-											<input type="checkbox" class="custom-control-input"
-												id="color${index}"> <label
+									<td><div class="colors color-${index }"></div>
+										<div class="custom-control custom-radio">
+											<input type="radio" name="customRadio"
+												class="custom-control-input" id="color${index}"> <label
 												class="custom-control-label" for="color${index}"></label>
 										</div></td>
 								</c:forEach>
@@ -557,58 +578,81 @@ body {
 			</div>
 		</div>
 	</div>
-	
+
 	<script>
 		$(function() {
 			$("#tag").click(function() {
 				$("#tagModal").modal("show")
 			});
-			
+
 			$("#color").click(function() {
 				$("#colorModal").modal("show")
 			});
 			
+			
 			$(".fa-star").click(function() {
-				if($(this).hasClass("favoWhite")){
+				if ($(this).hasClass("favoWhite")) {
 					$(this).removeClass("favoWhite")
 					$(this).addClass("favoYellow")
 					console.log("즐겨찾기 추가할것")
-				}else if($(this).hasClass("favoYellow")){
+				} else if ($(this).hasClass("favoYellow")) {
 					$(this).removeClass("favoYellow")
 					$(this).addClass("favoWhite")
 					console.log("즐겨찾기 제거할것")
 				}
 			})
-			
+
 			$(".fa-cog").click(function() {
-				$("#totalProjectEditBar").css("display","block")
-				
+				$("#totalProjectEditBar").css("display", "block")
+				$(".pjCheck").css("display", "block")
+
 			})
 			$(".fa-th-list").click(function() {
 				console.log("ㅋㅋ")
-				$(".largeView").css("display","none")
-				$(".listView").css("display","block")
+				$(".largeView").css("display", "none")
+				$(".listView").css("display", "block")
 				$(".fa-th-list").css("color", "black")
-				$(".fa-th-large").css("color","")
-			
+				$(".fa-th-large").css("color", "")
+
 			})
-			
+
 			$(".fa-th-large").click(function() {
 				console.log("bb")
-			
-				$(".listView").css("display","none")
-				$(".largeView").css("display","block")
+
+				$(".listView").css("display", "none")
+				$(".largeView").css("display", "block")
 				$(".fa-th-large").css("color", "black")
-				$(".fa-th-list").css("color","")
-			
+				$(".fa-th-list").css("color", "")
+
 			})
-			
+
 			$("#editBarClose").click(function() {
-				$("#totalProjectEditBar").css("display","none")
+				$("#totalProjectEditBar").css("display", "none")
 			})
-		});
+
+			$(".select-clear").click(function() {
+				$(".pjCheckAll").prop("checked", false)
+				$(".select-count").text("0개 프로젝트가 선택되었습니다.")
+			})
+			$(".pjCheckAll").change(function() {
+				console.log("체크변경")
+				console.log($('.pjCheckAll:checked'))
+				var checkedCnt = $('.pjCheckAll:checked').length;
+				console.log(checkedCnt)
+				$(".select-count").text(checkedCnt + "개 프로젝트가 선택되었습니다.")
+			})
+			$(".fa-plus").click(function(){
+				$("#tagTable").append('<tr class="dontAdd"><td colspan="4">'+
+						'<div class="input-group mb-3 id="dontAdd">' +
+	                        '<input type="text" class="form-control" placeholder="" aria-label="">' +
+	                        '<div class="input-group-append">' +
+	                          '<button class="btn btn-primary" type="button">추가</button>' +
+		                     '</div></div></td></tr>'             
+				)
 		
-			
+			})
+
+		});
 	</script>
 
 
