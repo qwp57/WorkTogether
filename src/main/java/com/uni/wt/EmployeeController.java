@@ -40,9 +40,9 @@ public class EmployeeController {
 	}
 	
 
-	@RequestMapping("/test")
-	public String test() {
-		return "project/test";
+	@RequestMapping("/allProject")
+	public String allProject() {
+		return "project/allProject";
 	}
 	@RequestMapping(value="/ws")
 	public String workstate() {
