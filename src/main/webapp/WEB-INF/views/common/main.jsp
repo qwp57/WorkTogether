@@ -200,13 +200,42 @@ box-shadow: 5px 5px 10px -3px gray;
                     </div>
                 </div>
             </div>
+            
+            <!-- 결재 대기 문서 -->
             <div class="section-body">
-
                 <div class="row mt-sm-4 body3">
                     <div class="col-12 col-md-10 col-lg-12">
                         <div class="card h-100">
                             <div class="card-body">
+
+                                <h4 class="text-left">결재 대기 문서</h4>
+                                <hr>
+								<table class="table">
+									<thead class="thead-light">
+										<tr>
+											<th style="width:15%">기안일</th>
+											<th style="width:15%">결재양식</th>
+											<th style="width:10%">긴급</th>
+											<th style="width:35%">제목</th>
+											<th style="width:10%">첨부</th>
+											<th style="width:15%">결재상태</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>2022-06-07</td>
+											<td>일반품의서</td>
+											<td>-</td>
+											<td>기안서-업무협조</td>
+											<td>1</td>
+											<td><button type="button" class="btn btn-primary">결재완료</button></td>
+										</tr>
+									</tbody>
+								</table>                              
+                            </div>
+
                              
+
                         </div>
                     </div>
                 </div>
@@ -239,8 +268,10 @@ function getClock() {
 }
 
 setInterval(getClock, 1000);
-
-
 </script>
+
+
+<jsp:include page="../common/footer.jsp"/>
+
 </body>
 </html>
