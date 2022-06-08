@@ -27,11 +27,6 @@ body {
 		Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
 		"Segoe UI Symbol";
 }
-/* LIST */
-.lists {
-	display: inline-block;
-	width: 100%;
-}
 
 /* CARDS */
 .cards {
@@ -124,7 +119,7 @@ body {
 	transform: scale(1.01);
 }
 
-.card__link, .card__check, .card__icon, card__date1 {
+.card__check, .card__icon, card__date1 {
 	position: relative;
 	text-decoration: none;
 	color: rgba(255, 255, 255, 0.9);
@@ -245,9 +240,6 @@ body {
 	 height: 100px;
 	 font-size: large;
 }
-#tagTable tr {
-	height: 50px;
-}
 
 .listViewTable {
 	text-align: center;
@@ -259,13 +251,16 @@ body {
 	background-color: white;
 	transform: scale(1.01);
 }
+.listViewTable tbody tr{
+	border-radius: 20px;
+}
+#tagTable tr {
+	height: 50px;
+}
  #tagTable tr:hover, .fa-plus:hover{
  	color: #6777ef;
  }
 
-.listViewTable tbody tr{
-	border-radius: 20px;
-}
 
 .favoYellow {
 	color: #f3da35;
@@ -287,12 +282,12 @@ body {
 	<div id="totalProjectEditBar" style="display: none;">
 		<nav id="test" class="navbar bg-primary"
 			style="display: block; height: 100px; text-align: center;">
-			<br> <i class='fa fa-paint-brush fa-lg' style='color: white'></i>
+			<br> <i class='fa fa-paint-brush fa-lg' style='color: white;'></i>
 			<a class="navbar-brand" href="#" id="color">색상 설정</a> <i
-				class='fa fa-tags fa-lg' style='color: white'></i> <a
+				class='fa fa-tags fa-lg' style='color: white;'></i> <a
 				class="navbar-brand" href="#" id="tag">프로젝트 태그 설정</a> <a
 				id="editBarClose"><i class='fa fa-window-close fa-2x'
-				style='color: white'></i></a>
+				style='color: white;'></i></a>
 			<div style="height: 80px;"></div>
 
 		</nav>
@@ -303,7 +298,7 @@ body {
 	</div>
 
 	<div class="main-content largeView">
-		<div style="height: 50px"></div>
+		<div style="height: 50px;"></div>
 
 		<button class="btn btn-secondary" id="newPj">+ 새 프로젝트</button>
 
@@ -321,12 +316,12 @@ body {
 					<i class='fa fa-th-list fa-2x'></i>
 				</div>
 				<div class="menuIcon">
-					<i class='fa fa-th-large fa-2x' style="color: black"></i>
+					<i class='fa fa-th-large fa-2x' style="color: black;"></i>
 				</div>
 			</div>
 		</div>
 		<div class="container">
-			<div style="height: 30px"></div>
+			<div style="height: 30px;"></div>
 			<h3>즐겨찾기</h3>
 			<div class="cards">
 
@@ -344,19 +339,19 @@ body {
 						</div>
 						<h2 class="card__title">테스트</h2>
 						<p class="card__count">
-							<a class="card__link"></a><i class='fa fa-user'
-								style='color: white'>&nbsp;7</i>
+							<i class='fa fa-user'
+								style='color: white;'>&nbsp;7</i>
 						</p>
 						<p class="card__date">
-							<a class="card__link"><i class='fa fa-flag'
-								style='color: white'></i>&nbsp;2022-06-02</a>
+							<i class='fa fa-flag'
+								style='color: white;'></i>&nbsp;2022-06-02
 						</p>
 					</div>
 				</c:forEach>
 
-				<div style="width: 100%; height: 30px"></div>
+				<div style="width: 100%; height: 30px;"></div>
 				<h3>참여중</h3>
-				<div style="width: 100%; height: 30px"></div>
+				<div style="width: 100%; height: 30px;"></div>
 				<div class="cards">
 					<c:forEach var="index" begin="6" end="12">
 						<div class="card">
@@ -372,12 +367,13 @@ body {
 							</div>
 							<h3 class="card__title">테스트</h3>
 							<p class="card__count">
-								<a class="card__link"><i class='fa fa-user'
-									style='color: white'></i>&nbsp;7</a>
+								<i class='fa fa-user'
+									style='color: white;'></i>&nbsp;7
 							</p>
 							<p class="card__date">
-								<a class="card__link"><i class='fa fa-flag'
-									style='color: white'></i>&nbsp;2022-06-02</a>
+								<i class='fa fa-flag'
+									style='color: white;'></i>&nbsp;2022-06-02
+									
 							</p>
 						</div>
 					</c:forEach>
@@ -390,8 +386,8 @@ body {
 	</div>
 
 
-	<div class="main-content listView" style="display: none">
-		<div style="height: 50px"></div>
+	<div class="main-content listView" style="display: none;">
+		<div style="height: 50px;"></div>
 		<button class="btn btn-secondary" id="newPj">+ 새 프로젝트</button>
 
 		<br> <br> <br>
@@ -413,12 +409,12 @@ body {
 			</div>
 		</div>
 		<div class="container">
-			<div style="height: 30px"></div>
+			<div style="height: 30px;"></div>
 			<h3>즐겨찾기</h3>
 			<div class="lists">
 				<table class="listViewTable">
 					<c:forEach var="index" begin="1" end="5">
-						<tr style="width: 100%">
+						<tr style="width: 100%;">
 							<td>
 								<div class="custom-control custom-checkbox pjCheck"
 									style="display: none;">
@@ -427,20 +423,20 @@ body {
 										class="custom-control-label" for="list${index }"></label>
 								</div>
 							</td>
-							<td><div class="colors lists color-${index }"></div></td>
-							<td style="width: 10%"><i
+							<td><div class="colors color-${index }"></div></td>
+							<td style="width: 10%;"><i
 								class='icon fa fa-star fa-2x favoYellow'></i></td>
-							<th style="width: 40%">테스트</th>
-							<td style="width: 20%"><a class="card__link"><i
-									class='fa fa-user'></i>&nbsp;7</a></td>
-							<td style="width: 30%"><a class="card__link"><i
-									class='fa fa-flag'></i>&nbsp;2022-06-02</a></td>
+							<th style="width: 40%;">테스트</th>
+							<td style="width: 20%"><i
+									class='fa fa-user'></i>&nbsp;7</td>
+							<td style="width: 30%;"><i
+									class='fa fa-flag'></i>&nbsp;2022-06-02</td>
 						</tr>
 					</c:forEach>
 				</table>
-				<div style="width: 100%; height: 30px"></div>
+				<div style="width: 100%; height: 30px;"></div>
 				<h3>참여중</h3>
-				<div style="width: 100%; height: 30px"></div>
+				<div style="width: 100%; height: 30px;"></div>
 				<table class="listViewTable">
 					<c:forEach var="index" begin="6" end="12">
 						<tr style="width: 100%">
@@ -452,14 +448,14 @@ body {
 										class="custom-control-label" for="list${index }"></label>
 								</div>
 							</td>
-							<td><div class="colors lists list"></div></td>
-							<td style="width: 10%"><i
+							<td><div class="colors list"></div></td>
+							<td style="width: 10%;"><i
 								class='icon fa fa-star fa-2x favoWhite'></i></td>
-							<th style="width: 40%">테스트</th>
-							<td style="width: 20%"><a class="card__link"><i
-									class='fa fa-user'></i>&nbsp;7</a></td>
-							<td style="width: 30%"><a class="card__link"><i
-									class='fa fa-flag'></i>&nbsp;2022-06-02</a></td>
+							<th style="width: 40%;">테스트</th>
+							<td style="width: 20%;"><i
+									class='fa fa-user'></i>&nbsp;7</td>
+							<td style="width: 30%;"><i
+									class='fa fa-flag'></i>&nbsp;2022-06-02</td>
 						</tr>
 					</c:forEach>
 
@@ -486,7 +482,7 @@ body {
 				<div class="modal-header">
 					<span><h3 class="modal-title text-left">프로젝트 태그 설정</h3></span> <span><input
 						type="image" data-dismiss="modal"
-						src="resources/assets/img/close.png/" style="width: 20px"></span>
+						src="resources/assets/img/close.png/" style="width: 20px;"></span>
 				</div>
 				<!-- modal body : 내용 -->
 				<form class="form" id="tagSave">
@@ -497,20 +493,20 @@ body {
 									<td><i class='fa fa-tag fa-lg'></i>
 									</td>
 									<th style="width: 50%">테스트</th>
-									<td style="width: 20%; text-align: right">
+									<td style="width: 20%; text-align: right;">
 										<div class="custom-control custom-checkbox">
 											<input type="checkbox" class="custom-control-input"
 												id="tag${index }"> <label
 												class="custom-control-label" for="tag${index }"></label>
 										</div>
 									</td>
-									<td style="width: 15%; text-align: right">
+									<td style="width: 15%; text-align: right;">
 										<div class="dropdown d-inline mr-2">
 											<i class='fa fa-ellipsis-v fa-lg' data-toggle="dropdown"
-												aria-haspopup="true" aria-expanded="false" style="width: 30px"></i>
+												aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>
 											<div id="editDelete" class="dropdown-menu">
-												<a class="dropdown-item" href="#">수정</a> <a
-													class="dropdown-item" href="#">삭제</a>
+												<a class="dropdown-item" href="#">수정</a> 
+												<a class="dropdown-item" href="#">삭제</a>
 											</div>
 										</div>
 									</td>
@@ -545,7 +541,7 @@ body {
 				<div class="modal-header">
 					<span><h4 class="modal-title text-left">프로젝트 태그 추가</h4></span> <span><input
 						type="image" data-dismiss="modal"
-						src="resources/assets/img/close.png/" style="width: 20px"></span>
+						src="resources/assets/img/close.png/" style="width: 20px;"></span>
 				</div>
 				<!-- modal body : 내용 -->
 				<form class="form" id="tagAdd">
@@ -576,7 +572,7 @@ body {
 				<div class="modal-header">
 					<span><h3 class="modal-title text-left">프로젝트 색상 설정</h3></span> <span><input
 						type="image" data-dismiss="modal"
-						src="resources/assets/img/close.png/" style="width: 20px"></span>
+						src="resources/assets/img/close.png/" style="width: 20px;"></span>
 				</div>
 				<!-- modal body : 내용 -->
 				<form class="form" id="colorSave">

@@ -73,9 +73,89 @@ box-shadow: 5px 5px 10px -3px gray;
 }
 
 
+.listViewTable {
+	height: 80%;
+	text-align: center;
+	font-size: large;
+}
+
+.listViewTable tr:hover {
+	border-radius: 20px;
+	background-color: lightgray;
+	transform: scale(1.01);
+}
+.listViewTable tbody tr{
+	border-radius: 20px;
+}
 
 
+.favoYellow {
+	color: #f3da35;
+}
 
+.favoWhite {
+	color: #white;
+}
+.colors {
+	background-color: #989c96; -
+	-text: white;
+	margin: 20px;
+	padding: 20px;
+	margin-left: 28px;
+	width: 50px;
+	height: 50px;
+	border-radius: 10px;
+	box-shadow: 0 0 2rem -1rem rgba(0, 0, 0, .05);
+	transition: all 0.2s;
+	color: #ffffff;
+	-text: white;
+}
+
+.color-1 {
+	background: #3C3B3D;
+}
+
+.color-2 {
+	background: #EC87C0;
+}
+
+.color-3 {
+	background: #5D9CEC;
+}
+
+.color-4 {
+	background: #6b10ec;
+}
+
+.color-5 {
+	background: #76cf0e;
+}
+.color-6 {
+	background: #3C3B3D;
+}
+
+.color-7 {
+	background: #EC87C0;
+}
+
+.color-8 {
+	background: #5D9CEC;
+}
+
+.color-9 {
+	background: #6b10ec;
+}
+
+.color-10 {
+	background: #76cf0e;
+}
+.color-11 {
+	background: #6b10ec;
+}
+
+.color-12 {
+	background: #76cf0e;
+}
 
 </style>
 </head>
@@ -188,13 +268,25 @@ box-shadow: 5px 5px 10px -3px gray;
 
                     <div class="col-12 col-md-10 col-lg-7">
                         <div class="card h-100">
+                        
                             <div class="card-body text-center h-100">
-                                <h2>이번 달 근무왕 부서</h2>
+                                <h4 class="text-left">즐겨찾기</h4>
                                 <hr>
-                                <br>
-                                <h3>영업부 2팀</h3><br>
-                                <h4>영업부 1팀</h4>
-                                <h4>영업부 1팀</h4>
+								<table class="listViewTable">
+									<c:forEach var="index" begin="1" end="5">
+										<tr style="width: 100%">
+											<td style="width: 3%;"></td>
+											<td><div class="colors color-${index }"></div></td>
+											<td style="width: 10%;"><i
+												class='icon fa fa-star fa-lg favoYellow'></i></td>
+											<th style="width: 40%;">테스트</th>
+											<td style="width: 20%;"><i
+													class='fa fa-user'></i>&nbsp;7</td>
+											<td style="width: 30%;"><i
+													class='	fa fa-flag'></i>&nbsp;2022-06-02</td>
+										</tr>
+										</c:forEach>
+									</table>
                             </div>
                         </div>
                     </div>
