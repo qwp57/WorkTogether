@@ -501,14 +501,18 @@ body {
 										</div>
 									</td>
 									<td style="width: 15%; text-align: right;">
-										<div class="dropdown d-inline mr-2">
-											<i class='fa fa-ellipsis-v fa-lg' data-toggle="dropdown"
+										
+											 <div class="btn-group dropright">
+                     <i class='fa fa-ellipsis-v fa-lg dropdown-toggle"' data-toggle="dropdown"
 												aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>
-											<div id="editDelete" class="dropdown-menu">
-												<a class="dropdown-item" href="#">수정</a> 
-												<a class="dropdown-item" href="#">삭제</a>
-											</div>
-										</div>
+                      <div class="dropdown-menu dropright">
+                        <a class="dropdown-item" href="#">수정</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">삭제</a>
+                      </div>
+                    </div>
+											<!-- <i class='fa fa-ellipsis-v fa-lg dropdown-toggle"' data-toggle="dropdown"
+												aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i> -->
 									</td>
 								</tr>
 							</c:forEach>
@@ -689,8 +693,18 @@ body {
 			$(".fa-plus").click(function(){
 				$("#AddTagModal").modal("show")
 			})
-		});
-	</script>
+			
+			
+			
+			$(".card").click(function(){
+				location.href = "/detailPj.do";
+			})
+			
+			
+			
+		})
+		
+		</script>
 
 
 

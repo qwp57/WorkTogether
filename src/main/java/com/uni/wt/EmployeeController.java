@@ -45,6 +45,13 @@ public class EmployeeController {
 	public String allProject() {
 		return "project/allProject";
 	}
+	
+	@RequestMapping("/detailPj.do")
+	public String detailPj() {
+		return "project/detailPj";
+	}
+	
+	
 	@RequestMapping(value="/ws")
 	public String workstate() {
 		return "workstate/myWorkState";
