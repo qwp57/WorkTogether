@@ -39,19 +39,44 @@ public class EmployeeController {
 		//return "common/login";
 	}
 	
+
+
+	@RequestMapping("/allProject")
+	public String allProject() {
+		return "project/allProject";
+	}
+	@RequestMapping(value="/ws")
+	public String workstate() {
+		return "workstate/myWorkState";
+		
+		
+	}
+	@RequestMapping(value="/tws")
+	public String teamworkstate() {
+		return "workstate/teamWorkState";
+		
+		
+	}
 	
-//	@RequestMapping(value="/enrollForm.do")
-//	public String enrollForm() {
-//		
-//		return "common/register";
-//		
-//	}
-//	
-//	@RequestMapping(value="/enrollEmp.do")
-//	public String enrollEmp() {
-//		
-//		
-//	}
+	@RequestMapping(value="/vws")
+	public String myvacation() {
+		return "workstate/myvacation";
+		
+		
+	}
+
+	@RequestMapping(value="/enrollForm.do")
+	public String enrollForm() {
+		
+		return "common/register";
+		
+	}
+	
+	@RequestMapping(value="/enrollEmp.do")
+	public String enrollEmp() {
+		
+		
+	}
 
 	
 	
