@@ -92,6 +92,32 @@ body {
 .color-5 {
 	background: #76cf0e;
 }
+.color-6 {
+	background: #3C3B3D;
+}
+
+.color-7 {
+	background: #EC87C0;
+}
+
+.color-8 {
+	background: #5D9CEC;
+}
+
+.color-9 {
+	background: #6b10ec;
+}
+
+.color-10 {
+	background: #76cf0e;
+}
+.color-11 {
+	background: #6b10ec;
+}
+
+.color-12 {
+	background: #76cf0e;
+}
 
 .card:hover {
 	box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.4);
@@ -128,27 +154,6 @@ body {
 .card__date {
 	grid-row: 4/5;
 	justify-self: end
-}
-
-/* CARD BACKGROUNDS */
-.card-1 {
-	background: #3C3B3D;
-}
-
-.card-2 {
-	background: #EC87C0;
-}
-
-.card-3 {
-	background: #5D9CEC;
-}
-
-.card-4 {
-	background: #6b10ec;
-}
-
-.card-5 {
-	background: #76cf0e;
 }
 
 /* RESPONSIVE */
@@ -258,7 +263,7 @@ body {
  	color: #6777ef;
  }
 
-.listViewTable tr {
+.listViewTable tbody tr{
 	border-radius: 20px;
 }
 
@@ -326,7 +331,7 @@ body {
 			<div class="cards">
 
 				<c:forEach var="index" begin="1" end="5">
-					<div class="card card-${index }">
+					<div class="card color-${index }">
 						<div class="card__icon">
 							<i class='fa fa-star fa-2x favoYellow'></i>
 						</div>
@@ -414,7 +419,7 @@ body {
 				<table class="listViewTable">
 					<c:forEach var="index" begin="1" end="5">
 						<tr style="width: 100%">
-							<td style="width: 10%">
+							<td>
 								<div class="custom-control custom-checkbox pjCheck"
 									style="display: none;">
 									<input type="checkbox" class="custom-control-input pjCheckAll"
@@ -438,7 +443,6 @@ body {
 				<div style="width: 100%; height: 30px"></div>
 				<table class="listViewTable">
 					<c:forEach var="index" begin="6" end="12">
-
 						<tr style="width: 100%">
 							<td>
 								<div class="custom-control custom-checkbox pjCheck"
@@ -485,7 +489,7 @@ body {
 						src="resources/assets/img/close.png/" style="width: 20px"></span>
 				</div>
 				<!-- modal body : 내용 -->
-				<form class="form" id="test">
+				<form class="form" id="tagSave">
 					<div class="modal-body">
 						<table id="tagTable">
 							<c:forEach var="index" begin="1" end="5">
@@ -504,7 +508,6 @@ body {
 										<div class="dropdown d-inline mr-2">
 											<i class='fa fa-ellipsis-v fa-lg' data-toggle="dropdown"
 												aria-haspopup="true" aria-expanded="false" style="width: 30px"></i>
-
 											<div id="editDelete" class="dropdown-menu">
 												<a class="dropdown-item" href="#">수정</a> <a
 													class="dropdown-item" href="#">삭제</a>
@@ -530,11 +533,43 @@ body {
 	</div>
 
 
+
+	<!-- 태그추가 모달창 -->
+	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
+	<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
+	<div class="modal fade"  id="AddTagModal" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-sm modal-dialog-centered">
+			<div class="modal-content row">
+				<!-- modal header : 제목 -->
+				<div class="modal-header">
+					<span><h4 class="modal-title text-left">프로젝트 태그 추가</h4></span> <span><input
+						type="image" data-dismiss="modal"
+						src="resources/assets/img/close.png/" style="width: 20px"></span>
+				</div>
+				<!-- modal body : 내용 -->
+				<form class="form" id="tagAdd">
+					<div class="modal-body">
+                    <div class="form-group">
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="" aria-label="">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button" data-dismiss="modal">추가</button>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
 	<!-- 색상 모달창 -->
 	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
 	<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
-	<div class="modal fade" id="colorModal" data-backdrop="static"
-		data-keyboard="false" style="text-align: center;">
+	<div class="modal fade" id="colorModal" data-backdrop="static" data-keyboard="false" style="text-align: center;">
 		<div class="modal-dialog modal-lg modal-dialog-centered">
 			<div class="modal-content row">
 				<!-- modal header : 제목 -->
@@ -544,7 +579,7 @@ body {
 						src="resources/assets/img/close.png/" style="width: 20px"></span>
 				</div>
 				<!-- modal body : 내용 -->
-				<form class="form" id="test">
+				<form class="form" id="colorSave">
 					<div class="modal-body">
 						<table id="colorTable" style="text-align: center; width: 100%;">
 							<tr>
@@ -605,8 +640,12 @@ body {
 			$(".fa-cog").click(function() {
 				$("#totalProjectEditBar").css("display", "block")
 				$(".pjCheck").css("display", "block")
-
 			})
+			
+			$(".fa-window-close").click(function() {
+				$(".pjCheck").css("display", "none")
+			})
+		
 			$(".fa-th-list").click(function() {
 				console.log("ㅋㅋ")
 				$(".largeView").css("display", "none")
@@ -641,7 +680,8 @@ body {
 				console.log(checkedCnt)
 				$(".select-count").text(checkedCnt + "개 프로젝트가 선택되었습니다.")
 			})
-			$(".fa-plus").click(function(){
+			
+			/*$(".fa-plus").click(function(){
 				$("#tagTable").append('<tr class="dontAdd"><td colspan="4">'+
 						'<div class="input-group mb-3 id="dontAdd">' +
 	                        '<input type="text" class="form-control" placeholder="" aria-label="">' +
@@ -649,9 +689,10 @@ body {
 	                          '<button class="btn btn-primary" type="button">추가</button>' +
 		                     '</div></div></td></tr>'             
 				)
-		
+			})*/
+			$(".fa-plus").click(function(){
+				$("#AddTagModal").modal("show")
 			})
-
 		});
 	</script>
 
