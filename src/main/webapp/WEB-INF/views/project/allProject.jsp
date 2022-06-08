@@ -13,7 +13,7 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
 	rel="stylesheet">
-
+<script src="https://kit.fontawesome.com/f2449ad7e5.js" crossorigin="anonymous"></script>
 </head>
 <style>
 * {
@@ -36,17 +36,17 @@ body {
 }
 
 .card {
-	background-color: #989c96; -
+	background-color: gray; -
 	-text: white;
 	margin: 20px;
 	padding: 20px;
 	padding-top: 0px;
-	width: 300px;
+	width: 323px;
 	height: 200px;
 	min-height: 200px;
 	display: grid;
 	grid-template-rows: 20px 50px 1fr 50px;
-	border-radius: 10px;
+	border-radius: 25px;
 	box-shadow: 0 0 2rem -1rem rgba(0, 0, 0, .05);
 	transition: all 0.2s;
 	color: #ffffff;
@@ -54,13 +54,12 @@ body {
 }
 
 .colors {
-	background-color: #989c96; -
 	-text: white;
 	margin: 20px;
 	padding: 20px;
-	margin-left: 28px;
-	width: 60px;
-	height: 60px;
+	margin-left: 40px;
+	width: 70px;
+	height: 70px;
 	border-radius: 10px;
 	box-shadow: 0 0 2rem -1rem rgba(0, 0, 0, .05);
 	transition: all 0.2s;
@@ -81,37 +80,24 @@ body {
 }
 
 .color-4 {
-	background: #6b10ec;
+	background: #8a40f2;
 }
 
+
 .color-5 {
-	background: #76cf0e;
+	background: #82B553;
 }
+
 .color-6 {
-	background: #3C3B3D;
+	background: #f05650;
 }
 
 .color-7 {
-	background: #EC87C0;
+	background: #917B56;
 }
 
 .color-8 {
-	background: #5D9CEC;
-}
-
-.color-9 {
-	background: #6b10ec;
-}
-
-.color-10 {
-	background: #76cf0e;
-}
-.color-11 {
-	background: #6b10ec;
-}
-
-.color-12 {
-	background: #76cf0e;
+	background: gray;
 }
 
 .card:hover {
@@ -119,14 +105,14 @@ body {
 	transform: scale(1.01);
 }
 
-.card__check, .card__icon, card__date1 {
+.card__check, .card__icon, .card__count {
 	position: relative;
 	text-decoration: none;
 	color: rgba(255, 255, 255, 0.9);
 }
 
 .card__check {
-	grid-row: 2/3;
+	grid-row: 2/4;
 	justify-self: end;
 }
 
@@ -136,19 +122,22 @@ body {
 
 .card__title {
 	grid-row: 3/4;
+	 grid-column: 1 / 4;
 	font-family: 'Nanum Gothic', sans-serif;
 	font-weight: 700;
 	color: #ffffff;
 }
 
 .card__count {
-	grid-row: 4/5;
-	align-self: center;
+	grid-row: 4/4;
+	 grid-column: 1 / 4;
+	
 }
 
 .card__date {
-	grid-row: 4/5;
-	justify-self: end
+	grid-row: 4/4;
+	 grid-column: 1 / 4;
+	justify-self: end;
 }
 
 /* RESPONSIVE */
@@ -260,7 +249,14 @@ body {
  #tagTable tr:hover, .fa-plus:hover{
  	color: #6777ef;
  }
-
+#colorTable{
+	text-align: center;
+	margin-left: 2%;
+	width: 100%;
+}
+.custom-radio{
+	margin-right: 27px;
+}
 
 .favoYellow {
 	color: #f3da35;
@@ -316,7 +312,7 @@ body {
 					<i class='fa fa-th-list fa-2x'></i>
 				</div>
 				<div class="menuIcon">
-					<i class='fa fa-th-large fa-2x' style="color: black;"></i>
+				 <i class='fa fa-th-large fa-2x' style="color: black;"></i>
 				</div>
 			</div>
 		</div>
@@ -325,7 +321,7 @@ body {
 			<h3>즐겨찾기</h3>
 			<div class="cards">
 
-				<c:forEach var="index" begin="1" end="5">
+				<c:forEach var="index" begin="1" end="8">
 					<div class="card color-${index }">
 						<div class="card__icon">
 							<i class='fa fa-star fa-2x favoYellow'></i>
@@ -337,14 +333,14 @@ body {
 									for="card${index }"></label>
 							</div>
 						</div>
-						<h2 class="card__title">테스트</h2>
+						<h3 class="card__title">테스트</h3>
 						<p class="card__count">
 							<i class='fa fa-user'
 								style='color: white;'>&nbsp;7</i>
 						</p>
 						<p class="card__date">
 							<i class='fa fa-flag'
-								style='color: white;'></i>&nbsp;2022-06-02
+								style='color: white;'>&nbsp;2022-06-02</i>
 						</p>
 					</div>
 				</c:forEach>
@@ -353,7 +349,7 @@ body {
 				<h3>참여중</h3>
 				<div style="width: 100%; height: 30px;"></div>
 				<div class="cards">
-					<c:forEach var="index" begin="6" end="12">
+					<c:forEach var="index" begin="1" end="8">
 						<div class="card">
 							<div class="card__icon">
 								<i class='fa fa-star fa-2x favoWhite'></i>
@@ -368,11 +364,11 @@ body {
 							<h3 class="card__title">테스트</h3>
 							<p class="card__count">
 								<i class='fa fa-user'
-									style='color: white;'></i>&nbsp;7
+									style='color: white;'>&nbsp;7</i>
 							</p>
 							<p class="card__date">
 								<i class='fa fa-flag'
-									style='color: white;'></i>&nbsp;2022-06-02
+									style='color: white;'>&nbsp;2022-06-02</i>
 									
 							</p>
 						</div>
@@ -413,7 +409,7 @@ body {
 			<h3>즐겨찾기</h3>
 			<div class="lists">
 				<table class="listViewTable">
-					<c:forEach var="index" begin="1" end="5">
+					<c:forEach var="index" begin="1" end="8">
 						<tr style="width: 100%;">
 							<td>
 								<div class="custom-control custom-checkbox pjCheck"
@@ -438,7 +434,7 @@ body {
 				<h3>참여중</h3>
 				<div style="width: 100%; height: 30px;"></div>
 				<table class="listViewTable">
-					<c:forEach var="index" begin="6" end="12">
+					<c:forEach var="index" begin="1" end="8">
 						<tr style="width: 100%">
 							<td>
 								<div class="custom-control custom-checkbox pjCheck"
@@ -448,7 +444,7 @@ body {
 										class="custom-control-label" for="list${index }"></label>
 								</div>
 							</td>
-							<td><div class="colors list"></div></td>
+							<td><div class="colors color-8"></div></td>
 							<td style="width: 10%;"><i
 								class='icon fa fa-star fa-2x favoWhite'></i></td>
 							<th style="width: 40%;">테스트</th>
@@ -501,18 +497,15 @@ body {
 										</div>
 									</td>
 									<td style="width: 15%; text-align: right;">
-										
-											 <div class="btn-group dropright">
-                     <i class='fa fa-ellipsis-v fa-lg dropdown-toggle"' data-toggle="dropdown"
-												aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>
-                      <div class="dropdown-menu dropright">
-                        <a class="dropdown-item" href="#">수정</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">삭제</a>
-                      </div>
-                    </div>
-											<!-- <i class='fa fa-ellipsis-v fa-lg dropdown-toggle"' data-toggle="dropdown"
-												aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i> -->
+										 <div class="btn-group dropright">
+						                     <i class='fa fa-ellipsis-v fa-lg dropdown-toggle"' data-toggle="dropdown"
+																		aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>
+						                      <div class="dropdown-menu dropright">
+						                        <a class="dropdown-item" href="#" id="tagEdit">수정</a>
+						                        <div class="dropdown-divider"></div>
+						                        <a class="dropdown-item" href="#">삭제</a>
+					                     		</div>
+					                    </div>
 									</td>
 								</tr>
 							</c:forEach>
@@ -565,6 +558,36 @@ body {
 	</div>
 
 
+	<!-- 태그수정 모달창 -->
+	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
+	<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
+	<div class="modal fade"  id="tagEditModal" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-sm modal-dialog-centered">
+			<div class="modal-content row">
+				<!-- modal header : 제목 -->
+				<div class="modal-header">
+					<span><h4 class="modal-title text-left">프로젝트 태그 수정</h4></span> <span><input
+						type="image" data-dismiss="modal"
+						src="resources/assets/img/close.png/" style="width: 20px;"></span>
+				</div>
+				<!-- modal body : 내용 -->
+				<form class="form" id="tagAdd">
+					<div class="modal-body">
+                    <div class="form-group">
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="테스트" aria-label="">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button" data-dismiss="modal">수정</button>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+
 
 	<!-- 색상 모달창 -->
 	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
@@ -581,9 +604,9 @@ body {
 				<!-- modal body : 내용 -->
 				<form class="form" id="colorSave">
 					<div class="modal-body">
-						<table id="colorTable" style="text-align: center; width: 100%;">
+						<table id="colorTable">
 							<tr>
-								<c:forEach var="index" begin="1" end="6">
+								<c:forEach var="index" begin="1" end="4">
 									<td><div class="colors color-${index }"></div>
 										<div class="custom-control custom-radio">
 											<input type="radio" name="customRadio"
@@ -593,7 +616,7 @@ body {
 								</c:forEach>
 							</tr>
 							<tr>
-								<c:forEach var="index" begin="7" end="12">
+								<c:forEach var="index" begin="5" end="8">
 									<td><div class="colors color-${index }"></div>
 										<div class="custom-control custom-radio">
 											<input type="radio" name="customRadio"
@@ -625,7 +648,7 @@ body {
 			});
 			
 			
-			$(".fa-star").click(function() {
+			$(".fa-star").click(function(e) {
 				if ($(this).hasClass("favoWhite")) {
 					$(this).removeClass("favoWhite")
 					$(this).addClass("favoYellow")
@@ -635,6 +658,7 @@ body {
 					$(this).addClass("favoWhite")
 					console.log("즐겨찾기 제거할것")
 				}
+				 e.stopPropagation()
 			})
 
 			$(".fa-cog").click(function() {
@@ -673,12 +697,18 @@ body {
 				$(".pjCheckAll").prop("checked", false)
 				$(".select-count").text("0개 프로젝트가 선택되었습니다.")
 			})
+			
+			
 			$(".pjCheckAll").change(function() {
 				console.log("체크변경")
 				console.log($('.pjCheckAll:checked'))
 				var checkedCnt = $('.pjCheckAll:checked').length;
 				console.log(checkedCnt)
 				$(".select-count").text(checkedCnt + "개 프로젝트가 선택되었습니다.")
+			})
+			
+			$(".pjCheck").click(function(e) {
+				 e.stopPropagation()
 			})
 			
 			/*$(".fa-plus").click(function(){
@@ -696,8 +726,15 @@ body {
 			
 			
 			
-			$(".card").click(function(){
+			$(".card").click(function(e){
+				//card__icon
+				//card__check
+				console.log(e.target)
 				location.href = "/detailPj.do";
+			})
+			
+			$("#tagEdit").click(function(){
+				$("#tagEditModal").modal("show")
 			})
 			
 			
