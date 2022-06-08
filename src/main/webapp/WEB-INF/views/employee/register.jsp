@@ -45,7 +45,7 @@
 							</div>
 							<hr>
 							<div class="card-body">
-								<form method="POST" action="#" class="needs-validation"
+								<form method="POST" action="/enrollEmp.do" class="needs-validation"
 									novalidate="">
 									<div class="form-group">
 										<label for="name">이름</label> <input id="name" type="text"
