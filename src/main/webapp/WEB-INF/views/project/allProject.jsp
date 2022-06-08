@@ -43,7 +43,7 @@ body {
 	padding-top: 0px;
 	width: 323px;
 	height: 200px;
-	min-height: 200px;
+	min-height: 150px;
 	display: grid;
 	grid-template-rows: 20px 50px 1fr 50px;
 	border-radius: 25px;
@@ -113,6 +113,7 @@ body {
 
 .card__check {
 	grid-row: 2/4;
+	grid-column: 4/5;
 	justify-self: end;
 }
 
@@ -129,14 +130,12 @@ body {
 }
 
 .card__count {
-	grid-row: 4/4;
-	 grid-column: 1 / 4;
-	
+	grid-row: 4/5;
 }
 
 .card__date {
-	grid-row: 4/4;
-	 grid-column: 1 / 4;
+	grid-row: 4/5;
+	 grid-column: 4/4;
 	justify-self: end;
 }
 
@@ -161,7 +160,6 @@ body {
         width: 100%;
     }*/
 #newPj {
-	position: relative;
 	width: 180px;
 	height: 70px;
 	color: black;
@@ -170,7 +168,6 @@ body {
 	font-size: x-large;
 	border-radius: 20px;
 	font-family: 'Nanum Gothic', sans-serif;
-	top: 20px;
 }
 
 .topmenu {
@@ -235,19 +232,33 @@ body {
 .listViewTable {
 	text-align: center;
 	font-size: large;
+	border-collapse: separate; 
+    border-spacing: 0px; 
 }
 
 .listViewTable tr:hover, #tagTable tr:hover {
-	border-radius: 20px;
 	background-color: white;
 	transform: scale(1.01);
 }
-.listViewTable tbody tr{
-	border-radius: 20px;
+
+
+td {
+    padding: 10px;
 }
-#tagTable tr {
-	height: 50px;
+td:first-child {
+    border-left-style: none;
+    border-top-left-radius: 25px; 
+    border-bottom-left-radius: 25px;
 }
+td:last-child {
+    border-right-style: none;
+    border-bottom-right-radius: 25px; 
+    border-top-right-radius: 25px; 
+}
+
+
+
+
  #tagTable tr:hover, .fa-plus:hover{
  	color: #6777ef;
  }
@@ -294,20 +305,22 @@ body {
 				class="select-clear">선택취소</em>
 		</div>
 	</div>
-
+		
+		
+	
 	<div class="main-content largeView">
 		<div style="height: 50px;"></div>
 
 	
 		<div class="container">
-			<button class="btn btn-secondary" id="newPj">+ 새 프로젝트</button>
-
+					<button class="btn btn-secondary" id="newPj">+ 새 프로젝트</button>
 		<br> <br> <br>
 		<div style="width: 100%;">
 
 			<div class="topmenu">
 				<h2>내 프로젝트</h2>
 			</div>
+	
 			<div class="topmenu" style="text-align: right;">
 				<div class="menuIcon">
 					<i class='fa fa-cog fa-2x'></i>
@@ -502,7 +515,7 @@ body {
 									</td>
 									<td style="width: 15%; text-align: right;">
 										 <div class="btn-group dropright">
-						                     <i class='fa fa-ellipsis-v fa-lg dropdown-toggle"' data-toggle="dropdown"
+						                     <i class='fa fa-ellipsis-v fa-lg' data-toggle="dropdown"
 																		aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>
 						                      <div class="dropdown-menu dropright">
 						                        <a class="dropdown-item" href="#" id="tagEdit">수정</a>

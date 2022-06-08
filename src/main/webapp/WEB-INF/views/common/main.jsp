@@ -73,35 +73,40 @@ box-shadow: 5px 5px 10px -3px gray;
 }
 
 
+
 .listViewTable {
-	height: 80%;
 	text-align: center;
 	font-size: large;
+	border-collapse: separate; 
+    border-spacing: 0px; 
 }
 
-.listViewTable tr:hover {
-	border-radius: 20px;
+.listViewTable tr:hover, #tagTable tr:hover {
 	background-color: lightgray;
-	transform: scale(1.01);
-}
-.listViewTable tbody tr{
-	border-radius: 20px;
+	transform: scale(1);
 }
 
 
-.favoYellow {
-	color: #f3da35;
+td {
+    padding: 10px;
+}
+td:first-child {
+    border-left-style: none;
+    border-top-left-radius: 25px; 
+    border-bottom-left-radius: 25px;
+}
+td:last-child {
+    border-right-style: none;
+    border-bottom-right-radius: 25px; 
+    border-top-right-radius: 25px; 
 }
 
-.favoWhite {
-	color: #white;
-}
+
 .colors {
-	background-color: #989c96; -
 	-text: white;
 	margin: 20px;
 	padding: 20px;
-	margin-left: 28px;
+	margin-left: 40px;
 	width: 50px;
 	height: 50px;
 	border-radius: 10px;
@@ -124,38 +129,26 @@ box-shadow: 5px 5px 10px -3px gray;
 }
 
 .color-4 {
-	background: #6b10ec;
+	background: #8a40f2;
 }
 
+
 .color-5 {
-	background: #76cf0e;
+	background: #82B553;
 }
+
 .color-6 {
-	background: #3C3B3D;
+	background: #f05650;
 }
 
 .color-7 {
-	background: #EC87C0;
+	background: #917B56;
 }
 
 .color-8 {
-	background: #5D9CEC;
+	background: gray;
 }
 
-.color-9 {
-	background: #6b10ec;
-}
-
-.color-10 {
-	background: #76cf0e;
-}
-.color-11 {
-	background: #6b10ec;
-}
-
-.color-12 {
-	background: #76cf0e;
-}
 
 </style>
 </head>
