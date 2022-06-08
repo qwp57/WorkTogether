@@ -102,7 +102,7 @@ body {
 
 .card:hover {
 	box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.4);
-	transform: scale(1.01);
+	transform: scale(1.03);
 }
 
 .card__check, .card__icon, .card__count {
