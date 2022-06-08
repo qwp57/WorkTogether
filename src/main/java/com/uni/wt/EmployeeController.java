@@ -35,14 +35,15 @@ public class EmployeeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		
-		return "common/main";
+		return "requestwork/rwmain";
+		//return "common/login";
 	}
 	
 
-	@RequestMapping("/test")
-	public String test() {
-		return "project/test";
+
+	@RequestMapping("/allProject")
+	public String allProject() {
+		return "project/allProject";
 	}
 	@RequestMapping(value="/ws")
 	public String workstate() {
@@ -63,7 +64,19 @@ public class EmployeeController {
 		
 		
 	}
+
+	@RequestMapping(value="/enrollForm.do")
+	public String enrollForm() {
+		
+		return "common/register";
+		
+	}
 	
+	@RequestMapping(value="/enrollEmp.do")
+	public String enrollEmp() {
+		
+		
+	}
 
 	
 	

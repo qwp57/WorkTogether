@@ -49,7 +49,7 @@
               <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>프로젝트조회</span></a>
                 <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="forms-advanced-form.html">전체 프로젝트</a></li>
+                  <li><a class="nav-link" href="/allProject">전체 프로젝트</a></li>
                   <li><a class="nav-link" href="forms-editor.html">보관 프로젝트</a></li>
                   <li><a class="nav-link" href="forms-validation.html">태그별 조회</a></li>
                 </ul>
