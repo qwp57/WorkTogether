@@ -161,6 +161,7 @@ body {
         width: 100%;
     }*/
 #newPj {
+	position: relative;
 	width: 180px;
 	height: 70px;
 	color: black;
@@ -169,6 +170,7 @@ body {
 	font-size: x-large;
 	border-radius: 20px;
 	font-family: 'Nanum Gothic', sans-serif;
+	top: 20px;
 }
 
 .topmenu {
@@ -296,7 +298,9 @@ body {
 	<div class="main-content largeView">
 		<div style="height: 50px;"></div>
 
-		<button class="btn btn-secondary" id="newPj">+ 새 프로젝트</button>
+	
+		<div class="container">
+			<button class="btn btn-secondary" id="newPj">+ 새 프로젝트</button>
 
 		<br> <br> <br>
 		<div style="width: 100%;">
@@ -316,7 +320,6 @@ body {
 				</div>
 			</div>
 		</div>
-		<div class="container">
 			<div style="height: 30px;"></div>
 			<h3>즐겨찾기</h3>
 			<div class="cards">
@@ -329,8 +332,8 @@ body {
 						<div class="card__check pjCheck" style="display: none;">
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" class="custom-control-input pjCheckAll"
-									id="card${index }"> <label class="custom-control-label"
-									for="card${index }"></label>
+									id="ckedFavo${index }"> <label class="custom-control-label"
+									for="ckedFavo${index }"></label>
 							</div>
 						</div>
 						<h3 class="card__title">테스트</h3>
@@ -357,8 +360,8 @@ body {
 							<div class="card__check pjCheck" style="display: none;">
 								<div class="custom-control custom-checkbox">
 									<input type="checkbox" class="custom-control-input pjCheckAll"
-										id="card${index }"> <label
-										class="custom-control-label" for="card${index }"></label>
+										id="ckedPj${index }"> <label
+										class="custom-control-label" for="ckedPj${index }"></label>
 								</div>
 							</div>
 							<h3 class="card__title">테스트</h3>
@@ -384,7 +387,9 @@ body {
 
 	<div class="main-content listView" style="display: none;">
 		<div style="height: 50px;"></div>
-		<button class="btn btn-secondary" id="newPj">+ 새 프로젝트</button>
+
+		<div class="container">
+				<button class="btn btn-secondary" id="newPj">+ 새 프로젝트</button>
 
 		<br> <br> <br>
 		<div style="width: 100%;">
@@ -404,7 +409,6 @@ body {
 				</div>
 			</div>
 		</div>
-		<div class="container">
 			<div style="height: 30px;"></div>
 			<h3>즐겨찾기</h3>
 			<div class="lists">
@@ -415,8 +419,8 @@ body {
 								<div class="custom-control custom-checkbox pjCheck"
 									style="display: none;">
 									<input type="checkbox" class="custom-control-input pjCheckAll"
-										id="list${index }"> <label
-										class="custom-control-label" for="list${index }"></label>
+										id="ckedFavo${index }"> <label
+										class="custom-control-label" for="ckedFavo${index}"></label>
 								</div>
 							</td>
 							<td><div class="colors color-${index }"></div></td>
@@ -440,8 +444,8 @@ body {
 								<div class="custom-control custom-checkbox pjCheck"
 									style="display: none;">
 									<input type="checkbox" class="custom-control-input pjCheckAll"
-										id="list${index }"> <label
-										class="custom-control-label" for="list${index }"></label>
+										id="ckedPj${index }"> <label
+										class="custom-control-label" for="ckedPj${index }"></label>
 								</div>
 							</td>
 							<td><div class="colors color-8"></div></td>
@@ -690,6 +694,8 @@ body {
 			})
 
 			$("#editBarClose").click(function() {
+				$(".pjCheckAll").prop("checked", false)
+				$(".select-count").text("0개 프로젝트가 선택되었습니다.")
 				$("#totalProjectEditBar").css("display", "none")
 			})
 
