@@ -538,6 +538,7 @@ td:last-child {
 					hoverBorderColor : "rgba(234, 236, 244, 1)",
 				} ],
 			},
+		
 			options : {
 				maintainAspectRatio : false,
 				tooltips : {
@@ -553,9 +554,25 @@ td:last-child {
 				legend : {
 					display : false
 				},
-				cutoutPercentage : 80,
+				cutoutPercentage : 70,
 			},
 		});
+		Chart.pluginService.register({
+			  beforeDraw: function(chart) {
+			    var width = chart.chart.width,
+			        height = chart.chart.height,
+			        ctx = chart.chart.ctx;
+			    ctx.restore();
+			    var fontSize = (height / 114).toFixed(2);
+			    ctx.font = fontSize + "2em sans-serif";
+			    ctx.textBaseline = "middle";
+			    var text = "12",
+			        textX = Math.round((width - ctx.measureText(text).width) / 2),
+			        textY = height / 2;
+			    ctx.fillText(text, textX, textY);
+			    ctx.save();
+			  }
+			});
 	</script>
 </body>
 </body>
