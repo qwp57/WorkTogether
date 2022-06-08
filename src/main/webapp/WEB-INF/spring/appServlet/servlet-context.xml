@@ -44,12 +44,12 @@
 	
 	<!--<beans:bean id="commonExceptionHandler" class="com.uni.kh.common.CommonExceptionHandler"/>-->
 	
-  	<!-- <interceptors>
+  	 <interceptors>
 		<interceptor>
-			<mapping path="/*"/>
-			<beans:bean id = "testInterceptor" class="com.uni.kh.common.interceptor.TestInterceptor"/>
+			<mapping path="/enrollForm.do"/>
+			<beans:bean id = "EnrollInterceptor" class="com.uni.wt.common.interceptor.EnrollInterceptor"/>
 		</interceptor>
-	</interceptors> -->
+	</interceptors> 
 
 		
 	
