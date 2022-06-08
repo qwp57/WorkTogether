@@ -35,35 +35,23 @@ public class EmployeeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		
-		return "common/main";
+		return "requestwork/rwmain";
+		//return "common/login";
 	}
 	
-
-	@RequestMapping("/test")
-	public String test() {
-		return "project/test";
-	}
-	@RequestMapping(value="/ws")
-	public String workstate() {
-		return "workstate/myWorkState";
-		
-		
-	}
-	@RequestMapping(value="/tws")
-	public String teamworkstate() {
-		return "workstate/teamWorkState";
-		
-		
-	}
 	
-	@RequestMapping(value="/vws")
-	public String myvacation() {
-		return "workstate/myvacation";
-		
-		
-	}
-	
+//	@RequestMapping(value="/enrollForm.do")
+//	public String enrollForm() {
+//		
+//		return "common/register";
+//		
+//	}
+//	
+//	@RequestMapping(value="/enrollEmp.do")
+//	public String enrollEmp() {
+//		
+//		
+//	}
 
 	
 	

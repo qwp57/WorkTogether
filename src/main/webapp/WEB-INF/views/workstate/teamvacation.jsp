@@ -4,7 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link
+	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
+	rel="stylesheet">
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <title>Insert title here</title>
+<script src="https://kit.fontawesome.com/9b80e7c08f.js" crossorigin="anonymous"></script>
 </head>
 <style>
 h1{
@@ -16,10 +22,21 @@ color: black;
 display: inline-block;
 width: auto;
 }
+.wrap{
+margin-left: 200px;
+margin-right: 200px;
+margin-top: 100px;
+}
 .section-body{
-margin-left: 20px;
-margin-right: 20px;
-margin-top: 50px;
+margin-bottom: 30px;
+margin-top: 30px;
+}
+.vac-menu-title{
+font-family: 'Nanum Gothic', sans-serif;
+font-size: 26px;
+font-weight: 700;
+color: black;
+margin-top: 10px;
 }
 #profileImg{
 	width: 90px;
@@ -28,18 +45,44 @@ margin-top: 50px;
 .pagination{
 	justify-content: center;
 }
+
 #searchwrap{
-display: flex;
-justify-content: center;
+margin: 20px;
 }
 #search{
-width: auto;
+width: 60%;
+margin: auto;
+}
+.searchForm{
+height: 50px;
+border-radius: 10px;
+border: 1px solid lightgray;
+
 }
 
+.searchForm:focus{
+outline: none;
+border: 1px solid blue;
 
-/**/
+}
+#selectsearch{
+width: 20%;
+text-align: center;
+font-family: 'Nanum Gothic', sans-serif;
+}
+#searchText{
+width : 60%;
+font-family: 'Nanum Gothic', sans-serif;
+}
+#searchbtn{
+height: 50px;
+border-radius: 10px;
+border: 1px solid lightgray;
 
-
+width: 15%;
+font-size: 17px;
+font-family: 'Nanum Gothic', sans-serif;
+}
 
 
 </style>
@@ -47,18 +90,18 @@ width: auto;
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 <div class="main-content">
-<div style="height: 100px"></div>
-	<h1 style="color: gray">내 근무</h1>
-	<h1 >구성원 근무</h1>
+<div class="wrap">
+	<h1 style="color: gray">내 휴가</h1>
+	<h1>구성원 휴가</h1>
 	
 	<select class="form-control" id="selectweek">
-	    <option>5월 8일 ~ 5월 14일</option>
+	    <option>2022년</option>
 	    <option>Ketchup</option>
 	    <option>Relish</option>
   	</select>
-  	
-	<hr>
- 	<div class="section-body">
+  	<div class="vac-menu-title" style="color: gray">휴가 개요</div>
+  	<hr>
+  	<div class="section-body">
         <h2 class="section-title" style="text-align: left;"> </h2>
         <div class="row mt-sm-4 body-1">
             <div class="col-12 col-md-10 col-lg-12">
@@ -68,14 +111,14 @@ width: auto;
                             <thead class="thead-dark">
                             	<tr id="thead">
                             		<th>이름</th>
-                            		<th>총 근무시간</th>
-                            		<th></th>
-                            		<th></th>
-                            		<th></th>
-                            		<th></th>
-                            		<th></th>
-                            		<th></th>
-                            		<th></th>
+                            		<th>기간</th>
+                            		<th>총 사용 기간</th>
+                            		<th>종류</th>
+                            		<th>사유내용</th>
+                            		<th>증명자료</th>
+                            		<th>잔여휴가</th>
+                            		<th>상태</th>
+                            		
                             	</tr>
                             </thead>
                             <tbody>
@@ -92,7 +135,7 @@ width: auto;
                             		<td></td>
                             		<td></td>
                             		<td></td>
-                            		<td></td>
+                            		
                             	</tr>
                             </tbody>
                         </table>
@@ -107,51 +150,28 @@ width: auto;
 						<li class="page-item"><a class="page-link" href="#">5</a></li>
 						<li class="page-item"><a class="page-link" href="#">Next</a></li>
 					</ul>
+					<div id="searchwrap">
+		            <div id="search">
+				        <select class="searchForm" id="selectsearch">
+					    	<option>이름</option>
+					    	<option>Ketchup</option>
+					    	<option>Relish</option>
+				  		</select>
+						<input type="text" class="searchForm" id="searchText" placeholder="검색 키워드를 입력하세요!">
+						<button class="btn btn-primary" type="button" id="searchbtn">검색</button>
+					</div>
+					</div>
                 </div>
             </div>
         </div>
+        
     </div>
-    <script type="text/javascript">
-  
-
-	var currentDay = new Date();  
-	var theYear = currentDay.getFullYear();
-	var theMonth = currentDay.getMonth();
-	var theDate  = currentDay.getDate();
-	var theDayOfWeek = currentDay.getDay();
-	//console.log(theDayOfWeek);
-	let week = new Array('일', '월', '화', '수', '목','금', '토');
-	 
-	var thisWeek = [];
-	 
-	for(var i=0; i<7; i++) {
-	  var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
-	  var mm = Number(resultDay.getMonth()) + 1;
-	  var dd = resultDay.getDate();
-	  var day = resultDay.getDay();
-	 
-	  mm = String(mm).length === 1 ? '0' + mm : mm;
-	  dd = String(dd).length === 1 ? '0' + dd : dd;
-	  
-	 $('#thead').children().eq(i+2).text(mm + '월 ' + dd+"일 ("+week[day]+")" );
-	  console.log($('#thead').children().eq(i+2).text());
-	  
-	 
-	  thisWeek[i] = mm + '월 ' + dd+"일";
-	}
-	
-	
-	 
-	//console.log(thisWeek);
-	
-	
-	
-	
-    </script>
-             
-
+  	
+  	
 </div>
+</div>
+<br><br>
 
-
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
