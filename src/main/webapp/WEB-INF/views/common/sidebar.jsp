@@ -24,8 +24,7 @@
               </li>
               
               <li class="nav-item">
-                <a href="" class="nav-link" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>조직도</span></a>
-                
+                <a href="organizationChart.do" class="nav-link"><i class="fas fa-columns"></i><span>조직도</span></a>           
               </li>
               
               <li class="nav-item dropdown">
