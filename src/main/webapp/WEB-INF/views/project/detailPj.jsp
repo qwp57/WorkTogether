@@ -8,19 +8,40 @@
 
 <head>
 <meta charset="UTF-8">
-<link href="${pageContext.request.contextPath}/resources/css/reset.css"
-	rel="stylesheet" type="text/css">
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <link
 	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
 	rel="stylesheet">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
+	rel="stylesheet">
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
+	integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js"
+	integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ=="
+	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+	integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
+	crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
 body {
 	color: black;
+}
+
+.datepicker {
+	width: 300px;
 }
 
 #newPj {
@@ -267,14 +288,16 @@ td:last-child {
 
 .boardTable tr:last-child {
 	border-bottom: none;
-};
+}
+
+;
 }
 .badge {
 	width: 70px;
 	color: white;
 }
 
-#caSetting:hover, .fa-star:hover, .fa-ellipsis-v:hover, .navMenu:hover{
+#caSetting:hover, .fa-star:hover, .fa-ellipsis-v:hover, .navMenu:hover {
 	cursor: pointer;
 }
 
@@ -290,8 +313,8 @@ td:last-child {
 	
 }
 
-#boardEnrollBtn tr td:hover{
-	cursor:pointer;
+#boardEnrollBtn tr td:hover {
+	cursor: pointer;
 }
 </style>
 </head>
@@ -320,9 +343,12 @@ td:last-child {
 												aria-haspopup="true" aria-expanded="false"
 												style="width: 30px;"></i>
 											<div class="dropdown-menu dropright">
-												<a class="dropdown-item" href="#" id="tagEdit">수정</a>
+												<a class="dropdown-item" href="#">색상 설정</a> <a
+													class="dropdown-item" href="#">태그 설정</a> <a
+													class="dropdown-item" href="#">참여자 조회</a> <a
+													class="dropdown-item" href="#">프로젝트 설정</a>
 												<div class="dropdown-divider"></div>
-												<a class="dropdown-item" href="#">삭제</a>
+												<a class="dropdown-item" href="#">프젝트 나가기</a>
 											</div>
 										</div>
 										<p id="pjDetail"></p>
@@ -383,16 +409,17 @@ td:last-child {
 						<div class="col-12 col-md-12 col-lg-12">
 							<div class="card h-100">
 								<div class="card-body body-3">
-									<table id="boardEnrollBtn" style="width: 100%; height: 100%; text-align: center;">
+									<table id="boardEnrollBtn"
+										style="width: 100%; height: 100%; text-align: center;">
 										<tr>
-											<td id="postBtn"><b><span class='bi bi-file-text fa-2x'>
-														&nbsp;&nbsp;글</span></b></td>
-											<td id="taskBtn"><b><span class='bi bi-list-task fa-2x'>
-														업무</span></b></td>
-											<td id="schBtn"><b><span class='bi bi-calendar fa-2x'>
-														&nbsp;&nbsp;일정</span></b></td>
-											<td id="todoBtn"><b><span class='bi bi-check2-square fa-2x'>
-														&nbsp;&nbsp;할 일</span></b></td>
+											<td id="postBtn"><b><span
+													class='bi bi-file-text fa-2x'> &nbsp;&nbsp;글</span></b></td>
+											<td id="taskBtn"><b><span
+													class='bi bi-list-task fa-2x'> 업무</span></b></td>
+											<td id="schBtn"><b><span
+													class='bi bi-calendar fa-2x'> &nbsp;&nbsp;일정</span></b></td>
+											<td id="todoBtn"><b><span
+													class='bi bi-check2-square fa-2x'> &nbsp;&nbsp;할 일</span></b></td>
 										</tr>
 									</table>
 								</div>
@@ -412,7 +439,7 @@ td:last-child {
 								aria-haspopup="true" aria-expanded="false" />
 							<h4>&nbsp;&nbsp;필터</h4>
 							<div class="dropdown-menu dropright">
-								<a class="dropdown-item" href="#" id="tagEdit">전체</a> <a
+								<a class="dropdown-item" href="#" id="">전체</a> <a
 									class="dropdown-item" href="#">글</a> <a class="dropdown-item"
 									href="#">업무</a> <a class="dropdown-item" href="#">일정</a> <a
 									class="dropdown-item" href="#">할 일</a>
@@ -436,7 +463,7 @@ td:last-child {
 												<td style="width: 12%;">작성자</td>
 												<td style="width: 22%;">2022-06-02 01:15</td>
 												<td><span class="badge"
-													style="background-color: #f3a435; height: 100%; font-size: 18px; color:white;">완료</span></td>
+													style="background-color: #f3a435; height: 100%; font-size: 18px; color: white;">완료</span></td>
 
 											</tr>
 										</c:forEach>
@@ -500,6 +527,274 @@ td:last-child {
 		</div>
 	</div>
 
+
+
+	<!-- 글 작성 모달창 -->
+	<div class="modal fade" id="boardPost" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-lg modal-dialog-centered">
+			<div class="modal-content row">
+				<!-- modal header : 제목 -->
+				<div class="modal-header">
+					<span><h3 class="modal-title text-left" style="color: gray;">게시물
+							작성</h3></span> <span><input type="image" data-dismiss="modal"
+						src="resources/assets/img/close.png/" style="width: 20px;"></span>
+				</div>
+				<!-- modal body : 내용 -->
+
+
+				<div id="postForm" style="display: block;">
+					<form class="form" id="">
+						<div class="modal-body">
+							<table id="boardEnrollBtn"
+								style="width: 100%; height: 100%; text-align: center;">
+								<tr>
+									<td id=""><b><span class='bi bi-file-text fa-lg'>
+												&nbsp;&nbsp;글</span></b></td>
+									<td id=""><b><span class='bi bi-list-task fa-lg'>
+												업무</span></b></td>
+									<td id=""><b><span class='bi bi-calendar fa-lg'>
+												&nbsp;&nbsp;일정</span></b></td>
+									<td id=""><b><span class='bi bi-check2-square fa-lg'>
+												&nbsp;&nbsp;할 일</span></b></td>
+								</tr>
+							</table>
+							<br> <br>
+							<div class="form-group row mb-4">
+								<label
+									class="col-form-label text-md-right col-10 col-md-3 col-lg-3">제목</label>
+								<div class="col-sm-12 col-md-7">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row mb-4">
+								<label
+									class="col-form-label text-md-right col-12 col-md-3 col-lg-3">내용</label>
+								<div class="col-sm-12 col-md-7">
+									<textarea class="summernote"></textarea>
+								</div>
+							</div>
+
+							<div class="modal-footer">
+								<div class="col-lg-2"></div>
+								<div class="col-lg-4 text-left">
+									<span class="bi bi-paperclip fa-2x"></span> <i
+										class="bi bi-person fa-2x"></i>
+								</div>
+								<div class="col-lg-5 text-right">
+									<button type="submit" class="btn btn-primary btn-lg mr-4">올리기</button>
+								</div>
+								<div class="col-lg-1"></div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+
+
+
+
+				<!-- 일정 작성 모달창 -->
+				<div id="postSch" style="display: block;">
+					<form class="form" id="">
+						<div class="modal-body">
+							<table id="boardEnrollBtn"
+								style="width: 100%; height: 100%; text-align: center;">
+								<tr>
+									<td id=""><b><span class='bi bi-file-text fa-lg'>
+												&nbsp;&nbsp;글</span></b></td>
+									<td id=""><b><span class='bi bi-list-task fa-lg'>
+												업무</span></b></td>
+									<td id=""><b><span class='bi bi-calendar fa-lg'>
+												&nbsp;&nbsp;일정</span></b></td>
+									<td id=""><b><span class='bi bi-check2-square fa-lg'>
+												&nbsp;&nbsp;할 일</span></b></td>
+								</tr>
+							</table>
+							<br> <br>
+							<div class="form-group row mb-4">
+								<label
+									class="col-form-label text-md-right col-10 col-md-3 col-lg-3">제목</label>
+								<div class="col-sm-12 col-md-7">
+									<input type="text" class="form-control">
+								</div>
+							</div>
+							<div class="form-group row mb-4">
+
+								<label
+									class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
+									class="bi bi-calendar fa-2x"></i></label>
+								<div class="col-sm-12 col-md-7">
+									<!-- <input type="text" id="datepicker" class="form-control"> -->
+									<div class="input-daterange input-group" id="datepicker">
+										<input type="text" class="input-sm form-control" name="start" />
+										<span class="input-group-addon">
+											&nbsp;&nbsp;부터&nbsp;&nbsp; </span> <input type="text"
+											class="input-sm form-control" name="end" />
+									</div>
+								</div>
+							</div>
+							<div class="form-group row mb-4">
+								<label
+									class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
+									class="bi bi-person fa-2x"></i></label>
+								<div class="col-sm-12 col-md-7">
+									<input type="text" class="form-control" value="참석자 추가">
+								</div>
+							</div>
+							<div class="form-group row mb-4">
+								<label
+									class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
+									class="bi bi-geo-alt-fill fa-2x"></i> </label>
+								<div class="col-sm-12 col-md-7">
+									<input type="text" class="form-control bg-white border-0 small"
+										placeholder="장소를 입력하세요">
+								</div>
+							</div>
+							<div class="form-group row mb-4">
+								<label
+									class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
+									class="bi bi-card-text fa-2x"></i> </label>
+								<div class="col-sm-12 col-md-7">
+									<input type="text" class="form-control bg-white border-0 small"
+										placeholder="내용을 입력하세요">
+								</div>
+							</div>
+
+						</div>
+
+						<div class="modal-footer">
+							<div class="col-lg-4 text-right">
+								<button type="submit" class="btn btn-primary btn-lg">올리기</button>
+							</div>
+							<div class="col-lg-2"></div>
+						</div>
+					</form>
+				</div>
+
+
+				<!-- 할 일 작성 모달창 -->
+				<div id="postSch" style="display: block;">
+					<form class="form" id="">
+						<div class="modal-body">
+							<table id="boardEnrollBtn"
+								style="width: 100%; height: 100%; text-align: center;">
+								<tr>
+									<td id=""><b><span class='bi bi-file-text fa-lg'>
+												&nbsp;&nbsp;글</span></b></td>
+									<td id=""><b><span class='bi bi-list-task fa-lg'>
+												업무</span></b></td>
+									<td id=""><b><span class='bi bi-calendar fa-lg'>
+												&nbsp;&nbsp;일정</span></b></td>
+									<td id=""><b><span class='bi bi-check2-square fa-lg'>
+												&nbsp;&nbsp;할 일</span></b></td>
+								</tr>
+							</table>
+							<br> <br>
+							<div class="form-group row">
+								<label
+									class="col-form-label text-md-right col-10 col-md-3 col-lg-3">제목</label>
+								<div class="col-sm-12 col-md-7 ">
+									<input type="text" class="form-control">
+								</div>
+								<div class="col-lg-3"></div>
+							</div>
+
+							<div class="todos">
+								<div class="form-group row">
+									<div class="col-lg-3"></div>
+									<div class="text-md-right col-10 col-md-7 col-lg-6">
+										<input type="text" class="form-control"
+											placeholder="할 일 추가 / 최대 50자">
+									</div>
+									<div class="col-sm-12 col-md-3 col-lg-3">
+										<span class='bi bi-calendar fa-2x'></span> <i
+											class="bi bi-person fa-2x"></i>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-12 text-center">
+								<i class='fa fa-plus fa-2x'></i>
+							</div>
+
+						</div>
+
+						<div class="modal-footer">
+							<div class="col-lg-4 text-right">
+								<button type="submit" class="btn btn-primary btn-lg">올리기</button>
+							</div>
+							<div class="col-lg-2"></div>
+						</div>
+					</form>
+				</div>
+
+
+			</div>
+
+		</div>
+	</div>
+
+
+
+	<!-- 태그수정 모달창 -->
+	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
+	<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
+	<div class="modal fade"  id="tagEditModal" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-sm modal-dialog-centered">
+			<div class="modal-content row">
+				<!-- modal header : 제목 -->
+				<div class="modal-header">
+					<span><h4 class="modal-title text-left">프로젝트 태그 수정</h4></span> <span><input
+						type="image" data-dismiss="modal"
+						src="resources/assets/img/close.png/" style="width: 20px;"></span>
+				</div>
+				<!-- modal body : 내용 -->
+				<form class="form" id="tagAdd">
+					<div class="modal-body">
+                    <div class="form-group">
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="테스트" aria-label="">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button" data-dismiss="modal">수정</button>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- 게시물 조회 모달창 -->
+	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
+	<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
+	<div class="modal fade"  id="boardView" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
+			<div class="modal-content row">
+				<!-- modal header : 제목 -->
+				<!-- modal body : 내용 -->
+				<form class="form" id="">
+					<div class="modal-body">
+						<div class="colors color-1" style="width:20px; height:20px"></div>
+                    <div class="form-group">
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="테스트" aria-label="">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button" data-dismiss="modal">수정</button>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+
 	<script>
 		$(function() {
 
@@ -520,6 +815,59 @@ td:last-child {
 			$("#inviteBtn").click(function() {
 				$("#inviteModal").modal("show")
 			})
+			
+			$("#postBtn").click(function(){
+				$("#boardPost").modal("show")
+			})
+			
+			$("#schBtn").click(function(){
+				$("#boardSch").modal("show")
+			})
+			$(".boardTable").children("tbody").children("tr").click(function(){
+				$("#boardView").modal("show")
+			})
+			
+			$(".fa-plus").click(function(){
+				$(".todos").append('<div class="form-group row">' +
+				'<div class="col-lg-3"></div>' +
+				'<div class="text-md-right col-10 col-md-7 col-lg-6">' +
+					'<input type="text" class="form-control" placeholder="할 일 추가 / 최대 50자">' +
+				'</div>' +
+				'<div class="col-sm-12 col-md-3 col-lg-3">' +
+					'<span class="bi bi-calendar fa-2x"></span>' +
+					'<i class="bi bi-person fa-2x"></i>' +
+				'</div>' +
+			'</div>')
+			})
+			
+		
+
+			
+			$('#datepicker').datepicker({
+				   format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
+				    autoclose : true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
+				    clearBtn : true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
+				    daysOfWeekHighlighted : [0], //강조 되어야 하는 요일 설정
+				    disableTouchKeyboard : false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
+				    templates : {
+				        leftArrow: '&laquo;',
+				        rightArrow: '&raquo;'
+				    }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징 
+				    showWeekDays : true ,// 위에 요일 보여주는 옵션 기본값 : true
+				    todayHighlight : true ,	//오늘 날짜에 하이라이팅 기능 기본값 :false 
+				    weekStart : 0 ,//달력 시작 요일 선택하는 것 기본값은 0인 일요일 
+				    language : "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+				    
+		    })
+
+		    $('#get-history').on('click', function() {
+		        const dateArr = $('#date-picker').val().split('-')
+		        location.href = '/history?year=' + dateArr[0] + '&month=' + dateArr[1]
+		    })
+
+		
+
+
 		})
 	</script>
 	<script type="text/javascript">
@@ -538,7 +886,7 @@ td:last-child {
 					hoverBorderColor : "rgba(234, 236, 244, 1)",
 				} ],
 			},
-		
+
 			options : {
 				maintainAspectRatio : false,
 				tooltips : {
@@ -557,23 +905,22 @@ td:last-child {
 				cutoutPercentage : 70,
 			},
 		});
-		Chart.pluginService.register({
-			  beforeDraw: function(chart) {
-			    var width = chart.chart.width,
-			        height = chart.chart.height,
-			        ctx = chart.chart.ctx;
-			    ctx.restore();
-			    var fontSize = (height / 114).toFixed(2);
-			    ctx.font = fontSize + "2em sans-serif";
-			    ctx.textBaseline = "middle";
-			    var text = "12",
-			        textX = Math.round((width - ctx.measureText(text).width) / 2),
-			        textY = height / 2;
-			    ctx.fillText(text, textX, textY);
-			    ctx.save();
-			  }
-			});
+		Chart.pluginService
+				.register({
+					beforeDraw : function(chart) {
+						var width = chart.chart.width, height = chart.chart.height, ctx = chart.chart.ctx;
+						ctx.restore();
+						var fontSize = (height / 114).toFixed(2);
+						ctx.font = fontSize + "2em sans-serif";
+						ctx.textBaseline = "middle";
+						var text = "12", textX = Math.round((width - ctx
+								.measureText(text).width) / 2), textY = height / 2;
+						ctx.fillText(text, textX, textY);
+						ctx.save();
+					}
+				});
 	</script>
+
 </body>
 </body>
 </html>
