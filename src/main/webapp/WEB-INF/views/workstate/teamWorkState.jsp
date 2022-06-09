@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <style>
-h1{
+h2{
 display: inline-block;
 margin-right: 20px;
 color: black;
@@ -48,8 +48,8 @@ width: auto;
 <jsp:include page="../common/sidebar.jsp"/>
 <div class="main-content">
 <div style="height: 100px"></div>
-	<h1 style="color: gray">내 근무</h1>
-	<h1 >구성원 근무</h1>
+	<a href="workStateMain.do"><h2 style="color: gray">내 근무</h2></a>
+	<a href="teamWorkState.do"><h2 >구성원 근무</h2></a>
 	
 	<select class="form-control" id="selectweek">
 	    <option>5월 8일 ~ 5월 14일</option>

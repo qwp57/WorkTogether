@@ -182,54 +182,41 @@
 	</div>
 	
 	<!-- 개인정보 모달 창 -->
-	<div class="modal" id="empProfile" data-backdrop="static" data-keyboard="false">
-      	<div class="modal-dialog modal-sm modal-dialog-centered">
+
+	<div class="modal" id="empModal" data-backdrop="static" data-keyboard="false">
+      	<div class="modal-dialog modal-dialog-centered">
       		<div class="modal-content row">
       			<!-- modal header : 제목 -->
       			<div class="modal-header">
-      				<span><h3 class="modal-title text-left">직원 기본 정보</h3></span>
+      				<span><h4 class="modal-title text-left" style="color:black">직원 기본 정보</h4></span>
       				<span><input type="image" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px"></span>
       			</div>
       			<!-- modal body : 내용 -->
-      			<div class="modal-body">      				
-      				<table class="table-bordered" id="profileTable">
-      					<tr>
-      						<th style="width: 15%">&nbsp;프로필 사진</th>
-      						<td colspan="3" style="height: 40%"> 
-      							<img style="height: 100px" alt="image"
-                                                 src="resources/assets/img/profile/김대표.jpg"
-                                                 id="profileImg" class="img-fluid m-3 rounded-circle">
-                            </td>
-      					</tr>
-      					<tr>
-      						<th>&nbsp;이름</th>
-      						<td>김대표</td>
-      						<th style="width: 15%">&nbsp;아이디</th>
-      						<td>kim</td>
-      					</tr>
-      					<tr>
-      						<th>&nbsp;부서</th>
-      						<td>워크 투게더</td>
-      						<th>&nbsp;직위</th>
-      						<td>대표이사</td>
-      					</tr>
-      					<tr>
-      						<th>&nbsp;생일</th>
-      						<td>1971-09-16</td>
-      						<th>&nbsp;핸드폰 번호</th>
-      						<td>010-1111-2222</td>
-      					</tr>
-      					<tr>
-      						<th>&nbsp;이메일</th>
-      						<td>kim@WT.COM</td>
-      						<th>&nbsp;입사일</th>
-      						<td><td>2001-09-16</td></td>
-      					</tr>
-      				</table>
+      			<div class="modal-body">      				    				
+   					<div class="row">	
+   						<div class="col-lg-4">
+   							<img style="height: 100px" alt="image"
+                                              src="resources/assets/img/profile/최차장.jpg"
+                                              id=empModalProfile"" class="img-fluid m-3">
+   						</div>
+						<div class="col-lg-8">
+							<h6 class="mt-3" style="color:black" id="empModalName">최차장</h6>
+							<div class="mt-3" id="empModalDept">워크투게더 >관리부>인사팀</div>
+							<div class="mt-3" id="empModalJob">차장</div>
+						</div> 
+						<div>
+							<span class="my-3 mx-5">이메일</span>
+							<span class="mx-4" id="empModalEmail">choi@WT.com</span>
+						</div> 
+						<div class="mt-3 mb-3">
+							<span class="my-3 mx-5">휴대폰</span>
+							<span class="mx-4" id="empModalPhone">010-1111-2222</span>
+						</div>   
+					</div> 				
       			</div>				     			
       		</div>
       	</div>
-      </div>
+    </div>
       
 	<script>
 		$(function(){
@@ -279,7 +266,7 @@
 			
 			//사진 클릭하면 모달창이 뜨도록 한다.
 			$(".picture").click(function(){
-				$("#empProfile").modal("show");
+				$("#empModal").modal("show");
 			});
 
 		});

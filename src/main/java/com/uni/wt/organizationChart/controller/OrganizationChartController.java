@@ -8,6 +8,6 @@ public class OrganizationChartController {
 	
 	@RequestMapping("organizationChart.do")
 	public String organizationChart() {
-		return "/organizationChart/organizationChartView";
+		return "organizationChart/organizationChartView";
 	}
 }

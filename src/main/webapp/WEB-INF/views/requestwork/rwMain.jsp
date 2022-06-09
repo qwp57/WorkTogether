@@ -13,6 +13,7 @@
 </head>
 <script src="https://kit.fontawesome.com/9b80e7c08f.js"
 	crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <style>
 .rw-menu {
 	background-color: white;
@@ -53,7 +54,7 @@
 .rw-list{
 	background-color: white;
 	border-radius: 5px;
-	height: 300px;
+	height: auto;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	padding: 20px;
@@ -120,11 +121,11 @@ transform: scale(1.02);
 						<div class="col-12 col-lg-6">
 							<div class="row rw-count">
 								<div class="col-12 col-lg-5">
-									<div class="card rw-menu rw-count-card rw-btn">
+									<div class="card rw-menu rw-count-card rw-btn" id="completed-rw">
 										<h1>
 											<i class='fa-solid fa-box-archive'></i>
 										</h1>
-										<span class="menuText">완료된 업무요청</span>
+										<span class="menuText" >완료된 업무요청</span>
 									</div>
 								</div>
 								<div class="col-12 col-lg-5">
@@ -144,7 +145,7 @@ transform: scale(1.02);
 			<div class="section-body">
 				<div class="rw-list">
 					<div class="menu2-title">요청된 업무</div>
-					<select class="sorttmenu" id="selectsort">
+					<select class="sorttmenu" id="selectsort_2">
 					    <option>중요도</option>
 					    <option>기한</option>
 					    <option>상태</option>
@@ -160,10 +161,10 @@ transform: scale(1.02);
 								<th style="width: 300px; "></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody class="tbody rs">
 							<tr>
-								<td></td>
-								<td></td>
+								<td>홍길동</td>
+								<td><button class="btn btn-sm btn-danger" style="width: 100px;">중요</button></td>
 								<td></td>
 								<td></td>
 								<td></td>
@@ -186,7 +187,7 @@ transform: scale(1.02);
 				
 				<div class="rw-list">
 					<div class="menu2-title">요청한 업무</div>
-					<select class="sorttmenu" id="selectsort">
+					<select class="sorttmenu" id="selectsort_1">
 					    <option>중요도</option>
 					    <option>기한</option>
 					    <option>상태</option>
@@ -194,7 +195,7 @@ transform: scale(1.02);
 					<table class="table table-sm">
 						<thead class="thead">
 							<tr>
-								<th style="width: 300px; ">보낸 이</th>
+								<th style="width: 300px; ">담당자</th>
 								<th style="width: 200px; ">중요도</th>
 								<th style="width: 600px; "> 제목</th>
 								<th style="width: 300px; ">상태</th>
@@ -227,6 +228,17 @@ transform: scale(1.02);
 		</section>
 	</div>
 	<jsp:include page="../requestwork/rwApplication.jsp"></jsp:include>
-	<jsp:include page="../requestwork/rwDetail_1.jsp"></jsp:include>
+	<jsp:include page="../requestwork/rwDetail_1.jsp"></jsp:include><!-- css rwDetail_2와 공유함 -->
+	<jsp:include page="../requestwork/rwDetail_2.jsp"></jsp:include>
+	
+<script type="text/javascript">
+	$('#completed-rw').click(function() {
+		location.href="/completedRequest.do";
+	})
+	
+	$('#all-rw').click(function() {
+		location.href="/allRequest.do";
+	})
+</script>
 </body>
 </html>
