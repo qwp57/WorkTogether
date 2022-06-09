@@ -36,6 +36,7 @@ public class EmployeeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "common/main";
+
 	}
 	
 
@@ -44,6 +45,13 @@ public class EmployeeController {
 	public String allProject() {
 		return "project/allProject";
 	}
+	
+	@RequestMapping("/detailPj.do")
+	public String detailPj() {
+		return "project/detailPj";
+	}
+	
+	
 	@RequestMapping(value="/ws")
 	public String workstate() {
 		return "workstate/myWorkState";
@@ -79,9 +87,10 @@ public class EmployeeController {
 	
 	@RequestMapping(value="/enrollEmp.do")
 	public String enrollEmp() {
-		
-		
+		return "";
 	}
+		
+
 
 	
 	
