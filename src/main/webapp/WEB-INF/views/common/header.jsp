@@ -238,7 +238,7 @@
 	      						<td colspan="3" style="height: 40%"> 
 	      							<img style="height: 100px" alt="image"
 	                                                 src="resources/assets/img/avatar/avatar-1.png"
-	                                                 id="profileImg" class="img-fluid m-3">
+	                                                 id="profileImg" class="img-fluid m-3 rounded-circle">
 	                               	<span class="filebox">
 	                               		<label for="ex_file">+</label>
 	                               		<input type="file" id="ex_file">
