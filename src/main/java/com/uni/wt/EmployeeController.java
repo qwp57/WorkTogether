@@ -36,7 +36,7 @@ public class EmployeeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		return "common/main";
-		//return "common/login";
+
 	}
 	
 
@@ -68,6 +68,12 @@ public class EmployeeController {
 	@RequestMapping(value="/vws")
 	public String myvacation() {
 		return "workstate/myvacation";
+		
+		
+	}
+	@RequestMapping(value="/rw")
+	public String rwmain() {
+		return "requestwork/rwmain";
 		
 		
 	}

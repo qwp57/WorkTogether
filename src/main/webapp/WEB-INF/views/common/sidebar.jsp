@@ -10,7 +10,7 @@
  <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-          	<img/><!-- 로고 넣어야 함  -->
+          	<img src="resources/assets/img/logo.png" alt="logo" style="width: 150px; display: block; margin: auto;">
             <a href="index.html">WT</a>
           </div>
           <div class="sidebar-brand sidebar-brand-sm">
@@ -70,9 +70,6 @@
               <li class="nav-item ">
                 <a href="#" class="nav-link "><i class="fas fa-exclamation"></i> <span>업무요청</span></a>
               </li>
-      
-    
-             
             </ul>
 
             

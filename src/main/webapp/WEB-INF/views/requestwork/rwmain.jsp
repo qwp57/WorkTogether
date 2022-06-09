@@ -69,7 +69,7 @@
 	color: black;
 	display: inline-block;
 }
-.thead th{
+.thead tr th, .tbody tr td{
 text-align: center;
 }
 .pagination{
@@ -77,13 +77,21 @@ text-align: center;
 }
 .sorttmenu{
 display: inline-block;
-
+height: 35px;
+width : 100px;
+margin : 10px;
+float: right;
+border: 1px solid lightgray;
+border-radius: 5px;
 }
-#selectsortA , #selectsortB{
-height: 40px;
-margin-left: 20px;
-
+.rw-btn{
+cursor: pointer;
 }
+.rw-btn:hover{
+box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.4);
+transform: scale(1.02);
+}
+
 </style>
 <body>
 	<jsp:include page="../common/header.jsp" />
@@ -112,7 +120,7 @@ margin-left: 20px;
 						<div class="col-12 col-lg-6">
 							<div class="row rw-count">
 								<div class="col-12 col-lg-5">
-									<div class="card rw-menu rw-count-card">
+									<div class="card rw-menu rw-count-card rw-btn">
 										<h1>
 											<i class='fa-solid fa-box-archive'></i>
 										</h1>
@@ -120,10 +128,10 @@ margin-left: 20px;
 									</div>
 								</div>
 								<div class="col-12 col-lg-5">
-									<div class="card" id="all-rw" style="margin-bottom: 10px;">
+									<div class="card rw-btn" id="all-rw" style="margin-bottom: 10px;">
 										<i class='fa fa-file-text menuText'> 전체 업무요청</i>
 									</div>
-									<div class="card" id="rw-application" style="margin-top: 0;">
+									<div class="card rw-btn" id="rw-application" style="margin-top: 0;">
 										<i class='fa fa-edit menuText'> 업무요청신청</i>
 									</div>
 								</div>
@@ -136,22 +144,20 @@ margin-left: 20px;
 			<div class="section-body">
 				<div class="rw-list">
 					<div class="menu2-title">요청된 업무</div>
-					<div class="sorttmenu" align="right">
-						<select class="form-control" id="selectsort">
-						    <option>중요도</option>
-						    <option>기한</option>
-						    <option>상태</option>
-					  	</select>
-					</div>
-					<table class="table table-bordered ">
-						<thead class="thead-dark">
-							<tr class="thead">
-								<th>보낸 이</th>
-								<th>중요도</th>
-								<th>제목</th>
-								<th>상태</th>
-								<th>기한</th>
-								<th></th>
+					<select class="sorttmenu" id="selectsort">
+					    <option>중요도</option>
+					    <option>기한</option>
+					    <option>상태</option>
+				  	</select>
+					<table class="table  table-sm">
+						<thead class="thead">
+							<tr>
+								<th style="width: 300px; ">보낸 이</th>
+								<th style="width: 200px; ">중요도</th>
+								<th style="width: 600px; "> 제목</th>
+								<th style="width: 300px; ">상태</th>
+								<th style="width: 400px; ">기한</th>
+								<th style="width: 300px; "></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -179,30 +185,35 @@ margin-left: 20px;
 				
 				
 				<div class="rw-list">
-					<div class="menu2-title">요청된 업무</div>
-					<table class="table table-bordered ">
-						<thead class="thead-dark">
-							<tr class="thead">
-								<th>보낸 이</th>
-								<th>중요도</th>
-								<th>제목</th>
-								<th>상태</th>
-								<th>기한</th>
-								<th></th>
+					<div class="menu2-title">요청한 업무</div>
+					<select class="sorttmenu" id="selectsort">
+					    <option>중요도</option>
+					    <option>기한</option>
+					    <option>상태</option>
+				  	</select>
+					<table class="table table-sm">
+						<thead class="thead">
+							<tr>
+								<th style="width: 300px; ">보낸 이</th>
+								<th style="width: 200px; ">중요도</th>
+								<th style="width: 600px; "> 제목</th>
+								<th style="width: 300px; ">상태</th>
+								<th style="width: 400px; ">기한</th>
+								<th style="width: 300px; "></th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody class="tbody rq">					
 							<tr>
-								<td></td>
-								<td></td>
+								<td>홍길동</td>
+								<td><button class="btn btn-sm btn-danger" style="width: 100px;">중요</button></td>
 								<td></td>
 								<td></td>
 								<td></td>
 								<td></td>
 							</tr>
-						</tbody>
+						</tbody>	
 					</table>
-					<ul class="pagination">
+				<ul class="pagination">
 						<li class="page-item"><a class="page-link" href="#">Previous</a></li>
 						<li class="page-item"><a class="page-link" href="#">1</a></li>
 						<li class="page-item"><a class="page-link" href="#">2</a></li>
@@ -215,6 +226,7 @@ margin-left: 20px;
 			</div>
 		</section>
 	</div>
-
+	<jsp:include page="../requestwork/rwApplication.jsp"></jsp:include>
+	<jsp:include page="../requestwork/rwDetail_1.jsp"></jsp:include>
 </body>
 </html>
