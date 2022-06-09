@@ -7,55 +7,23 @@
 <title>Insert title here</title>
 </head>
 <style>
-*{
-font-family: 'Nanum Gothic', sans-serif;
-
-}
-.th{
-background-color: #EAEAEA;
-text-align: center;
-}
-.td{
-min-width: 300px;
-}
-.termlabel{
-margin-right: 15px;
-font-size: 15px;
-font-weight: bold;
-}
-.rw-textarea{
- width: 100%;
-  line-height: 1.6;
+.rD-2-textarea{
+  width: 60%;
   border: 1px solid lightgray;
   border-radius: 3px;
   overflow: auto;
   resize: none;
 }
-.rw-textarea:focus {
-	outline: none;
-	border: 1px solid #489CFF;
-}
- .btns{
- width: 20%;
- }
-.modal-footer{
-display: flex;
-justify-content: center;}
+.sorttmenu-rD2{
 
-.responsheader{
-font-family: 'Nanum Gothic', sans-serif;
-font-size: 18px;
-margin-top: 15px;
-margin-bottom: 5px;
-font-weight: bold;
-}
-.rwD_1btns{
-width: 70%;
-}
+width : 200px;
+height: 48px;
+margin: 0;
 
+}
 </style>
 <body>
-  <div class="modal fade" role="rw-Application" id="rwDetail_1">
+  <div class="modal fade" role="rw-Application" id="rwDetail_2">
 	<div class="modal-dialog modal-dialog-centered modal-xl">
 		<div class="modal-content" id="rwModalcss">
 			<div class="modal-header">
@@ -75,24 +43,19 @@ width: 70%;
        						<td class="td">프로젝트 명 1</td>
        					</tr>
        					<tr>
-       						<th class="th">소속부서</th>
-       						<td class="td">영업부</td>
-       						<th class="th">담당자</th>
-       						<td class="td">남궁성</td>
-     						</tr>
-     						<tr>
-       						<th class="th">상태</th>
-       						<td class="td"><button class="btn btn-primary rwD_1btns">진행 중</button></td>
        						<th class="th">기한</th>
-       						<td class="td">2022-06-07</td>
-     						</tr>
-     						<tr>
+       						<td class="td" >2022-06-07</td>
+       						<th class="th"></th>
+       						<td class="td" ></td>
+       						
+    					</tr>
+     					<tr>
        						<th class="th">중요도</th>
        						<td class="td"><button class="btn btn-danger rwD_1btns">중요</button></td>
        						<th class="th">첨부파일</th>
        						<td class="td">첨부파일 없음</td>
-     						</tr>
-     						<tr>
+     					</tr>
+     					<tr>
        						<th class="th">내용</th>
        						<td colspan="3" style="text-align: left;">2021년 상반기 정산 내역 부탁드립니다.<br>빨리 주세요</td>
        					</tr>
@@ -103,17 +66,35 @@ width: 70%;
        				<tbody class="tbody">
        					<tr>
        						<th class="th">상태 메시지</th>
-       						<td class="td" style="text-align: left;">조금만 기다려 주세요 </td>
+       						<td class="td">
+	       						<div class="input-group">
+	       							<textarea class="rD-2-textarea" placeholder="상태메시지를 작성해주세요" ></textarea>
+	       							<select class="sorttmenu sorttmenu-rD2" id="">
+									    <option>진행 중</option>
+									    <option>요청됨</option>
+									    <option>완료됨</option>
+								  	</select>
+								  	 <button class="btn btn-outline-secondary" type="button">작성 완료</button>
+	       						</div>
+       						</td>
        					</tr>
        					<tr>
        						<th class="th">요청파일</th>
-       						<td class="td" style="text-align: left;">첨부파일 없음</td>
+       						<td class="td" id="leftalign">
+							<div class="input-group">
+								 <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+								 <div class="input-group-append">
+								   <button class="btn btn-outline-secondary" type="button">파일 첨부</button>
+								 </div>
+							</div>
+							</td>
      					</tr>
        				</tbody>
        			</table>
          	</div>
          	<div class="modal-footer">
-				<button type="button" class="btn btn-secondary btns" data-dismiss="modal">요청 취소</button>
+				<button type="button" class="btn btn-secondary btns" data-dismiss="modal">거절</button>
+				<button type="button" class="btn btn-primary btns" data-dismiss="modal">확인</button>
 			</div>
 		</div>
 	</div>
@@ -121,8 +102,8 @@ width: 70%;
 
 <script type="text/javascript">
 	$(function(){
-		$(".rq").children().click(function(){
-			$('#rwDetail_1').modal("show");
+		$(".rs").children().click(function(){
+			$('#rwDetail_2').modal("show");
 		})
 		
 	})
