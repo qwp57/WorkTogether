@@ -9,7 +9,6 @@
 	rel="stylesheet">
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
 <title>Insert title here</title>
 <script src="https://kit.fontawesome.com/9b80e7c08f.js" crossorigin="anonymous"></script>
 </head>
