@@ -52,32 +52,6 @@ public class EmployeeController {
 	}
 	
 	
-	@RequestMapping(value="/ws")
-	public String workstate() {
-		return "workstate/myWorkState";
-		
-		
-	}
-	@RequestMapping(value="/tws")
-	public String teamworkstate() {
-		return "workstate/teamWorkState";
-		
-		
-	}
-	
-	@RequestMapping(value="/vws")
-	public String myvacation() {
-		return "workstate/myvacation";
-		
-		
-	}
-	@RequestMapping(value="/rw")
-	public String rwmain() {
-		return "requestwork/rwmain";
-		
-		
-	}
-
 	@RequestMapping(value="/enrollForm.do")
 	public String enrollForm() {
 		

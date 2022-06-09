@@ -182,6 +182,8 @@
 	</div>
 	
 	<!-- 개인정보 모달 창 -->
+	
+	
 	<div class="modal" id="empProfile" data-backdrop="static" data-keyboard="false">
       	<div class="modal-dialog modal-sm modal-dialog-centered">
       		<div class="modal-content row">

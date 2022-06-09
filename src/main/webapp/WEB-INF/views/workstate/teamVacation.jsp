@@ -13,7 +13,7 @@
 <script src="https://kit.fontawesome.com/9b80e7c08f.js" crossorigin="anonymous"></script>
 </head>
 <style>
-h1{
+h2{
 display: inline-block;
 margin-right: 20px;
 color: black;
@@ -91,8 +91,8 @@ font-family: 'Nanum Gothic', sans-serif;
 <jsp:include page="../common/sidebar.jsp"/>
 <div class="main-content">
 <div class="wrap">
-	<h1 style="color: gray">내 휴가</h1>
-	<h1>구성원 휴가</h1>
+	<a href="vacationMgtMain.do"><h2 style="color: gray">내 휴가</h2></a>
+	<a href="teamVacation.do"><h2>구성원 휴가</h2></a>
 	
 	<select class="form-control" id="selectweek">
 	    <option>2022년</option>
