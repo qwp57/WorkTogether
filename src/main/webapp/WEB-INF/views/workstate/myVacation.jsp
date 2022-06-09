@@ -96,8 +96,8 @@ font-family: 'Nanum Gothic', sans-serif;
 <jsp:include page="../common/sidebar.jsp"/>
 <div class="main-content">
 <div class="wrap">
-	<h3 class="menuTitle">내 휴가</h3>
-	<h3 class="menuTitle" style="color: gray">구성원 휴가</h3>
+	<a href="vacationMgtMain.do"><h3 class="menuTitle">내 휴가</h3></a>
+	<a href="teamVacation.do"><h3 class="menuTitle" style="color: gray">구성원 휴가</h3></a>
 	
 	<select class="form-control" id="selectweek">
 	    <option>2022년</option>
@@ -187,7 +187,7 @@ font-family: 'Nanum Gothic', sans-serif;
   		<div class="vac-menu-title"> 휴가 예정 </div>
   		<table class="vac-menu-content">
   			<tr>
-  				<th><i class='fa fa-bed'></i></th>
+  				<th><i class='fa fa-bed icon'></i></th>
   				<th class="vac-detail">병가 | 2022.06.03(금)~2022.06.07(화)</th>
   				<th class="vac-detail">총 2일</th>
   				<th class="vmenustate"><button class="btn btn-primary btn-lg">승인</button></th>
@@ -204,7 +204,7 @@ font-family: 'Nanum Gothic', sans-serif;
   		<div class="vac-menu-title"> 사용 내역 </div>
   		<table class="vac-menu-content">
   			<tr>
-  				<th><i class='fa fa-bed'></i></th>
+  				<th><i class='fa fa-bed icon'></i></th>
   				<th class="vac-detail">병가 | 2022.06.03(금)~2022.06.07(화)</th>
   				<th class="vac-detail">총 2일</th>
   				<th class="vmenustate"><button class="btn btn-primary btn-lg">승인</button></th>
