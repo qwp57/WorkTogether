@@ -8,7 +8,8 @@
 
 <head>
 <meta charset="UTF-8">
-
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 <link
 	href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
 	rel="stylesheet">
@@ -438,7 +439,7 @@ td:last-child {
 								aria-haspopup="true" aria-expanded="false" />
 							<h4>&nbsp;&nbsp;필터</h4>
 							<div class="dropdown-menu dropright">
-								<a class="dropdown-item" href="#" id="tagEdit">전체</a> <a
+								<a class="dropdown-item" href="#" id="">전체</a> <a
 									class="dropdown-item" href="#">글</a> <a class="dropdown-item"
 									href="#">업무</a> <a class="dropdown-item" href="#">일정</a> <a
 									class="dropdown-item" href="#">할 일</a>
@@ -542,7 +543,7 @@ td:last-child {
 				<!-- modal body : 내용 -->
 
 
-				<div id="postForm" style="display: none;">
+				<div id="postForm" style="display: block;">
 					<form class="form" id="">
 						<div class="modal-body">
 							<table id="boardEnrollBtn"
@@ -594,7 +595,7 @@ td:last-child {
 
 
 				<!-- 일정 작성 모달창 -->
-				<div id="postSch" style="display: none;">
+				<div id="postSch" style="display: block;">
 					<form class="form" id="">
 						<div class="modal-body">
 							<table id="boardEnrollBtn"
@@ -690,24 +691,30 @@ td:last-child {
 								</tr>
 							</table>
 							<br> <br>
-							<div class="form-group row mb-4">
+							<div class="form-group row">
 								<label
 									class="col-form-label text-md-right col-10 col-md-3 col-lg-3">제목</label>
-								<div class="col-sm-12 col-md-7">
+								<div class="col-sm-12 col-md-7 ">
 									<input type="text" class="form-control">
 								</div>
-							</div>
-							<div class="form-group row mb-4">
 								<div class="col-lg-3"></div>
-								<div class="text-md-right col-10 col-md-7 col-lg-5">
-									<input type="text" class="form-control" placeholder="할 일 추가 / 최대 50자">
-									
-									
+							</div>
+
+							<div class="todos">
+								<div class="form-group row">
+									<div class="col-lg-3"></div>
+									<div class="text-md-right col-10 col-md-7 col-lg-6">
+										<input type="text" class="form-control"
+											placeholder="할 일 추가 / 최대 50자">
+									</div>
+									<div class="col-sm-12 col-md-3 col-lg-3">
+										<span class='bi bi-calendar fa-2x'></span> <i
+											class="bi bi-person fa-2x"></i>
+									</div>
 								</div>
-								<div
-									class="col-sm-12 col-md-3"><span class='bi bi-calendar fa-2x'>
-												</span><i
-									class="bi bi-person fa-2x"></i></div>
+							</div>
+							<div class="col-lg-12 text-center">
+								<i class='fa fa-plus fa-2x'></i>
 							</div>
 
 						</div>
@@ -729,9 +736,62 @@ td:last-child {
 
 
 
+	<!-- 태그수정 모달창 -->
+	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
+	<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
+	<div class="modal fade"  id="tagEditModal" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-sm modal-dialog-centered">
+			<div class="modal-content row">
+				<!-- modal header : 제목 -->
+				<div class="modal-header">
+					<span><h4 class="modal-title text-left">프로젝트 태그 수정</h4></span> <span><input
+						type="image" data-dismiss="modal"
+						src="resources/assets/img/close.png/" style="width: 20px;"></span>
+				</div>
+				<!-- modal body : 내용 -->
+				<form class="form" id="tagAdd">
+					<div class="modal-body">
+                    <div class="form-group">
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="테스트" aria-label="">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button" data-dismiss="modal">수정</button>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 
-
+	<!-- 게시물 조회 모달창 -->
+	<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
+	<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
+	<div class="modal fade"  id="boardView" data-backdrop="static"
+		data-keyboard="false">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
+			<div class="modal-content row">
+				<!-- modal header : 제목 -->
+				<!-- modal body : 내용 -->
+				<form class="form" id="">
+					<div class="modal-body">
+						<div class="colors color-1" style="width:20px; height:20px"></div>
+                    <div class="form-group">
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="테스트" aria-label="">
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button" data-dismiss="modal">수정</button>
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 
 
@@ -763,7 +823,22 @@ td:last-child {
 			$("#schBtn").click(function(){
 				$("#boardSch").modal("show")
 			})
+			$(".boardTable").children("tbody").children("tr").click(function(){
+				$("#boardView").modal("show")
+			})
 			
+			$(".fa-plus").click(function(){
+				$(".todos").append('<div class="form-group row">' +
+				'<div class="col-lg-3"></div>' +
+				'<div class="text-md-right col-10 col-md-7 col-lg-6">' +
+					'<input type="text" class="form-control" placeholder="할 일 추가 / 최대 50자">' +
+				'</div>' +
+				'<div class="col-sm-12 col-md-3 col-lg-3">' +
+					'<span class="bi bi-calendar fa-2x"></span>' +
+					'<i class="bi bi-person fa-2x"></i>' +
+				'</div>' +
+			'</div>')
+			})
 			
 		
 
@@ -790,7 +865,7 @@ td:last-child {
 		        location.href = '/history?year=' + dateArr[0] + '&month=' + dateArr[1]
 		    })
 
-
+		
 
 
 		})
