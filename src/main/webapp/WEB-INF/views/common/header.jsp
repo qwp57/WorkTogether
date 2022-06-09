@@ -205,10 +205,21 @@
               <div class="dropdown-title">Logged in 5 min ago</div>
               <a href="#" class="dropdown-item has-icon" id="profile">
                 <i class="far fa-user"></i> 내 정보
+              </a>    
+              <!-- 관리자 설정은 관리자에게만 보인다. -->      
+              <h5 class="dropdown-header">                   	              
+	            <i class="fas fa-cog"></i> 관리자 설정        
+	          </h5>  
+	          <a class="dropdown-item has-icon ml-3" href="adminApproval.do">
+              	<i class="bi bi-check-square-fill"></i>가입 승인
               </a>
-              <a href="features-activities.html" class="dropdown-item has-icon">
-                <i class="fas fa-cog"></i> 관리자 설정
+	       	  <a class="dropdown-item has-icon ml-3" href="#">
+              	<i class="bi bi-diagram-3-fill"></i>부서 관리
               </a>
+	           <a class="dropdown-item has-icon ml-3" href="#">
+              	<i class="bi bi-people-fill"></i>인사 관리
+              </a>
+	           
               <div class="dropdown-divider"></div>
               <a href="#" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> 로그아웃
@@ -217,6 +228,8 @@
           </li>
         </ul>
       </nav>
+      
+
       
       <!-- 개인정보 모달창 --> 
       <!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->

@@ -19,7 +19,7 @@
           <ul class="sidebar-menu">
               
               <li class="nav-item">
-                <a href="#" class="nav-link"><i class="fas fa-fire"></i><span>HOME</span></a>
+                <a href="/main" class="nav-link"><i class="fas fa-fire"></i><span>HOME</span></a>
                 
               </li>
               
