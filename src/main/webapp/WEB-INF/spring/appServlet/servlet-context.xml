@@ -40,7 +40,7 @@
 	<!-- 등록된 bean을 조회하는 범위 -->
 
 	<context:component-scan base-package="com.uni.wt" />
-
+	<beans:bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 	
 	<!--<beans:bean id="commonExceptionHandler" class="com.uni.kh.common.CommonExceptionHandler"/>-->
 	
@@ -51,8 +51,4 @@
 		</interceptor>
 	</interceptors> 
 
-		
-	
-	
-	
 </beans:beans>
