@@ -14,14 +14,14 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
-<link rel="stylesheet"
+  <link rel="stylesheet"
 	href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
 	integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
 	crossorigin="anonymous">
 
-<!-- CSS Libraries -->
+<!-- CSS Libraries
 <link rel="stylesheet"
-	href="../node_modules/bootstrap-social/bootstrap-social.css">
+	href="../node_modules/bootstrap-social/bootstrap-social.css"> -->
 
 <!-- Template CSS -->
 <link rel="stylesheet" href="resources/assets/css/style.css">
@@ -47,8 +47,7 @@
 							<div class="card-body">
 
 								<form method="POST" action="/enrollEmp.do" class="needs-validation"
-
-									novalidate="">
+									id="enrollForm" novalidate="">
 									<div class="form-group">
 										<label for="name">이름</label> <input id="name" type="text"
 											class="form-control" name="name" tabindex="1" required
@@ -60,7 +59,7 @@
 										<p style="display: inline-block;" hidden>이미 존재하는 이이디 입니다.</p>
 										<input id="id" type="text" class="form-control" name="id"
 											tabindex="2" required autofocus placeholder="id를 입력해주세요">
-										<div class="invalid-feedback">id를 입력하세요</div>
+										<div class="invalid-feedback">아이디는 영어 대/소문자와 숫자만 가능합니다</div>
 									</div>
 									<div class="form-group">
 										<div class="d-block">
@@ -77,36 +76,36 @@
 											id="password2" type="password" class="form-control"
 											name="password-confirm" placeholder="비밀번호를  입력해주세요"
 											tabindex="4" required>
-										<div class="invalid-feedback">비밀번호 확인을 입력해주세요</div>
+										<div class="invalid-feedback">비밀번호를 다시 확인해주세요</div>
 									</div>
 
 									<div class="form-group">
 										<label for="email">이메일</label> <input id="email" type="email"
 											class="form-control" name="email" placeholder="이메일을 입력해주세요"
 											tabindex="5">
-										<div class="invalid-feedback"></div>
+										<div class="invalid-feedback">이메일을 입력해주세요</div>
 									</div>
 									<div class="form-group">
 										<label for="phone">핸드폰 번호</label> <input id="phone"
 											type="text" class="form-control" name="phone"
 											placeholder="핸드폰 번호를 입력해주세요" tabindex="6">
-										<div class="invalid-feedback"></div>
+										<div class="invalid-feedback">핸드폰 번호를 입력해주세요</div>
 									</div>
 									<div class="form-group">
-										<label for="birthday">생년월일</label> <input id="birthday"
-											type="date" class="form-control" name="birthday"
+										<label for="birth">생년월일</label> <input id="birth"
+											type="date" class="form-control" name="birth"
 											tabindex="7">
-										<div class="invalid-feedback"></div>
+										<div class="invalid-feedback">생년월일을 입력해주세요</div>
 									</div>
 										<div class="form-group">
-										<label for="hiredate">입사일</label> <input id="hiredate"
-											type="date" class="form-control" name="hiredate"
+										<label for="join_date">입사일</label> <input id="join_date"
+											type="date" class="form-control" name="join_date"
 											tabindex="8">
-										<div class="invalid-feedback"></div>
+										<div class="invalid-feedback">입사일을 입력해주세요</div>
 									</div>
 									<div class="form-group">
-										<button type="submit" class="btn btn-primary btn-lg btn-block"
-											tabindex="4">가입 신청</button>
+										<button type="button" class="btn btn-primary btn-lg btn-block"
+											tabindex="4" onclick="validation();">가입 신청</button>
 									</div>
 
 								</form>
@@ -140,10 +139,12 @@
 
 	<!-- JS Libraies -->
 
-	<!-- Template JS File -->
-	<script src="resources/assets/js/scripts.js"></script>
-	<script src="resources/assets/js/custom.js"></script>
+	<!-- Template JS File-->
+	<!--  <script src="resources/assets/js/scripts.js"></script>--><!-- 부트스트랩 툴에서 유효성 검사하는 거 -->
+	<script src="resources/assets/js/custom.js"></script> 
 
 	<!-- Page Specific JS File -->
+	
+	<script src="resources/assets/js/register.js"></script>
 </body>
 </html>
