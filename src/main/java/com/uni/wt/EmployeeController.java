@@ -41,16 +41,28 @@ public class EmployeeController {
 	
 
 
+	@RequestMapping("/detailCalendar.do")
+	public String detailCalendar(){
+		return "project/detailCalendar";
+	}
+
+
 	@RequestMapping("/allProject")
 	public String allProject() {
 		return "project/allProject";
 	}
-	
+
 	@RequestMapping("/detailPj.do")
 	public String detailPj() {
 		return "project/detailPj";
 	}
-	
+
+	@RequestMapping("/drivePj.do")
+	public String drivePj() {
+		return "project/drivePj";
+	}
+
+
 	
 	@RequestMapping(value="/enrollForm.do")
 	public String enrollForm() {
