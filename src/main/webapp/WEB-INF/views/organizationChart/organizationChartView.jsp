@@ -182,7 +182,6 @@
 	</div>
 	
 	<!-- 개인정보 모달 창 -->
-
 	<div class="modal" id="empModal" data-backdrop="static" data-keyboard="false">
       	<div class="modal-dialog modal-dialog-centered">
       		<div class="modal-content row">
