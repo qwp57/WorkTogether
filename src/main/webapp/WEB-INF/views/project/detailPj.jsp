@@ -296,7 +296,7 @@
         cursor: pointer;
     }
 
-    .bi {
+    .bi-circle-fill {
         height: 50px;
     }
 

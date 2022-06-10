@@ -75,9 +75,6 @@ td:last-child {
 	cursor: pointer;
 }
 
-.bi {
-	height: 50px;
-}
 
 .boardEnrollBtn tr td:hover {
 	cursor: pointer;

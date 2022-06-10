@@ -55,15 +55,17 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="/mentionedBoard.do" class="nav-link "><i class="fas fa-map-marker-alt"></i> <span>나를 멘션</span></a>
+                <a href="/mentionedBoard.do" class="nav-link "><i class="bi bi-at fa-lg"></i> <span>나를 멘션</span></a>
                 
               </li>
               <li class="nav-item">
-                <a href="/myBoard.do" class="nav-link "><i class="fas fa-plug"></i> <span>내가 쓴 게시글</span></a>
+                <a href="/myBoard.do" class="nav-link "><i class="bi bi-file-earmark-person-fill"></i>
+ <span>내가 쓴 게시글</span></a>
               </li>
        
               <li class="nav-item ">
-                <a href="/allCalendar.do" class="nav-link "><i class="far fa-user"></i> <span>프로젝트 캘린더</span></a>
+                <a href="/allCalendar.do" class="nav-link "><i class="bi bi-calendar"></i>
+<span>프로젝트 캘린더</span></a>
                 
               </li>
               <hr>
