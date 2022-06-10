@@ -88,7 +88,7 @@
     .color-3 {
         background: #5D9CEC;
     }
-  .color-4 {
+  	.color-4 {
         background: #8a40f2;
     }
 
