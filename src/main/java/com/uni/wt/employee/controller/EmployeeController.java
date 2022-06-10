@@ -81,8 +81,10 @@ public class EmployeeController {
 		return "employee/login";
 	}
 	
+	//
+	
 	@RequestMapping(value="/enrollEmp.do")
-	public String enrollEmp(@RequestBody @Valid Employee emp, HttpSession session, Errors errors) throws Exception {
+	public String enrollEmp (@RequestBody @Valid Employee emp, HttpSession session, Errors errors) {
 		
 		System.out.println("야 되냐 ");
 		if(errors.hasErrors()) {
