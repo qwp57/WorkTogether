@@ -159,6 +159,7 @@
         .card__link:hover::after {
             width: 100%;
         }*/
+        
 	.newPj {
 		width: 180px;
 		height: 70px;
@@ -188,7 +189,11 @@
 	.card .card__title {
 		justify-content: center;
 	}
-
+	.custom-radio{
+		position: relative;
+		left: 30px;
+		bottom: 20px;
+	}
 	#totalProjectEditBar {
 		z-index: 1000;
 		width: 100%;
@@ -276,7 +281,7 @@
 	}
 
 	.favoWhite {
-		color: white;
+		color: lightgray;
 	}
 
 	#editBarClose, .select-clear, .card, .listViewTable tr, .fa-cog,
@@ -313,7 +318,7 @@
 
 
 	<div class="container">
-		<button class="btn btn-secondary" class="newPj">+ 새 프로젝트</button>
+		<button class="btn btn-secondary newPj">+ 새 프로젝트</button>
 		<br> <br> <br>
 		<div style="width: 100%;">
 
@@ -402,7 +407,7 @@
 	<div style="height: 50px;"></div>
 
 	<div class="container">
-		<button class="btn btn-secondary" class="newPj">+ 새 프로젝트</button>
+		<button class="btn btn-secondary newPj">+ 새 프로젝트</button>
 
 		<br> <br> <br>
 		<div style="width: 100%;">
@@ -564,7 +569,7 @@
 						<div class="input-group mb-3">
 							<input type="text" class="form-control" placeholder="" aria-label="">
 							<div class="input-group-append">
-								<button class="btn btn-primary" type="button" data-dismiss="modal">추가</button>
+								<button class="btn btn-primary" id="addTag" type="button" data-dismiss="modal">추가</button>
 							</div>
 						</div>
 					</div>
@@ -624,22 +629,22 @@
 					<table id="colorTable">
 						<tr>
 							<c:forEach var="index" begin="1" end="4">
-								<td><div class="colors color-${index }"></div>
-									<div class="custom-control custom-radio">
+								<td><div class="colors color-${index }"><div class="custom-control custom-radio">
 										<input type="radio" name="customRadio"
 											   class="custom-control-input" id="color${index}"> <label
 											class="custom-control-label" for="color${index}"></label>
-									</div></td>
+									</div></div>
+									</td>
 							</c:forEach>
 						</tr>
 						<tr>
 							<c:forEach var="index" begin="5" end="8">
-								<td><div class="colors color-${index }"></div>
-									<div class="custom-control custom-radio">
+								<td><div class="colors color-${index }"><div class="custom-control custom-radio">
 										<input type="radio" name="customRadio"
 											   class="custom-control-input" id="color${index}"> <label
 											class="custom-control-label" for="color${index}"></label>
-									</div></td>
+									</div></div>
+									</td>
 							</c:forEach>
 						</tr>
 					</table>
@@ -756,9 +761,40 @@
 			$("#tagEditModal").modal("show")
 		})
 
-
-
+		$("#addTag").click(function(){
+			console.log('확인df')
+				$("#tagTable").append(
+						'<tr>'+
+						'<td><i class="fa fa-tag fa-lg"></i>'+
+						'</td>'+
+						'<th style="width: 50%">테스트</th>'+
+						'<td style="width: 20%; text-align: right;">'+
+							'<div class="custom-control custom-checkbox">'+
+								'<input type="checkbox" class="custom-control-input" id="tag6">'+
+									' <label class="custom-control-label" for="tag6"></label>'+
+							'</div>'+
+						'</td>'+
+						'<td style="width: 15%; text-align: right;">'+
+							'<div class="btn-group dropright">'+
+								'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"'+
+								   'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
+								'<div class="dropdown-menu dropright">'+
+									'<a class="dropdown-item" href="#" id="tagEdit">수정</a>'+
+									'<div class="dropdown-divider"></div>'+
+									'<a class="dropdown-item" href="#">삭제</a>'+
+								'</div>'+
+							'</div>'+
+						'</td>'+
+					'</tr>'
+						)
+		})
+		
+		
+		
+		
+		
 	})
+	
 
 </script>
 

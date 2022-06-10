@@ -202,54 +202,8 @@
 <body>
 <div class="main-content">
     <div style="height: 50px;"></div>
-
-
     <div class="container">
         <section class="section">
-            <div class="section-body">
-
-                <div class="row mt-sm-4">
-
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-body body-1">
-                                <div>
-                                    <button class="btn btn-primary" id="newPj">+ 새 프로젝트</button>
-                                </div>
-                                <div class="detailTop">
-                                    <div class="colors color-1"></div>
-                                    <i class='icon fa fa-star fa-2x favoYellow'></i>
-                                    <div class="btn-group dropright" id="pjMenu">
-                                        <i class='fa fa-ellipsis-v fa-2x' data-toggle="dropdown"
-                                           aria-haspopup="true" aria-expanded="false"
-                                           style="width: 30px;"></i>
-                                        <div class="dropdown-menu dropright">
-                                            <a class="dropdown-item" href="#">색상 설정</a> <a
-                                                class="dropdown-item" href="#">태그 설정</a> <a
-                                                class="dropdown-item" href="#">참여자 조회</a> <a
-                                                class="dropdown-item" href="#">프로젝트 설정</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">프젝트 나가기</a>
-                                        </div>
-                                    </div>
-                                    <p id="pjDetail"></p>
-                                    <h5 id="pjTitle">프로젝트 제목</h5>
-                                    <a href="#" id="inviteBtn"
-                                       class="btn btn-icon icon-left btn-secondary"><i
-                                            class="far fa-user"></i> +초대하기</a>
-                                    <div id="navMenus">
-                                        <a class="navMenu home">홈</a> <a
-                                            class="navMenu calendar clicked">캘린더</a> <a class="navMenu drive">드라이브</a>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="section-body">
 
                 <div class="row mt-sm-4">
@@ -308,29 +262,7 @@
 </script>
 <script>
     $(function () {
-        $(document).on('click', '.fa-star', function () {
-            if ($(this).hasClass("favoWhite")) {
-                $(this).removeClass("favoWhite")
-                $(this).addClass("favoYellow")
-                console.log("즐겨찾기 추가할것")
-            } else if ($(this).hasClass("favoYellow")) {
-                $(this).removeClass("favoYellow")
-                $(this).addClass("favoWhite")
-                console.log("즐겨찾기 제거할것")
-            }
-            e.stopPropagation()
-        })
 
-        $(document).on('click', '.home', function () {
-            location.href = "/detailPj.do"
-        })
-        $(document).on('click', '.drive', function () {
-            location.href = "/drivePj.do"
-        })
-
-        $(document).on('click', '#inviteBtn', function () {
-            $("#inviteModal").modal("show")
-        })
 
     })
 

@@ -47,23 +47,23 @@
                <hr>
                <li class="menu-header">프로젝트</li>
               <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>프로젝트조회</span></a>
+                <a href="/allProject.do" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>프로젝트조회</span></a>
                 <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="/allProject">전체 프로젝트</a></li>
+                  <li><a class="nav-link" href="/allProject.do">전체 프로젝트</a></li>
                   <li><a class="nav-link" href="forms-editor.html">보관 프로젝트</a></li>
                   <li><a class="nav-link" href="forms-validation.html">태그별 조회</a></li>
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link "><i class="fas fa-map-marker-alt"></i> <span>나를 멘션</span></a>
+                <a href="/mentionedBoard.do" class="nav-link "><i class="fas fa-map-marker-alt"></i> <span>나를 멘션</span></a>
                 
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link "><i class="fas fa-plug"></i> <span>내가 쓴 게시글</span></a>
+                <a href="/myBoard.do" class="nav-link "><i class="fas fa-plug"></i> <span>내가 쓴 게시글</span></a>
               </li>
        
               <li class="nav-item ">
-                <a href="#" class="nav-link "><i class="far fa-user"></i> <span>프로젝트 캘린더</span></a>
+                <a href="/allCalendar.do" class="nav-link "><i class="far fa-user"></i> <span>프로젝트 캘린더</span></a>
                 
               </li>
               <hr>

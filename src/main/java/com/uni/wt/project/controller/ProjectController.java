@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @Controller
 public class ProjectController {
 
-	@RequestMapping("/allProject")
+	@RequestMapping("/allProject.do")
 	public String allProject() {
 		return "project/allProject";
 	}
@@ -17,4 +17,25 @@ public class ProjectController {
 	public String detailPj() {
 		return "project/detailPj";
 	}
+	@RequestMapping("/detailCalendar.do")
+	public String detailCalendar() {
+		return "project/detailCalendar";
+	}
+	@RequestMapping("/drivePj.do")
+	public String drivePj() {
+		return "project/drivePj";
+	}
+	@RequestMapping("/mentionedBoard.do")
+	public String mentionedBoard () {
+		return "project/mentionedBoard";
+	}
+	@RequestMapping("/myBoard.do")
+	public String myBoard () {
+		return "project/myBoard";
+	}
+	@RequestMapping("/allCalendar.do")
+	public String allCalendar () {
+		return "project/allCalendar";
+	}
+	
 }

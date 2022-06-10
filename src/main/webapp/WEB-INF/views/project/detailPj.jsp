@@ -59,7 +59,7 @@
     }
 
     .favoWhite {
-        color: gray;
+        color: lightgray;
     }
 
     .colors {
@@ -88,10 +88,7 @@
     .color-3 {
         background: #5D9CEC;
     }
-#postTodo{
-    height: 70%;
-}
-    .color-4 {
+  .color-4 {
         background: #8a40f2;
     }
 
@@ -122,7 +119,10 @@
         grid-column: 2/3;
     }
 
-
+#postTodo{
+    height: 70%;
+}
+  
     .card-body {
         padding-bottom: 0px !important;
     }
@@ -433,11 +433,12 @@
                              aria-haspopup="true" aria-expanded="false"/>
                         <h4>&nbsp;&nbsp;필터</h4>
                         <div class="dropdown-menu dropright">
-                            <a class="dropdown-item" href="#">전체</a> <a
-                                class="dropdown-item" href="#">글</a> <a class="dropdown-item"
-                                                                        href="#">업무</a> <a class="dropdown-item"
-                                                                                           href="#">일정</a> <a
-                                class="dropdown-item" href="#">할 일</a>
+                            <a class="dropdown-item" href="#">전체</a>     
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">글</a> 
+                            <a class="dropdown-item" href="#">업무</a> 
+                            <a class="dropdown-item" href="#">일정</a>
+                            <a class="dropdown-item" href="#">할 일</a>
                         </div>
                     </div>
                 </div>
@@ -830,7 +831,7 @@
                         src="resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
-            <div id="postView" style="display: none;">
+            <div id="postView" style="display: block;">
                 <form class="form" id="">
                     <div class="modal-body">
                         <div class="form-group">
@@ -900,7 +901,7 @@
             </div>
 
 
-            <div id="schView" style="display: none;">
+            <div id="schView" style="display: block;">
                 <form class="form" id="">
                     <div class="modal-body">
                         <div class="form-group">
@@ -926,7 +927,7 @@
                                 <div class="col-lg-12 ml-3 mr-3">
                                     <i class="bi bi-person fa-lg"></i> &nbsp;&nbsp; <b style="color: #5cb85c">참석 1</b>
                                     &nbsp;&nbsp;<b style="color: #ac2925"> 불참 3</b>
-                                    &nbsp;&nbsp; <a style="border-bottom: 1px black solid"> 참석자 조회</a>
+                                    &nbsp;&nbsp; <a style="border-bottom: 1px black solid" class="viewAttendee"> 참석자 조회</a>
                                     <br><br><br>
                                 </div>
                                 <div class="col-lg-12 ml-3 mr-3">
@@ -1318,7 +1319,6 @@
 
                 '<div class="form-group row">'+
                 '<div class="col-lg-1 pr-0 text-right">'+
-                '<i class="bi bi-x fa-2x" style="color: red; padding-right: 0px;"></i>'+
                 '</div>'+
                 '<div class="text-md-right col-10 col-md-7 col-lg-9">'+
                 '<input type="text" class="form-control"'+
@@ -1371,11 +1371,15 @@
             })
         })
 
-
+		
         $(document).on('click', '#addPeople', function (){
             $("#mentionForModal").modal("show")
         })
-
+        
+         $(document).on('click', '.viewAttendee', function (){
+            $("#mentionForModal").modal("show")
+        })
+        
         $(document).on('click', '.calendar', function (){
             location.href="/detailCalendar.do"
         })
@@ -1390,17 +1394,19 @@
             $(".selectTodoFor").click(function () {
                 console.log($todo)
                 console.log($(this))
-                $todo.text("테스트")
+                $todo.html('테스트')
                 $forRemove.remove()
             })
         })
 
         $(document).on('click', '.todoFor', function (){
-            $(this).parent().html(' <i class="bi bi-person fa-2x todoPerson"></i>')
+            $(this).parent().html(' <i class="bi bi-person fa-2x todoPerson"></i>' +
+            		 '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'
+            )
         })
 
         $(document).on('click', '.bi-x', function (){
-            $(this).parent().parent().html("")
+            $(this).parent().parent().remove()
         })
 
 
