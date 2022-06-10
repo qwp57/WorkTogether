@@ -213,10 +213,10 @@
 	          <a class="dropdown-item has-icon ml-3" href="adminApproval.do">
               	<i class="bi bi-check-square-fill"></i>가입 승인
               </a>
-	       	  <a class="dropdown-item has-icon ml-3" href="#">
+	       	  <a class="dropdown-item has-icon ml-3" href="departmentManagement.do">
               	<i class="bi bi-diagram-3-fill"></i>부서 관리
               </a>
-	           <a class="dropdown-item has-icon ml-3" href="#">
+	           <a class="dropdown-item has-icon ml-3" href="employeeManagement.do">
               	<i class="bi bi-people-fill"></i>인사 관리
               </a>
 	           
@@ -317,7 +317,7 @@
       			$("#myProfile").modal("show")    			
       		});
       		
-      		$('#datetimepicker4').datetimepicker({
+      		$('#datetimepicker1').datetimepicker({
                 format: 'L'
             });
       		
