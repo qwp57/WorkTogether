@@ -65,9 +65,9 @@
                       Login
                     </button>
                   </div>
-                   </div>
-                  
                 </form>
+               </div>
+                  
                 <div class="text-center mt-4 mb-3">
                   <div class="text-job text-muted">비밀번호 찾기</div>
                 </div>
@@ -82,9 +82,10 @@
 
             </div>
         </div>
-      </div>
+      
     </section>
   </div>
+  <jsp:include page="../common/footer.jsp"></jsp:include>
 
   <!-- General JS Scripts -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>

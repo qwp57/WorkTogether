@@ -5,9 +5,17 @@
   
 <configuration>
 	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="callSettersOnNulls" value="true"/>
 		<setting name="jdbcTypeForNull" value="NULL"/>
 	</settings>
 	
+	<typeAliases>
+		<typeAlias type="com.uni.wt.employee.model.dto.Employee" alias="Employee"/>
+	</typeAliases>
 	
+	<mappers>
+		<mapper resource="/mappers/employee-mapper.xml"/>
+	</mappers>
 	
 </configuration>
