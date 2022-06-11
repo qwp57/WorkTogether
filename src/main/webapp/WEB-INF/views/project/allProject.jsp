@@ -28,14 +28,14 @@
 		"Segoe UI Symbol";
 	}
 
-	/* CARDS */
-	.cards {
+	/* projects */
+	.projects {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: start;
 	}
 
-	.card {
+	.project {
 		background-color: gray; -
 	-text: white;
 		margin: 20px;
@@ -100,28 +100,28 @@
 		background: gray;
 	}
 
-	.card:hover {
+	.project:hover {
 		box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.4);
 		transform: scale(1.03);
 	}
 
-	.card__check, .card__icon, .card__count {
+	.project__check, .project__icon, .project__count {
 		position: relative;
 		text-decoration: none;
 		color: rgba(255, 255, 255, 0.9);
 	}
 
-	.card__check {
+	.project__check {
 		grid-row: 2/4;
 		grid-column: 4/5;
 		justify-self: end;
 	}
 
-	.card__icon {
+	.project__icon {
 		grid-row: 2/3;
 	}
 
-	.card__title {
+	.project__title {
 		grid-row: 3/4;
 		grid-column: 1 / 4;
 		font-family: 'Nanum Gothic', sans-serif;
@@ -129,11 +129,11 @@
 		color: #ffffff;
 	}
 
-	.card__count {
+	.project__count {
 		grid-row: 4/5;
 	}
 
-	.card__date {
+	.project__date {
 		grid-row: 4/5;
 		grid-column: 4/4;
 		justify-self: end;
@@ -141,12 +141,12 @@
 
 	/* RESPONSIVE */
 	@media ( max-width : 1600px) {
-		.cards {
+		.projects {
 			justify-content: center;
 		}
 	}
 
-	/* .card__link::after {
+	/* .project__link::after {
             position: absolute;
             top: 25px;
             left: 0;
@@ -156,7 +156,7 @@
             background-color: rgba(255, 255, 255, 0.6);
             transition: all 0.5s;
         }
-        .card__link:hover::after {
+        .project__link:hover::after {
             width: 100%;
         }*/
         
@@ -186,7 +186,7 @@
 		color: black;
 	}
 
-	.card .card__title {
+	.project .project__title {
 		justify-content: center;
 	}
 	.custom-radio{
@@ -284,7 +284,7 @@
 		color: lightgray;
 	}
 
-	#editBarClose, .select-clear, .card, .listViewTable tr, .fa-cog,
+	#editBarClose, .select-clear, .project, .listViewTable tr, .fa-cog,
 	.fa-th-list, .fa-th-large, .fa-ellipsis-v , .fa-plus{
 		cursor: pointer
 	}
@@ -340,26 +340,26 @@
 		</div>
 		<div style="height: 30px;"></div>
 		<h3>즐겨찾기</h3>
-		<div class="cards">
+		<div class="projects">
 
 			<c:forEach var="index" begin="1" end="8">
-				<div class="card color-${index }">
-					<div class="card__icon">
+				<div class="project color-${index }">
+					<div class="project__icon">
 						<i class='fa fa-star fa-2x favoYellow'></i>
 					</div>
-					<div class="card__check pjCheck" style="display: none;">
+					<div class="project__check pjCheck" style="display: none;">
 						<div class="custom-control custom-checkbox">
 							<input type="checkbox" class="custom-control-input pjCheckAll"
 								   id="ckedFavo${index }"> <label class="custom-control-label"
 																  for="ckedFavo${index }"></label>
 						</div>
 					</div>
-					<h3 class="card__title">테스트</h3>
-					<p class="card__count">
+					<h3 class="project__title">테스트</h3>
+					<p class="project__count">
 						<i class='fa fa-user'
 						   style='color: white;'>&nbsp;7</i>
 					</p>
-					<p class="card__date">
+					<p class="project__date">
 						<i class='fa fa-flag'
 						   style='color: white;'>&nbsp;2022-06-02</i>
 					</p>
@@ -369,25 +369,25 @@
 			<div style="width: 100%; height: 30px;"></div>
 			<h3>참여중</h3>
 			<div style="width: 100%; height: 30px;"></div>
-			<div class="cards">
+			<div class="projects">
 				<c:forEach var="index" begin="1" end="8">
-					<div class="card">
-						<div class="card__icon">
+					<div class="project">
+						<div class="project__icon">
 							<i class='fa fa-star fa-2x favoWhite'></i>
 						</div>
-						<div class="card__check pjCheck" style="display: none;">
+						<div class="project__check pjCheck" style="display: none;">
 							<div class="custom-control custom-checkbox">
 								<input type="checkbox" class="custom-control-input pjCheckAll"
 									   id="ckedPj${index }"> <label
 									class="custom-control-label" for="ckedPj${index }"></label>
 							</div>
 						</div>
-						<h3 class="card__title">테스트</h3>
-						<p class="card__count">
+						<h3 class="project__title">테스트</h3>
+						<p class="project__count">
 							<i class='fa fa-user'
 							   style='color: white;'>&nbsp;7</i>
 						</p>
-						<p class="card__date">
+						<p class="project__date">
 							<i class='fa fa-flag'
 							   style='color: white;'>&nbsp;2022-06-02</i>
 
@@ -488,177 +488,8 @@
 
 
 
-
-<!-- 태그 모달창 -->
-<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
-<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
-<div class="modal fade"  id="tagModal" data-backdrop="static"
-	 data-keyboard="false">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content row">
-			<!-- modal header : 제목 -->
-			<div class="modal-header">
-				<span><h3 class="modal-title text-left">프로젝트 태그 설정</h3></span> <span><input
-					type="image" data-dismiss="modal"
-					src="resources/assets/img/close.png/" style="width: 20px;"></span>
-			</div>
-			<!-- modal body : 내용 -->
-			<form class="form" id="tagSave">
-				<div class="modal-body">
-					<table id="tagTable">
-						<c:forEach var="index" begin="1" end="5">
-							<tr>
-								<td><i class='fa fa-tag fa-lg'></i>
-								</td>
-								<th style="width: 50%">테스트</th>
-								<td style="width: 20%; text-align: right;">
-									<div class="custom-control custom-checkbox">
-										<input type="checkbox" class="custom-control-input"
-											   id="tag${index }"> <label
-											class="custom-control-label" for="tag${index }"></label>
-									</div>
-								</td>
-								<td style="width: 15%; text-align: right;">
-									<div class="btn-group dropright">
-										<i class='fa fa-ellipsis-v fa-lg' data-toggle="dropdown"
-										   aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>
-										<div class="dropdown-menu dropright">
-											<a class="dropdown-item" href="#" id="tagEdit">수정</a>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">삭제</a>
-										</div>
-									</div>
-								</td>
-							</tr>
-						</c:forEach>
-					</table>
-					<br>
-					<div class="col-lg-12 text-center">
-						<i class='fa fa-plus fa-2x'></i>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<div class="col-lg-12 text-center">
-						<button type="submit" class="btn btn-primary btn-lg mb-3">저장</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-
-
-<!-- 태그추가 모달창 -->
-<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
-<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
-<div class="modal fade"  id="AddTagModal" data-backdrop="static"
-	 data-keyboard="false">
-	<div class="modal-dialog modal-sm modal-dialog-centered">
-		<div class="modal-content row">
-			<!-- modal header : 제목 -->
-			<div class="modal-header">
-				<span><h4 class="modal-title text-left">프로젝트 태그 추가</h4></span> <span><input
-					type="image" data-dismiss="modal"
-					src="resources/assets/img/close.png/" style="width: 20px;"></span>
-			</div>
-			<!-- modal body : 내용 -->
-			<form class="form" id="tagAdd">
-				<div class="modal-body">
-					<div class="form-group">
-						<div class="input-group mb-3">
-							<input type="text" class="form-control" placeholder="" aria-label="">
-							<div class="input-group-append">
-								<button class="btn btn-primary" id="addTag" type="button" data-dismiss="modal">추가</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-
-<!-- 태그수정 모달창 -->
-<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
-<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
-<div class="modal fade"  id="tagEditModal" data-backdrop="static"
-	 data-keyboard="false">
-	<div class="modal-dialog modal-sm modal-dialog-centered">
-		<div class="modal-content row">
-			<!-- modal header : 제목 -->
-			<div class="modal-header">
-				<span><h4 class="modal-title text-left">프로젝트 태그 수정</h4></span> <span><input
-					type="image" data-dismiss="modal"
-					src="resources/assets/img/close.png/" style="width: 20px;"></span>
-			</div>
-			<!-- modal body : 내용 -->
-			<form class="form" id="tagAdd">
-				<div class="modal-body">
-					<div class="form-group">
-						<div class="input-group mb-3">
-							<input type="text" class="form-control" placeholder="테스트" aria-label="">
-							<div class="input-group-append">
-								<button class="btn btn-primary" type="button" data-dismiss="modal">수정</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-
-<!-- 색상 모달창 -->
-<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
-<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
-<div class="modal fade" id="colorModal" data-backdrop="static" data-keyboard="false" style="text-align: center;">
-	<div class="modal-dialog modal-lg modal-dialog-centered">
-		<div class="modal-content row">
-			<!-- modal header : 제목 -->
-			<div class="modal-header">
-				<span><h3 class="modal-title text-left">프로젝트 색상 설정</h3></span> <span><input
-					type="image" data-dismiss="modal"
-					src="resources/assets/img/close.png/" style="width: 20px;"></span>
-			</div>
-			<!-- modal body : 내용 -->
-			<form class="form" id="colorSave">
-				<div class="modal-body">
-					<table id="colorTable">
-						<tr>
-							<c:forEach var="index" begin="1" end="4">
-								<td><div class="colors color-${index }"><div class="custom-control custom-radio">
-										<input type="radio" name="customRadio"
-											   class="custom-control-input" id="color${index}"> <label
-											class="custom-control-label" for="color${index}"></label>
-									</div></div>
-									</td>
-							</c:forEach>
-						</tr>
-						<tr>
-							<c:forEach var="index" begin="5" end="8">
-								<td><div class="colors color-${index }"><div class="custom-control custom-radio">
-										<input type="radio" name="customRadio"
-											   class="custom-control-input" id="color${index}"> <label
-											class="custom-control-label" for="color${index}"></label>
-									</div></div>
-									</td>
-							</c:forEach>
-						</tr>
-					</table>
-				</div>
-				<div class="modal-footer">
-					<div class="col-lg-12 text-center">
-						<button type="submit" class="btn btn-primary btn-lg mb-3">저장</button>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
+<jsp:include page="colorTagModal.jsp" />
+<jsp:include page="pjForm.jsp" />
 <script>
 	$(function() {
 		$("#tag").click(function() {
@@ -668,7 +499,7 @@
 		$("#color").click(function() {
 			$("#colorModal").modal("show")
 		});
-
+		
 
 		$(".fa-star").click(function(e) {
 			if ($(this).hasClass("favoWhite")) {
@@ -744,15 +575,17 @@
                          '</div></div></td></tr>'
             )
         })*/
-		$(".fa-plus").click(function(){
+		$(".tagAddBtn").click(function(){
 			$("#AddTagModal").modal("show")
 		})
 
+		$(".newPj").click(function(){
+			$("#makePj").modal("show")
+		})
 
-
-		$(".card").click(function(e){
-			//card__icon
-			//card__check
+		$(".project").click(function(e){
+			//project__icon
+			//project__check
 			console.log(e.target)
 			location.href = "/detailPj.do";
 		})

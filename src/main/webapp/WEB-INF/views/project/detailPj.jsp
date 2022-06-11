@@ -44,7 +44,8 @@
         width: 275px;
     }
 
-    #newPj {
+    .newPj {
+    	color: white !important;
         width: 180px;
         height: 70px;
         font-family: 'Nanum Gothic', sans-serif;
@@ -328,7 +329,7 @@
                         <div class="card">
                             <div class="card-body body-1">
                                 <div>
-                                    <button class="btn btn-primary" id="newPj">+ 새 프로젝트</button>
+                                    <button class="btn btn-primary newPj">+ 새 프로젝트</button>
                                 </div>
                                 <div class="detailTop">
                                     <div class="colors color-1"></div>
@@ -338,10 +339,10 @@
                                            aria-haspopup="true" aria-expanded="false"
                                            style="width: 30px;"></i>
                                         <div class="dropdown-menu dropright">
-                                            <a class="dropdown-item" href="#">색상 설정</a> <a
-                                                class="dropdown-item" href="#">태그 설정</a> <a
+                                            <a class="dropdown-item" href="#" id="setColor">색상 설정</a> <a
+                                                class="dropdown-item" href="#" id="setTag">태그 설정</a> <a
                                                 class="dropdown-item" href="#">참여자 조회</a> <a
-                                                class="dropdown-item" href="#">프로젝트 설정</a>
+                                                class="dropdown-item" href="#"  id="setPj">프로젝트 설정</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">프젝트 나가기</a>
                                         </div>
@@ -450,7 +451,43 @@
                         <div class="card">
                             <div class="card-body body-4">
                                 <table class="boardTable">
-                                    <c:forEach var="index" begin="1" end="2">
+                                    <c:forEach var="index" begin="1" end="3">
+                                        <tr>
+                                            <td style="width: 7%; text-align: right; color: #f3a435 ;"><span
+                                                    class='bi bi-file-text'></span></td>
+                                            <td style="width: 8%; text-align: left;">글</td>
+                                            <th style="width: 40%;">제목</th>
+                                            <td style="width: 12%;">작성자</td>
+                                            <td style="width: 22%;">2022-06-02 01:15</td>
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                    </c:forEach>
+                                    <tr>
+                                        <td style="width: 7%; text-align: right; color: #35f364"><span
+                                                class="bi bi-calendar"></span></td>
+                                        <td style="width: 8%; text-align: left;">일정</td>
+                                        <th style="width: 40%;">제목</th>
+                                        <td style="width: 12%;">작성자</td>
+                                        <td style="width: 22%;">2022-06-02 01:15</td>
+                                        <td><b>6/10</b><br><a style="font-size: smaller">오전 10:45</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 7%; text-align: right; color: #3591f3 "><span
+                                                class="bi bi-check2-square"></span></td>
+                                        <td style="width: 7%; text-align: left;">할 일</td>
+                                        <th style="width: 40%;">제목</th>
+                                        <td style="width: 12%;">작성자</td>
+                                        <td style="width: 22%;">2022-06-02 01:15</td>
+                                        <td><span class="badge"
+                                                  style="background-color: #3591f3 ; height: 100%; font-size: 18px; color: white;">20%</span>
+                                        </td>
+
+                                    </tr>
+                                    
+                                     <c:forEach var="index" begin="1" end="3">
                                         <tr>
                                             <td style="width: 7%; text-align: right; color: #f3a435 ;"><span
                                                     class='bi bi-file-text'></span></td>
@@ -491,6 +528,30 @@
                     </div>
                 </div>
             </div>
+            <div class="section-body">
+					<div class="row mt-sm-4 ">
+						<div class="col-md-12 col-lg-12" style="margin-left: 450px;">
+
+							<div class="buttons">
+								<nav aria-label="Page navigation example">
+									<ul class="pagination text-center">
+										<li class="page-item"><a class="page-link" href="#"
+											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+												<span class="sr-only">이전</span>
+										</a></li>
+										<li class="page-item"><a class="page-link" href="#">1</a></li>
+										<li class="page-item"><a class="page-link" href="#">2</a></li>
+										<li class="page-item"><a class="page-link" href="#">3</a></li>
+										<li class="page-item"><a class="page-link" href="#"
+											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+												<span class="sr-only">다음</span>
+										</a></li>
+									</ul>
+								</nav>
+							</div>
+						</div>
+					</div>
+				</div>
         </section>
     </div>
 </div>
@@ -1089,8 +1150,53 @@
 </div>
 
 
+<jsp:include page="colorTagModal.jsp" />
+<jsp:include page="pjForm.jsp" />
 <script>
     $(function () {
+		$(document).on('click', '.newPj', function(){
+			$("#makePj").modal("show")
+		})
+		
+		$(document).on('click', '#setColor', function(){
+			$("#colorModal").modal("show")
+		})
+		
+		$(document).on('click', '#setTag', function(){
+			$("#tagModal").modal("show")
+		})
+		
+		$(document).on('click', '#tagEdit', function(){
+			$("#tagEditModal").modal("show")
+		})
+		
+		$(document).on('click', '.tagAddBtn', function(){
+			console.log('테스트')
+			$("#tagTable").append(
+					'<tr>'+
+					'<td><i class="fa fa-tag fa-lg"></i>'+
+					'</td>'+
+					'<th style="width: 50%">테스트</th>'+
+					'<td style="width: 20%; text-align: right;">'+
+						'<div class="custom-control custom-checkbox">'+
+							'<input type="checkbox" class="custom-control-input" id="tag6">'+
+								' <label class="custom-control-label" for="tag6"></label>'+
+						'</div>'+
+					'</td>'+
+					'<td style="width: 15%; text-align: right;">'+
+						'<div class="btn-group dropright">'+
+							'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"'+
+							   'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
+							'<div class="dropdown-menu dropright">'+
+								'<a class="dropdown-item" href="#" id="tagEdit">수정</a>'+
+								'<div class="dropdown-divider"></div>'+
+								'<a class="dropdown-item" href="#">삭제</a>'+
+							'</div>'+
+						'</div>'+
+					'</td>'+
+				'</tr>'
+					)
+		})
 
 
         $(document).on('click', '.fa-star', function (){

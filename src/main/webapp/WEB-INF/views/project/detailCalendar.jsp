@@ -20,15 +20,16 @@
             color: black;
         }
 
-        #newPj {
-            width: 180px;
-            height: 70px;
-            font-family: 'Nanum Gothic', sans-serif;
-            font-weight: 700;
-            font-size: x-large;
-            border-radius: 20px;
-            font-family: 'Nanum Gothic', sans-serif;
-        }
+      .newPj {
+    	color: white !important;
+        width: 180px;
+        height: 70px;
+        font-family: 'Nanum Gothic', sans-serif;
+        font-weight: 700;
+        font-size: x-large;
+        border-radius: 20px;
+        font-family: 'Nanum Gothic', sans-serif;
+    }
 
         .favoYellow {
             color: #f3da35;
@@ -214,7 +215,7 @@
                         <div class="card">
                             <div class="card-body body-1">
                                 <div>
-                                    <button class="btn btn-primary" id="newPj">+ 새 프로젝트</button>
+                                    <button class="btn btn-primary newPj">+ 새 프로젝트</button>
                                 </div>
                                 <div class="detailTop">
                                     <div class="colors color-1"></div>
@@ -223,11 +224,11 @@
                                         <i class='fa fa-ellipsis-v fa-2x' data-toggle="dropdown"
                                            aria-haspopup="true" aria-expanded="false"
                                            style="width: 30px;"></i>
-                                        <div class="dropdown-menu dropright">
-                                            <a class="dropdown-item" href="#">색상 설정</a> <a
-                                                class="dropdown-item" href="#">태그 설정</a> <a
+                                          <div class="dropdown-menu dropright">
+                                            <a class="dropdown-item" href="#" id="setColor">색상 설정</a> <a
+                                                class="dropdown-item" href="#" id="setTag">태그 설정</a> <a
                                                 class="dropdown-item" href="#">참여자 조회</a> <a
-                                                class="dropdown-item" href="#">프로젝트 설정</a>
+                                                class="dropdown-item" href="#"  id="setPj">프로젝트 설정</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">프젝트 나가기</a>
                                         </div>
@@ -269,7 +270,8 @@
 
 
 <jsp:include page="invitePjModal.jsp"></jsp:include>
-
+<jsp:include page="colorTagModal.jsp" />
+<jsp:include page="pjForm.jsp" />
 </body>
 <script>
 
@@ -308,6 +310,50 @@
 </script>
 <script>
     $(function () {
+    	$(document).on('click', '.newPj', function(){
+			$("#makePj").modal("show")
+		})
+		
+    	$(document).on('click', '#setColor', function(){
+			$("#colorModal").modal("show")
+		})
+		
+		$(document).on('click', '#setTag', function(){
+			$("#tagModal").modal("show")
+		})
+		
+		$(document).on('click', '#tagEdit', function(){
+			$("#tagEditModal").modal("show")
+		})
+		
+		$(document).on('click', '.tagAddBtn', function(){
+			console.log('테스트')
+			$("#tagTable").append(
+					'<tr>'+
+					'<td><i class="fa fa-tag fa-lg"></i>'+
+					'</td>'+
+					'<th style="width: 50%">테스트</th>'+
+					'<td style="width: 20%; text-align: right;">'+
+						'<div class="custom-control custom-checkbox">'+
+							'<input type="checkbox" class="custom-control-input" id="tag6">'+
+								' <label class="custom-control-label" for="tag6"></label>'+
+						'</div>'+
+					'</td>'+
+					'<td style="width: 15%; text-align: right;">'+
+						'<div class="btn-group dropright">'+
+							'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"'+
+							   'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
+							'<div class="dropdown-menu dropright">'+
+								'<a class="dropdown-item" href="#" id="tagEdit">수정</a>'+
+								'<div class="dropdown-divider"></div>'+
+								'<a class="dropdown-item" href="#">삭제</a>'+
+							'</div>'+
+						'</div>'+
+					'</td>'+
+				'</tr>'
+					)
+		})
+		
         $(document).on('click', '.fa-star', function () {
             if ($(this).hasClass("favoWhite")) {
                 $(this).removeClass("favoWhite")

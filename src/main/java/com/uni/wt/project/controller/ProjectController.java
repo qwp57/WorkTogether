@@ -37,5 +37,8 @@ public class ProjectController {
 	public String allCalendar () {
 		return "project/allCalendar";
 	}
-	
+	@RequestMapping("/enrollProject.do")
+	public String enrollProject () {
+		return "project/pjForm";
+	}
 }

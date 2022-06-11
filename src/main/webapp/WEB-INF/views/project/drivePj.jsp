@@ -22,7 +22,8 @@
         color: black;
     }
 
-    #newPj {
+    .newPj {
+    	color: white !important;
         width: 180px;
         height: 70px;
         font-family: 'Nanum Gothic', sans-serif;
@@ -540,7 +541,7 @@
                             <div class="card">
                                 <div class="card-body body-1">
                                     <div>
-                                        <button class="btn btn-primary" id="newPj">+ 새 프로젝트</button>
+                                        <button class="btn btn-primary newPj">+ 새 프로젝트</button>
                                     </div>
                                     <div class="detailTop">
                                         <div class="colors color-1"></div>
@@ -550,13 +551,13 @@
                                                aria-haspopup="true" aria-expanded="false"
                                                style="width: 30px;"></i>
                                             <div class="dropdown-menu dropright">
-                                                <a class="dropdown-item" href="#">색상 설정</a> <a
-                                                    class="dropdown-item" href="#">태그 설정</a> <a
-                                                    class="dropdown-item" href="#">참여자 조회</a> <a
-                                                    class="dropdown-item" href="#">프로젝트 설정</a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" href="#">프젝트 나가기</a>
-                                            </div>
+                                            <a class="dropdown-item" href="#" id="setColor">색상 설정</a> <a
+                                                class="dropdown-item" href="#" id="setTag">태그 설정</a> <a
+                                                class="dropdown-item" href="#">참여자 조회</a> <a
+                                                class="dropdown-item" href="#"  id="setPj">프로젝트 설정</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" href="#">프젝트 나가기</a>
+                                        </div>
                                         </div>
                                         <p id="pjDetail"></p>
                                         <h5 id="pjTitle">프로젝트 제목</h5>
@@ -608,7 +609,7 @@
 
                                     <div class="contents" style="width: 100%;">
 
-                                        <div class="file_list" style="width: 100%;">
+                                        <div class="file_list" style="width: 100%; display: none;">
                                             <div class="file_list_index" style="width: 100%;">
                                                 <div class="file_chk">
                                                     <input type="checkbox" id="file_list_all">
@@ -660,7 +661,7 @@
                                             </div>
 
                                         </div>
-                                        <div class="piclist" style="display:none; width: 100%;">
+                                        <div class="piclist" style="display:block; width: 100%;">
                                             <div class="piclist_index">
                                                 <div class="file_chk">
                                                     <input type="checkbox" id="thumb_list_all">
@@ -738,12 +739,56 @@
 
     </div>
 <jsp:include page="invitePjModal.jsp"></jsp:include>
-
-
+<jsp:include page="colorTagModal.jsp" />
+<jsp:include page="pjForm.jsp" />
 
 </body>
 <script>
     $(function () {
+    	$(document).on('click', '.newPj', function(){
+			$("#makePj").modal("show")
+		})
+		
+    	$(document).on('click', '#setColor', function(){
+			$("#colorModal").modal("show")
+		})
+		
+		$(document).on('click', '#setTag', function(){
+			$("#tagModal").modal("show")
+		})
+		
+		$(document).on('click', '#tagEdit', function(){
+			$("#tagEditModal").modal("show")
+		})
+		
+		$(document).on('click', '.tagAddBtn', function(){
+			console.log('테스트')
+			$("#tagTable").append(
+					'<tr>'+
+					'<td><i class="fa fa-tag fa-lg"></i>'+
+					'</td>'+
+					'<th style="width: 50%">테스트</th>'+
+					'<td style="width: 20%; text-align: right;">'+
+						'<div class="custom-control custom-checkbox">'+
+							'<input type="checkbox" class="custom-control-input" id="tag6">'+
+								' <label class="custom-control-label" for="tag6"></label>'+
+						'</div>'+
+					'</td>'+
+					'<td style="width: 15%; text-align: right;">'+
+						'<div class="btn-group dropright">'+
+							'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"'+
+							   'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
+							'<div class="dropdown-menu dropright">'+
+								'<a class="dropdown-item" href="#" id="tagEdit">수정</a>'+
+								'<div class="dropdown-divider"></div>'+
+								'<a class="dropdown-item" href="#">삭제</a>'+
+							'</div>'+
+						'</div>'+
+					'</td>'+
+				'</tr>'
+					)
+		})
+		
         $(document).on('click', '.fa-star', function () {
             if ($(this).hasClass("favoWhite")) {
                 $(this).removeClass("favoWhite")
@@ -1335,6 +1380,22 @@
         $('.piclist_wrapper').append(html);
     };
 
+
+</script>
+<script>
+$(".fa-th-list").click(function() {
+	$(".fa-th-list").css("color", "black")
+	$(".fa-th-large").css("color", "gray")
+
+})
+
+$(".fa-th-large").click(function() {
+	console.log("bb")
+
+	$(".fa-th-large").css("color", "black")
+	$(".fa-th-list").css("color", "gray")
+
+})
 
 </script>
 </html>
