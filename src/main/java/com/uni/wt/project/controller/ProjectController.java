@@ -41,4 +41,21 @@ public class ProjectController {
 	public String enrollProject () {
 		return "project/pjForm";
 	}
+	@RequestMapping("/storedPj.do")
+	public String storedPj () {
+		return "project/storedPj";
+	}
+	@RequestMapping("/selectTag.do")
+	public String selectTag() {
+		return "project/selectTag";
+	}
+	@RequestMapping("/chatinvite.do")
+	public String chatinvite() {
+		return "chat/chatinvite";
+	}
+	@RequestMapping("/chatRoom.do")
+	public String chatRoom() {
+		return "chat/chatroom";
+	}
+	
 }

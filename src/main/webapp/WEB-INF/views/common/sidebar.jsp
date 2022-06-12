@@ -50,8 +50,8 @@
                 <a href="/allProject.do" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>프로젝트조회</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link" href="/allProject.do">전체 프로젝트</a></li>
-                  <li><a class="nav-link" href="forms-editor.html">보관 프로젝트</a></li>
-                  <li><a class="nav-link" href="forms-validation.html">태그별 조회</a></li>
+                  <li><a class="nav-link" href="/storedPj.do">보관 프로젝트</a></li>
+                  <li><a class="nav-link" href="/selectTag.do">태그별 조회</a></li>
                 </ul>
               </li>
               <li class="nav-item">
@@ -77,5 +77,8 @@
             
         </aside>
       </div>
+      
+      
+      
 </body>
 </html>
