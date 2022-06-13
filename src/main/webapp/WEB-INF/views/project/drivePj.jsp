@@ -586,16 +586,8 @@
                             <div class="card">
                                 <div class="card-body body-2">
                                     <div class="row">
-                                        <div class="col-lg-6">
-                                            <a class="title_thumb class">
-                                                <i class="fa fa-th-large fa-2x" style="color:black;"></i>
-                                            </a>
-                                            <a class="title_list class">
-                                                <i class="fa fa-th-list fa-2x" style="color:gray;"></i>
-                                            </a>
-                                        </div>
 
-                                        <div class="col-lg-6 text-right">
+                                        <div class="col-lg-12 text-right">
                                             <a class="title_down title_btn" style="cursor:default">
                                                 <i class="bi bi-download fa-lg"> 다운로드</i>
                                             </a>
@@ -609,58 +601,6 @@
 
                                     <div class="contents" style="width: 100%;">
 
-                                        <div class="file_list" style="width: 100%; display: none;">
-                                            <div class="file_list_index" style="width: 100%;">
-                                                <div class="file_chk">
-                                                    <input type="checkbox" id="file_list_all">
-                                                    <label for="file_list_all" class="file_list_all"
-                                                           style="cursor:pointer;"></label>
-                                                </div>
-                                                <div class="file_list_fname filetable">파일명 <span class="arrow">↓</span>
-                                                </div>
-                                                <div class="file_list_fsize filetable">크기 <span class="arrow">↓</span></div>
-                                                <div class="file_list_uname filetable">등록자 <span class="arrow">↓</span>
-                                                </div>
-                                                <div class="file_list_fdate filetable"
-                                                     style="text-decoration: underline; font-weight:700; color:#111;">최근
-                                                    업로드순 <span class="arrow">↓</span></div>
-                                            </div>
-
-
-                                            <div class="file_list_wrapper ">
-
-                                                <div class="file_list_tr">
-                                                    <div class="file_chk">
-                                                        <input type="checkbox" id="file_list_all${e.count}"
-                                                               class="file_list_chk" name="fname" value="${file.fname}">
-                                                        <label for="file_list_all${e.count}" class="file_list_chk"
-                                                               style="cursor:pointer;"></label>
-                                                    </div>
-                                                    <div class="file_tr_fname listfname">
-                                                        <i class="bi bi-file-earmark-fill fa-lg"></i>
-                                                        ${file.foriginalname}</div>
-                                                    <div class="file_tr_fsize center">${file.fsize }</div>
-                                                    <div class="file_tr_uname center">${file.uname}</div>
-                                                    <div class="file_tr_fdate center">${file.fdate}</div>
-                                                </div>
-                                                <div class="file_list_tr">
-                                                    <div class="file_chk">
-                                                        <input type="checkbox" id="file_list_all${e.count}"
-                                                               class="file_list_chk" name="fname" value="${file.fname}">
-                                                        <label for="file_list_all${e.count}" class="file_list_chk"
-                                                               style="cursor:pointer;"></label>
-                                                    </div>
-                                                    <div class="file_tr_fname listfname">
-                                                        <i class="bi bi-file-earmark-fill fa-lg"></i>
-                                                        ${file.foriginalname}</div>
-                                                    <div class="file_tr_fsize center">${file.fsize }</div>
-                                                    <div class="file_tr_uname center">${file.uname}</div>
-                                                    <div class="file_tr_fdate center">${file.fdate}</div>
-                                                </div>
-
-                                            </div>
-
-                                        </div>
                                         <div class="piclist" style="display:block; width: 100%;">
                                             <div class="piclist_index">
                                                 <div class="file_chk">
@@ -680,49 +620,46 @@
                                                     <div class="picinfo text-center mt-5">
                                                         <i class="bi bi-file-earmark-fill fa-4x"></i>
 
-                                                        <!--<img src="${file.imgsrc}" alt="file" class="imgthumb">-->
-                                                        <input type="hidden" class="imgfname" value="${file.fname}">
+                                                        <input type="hidden" class="imgfname">
                                                     </div>
                                                     <div class="file_chk">
-                                                        <input type="checkbox" id="thumb_chk${e.count}" class="thumb_chk"
-                                                               name="fname" value="${file.fname}">
-                                                        <label for="thumb_chk${e.count}" class="thumb_chk picchk"
+                                                        <input type="checkbox" id="thumb_chk" class="thumb_chk"
+                                                               name="fname">
+                                                        <label for="thumb_chk" class="thumb_chk picchk"
                                                                style="cursor:pointer;"></label>
                                                     </div>
                                                     <input type="text" maxlength="50" class="pictext" readonly
-                                                           style="cursor:pointer" value="${file.foriginalname}">
+                                                           style="cursor:pointer">
                                                 </div>
                                                 <div class="piclist_tr">
                                                     <div class="picinfo text-center mt-5">
                                                         <i class="bi bi-file-earmark-fill fa-4x"></i>
 
-                                                        <!--<img src="${file.imgsrc}" alt="file" class="imgthumb">-->
-                                                        <input type="hidden" class="imgfname" value="${file.fname}">
+                                                        <input type="hidden" class="imgfname">
                                                     </div>
                                                     <div class="file_chk">
-                                                        <input type="checkbox" id="thumb_chk${e.count}" class="thumb_chk"
-                                                               name="fname" value="${file.fname}">
-                                                        <label for="thumb_chk${e.count}" class="thumb_chk picchk"
+                                                        <input type="checkbox" id="thumb_chk" class="thumb_chk"
+                                                               name="fname">
+                                                        <label for="thumb_chk" class="thumb_chk picchk"
                                                                style="cursor:pointer;"></label>
                                                     </div>
                                                     <input type="text" maxlength="50" class="pictext" readonly
-                                                           style="cursor:pointer" value="${file.foriginalname}">
+                                                           style="cursor:pointer">
                                                 </div>
                                                 <div class="piclist_tr">
                                                     <div class="picinfo text-center mt-5">
                                                         <i class="bi bi-file-earmark-fill fa-4x"></i>
 
-                                                        <!--<img src="${file.imgsrc}" alt="file" class="imgthumb">-->
-                                                        <input type="hidden" class="imgfname" value="${file.fname}">
+                                                        <input type="hidden" class="imgfname">
                                                     </div>
                                                     <div class="file_chk">
-                                                        <input type="checkbox" id="thumb_chk${e.count}" class="thumb_chk"
-                                                               name="fname" value="${file.fname}">
-                                                        <label for="thumb_chk${e.count}" class="thumb_chk picchk"
+                                                        <input type="checkbox" id="thumb_chk" class="thumb_chk"
+                                                               name="fname">
+                                                        <label for="thumb_chk" class="thumb_chk picchk"
                                                                style="cursor:pointer;"></label>
                                                     </div>
                                                     <input type="text" maxlength="50" class="pictext" readonly
-                                                           style="cursor:pointer" value="${file.foriginalname}">
+                                                           style="cursor:pointer">
                                                 </div>
                                             </div>
                                         </div>
@@ -820,19 +757,6 @@
             location.href = "/detailCalendar.do"
         })
     })
-$(".fa-th-list").click(function() {
-	$(".fa-th-list").css("color", "black")
-	$(".fa-th-large").css("color", "gray")
-
-})
-
-$(".fa-th-large").click(function() {
-	console.log("bb")
-
-	$(".fa-th-large").css("color", "black")
-	$(".fa-th-list").css("color", "gray")
-
-})
 
 
 </script>
