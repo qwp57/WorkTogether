@@ -9,10 +9,11 @@
 <style>
 	.title{
 		color: black;
+		margin-bottom: 20px;
 	}
 	
 	.statusList{
-		font-size: 15px;
+		font-size: 16px;
 	}
 	
 	.table{
@@ -61,9 +62,9 @@
 			<div class="row">
 				<div class="statusList ml-4 mt-3">
 					<span id="all"><a href="#">전체</a></span>
-					<span class="ml-2" id="waiting"><a href="#">승인 대기</a></span>
-					<span class="ml-2" id="completion"><a href="#">승인 완료</a></span>
-					<span class="ml-2" id="rejection"><a href="#">승인 거부</a></span>
+					<span class="ml-3" id="waiting"><a href="#">승인 대기</a></span>
+					<span class="ml-3" id="completion"><a href="#">승인 완료</a></span>
+					<span class="ml-3" id="rejection"><a href="#">승인 거부</a></span>
 				</div>
 			</div>
 			
@@ -290,7 +291,7 @@
 	
 	<script>
 		$(function(){
-			<!-- 상태가 승인 대기인 경우에만 클릭했을 때 모달 창이 나와야 한다. 또는 이미 승인 완료,거부된 경우에는  모달창의 버튼이 나오지 않는다.-->
+			//상태가 승인 대기인 경우에만 클릭했을 때 모달 창이 나와야 한다. 또는 이미 승인 완료,거부된 경우에는  모달창의 버튼이 나오지 않는다.
 			$("#adminList tbody tr").click(function(){
 				//위에서 사번을 모달로 넘기면 제이쿼리에서 받아서 사용한다.
 				//empNo = $(this).data(empNo);

@@ -46,8 +46,8 @@
 	
   	 <interceptors>
 		<interceptor>
-			<mapping path="/enrollForm.do"/>
-			<beans:bean id = "EnrollInterceptor" class="com.uni.wt.common.interceptor.EnrollInterceptor"/>
+			<mapping path="/login.do"/>
+			<beans:bean id = "LoginInterceptor" class="com.uni.wt.common.interceptor.LoginInterceptor"/>
 		</interceptor>
 	</interceptors> 
 

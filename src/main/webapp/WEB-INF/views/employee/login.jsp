@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +18,19 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="resources/assets/css/style.css">
   <link rel="stylesheet" href="resources/assets/css/components.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
+<script type="text/javascript">
+$(function(){
+	let msg = "${msg}";
+	if(msg != ""){
+		alert(msg);
+		
+	}
+})
+</script>
   <div id="app">
     <section class="section">
       <div class="container mt-5">
@@ -33,10 +44,10 @@
               <div class="card-header"><h4>Login</h4></div>
 
               <div class="card-body">
-                <form method="POST" action="#" class="needs-validation" novalidate="">
+                <form method="POST" action="/login.do" class="needs-validation" novalidate="">
                   <div class="form-group">
-                    <label for="email">ID</label>
-                    <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus placeholder="ID를 입력해주세요">
+                    <label for="id">ID</label>
+                    <input id="id" type="text" class="form-control" name="id" tabindex="1" required autofocus placeholder="ID를 입력해주세요">
                     <div class="invalid-feedback">
                       ID를 입력하세요
                     </div>
@@ -55,8 +66,8 @@
 
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" name="remember" class="custom-control-input" tabindex="3" id="remember-me">
-                      <label class="custom-control-label" for="remember-me">ID 저장</label>
+                      <input type="checkbox" id="remember" name="remember" class="custom-control-input" tabindex="3">
+                      <label class="custom-control-label" for="remember">ID 저장</label>
                     </div>
                   </div>
 
@@ -100,6 +111,7 @@
   <!-- Template JS File -->
   <script src="resources/assets/js/scripts.js"></script>
   <script src="resources/assets/js/custom.js"></script>
+  <script src="resources/assets/js/login.js"></script>
 
   <!-- Page Specific JS File -->
 </body>

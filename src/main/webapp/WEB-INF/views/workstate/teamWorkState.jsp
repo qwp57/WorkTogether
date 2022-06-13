@@ -28,13 +28,13 @@ margin-top: 50px;
 .pagination{
 	justify-content: center;
 }
-#searchwrap{
+/*#searchwrap{
 display: flex;
 justify-content: center;
 }
 #search{
 width: auto;
-}
+}*/
 
 
 /**/

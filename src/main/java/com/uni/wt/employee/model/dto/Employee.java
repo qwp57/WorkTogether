@@ -24,6 +24,7 @@ public class Employee {
 	private String email;
 	
 	@NotNull(message = "전화번호가 빈 값입니다.")
+	
 	private String phone;
 	
 	@NotNull(message = "생일이 빈 값입니다.")

@@ -1,10 +1,24 @@
 package com.uni.wt.workState.controller;
 
+import java.text.SimpleDateFormat;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 
+import com.uni.wt.workState.model.dto.WorkState;
+import com.uni.wt.workState.service.WorkStateService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class WorkStateController {
+	
+	@Autowired
+	private WorkStateService wsService;
 	
 	@RequestMapping("workStateMain.do")
 	public String workStateMain() {
@@ -35,10 +49,21 @@ public class WorkStateController {
 		
 		return "workstate/workStatistics";
 	}
-	@RequestMapping("/test")
-	public String test() {
+	
+	@ResponseBody
+	@RequestMapping("/insertInTime.do")
+	public String insertInTime(String emp_no) throws Exception {
+		log.info("insertInTime.do 들어옴 ");
 		
-		return "workstate/NewFile";
+		
+		log.info("emp_no : {}", emp_no);
+		
+		
+		
+		String result = wsService.insertInTime(emp_no);
+		
+		
+		return result;
 	}
 
 }
