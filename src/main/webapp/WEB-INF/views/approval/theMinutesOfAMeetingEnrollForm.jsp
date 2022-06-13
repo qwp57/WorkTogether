@@ -17,7 +17,7 @@
 		margin-right: 10px;
 	}
 	
-	#letterOfApproval{
+	#theMinutesOfAMeeting{
 		background-color: white;
 		margin-top: 30px;
 		border: 3px solid lightgray;
@@ -30,6 +30,11 @@
 	
 	#approvalLine2{
 		width: 17%;		
+	}
+	
+	#meetingPurpose{
+		resize: none;
+		height: 300px;
 	}
 
 	#fileUpload{
@@ -57,21 +62,21 @@
 	}
 	
 </style>
- 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"/>
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </head>
-<body>	
+<body>
 	<div class="main-content">
 	<div style="height: 50px"></div>
 		<div class="container">
 			<div class="title mt-5 row">
 				<span><i class="bi bi-clipboard2-check-fill"></i></span>
-				<span><h3>일반 품의서</h3></span> 
-			</div>	
+				<span><h3>회의록</h3></span> 
+			</div>
 			<section class="section-body">
-				<form id="letterOfApprovalForm"  method="post" enctype="multipart/form-data">
-					<div id="letterOfApproval">
-						<div><h2 class="text-center pt-3">품의서</h2></div>							
+				<form id="theMinutesOfAMeetingForm"  method="post" enctype="multipart/form-data">
+					<div id="theMinutesOfAMeeting">
+						<div><h2 class="text-center pt-3">회의록</h2></div>							
 						<button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal">결재선 선택</button> <br><br><br>
 						<table class="table table-bordered float-right" id="approvalLine1">
 							<tr>
@@ -134,36 +139,57 @@
 									<input type="text" class="form-control" id="appTitle" name="appTitle">
 								</td>
 							</tr>							
-						</table>		
-										
+						</table>
+						
+						<table class="table table-bordered mt-3">
+							<tr>
+								<th style="width: 15%">참석자</th>
+								<td><input type="text" class="form-control" id="attendees" name="attendees"></td>
+							</tr>
+							<tr>
+								<th>회의 목적</th>
+								<td><textarea class="form-control" id="meetingPurpose" name="meetingPurpose"></textarea></td>
+							</tr>
+							<tr>
+								<th>회의 일자</th>
+								<td>
+									<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+					                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"  name="empBirth"/>
+					                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+					                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+					                    </div>
+					                </div>	 
+								</td>
+							</tr>
+						</table>
+						
 						<div class="" id="summernote" name="loaContent"></div>	
 						
 						<div class="" >
 							<div class="mt-5" style="font-size:15px"><strong>첨부파일</strong></div>
 							<div id="fileUpload" class="text-center mt-2 pt-5">클릭하여 파일을 추가하세요.</div>
 							<div id="fileArea">
-								<input type="file" class="" id="upfile" name="upfile" style="display:none"/>									
+									<input type="file" class="" id="upfile" name="upfile" style="display:none"/>									
 							</div>
-						</div>									
+						</div>	
 					</div>
 					<div class="float-right mt-3">
 						<button type="submit" class="btn btn-primary">기안하기</button>
 						<button type="button" class="btn btn-primary" onclick="location.href='approvalMain.do'">취소하기</button>
-					</div>
-				</form>	
+					</div>	
+				</form>
 			</section>
 		</div>
 	</div>
-	
+
 	<!-- 결재선 선택 모달창 -->
 	<div class="modal" id="approvalLineModal" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<!-- modal header -->
 				<div class="modal-header">
-					<div class="modal-header">
-	   					<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>     				   				
-	   				</div>
+	   				<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>    
+	   				<input type="image" class="text-right" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px"> 				   				
 				</div>
 				
 				<!-- modal body -->
@@ -291,10 +317,18 @@
 			</div>
 		</div>	
 	</div>
-	
-	<script>		
-		$(function () {
-	        $('#summernote').summernote({
+
+	<script>
+		$(function(){
+			$('#datetimepicker1').datetimepicker({
+                format: 'L'
+            });
+			
+			$("#fileUpload").click(function(){
+		       	$("#upfile").click();
+		    });	
+			
+			$('#summernote').summernote({
 	            placeholder: '내용을 입력해주세요',
 	            tabsize: 2,
 	            height: 500,
@@ -310,80 +344,10 @@
 	                ['insert', ['link', 'picture', 'video']],
 	            ]
 	        });
-	    });
-
-		$(function(){	        
-	        $("#fileUpload").click(function(){
-	        	$("#upfile").click();
-	        });			
-		
-	        $("#plusIcon1").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon1").removeAttr("style");	
-				
-			});
-			
-			$("#minusIcon1").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon1").removeAttr("style");				
-			});
-			
-			$("#minusIcon2").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon2").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon2").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon2").removeAttr("style");				
-			});
-			
-			$("#minusIcon3").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon3").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon3").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon3").removeAttr("style");				
-			});
-			
-			$("#minusIcon4").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon4").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon4").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon5").removeAttr("style");				
-			});
-			
-			$("#minusIcon5").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon5").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon5").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon4").removeAttr("style");				
-			});
-			
-			$("#minusIcon6").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon4").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon6").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon4").removeAttr("style");				
-			});
+			 
 		});
 	</script>
+
 	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

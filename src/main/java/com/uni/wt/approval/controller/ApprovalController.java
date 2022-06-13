@@ -29,4 +29,16 @@ public class ApprovalController {
 	public String letterOfApprovalEnrollForm() {
 		return "approval/letterOfApprovalEnrollForm";
 	}
+	
+	//지출 결의서로 이동
+	@RequestMapping("expenditureEnrollForm.do")
+	public String expenditureEnrollForm() {
+		return "approval/expenditureEnrollForm";
+	}
+	
+	//회의록으로 이동
+	@RequestMapping("theMinutesOfAMeetingEnrollForm.do")
+	public String theMinutesOfAMeetingForm() {
+		return "approval/theMinutesOfAMeetingEnrollForm";
+	}
 }
