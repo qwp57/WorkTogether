@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<jsp:include page="../common/header.jsp"/>
+<jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -41,10 +43,7 @@
 	}
 </style>
 </head>
-<body>
-	<jsp:include page="../common/header.jsp"/>
-	<jsp:include page="../common/sidebar.jsp"/>
-	
+<body>	
 	<div class="main-content">
 	<div style="height: 50px"></div>
 		<div class="container">
