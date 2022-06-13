@@ -37,11 +37,23 @@
               </li>
              
               <li class="nav-item dropdown">
-                <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>전자결재</span></a>
+                <a href="#" class="nav-link has-dropdown" id="approval"><i class="fas fa-th-large"></i><span>전자결재</span></a>
                 <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="components-article.html">기안서작성</a></li>
-                  <li><a class="nav-link beep beep-sidebar" href="components-avatar.html">결재문서함</a></li>
-                  <li><a class="nav-link" href="components-chat-box.html">기안문서함</a></li>
+                  <li><a class="nav-link" href="approvalMain.do">전자결재 홈</a></li>
+                  <li>
+                  	<a class="nav-link" data-toggle="collapse" data-target="#drftWritingForm" href="#">
+                  		<span style="width: 300px" id="draftWriting">기안서작성</span>
+                  		<i class="bi bi-caret-down-fill" id="down"></i>
+                  		<i class="bi bi-caret-up-fill" id="up" style="display:none"></i>
+                  	</a>
+                  	<div id="drftWritingForm" class="collapse ml-3">
+                  		<a href="letterOfApprovalEnrollForm.do">일반 품의서</a>
+                  		<a href="#">지출 결의서</a>
+                  		<a href="#">회의록</a>
+                  	</div>
+                  </li>
+                  <li><a class="nav-link beep beep-sidebar" href="approvalDocument.do">결재문서함</a></li>
+                  <li><a class="nav-link" href="draftDocument.do">기안문서함</a></li>
                 </ul>
               </li>
                <hr>
@@ -75,5 +87,19 @@
             
         </aside>
       </div>
+      
+     <script>
+     	$(function(){
+     		$("#draftWriting").click(function(){
+     			$("#down").css("display","none");
+     			$("#up").removeAttr("style");
+     		});
+     		
+     		$("#draftWriting").click(function(){
+     			$("#up").css("display","none");
+     			$("#down").removeAttr("style");
+     		});
+     	});
+     </script>
 </body>
 </html>
