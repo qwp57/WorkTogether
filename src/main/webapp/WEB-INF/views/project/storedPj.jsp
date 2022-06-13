@@ -323,7 +323,7 @@
 		<div style="width: 100%;">
 
 			<div class="topmenu">
-				<h2>내 프로젝트</h2>
+				<h2>보관된 프로젝트</h2>
 			</div>
 
 			<div class="topmenu" style="text-align: right;">
@@ -339,7 +339,6 @@
 			</div>
 		</div>
 		<div style="height: 30px;"></div>
-		<h3>즐겨찾기</h3>
 		<div class="projects">
 
 			<c:forEach var="index" begin="1" end="8">
@@ -366,38 +365,6 @@
 				</div>
 			</c:forEach>
 
-			<div style="width: 100%; height: 30px;"></div>
-			<h3>참여중</h3>
-			<div style="width: 100%; height: 30px;"></div>
-			<div class="projects">
-				<c:forEach var="index" begin="1" end="8">
-					<div class="project">
-						<div class="project__icon">
-							<i class='fa fa-star fa-2x favoWhite'></i>
-						</div>
-						<div class="project__check pjCheck" style="display: none;">
-							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input pjCheckAll"
-									   id="ckedPj${index }"> <label
-									class="custom-control-label" for="ckedPj${index }"></label>
-							</div>
-						</div>
-						<h3 class="project__title">테스트</h3>
-						<p class="project__count">
-							<i class='fa fa-user'
-							   style='color: white;'>&nbsp;7</i>
-						</p>
-						<p class="project__date">
-							<i class='fa fa-flag'
-							   style='color: white;'>&nbsp;2022-06-02</i>
-
-						</p>
-					</div>
-				</c:forEach>
-
-
-			</div>
-
 		</div>
 	</div>
 </div>
@@ -413,7 +380,7 @@
 		<div style="width: 100%;">
 
 			<div class="topmenu">
-				<h2>내 프로젝트</h2>
+				<h2>보관된 프로젝트</h2>
 			</div>
 			<div class="topmenu" style="text-align: right;">
 				<div class="menuIcon">
@@ -428,7 +395,6 @@
 			</div>
 		</div>
 		<div style="height: 30px;"></div>
-		<h3>즐겨찾기</h3>
 		<div class="lists">
 			<table class="listViewTable">
 				<c:forEach var="index" begin="1" end="8">
@@ -451,32 +417,6 @@
 								class='fa fa-flag'></i>&nbsp;2022-06-02</td>
 					</tr>
 				</c:forEach>
-			</table>
-			<div style="width: 100%; height: 30px;"></div>
-			<h3>참여중</h3>
-			<div style="width: 100%; height: 30px;"></div>
-			<table class="listViewTable">
-				<c:forEach var="index" begin="1" end="8">
-					<tr style="width: 100%">
-						<td>
-							<div class="custom-control custom-checkbox pjCheck"
-								 style="display: none;">
-								<input type="checkbox" class="custom-control-input pjCheckAll"
-									   id="ckedPj${index }"> <label
-									class="custom-control-label" for="ckedPj${index }"></label>
-							</div>
-						</td>
-						<td><div class="colors color-8"></div></td>
-						<td style="width: 10%;"><i
-								class='icon fa fa-star fa-2x favoWhite'></i></td>
-						<th style="width: 40%;">테스트</th>
-						<td style="width: 20%;"><i
-								class='fa fa-user'></i>&nbsp;7</td>
-						<td style="width: 30%;"><i
-								class='fa fa-flag'></i>&nbsp;2022-06-02</td>
-					</tr>
-				</c:forEach>
-
 			</table>
 
 		</div>

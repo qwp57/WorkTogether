@@ -27,6 +27,24 @@
   <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
 
   <style>
+  .dropdown-list .dropdown-list-content:not(.is-end ):after {
+	content: normal
+}
+/* 모달 */
+.chat-wrap {
+	width: 380px;
+	height: 550px;
+	display: none;
+	position: absolute;
+	top: 60px;
+	text-align: left;
+	border: 1px solid #e7e7e7;
+	background: #fff;
+	z-index: 1050;
+	border: 1px solid #e7e7e7;
+	box-shadow: 0 0 6px 2px #e7e7e7;
+	border-radius: 7px;
+}
   	#profileTable{
   		width:100%;
   		height:90%;
@@ -82,70 +100,40 @@ $(function(){
         </form>
         <ul class="navbar-nav navbar-right">
           <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
-            <div class="dropdown-menu dropdown-list dropdown-menu-right">
-              <div class="dropdown-header">Messages
-                <div class="float-right">
-                  <a href="#">Mark All As Read</a>
-                </div>
-              </div>
-              <div class="dropdown-list-content dropdown-list-message">
-                <a href="#" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-avatar">
-                    <img alt="image" src="resources/assets/img/avatar/avatar-1.png" class="rounded-circle">
-                    <div class="is-online"></div>
-                  </div>
-                  <div class="dropdown-item-desc">
-                    <b>Kusnaedi</b>
-                    <p>Hello, Bro!</p>
-                    <div class="time">10 Hours Ago</div>
-                  </div>
-                </a>
-                <a href="#" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-avatar">
-                    <img alt="image" src="resources/assets/img/avatar/avatar-2.png" class="rounded-circle">
-                  </div>
-                  <div class="dropdown-item-desc">
-                    <b>Dedik Sugiharto</b>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-                    <div class="time">12 Hours Ago</div>
-                  </div>
-                </a>
-                <a href="#" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-avatar">
-                    <img alt="image" src="resources/assets/img/avatar/avatar-3.png" class="rounded-circle">
-                    <div class="is-online"></div>
-                  </div>
-                  <div class="dropdown-item-desc">
-                    <b>Agung Ardiansyah</b>
-                    <p>Sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    <div class="time">12 Hours Ago</div>
-                  </div>
-                </a>
-                <a href="#" class="dropdown-item">
-                  <div class="dropdown-item-avatar">
-                    <img alt="image" src="resources/assets/img/avatar/avatar-4.png" class="rounded-circle">
-                  </div>
-                  <div class="dropdown-item-desc">
-                    <b>Ardian Rahardiansyah</b>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit ess</p>
-                    <div class="time">16 Hours Ago</div>
-                  </div>
-                </a>
-                <a href="#" class="dropdown-item">
-                  <div class="dropdown-item-avatar">
-                    <img alt="image" src="resources/assets/img/avatar/avatar-5.png" class="rounded-circle">
-                  </div>
-                  <div class="dropdown-item-desc">
-                    <b>Alfa Zulkarnain</b>
-                    <p>Exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
-                    <div class="time">Yesterday</div>
-                  </div>
-                </a>
-              </div>
-              <div class="dropdown-footer text-center">
-                <a href="#">View All <i class="fas fa-chevron-right"></i></a>
-              </div>
-            </div>
+          	<div class="dropdown-menu dropdown-list dropdown-menu-right chat-tab-wrap"  style="display: none;">
+					<div class="dropdown-header">
+						<a id="chatNav">채팅</a> 
+						<div class="float-right">
+							<a class='bi bi-chat-fill fa-2x' href="/chatinvite.do"
+								id="chat-add"
+								onClick="window.open(this.href, '', 'width=470, height=680'); return false;">
+
+							</a>
+
+						</div>
+					</div>
+					<!-- 채팅 -->
+					<div class="chat-tab-wrap">
+						<div class="dropdown-list-content dropdown-list-message">
+							<c:forEach begin="1" end="12">
+								<a href="/chatRoom.do" class="dropdown-item dropdown-item-unread" onClick="window.open(this.href, '', 'width=470, height=680'); return false;">
+									<div class="dropdown-item-avatar">
+										<img alt="image"
+											src="resources/assets/img/avatar/avatar-1.png"
+											class="rounded-circle">
+										<div class="is-online"></div>
+									</div>
+									<div class="dropdown-item-desc">
+										<b>채팅방 이름</b>
+										<p>채팅 내용</p>
+									</div>
+								</a>
+							</c:forEach>
+						</div>
+					</div>
+
+				</div>
+				
           </li>
           <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
@@ -352,6 +340,13 @@ $(function(){
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="resources/assets/js/stisla.js"></script>
+
+	<!-- JS Libraies 
+  <script src="resources/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
+  <script src="resources/node_modules/chart.js/dist/Chart.min.js"></script>
+  <script src="resources/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+  <script src="resources/node_modules/summernote/dist/summernote-bs4.js"></script>
+  <script src="resources/node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>-->
 
   <!-- Template JS File -->
   <script src="resources/assets/js/scripts.js"></script>

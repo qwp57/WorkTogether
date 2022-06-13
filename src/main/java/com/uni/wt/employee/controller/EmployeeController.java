@@ -65,15 +65,7 @@ public class EmployeeController {
 
 
 
-	@RequestMapping("/allProject")
-	public String allProject() {
-		return "project/allProject";
-	}
 	
-	@RequestMapping("/detailPj.do")
-	public String detailPj() {
-		return "project/detailPj";
-	}
 	
 	
 	@RequestMapping(value="/enrollForm.do")
