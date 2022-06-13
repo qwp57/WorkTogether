@@ -14,22 +14,15 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css" integrity="sha384-eoTu3+HydHRBIjnCVwsFyCpUDZHZSFKEJD0mc3ZqSBSb6YhZzRHeiomAUWCstIWo" crossorigin="anonymous">
 
-  <!-- CSS Libraries -->
-  <link rel="stylesheet" href="resources/node_modules/jqvmap/dist/jqvmap.min.css">
-  <link rel="stylesheet" href="resources/node_modules/summernote/dist/summernote-bs4.css">
-  <link rel="stylesheet" href="resources/node_modules/owl.carousel/dist/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="resources/node_modules/owl.carousel/dist/assets/owl.theme.default.min.css">
-
   <!-- Template CSS -->
   <link rel="stylesheet" href="resources/assets/css/style.css">
   <link rel="stylesheet" href="resources/assets/css/components.css">
   
   <!-- 캘린더 cdn -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
-
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
 
   <style>
   	#profileTable{
@@ -262,15 +255,15 @@
 	      					</tr>
 	      					<tr>
 	      						<th>&nbsp;이름</th>
-	      						<td><input class="m-3" type="text" value="홍길동" name="empName"></td>
+	      						<td><input class="form-control" type="text" value="홍길동" name="empName"></td>
 	      						<th style="width: 15%">&nbsp;아이디</th>
-	      						<td><input class="m-3" type="text" value="hong" readonly></td>
+	      						<td><input class="form-control" type="text" value="hong" readonly></td>
 	      					</tr>
 	      					<tr>
 	      						<th>&nbsp;부서</th>
-	      						<td><input class="m-3" type="text" value="인사팀" name="empDept"></td>
+	      						<td><input class="form-control" type="text" value="인사팀" name="empDept"></td>
 	      						<th>&nbsp;직위</th>
-	      						<td><input class="m-3" type="text" value="대리" name="empJob"></td>
+	      						<td><input class="form-control" type="text" value="대리" name="empJob"></td>
 	      					</tr>
 	      					<tr>
 	      						<th>&nbsp;생일</th>
@@ -283,11 +276,11 @@
 					                </div>	      					
 	      						</td>
 	      						<th>&nbsp;핸드폰 번호</th>
-	      						<td><input class="m-3" type="tel" value="010-1111-2222" name="empTel"></td>
+	      						<td><input class="form-control" type="tel" value="010-1111-2222" name="empTel"></td>
 	      					</tr>
 	      					<tr>
 	      						<th>&nbsp;이메일</th>
-	      						<td><input class="m-3" type="email" value="HONG@WT.COM" name="empEmail"></td>
+	      						<td><input class="form-control" type="email" value="HONG@WT.COM" name="empEmail"></td>
 	      						<th>&nbsp;입사일</th>
 	      						<td>
 	      							<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
@@ -330,19 +323,13 @@
       </script>
       
   <!-- General JS Scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="resources/assets/js/stisla.js"></script>
-
-  <!-- JS Libraies 
-  <script src="resources/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
-  <script src="resources/node_modules/chart.js/dist/Chart.min.js"></script>
-  <script src="resources/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
-  <script src="resources/node_modules/summernote/dist/summernote-bs4.js"></script>
-  <script src="resources/node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>-->
 
   <!-- Template JS File -->
   <script src="resources/assets/js/scripts.js"></script>

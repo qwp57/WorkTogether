@@ -1,10 +1,10 @@
-package com.uni.wt.admin;
+package com.uni.wt.admin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class adminController {
+public class AdminController {
 
 	//단순 화면 전환
 	@RequestMapping("adminApproval.do")
