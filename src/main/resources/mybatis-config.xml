@@ -13,11 +13,13 @@
 	<typeAliases>
 		<typeAlias type="com.uni.wt.employee.model.dto.Employee" alias="Employee"/>
 		<typeAlias type="com.uni.wt.workState.model.dto.WorkState" alias="WorkState"/>
+		<typeAlias type="com.uni.wt.project.model.dto.Project" alias="Project"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/employee-mapper.xml"/>
-		<mapper resource="/mappers/workState-mapper.xml"/> 
+		<mapper resource="/mappers/workState-mapper.xml"/>
+		<mapper resource="/mappers/project-mapper.xml"/>
 	</mappers>
 	
 </configuration>
