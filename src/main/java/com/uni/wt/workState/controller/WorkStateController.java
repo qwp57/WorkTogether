@@ -52,15 +52,26 @@ public class WorkStateController {
 	
 	@ResponseBody
 	@RequestMapping("/insertInTime.do")
-	public String insertInTime(String emp_no) throws Exception {
+	public int insertInTime(String emp_no) throws Exception {
 		log.info("insertInTime.do 들어옴 ");
 		
 		
 		log.info("emp_no : {}", emp_no);
 		
+		int result = wsService.insertInTime(emp_no);
 		
 		
-		String result = wsService.insertInTime(emp_no);
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping("/updateOutTime.do")
+	public int updateOutTime(String emp_no) throws Exception {
+		log.info("insertInTime.do 들어옴 ");
+		
+		
+		log.info("emp_no : {}", emp_no);
+		
+		int result = wsService.updateOutTime(emp_no);
 		
 		
 		return result;

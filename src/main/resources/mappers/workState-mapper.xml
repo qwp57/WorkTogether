@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.uni.wt.workState.model.dao.WorkStateMapper">
  
+ <resultMap type="WorkState" id="workStateSet">
+ 	<result property="work_no" column="WORK_NO"/>
+ 	<result property="emp_no" column="EMP_NO"/>
+ 	<result property="in_time" column="IN_TIME"/>
+ 	<result property="out_time" column="OUT_TIME"/>
+ </resultMap>
+ 
+ 
  <select id="getSeq" resultType="_int">
  SELECT WS_SEQ.NEXTVAL FROM DUAL
  </select>
@@ -10,5 +18,28 @@
  	INSERT INTO WORK_TIME (WORK_NO, EMP_NO, IN_TIME, OUT_TIME)
  	VALUES(#{todaySeq}, #{emp_no}, SYSDATE,NULL)
  </insert>
+ 
+ <update id="updateWorkState" parameterType="Map">
+ 	UPDATE WORK_STATUS
+ 	SET STATUS = #{ws}
+ 	WHERE EMP_NO = #{emp_no}
+ </update>
+ 
+ <update id="updateOutTime" parameterType="Map">
+ 	UPDATE WORK_TIME
+ 	SET OUT_TIME = SYSDATE
+ 	WHERE EMP_NO = #{emp_no}
+ 	AND WORK_NO = #{todaySeq}
+ </update>
+ 
+ <select id="selectWorkTime" parameterType="_int" resultMap="workStateSet">
+ 	SELECT * FROM WORK_TIME
+ 	WHERE WORK_NO = #{todaySeq}
+ </select>
+ <select id="selectWorkState" parameterType="string" resultType="string">
+ 	SELECT STATUS FROM WORK_STATUS
+ 	WHERE EMP_NO = #{emp_no}
+ 
+ </select>
  
 </mapper>

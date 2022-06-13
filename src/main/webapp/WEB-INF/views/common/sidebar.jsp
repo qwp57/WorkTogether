@@ -48,8 +48,8 @@
                   	</a>
                   	<div id="drftWritingForm" class="collapse ml-3">
                   		<a href="letterOfApprovalEnrollForm.do">일반 품의서</a>
-                  		<a href="#">지출 결의서</a>
-                  		<a href="#">회의록</a>
+                  		<a href="expenditureEnrollForm.do">지출 결의서</a>
+                  		<a href="theMinutesOfAMeetingEnrollForm.do">회의록</a>
                   	</div>
                   </li>
                   <li><a class="nav-link beep beep-sidebar" href="approvalDocument.do">결재문서함</a></li>
