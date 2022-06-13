@@ -116,13 +116,10 @@ $(function(){
 										<div class="invalid-feedback">입사일을 입력해주세요</div>
 									</div>
 									<div class="form-group">
-<<<<<<< HEAD
 										<button type="button" id="enrollBtn" class="btn btn-primary btn-lg btn-block"
 											tabindex="4" onclick="validation();">가입 신청</button>
-=======
 										<button type="button" class="btn btn-primary btn-lg btn-block"
 											tabindex="9" onclick="validation();">가입 신청</button>
->>>>>>> refs/heads/master
 									</div>
 
 								</form>

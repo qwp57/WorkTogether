@@ -11,10 +11,6 @@ public interface EmployeeMapper {
 
 	public int insertEmp(Employee emp);
 
-<<<<<<< HEAD
-}
-=======
 	public Employee loginEmp(Employee emp);
 
 }
->>>>>>> refs/heads/master

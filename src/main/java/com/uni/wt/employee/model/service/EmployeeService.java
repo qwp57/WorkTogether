@@ -8,10 +8,6 @@ public interface EmployeeService {
 
 	void insertEmp(Employee emp) throws Exception;
 
-<<<<<<< HEAD
-}
-=======
 	Employee loginEmp(Employee emp) throws Exception;
 
 }
->>>>>>> refs/heads/master

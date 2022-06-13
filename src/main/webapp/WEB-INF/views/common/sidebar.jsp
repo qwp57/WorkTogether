@@ -89,11 +89,6 @@
             
         </aside>
       </div>
-      
-<<<<<<< HEAD
-      
-      
-=======
      <script>
      	$(function(){
      		$("#draftWriting").click(function(){
@@ -107,6 +102,5 @@
      		});
      	});
      </script>
->>>>>>> refs/heads/master
 </body>
 </html>
