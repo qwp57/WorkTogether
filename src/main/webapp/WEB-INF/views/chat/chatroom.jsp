@@ -295,7 +295,7 @@ input:focus {
 	<div id="chat-room-wrap">
 		<div class="chat-room-top">
 			<p class="chat-room-name-wrap">
-				<span id="chat-name-title">${chatname }</span> <span
+				<span id="chat-name-title">채팅방이름</span> <span
 					class="chat-top-right"> 
 				<a href="#" id="chat-room-search">
 					<span class='bi bi-search fa-lg' style="color: white;"></span>

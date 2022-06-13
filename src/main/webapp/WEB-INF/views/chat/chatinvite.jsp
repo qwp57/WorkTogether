@@ -40,19 +40,11 @@
 						class="rounded-circle ml-3" width="35px" height="35px"> <span
 						class="tel-my-desc ml-3"> <a href="#">사원명</a>
 					</span>
-
-
 				</div>
 				<hr>
 				<p class="tel-title">전체 연락처</p>
 				<div class="tel-all">
-					<!-- 전체 연락처 / 해당 회사 user list 가져와서 뿌리기 -->
-
-
-
-
 				</div>
-				<!-- 연락처에서 이름 클릭했을 때 info 모달 -->
 				<div class="prof-info-dim"></div>
 				<div class="prof-info-wrap">
 					<div class="prof-bg-img"></div>
@@ -72,12 +64,8 @@
 								</p>
 								<br>
 							</c:forEach>
-
-
 							<br> <span class="prof-chat-wrap"> </span>
-
 						</div>
-
 					</div>
 				</div>
 
