@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<jsp:include page="../common/header.jsp"/>
+<jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -171,15 +173,19 @@ td:last-child {
 <body>
 <script type="text/javascript">
     $(function(){
-        let msg = "${msg}";
-        if(msg != ""){
-            alert(msg);
-            
-        }
+
+        var a = "${w.in_time}";
+             var b = ${w.emp_no};
+             var c = ${w}
+         
+             console.log(a);
+             console.log(b);
+             console.log(c);
+
     })
-    </script>
-<jsp:include page="../common/header.jsp"/>
-<jsp:include page="../common/sidebar.jsp"/>
+		
+</script>
+
 
 
 <div align="center">
@@ -247,7 +253,15 @@ td:last-child {
 	
 	                                    <div id="current_Status">
 	                                        <span class="time_status" id="current_Time"></span>
-	                                        <span class="time_status" id="status_Change">근무중</span>
+	                                        <span class="time_status" id="status_Change">
+	                                        	<c:choose>
+	                                        		<c:when test="${w.status eq 'W'}">근무중</c:when>
+	                                        		<c:when test="${w.status eq 'OW'}">외근중</c:when>
+	                                        		<c:when test="${w.status eq 'MT'}">회의중</c:when>
+	                                        		<c:when test="${w.status eq 'OT'}">외출중</c:when>
+	                                        		<c:when test="${w.status eq 'LW'}">퇴 근</c:when>
+	                                        	</c:choose>
+	                                        </span>
 	                                    </div>
                                     </div>
 
@@ -257,7 +271,7 @@ td:last-child {
                                                    src="resources/assets/img/arrow-up.png"
                                                    alt="">
                                             <div class="time_text">출 근</div>
-                                            <div class="time_text" id="startTime_area">00:00:00</div>
+                                            <div class="time_text" id="startTime_area">${w.in_time}</div>
                                         </div>
                                         <div id="v-line"></div>
                                         <div class="Io_Click">
@@ -355,71 +369,8 @@ td:last-child {
     </div>
 </div>
 </div>
-<script type="text/javascript">
-
-$(function(){
-	let today = new Date();
-
-	let week = new Array('일', '월', '화', '수', '목','금', '토');
-	let dayfm = today.getFullYear()+"년 "+(today.getMonth()+1)+"월 "+today.getDate()+"일 ("+week[today.getDay()]+")";
-	$('#current_Date').text(dayfm);
-	
-	getClock();
-	
-	
-})
-
-function getClock() {
-	let today = new Date();
-	const hours = String(today.getHours()).padStart(2, "0");
-    const min = String(today.getMinutes()).padStart(2, "0");
-    const sec = String(today.getSeconds()).padStart(2, "0");
-	let curTime = hours+":"+min+":"+sec;
-	$('#current_Time').text(curTime);
-}
-
-setInterval(getClock, 1000);
-
-
-$('#startTime').click(function(){
-
-    empno = $('#empno').val();
-    console.log(empno);
-    console.log('되나');
-
-    $.ajax({
-        url:"insertInTime.do", 
-        data : {emp_no : empno },
-        type : "post",
-        success : function(result){
-            console.log(result);
-            if(result == 'success'){
-            	console.log('왜 시간이 안 나오지');
-                let in_time = new Date();
-                var in_time_Hour = String(in_time.getHours()).padStart(2,"0");
-                var in_time_min = String(in_time.getMinutes()).padStart(2,"0");
-                var in_time_sec = String(in_time.getSeconds()).padStart(2, "0");
-
-                let in_time_text = in_time_Hour+":"+in_time_min+":"+in_time_sec;
-                console.log(in_time_text);
-     
-                $('#startTime_area').text(in_time_text);
-                console.log($('#startTime_area').text(in_time_text));
-
-                let name = $('.user-name').children().text();
-                alert(name+'님이 출근했습니다.');
-                console.log(name+'님이 출근했습니다.');
-            }
-        }, 
-        error : function(){console.log("ajax 통신실패")}
-    })
-    
-
-});
-</script>
-
-
 <jsp:include page="../common/footer.jsp"/>
 
 </body>
+<script src="resources/assets/js/workTimecheck_main.js"></script>
 </html>
