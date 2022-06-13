@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,6 +26,9 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.employee.model.service.EmployeeService;
+import com.uni.wt.workState.model.dto.WorkState;
+import com.uni.wt.workState.service.WorkStateService;
+import com.uni.wt.workState.service.WorkStateServiceImpl;
 
 /**
  * Handles requests for the application home page.
@@ -40,6 +44,9 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeService empService;
+	
+	@Autowired
+	private WorkStateService wsService;
 	
 	private Map<String, String> msgMap = new HashMap<String, String>(); 
 	
@@ -59,11 +66,27 @@ public class EmployeeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
+		
 		return "common/main";
+		//return "employee/login";
 
 	}
 
-
+	@RequestMapping("/main")
+	public String mainHome(@ModelAttribute("loginEmp") Employee emp, Model m) throws Exception {
+		
+		if(emp != null) {
+			log.info("로그인 이후 메인화면 : {}님 입장",emp.getName());
+			//근무상태 불러오기 
+			WorkState w= wsService.selectWorkState(String.valueOf(emp.getEmp_no()));
+			
+			m.addAttribute("w", w);
+			
+			
+		}
+		
+		return "common/main";
+	}
 
 	
 	
@@ -130,7 +153,7 @@ public class EmployeeController {
 		
 		m.addAttribute("loginEmp", loginEmp);// Redirect로 전달되지 않지만 @SessionAttributes로 세션에 자동 저장
 		
-		return "redirect:/";
+		return "redirect:/main";
 	}
 	
 	@RequestMapping("/loout.do")

@@ -11,5 +11,6 @@ public class WorkState {
 	private String emp_no;
 	private Date in_time;
 	private Date out_time;
+	private String status;
 
 }
