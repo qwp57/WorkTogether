@@ -1,6 +1,59 @@
 /**
  * 
  */
+ $(function(){
+ 	$('#id').keyup(function(){
+ 	
+ 		if(!(/^[a-zA-Z0-9]*$/.test($("#id").val()))){
+			
+				console.log(/^[a-zA-Z0-9]*$/.test($("#id").val()));
+				$('#id').next('.invalid-feedback').text('아이디는 영어 대/소문자와 숫자만 가능합니다');
+				$('#id').next('.invalid-feedback').css("display", "block");
+				$('#id').css({'border': '1px solid red'});
+				confirm = false;
+				
+			}else if ($('#id').val().length < 6 || $('#id').val().length > 20 ) {
+				$('#id').next('.invalid-feedback').text('아이디는 6자 이상 20자 이하만 가능합니다');
+				$('#id').next('.invalid-feedback').css("display", "block");
+				$('#id').css({'border': '1px solid red'});
+				confirm = false;
+				
+			}else{
+				
+				$('#id').next('.invalid-feedback').css("display", "none");
+				$('#id').css({'border': '1px solid #e4e6fc'});
+					}//아이디가 영어와 숫자로 이뤄져있고 6자이상 20자이하인지
+					
+			$.ajax({
+				url:"idCheck.do",
+				data : { userId : $('#id').val()},
+				type : "post",
+				success : function(result){
+					console.log(result)
+					
+					if(result == '0'){
+						console.log('submit 한다.')
+						$('#enrollForm').submit();
+					}else{
+						idCheckValidate(1);
+						$('#id').css({'border': '1px solid red'});
+						$('#id').focus();
+					}
+					
+					
+				},
+				error : function(){console.log("ajax 통신실패")}
+			})
+ 	
+ 	
+ 	
+ 	})
+ 
+ })
+ 
+ 
+ 
+ 
  function validation() {//부트스트랩툴에 포함된 유효성 검사에는 그 머냐 빈칸인지 아닌지만 검사해줘서 주석처리하고 새로 만듬
  
  	var confirm = true;
@@ -16,24 +69,7 @@
 				
 			}//이름이 빈값인지 아닌지
 			
-			if(!(/^[a-zA-Z0-9]*$/.test($("#id").val()))){
-			
-				console.log(/^[a-zA-Z0-9]*$/.test($("#id").val()));
-				$('#id').next('.invalid-feedback').text('아이디는 영어 대/소문자와 숫자만 가능합니다');
-				$('#id').next('.invalid-feedback').css("display", "block");
-				$('#id').css({'border': '1px solid red'});
-				confirm = false;
-				
-			}else if ($('#id').val().length < 6 || $('#id').val().length > 20 ) {
-				$('#id').next('.invalid-feedback').text('아이디는 6자 이상 20자 이하만 가능합니다');
-				$('#id').next('.invalid-feedback').css("display", "block");
-				$('#id').css({'border': '1px solid red'});
-				confirm = false;
-				
-			}else{
-				$('#id').next('.invalid-feedback').css("display", "none");
-				$('#id').css({'border': '1px solid #e4e6fc'});
-					}//아이디가 영어와 숫자로 이뤄져있고 6자이상 20자이하인지
+		
 					
 			if($('#password').val().trim()==""){
 				$('#password').next('.invalid-feedback').css("display", "block");
@@ -110,25 +146,6 @@
 		
 		
 function idCheck(){
-	$.ajax({
-		url:"idCheck.do",
-		data : { userId : $('#id').val()},
-		type : "post",
-		success : function(result){
-			console.log(result)
-			
-			if(result == '0'){
-				console.log('submit 한다.')
-				$('#enrollForm').submit();
-			}else{
-				alert('중복된 아이디가 있습니다.');
-				$('#name').css({'border': '1px solid red'});
-				$('#name').focus();
-			}
-			
-			
-		},
-		error : function(){console.log("ajax 통신실패")}
-	})
+	
 }
 		
