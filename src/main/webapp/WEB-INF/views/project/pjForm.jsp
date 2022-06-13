@@ -22,17 +22,17 @@
 						src="resources/assets/img/close.png/" style="width: 20px;"></span>
 				</div>
 				<!-- modal body : 내용 -->
-				<form class="form" id="">
+				<form class="form" id="enrollPj" action="insertPj.do" method="post">
 					<div class="modal-body">
 						<div class="col-lg-12 text-center mt-5">
 							<hr>
 						</div>
 						<div class="col-lg-12 text-center mt-5">
 							<div class="form-group mr-5 ml-5">
-								<input type="text" class="form-control" placeholder="제목을 입력하세요.">
+								<input type="text" name="pj_title" class="form-control" placeholder="제목을 입력하세요.">
 							</div>
 							<div class="form-group mr-5 ml-5">
-								<input type="text" class="form-control" style="height: 150px;"
+								<input type="text" name="pj_content" class="form-control" style="height: 150px;"
 									placeholder="프로젝트에 관한 설명 입력 (옵션)">
 							</div>
 						</div>
@@ -40,47 +40,28 @@
 							<h5>게시글 권한 설정</h5>
 							<br> <a>작성 권한</a>
 
-							<div class="dropdown d-inline"
-								style="margin-left: 150px; width: 300px;">
-								<button class="btn btn-dark dropdown-toggle" type="button"
-									id="dropdownMenuButton" data-toggle="dropdown"
-									aria-haspopup="true" aria-expanded="false">모두</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">모두</a> <a
-										class="dropdown-item" href="#">프로젝트 관리자</a>
-								</div>
-							</div>
+							<select name="board_power" style="margin-left: 20px;">
+								<option selected value="N">모두</option>
+								<option value="Y">프로젝트 관리자</option>
+							</select>
 						</div>
 						<div class="col-lg-12 text-left mr-5 ml-5 mt-5">
 							<h5>댓글 권한 설정</h5>
 							<br> <a>작성 권한</a>
 
-							<div class="dropdown d-inline"
-								style="margin-left: 150px; width: 300px;">
-								<button class="btn btn-dark dropdown-toggle" type="button"
-									id="dropdownMenuButton" data-toggle="dropdown"
-									aria-haspopup="true" aria-expanded="false">모두</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">모두</a> <a
-										class="dropdown-item" href="#">프로젝트 관리자</a>
-								</div>
-							</div>
+							<select name="reply_power" style="margin-left: 20px;">
+								<option selected value="N">모두</option>
+								<option value="Y">프로젝트 관리자</option>
+							</select>
 						</div>
 						<div class="col-lg-12 text-left mr-5 ml-5 mt-5">
 							<h5>파일 권한 설정</h5>
 							<br> <a>조회/다운로드 권한</a>
 
-							<div class="dropdown d-inline"
-								style="margin-left: 150px; width: 300px;">
-								<button class="btn btn-dark dropdown-toggle" type="button"
-									id="dropdownMenuButton" data-toggle="dropdown"
-									aria-haspopup="true" aria-expanded="false">모두</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">모두</a> <a
-										class="dropdown-item" href="#">프로젝트 관리자</a>
-								</div>
-							</div>
-						
+							<select name="file_power" style="margin-left: 20px;">
+								<option selected value="N">모두</option>
+								<option value="Y">프로젝트 관리자</option>
+							</select>
 						</div>
 							<div class="col-lg-12 text-left mr-5 ml-5 mt-5">
 							<h5>프로젝트 설정 설정</h5>
@@ -103,4 +84,8 @@
 		</div>
 	</div>
 </body>
+<script>
+
+
+</script>
 </html>

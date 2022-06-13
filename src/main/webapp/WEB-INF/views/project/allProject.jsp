@@ -341,8 +341,7 @@
 		<div style="height: 30px;"></div>
 		<h3>즐겨찾기</h3>
 		<div class="projects">
-
-			<c:forEach var="index" begin="1" end="8">
+		<!--
 				<div class="project color-${index }">
 					<div class="project__icon">
 						<i class='fa fa-star fa-2x favoYellow'></i>
@@ -364,13 +363,11 @@
 						   style='color: white;'>&nbsp;2022-06-02</i>
 					</p>
 				</div>
-			</c:forEach>
 
 			<div style="width: 100%; height: 30px;"></div>
 			<h3>참여중</h3>
 			<div style="width: 100%; height: 30px;"></div>
 			<div class="projects">
-				<c:forEach var="index" begin="1" end="8">
 					<div class="project">
 						<div class="project__icon">
 							<i class='fa fa-star fa-2x favoWhite'></i>
@@ -391,11 +388,10 @@
 							<i class='fa fa-flag'
 							   style='color: white;'>&nbsp;2022-06-02</i>
 
-						</p>
+						</	p>
 					</div>
-				</c:forEach>
 
-
+			-->
 			</div>
 
 		</div>
@@ -492,16 +488,21 @@
 <jsp:include page="pjForm.jsp" />
 <script>
 	$(function() {
-		$("#tag").click(function() {
+
+		$(document).on("click", "#tag", function (){
 			$("#tagModal").modal("show")
-		});
+		})
 
 		$("#color").click(function() {
 			$("#colorModal").modal("show")
-		});
-		
+		})
 
-		$(".fa-star").click(function(e) {
+		$(document).on("click", "#color", function (){
+			$("#colorModal").modal("show")
+		})
+
+
+		$(document).on("click", ".fa-star", function (e){
 			if ($(this).hasClass("favoWhite")) {
 				$(this).removeClass("favoWhite")
 				$(this).addClass("favoYellow")
@@ -514,47 +515,43 @@
 			e.stopPropagation()
 		})
 
-		$(".fa-cog").click(function() {
+
+		$(document).on("click", ".fa-cog", function (){
 			$("#totalProjectEditBar").css("display", "block")
 			$(".pjCheck").css("display", "block")
 		})
 
-		$(".fa-window-close").click(function() {
+
+		$(document).on("click", ".fa-window-close", function (){
 			$(".pjCheck").css("display", "none")
 		})
 
-		$(".fa-th-list").click(function() {
-			console.log("ㅋㅋ")
+		$(document).on("click", ".fa-th-list", function (){
 			$(".largeView").css("display", "none")
 			$(".listView").css("display", "block")
 			$(".fa-th-list").css("color", "black")
 			$(".fa-th-large").css("color", "")
-
 		})
 
-		$(".fa-th-large").click(function() {
-			console.log("bb")
-
+		$(document).on("click", ".fa-th-large", function (){
 			$(".listView").css("display", "none")
 			$(".largeView").css("display", "block")
 			$(".fa-th-large").css("color", "black")
 			$(".fa-th-list").css("color", "")
-
 		})
 
-		$("#editBarClose").click(function() {
+		$(document).on("click", "#editBarClose", function (){
 			$(".pjCheckAll").prop("checked", false)
 			$(".select-count").text("0개 프로젝트가 선택되었습니다.")
 			$("#totalProjectEditBar").css("display", "none")
 		})
 
-		$(".select-clear").click(function() {
+		$(document).on("click", ".select-clear", function (){
 			$(".pjCheckAll").prop("checked", false)
 			$(".select-count").text("0개 프로젝트가 선택되었습니다.")
 		})
 
-
-		$(".pjCheckAll").change(function() {
+		$(document).on("change", ".pjCheckAll", function (){
 			console.log("체크변경")
 			console.log($('.pjCheckAll:checked'))
 			var checkedCnt = $('.pjCheckAll:checked').length;
@@ -562,75 +559,101 @@
 			$(".select-count").text(checkedCnt + "개 프로젝트가 선택되었습니다.")
 		})
 
-		$(".pjCheck").click(function(e) {
+		$(document).on("click", ".pjCheck", function (e){
 			e.stopPropagation()
 		})
 
-		/*$(".fa-plus").click(function(){
-            $("#tagTable").append('<tr class="dontAdd"><td colspan="4">'+
-                    '<div class="input-group mb-3 id="dontAdd">' +
-                        '<input type="text" class="form-control" placeholder="" aria-label="">' +
-                        '<div class="input-group-append">' +
-                          '<button class="btn btn-primary" type="button">추가</button>' +
-                         '</div></div></td></tr>'
-            )
-        })*/
-		$(".tagAddBtn").click(function(){
+
+		$(document).on("click", ".tagAddBtn", function (){
 			$("#AddTagModal").modal("show")
 		})
 
-		$(".newPj").click(function(){
+		$(document).on("click", ".newPj", function (){
 			$("#makePj").modal("show")
 		})
 
-		$(".project").click(function(e){
-			//project__icon
-			//project__check
-			console.log(e.target)
-			location.href = "/detailPj.do";
+		$(document).on("click", ".project", function (){
+			console.log($(this).children('input[class=pj_no]').val())
+			var $pj_no = $(this).children('input[class=pj_no]').val()
+			location.href = "/detailPj.do?pj_no="+$pj_no;
 		})
 
-		$("#tagEdit").click(function(){
+		$(document).on("click", "#tagEdit", function (){
 			$("#tagEditModal").modal("show")
 		})
 
-		$("#addTag").click(function(){
+		$(document).on("click", "#addTag", function (){
 			console.log('확인df')
-				$("#tagTable").append(
-						'<tr>'+
-						'<td><i class="fa fa-tag fa-lg"></i>'+
-						'</td>'+
-						'<th style="width: 50%">테스트</th>'+
-						'<td style="width: 20%; text-align: right;">'+
-							'<div class="custom-control custom-checkbox">'+
-								'<input type="checkbox" class="custom-control-input" id="tag6">'+
-									' <label class="custom-control-label" for="tag6"></label>'+
-							'</div>'+
-						'</td>'+
-						'<td style="width: 15%; text-align: right;">'+
-							'<div class="btn-group dropright">'+
-								'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"'+
-								   'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
-								'<div class="dropdown-menu dropright">'+
-									'<a class="dropdown-item" href="#" id="tagEdit">수정</a>'+
-									'<div class="dropdown-divider"></div>'+
-									'<a class="dropdown-item" href="#">삭제</a>'+
-								'</div>'+
-							'</div>'+
-						'</td>'+
+			$("#tagTable").append(
+					'<tr>'+
+					'<td><i class="fa fa-tag fa-lg"></i>'+
+					'</td>'+
+					'<th style="width: 50%">테스트</th>'+
+					'<td style="width: 20%; text-align: right;">'+
+					'<div class="custom-control custom-checkbox">'+
+					'<input type="checkbox" class="custom-control-input" id="tag6">'+
+					' <label class="custom-control-label" for="tag6"></label>'+
+					'</div>'+
+					'</td>'+
+					'<td style="width: 15%; text-align: right;">'+
+					'<div class="btn-group dropright">'+
+					'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"'+
+					'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
+					'<div class="dropdown-menu dropright">'+
+					'<a class="dropdown-item" href="#" id="tagEdit">수정</a>'+
+					'<div class="dropdown-divider"></div>'+
+					'<a class="dropdown-item" href="#">삭제</a>'+
+					'</div>'+
+					'</div>'+
+					'</td>'+
 					'</tr>'
-						)
+			)
 		})
-		
-		
-		
-		
+
+
 		
 	})
 	
 
 </script>
+<script>
+	$(function() {
+		$.ajax({
+			url: 'selectAllProjcet.do',
+			success: function(list){
+				$projects = $('.projects');
+				$projects.html('');
+				$.each(list, function(i, obj){
+					console.log(obj.pj_title)
+				$projects.append(
+						'<div class="project color-3">'+
+						'<input class="pj_no" type="hidden" value="' + obj.pj_no + '">'+
+					'<div class="project__icon">'+
+					'<i class="fa fa-star fa-2x favoYellow"></i>'+
+					'</div>'+
+					'<div class="project__check pjCheck" style="display: none;">'+
+					'<div class="custom-control custom-checkbox">'+
+					'<input type="checkbox" class="custom-control-input pjCheckAll" id="ckedFavo' + obj.pj_no +'"> <label class="custom-control-label"  for="ckedFavo'+ obj.pj_no + '"></label>'+
+								'</div>'+
+							'</div>'+
+					'<h3 class="project__title">' + obj.pj_title + '</h3>'+
+					'<p class="project__count">'+
+					'<i class="fa fa-user" style="color: white;">&nbsp;7</i>'+
+						'	</p>'+
+					'<p class="project__date">'+
+					'<i class="fa fa-flag" style="color: white;">&nbsp;' + obj.create_date + '</i>'+
+							'</p>'+
+						'</div>'
 
+				)
+
+
+				});
+			}
+		});
+	})
+
+</script>
 
 
 </body>

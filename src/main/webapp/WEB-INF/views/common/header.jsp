@@ -4,13 +4,13 @@
 <html lang="en" >
 
 <head>
-  
+
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <title>Ecommerce Dashboard &mdash; Stisla</title>
- 
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
- 
+
   <!-- General CSS Files -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -19,12 +19,11 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="resources/assets/css/style.css">
   <link rel="stylesheet" href="resources/assets/css/components.css">
-  
+
   <!-- 캘린더 cdn -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
-  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" />
 
   <style>
   .dropdown-list .dropdown-list-content:not(.is-end ):after {
@@ -49,7 +48,7 @@
   		width:100%;
   		height:90%;
   	}
-  	
+
   	.filebox label {
 	  display: inline-block;
 	  padding: .5em .75em;
@@ -63,7 +62,7 @@
 	  border-bottom-color: #e2e2e2;
 	  border-radius: .25em;
 	}
-	
+
 	.filebox input[type="file"] {  /* 파일 필드 숨기기 */
 	  position: absolute;
 	  width: 1px;
@@ -74,7 +73,7 @@
 	  clip:rect(0,0,0,0);
 	  border: 0;
 	}
-	
+
   </style>
 </head>
 <body>
@@ -84,7 +83,7 @@ $(function(){
 	let msg = "${msg}";
 	if(msg != ""){
 		alert(msg);
-	
+
 	}
 })
 
@@ -102,7 +101,7 @@ $(function(){
           <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
           	<div class="dropdown-menu dropdown-list dropdown-menu-right chat-tab-wrap"  style="display: none;">
 					<div class="dropdown-header">
-						<a id="chatNav">채팅</a> 
+						<a id="chatNav">채팅</a>
 						<div class="float-right">
 							<a class='bi bi-chat-fill fa-2x' href="/chatinvite.do"
 								id="chat-add"
@@ -133,7 +132,7 @@ $(function(){
 					</div>
 
 				</div>
-				
+
           </li>
           <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
@@ -201,11 +200,11 @@ $(function(){
               <div class="dropdown-title">Logged in 5 min ago</div>
               <a href="#" class="dropdown-item has-icon" id="profile">
                 <i class="far fa-user"></i> 내 정보
-              </a>    
-              <!-- 관리자 설정은 관리자에게만 보인다. -->      
-              <h5 class="dropdown-header">                   	              
-	            <i class="fas fa-cog"></i> 관리자 설정        
-	          </h5>  
+              </a>
+              <!-- 관리자 설정은 관리자에게만 보인다. -->
+              <h5 class="dropdown-header">
+	            <i class="fas fa-cog"></i> 관리자 설정
+	          </h5>
 	          <a class="dropdown-item has-icon ml-3" href="adminApproval.do">
               	<i class="bi bi-check-square-fill"></i>가입 승인
               </a>
@@ -215,7 +214,7 @@ $(function(){
 	           <a class="dropdown-item has-icon ml-3" href="employeeManagement.do">
               	<i class="bi bi-people-fill"></i>인사 관리
               </a>
-	           
+
               <div class="dropdown-divider"></div>
               <a href="/loout.do" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> 로그아웃
@@ -231,10 +230,10 @@ $(function(){
         }*/
 
       </script>
-      
 
-      
-      <!-- 개인정보 모달창 --> 
+
+
+      <!-- 개인정보 모달창 -->
       <!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
       <!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
       <div class="modal" id="myProfile" data-backdrop="static" data-keyboard="false">
@@ -247,11 +246,11 @@ $(function(){
       			</div>
       			<!-- modal body : 내용 -->
       			<form class="form" id="myProfileUpdate">
-	      			<div class="modal-body">      				
+	      			<div class="modal-body">
 	      				<table class="table-bordered" id="profileTable">
 	      					<tr>
 	      						<th style="width: 15%">&nbsp;프로필 사진</th>
-	      						<td colspan="3" style="height: 40%"> 
+	      						<td colspan="3" style="height: 40%">
 	      							<img style="height: 100px" alt="image"
 	                                                 src="resources/assets/img/avatar/avatar-1.png"
 	                                                 id="profileImg" class="img-fluid m-3 rounded-circle">
@@ -283,7 +282,7 @@ $(function(){
 					                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
 					                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
 					                    </div>
-					                </div>	      					
+					                </div>
 	      						</td>
 	      						<th>&nbsp;핸드폰 번호</th>
 	      						<td><input class="form-control" type="tel" value="010-1111-2222" name="empTel"></td>
@@ -298,41 +297,41 @@ $(function(){
 					                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
 					                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
 					                    </div>
-					                </div>	
+					                </div>
 	      						</td>
 	      					</tr>
 	      				</table>
 	      			</div>
-	      			
+
 	      			<div class="modal-footer">
 	      				<div class="col-lg-12 text-center">
 	      					<button type="submit" class="btn btn-primary btn-lg mb-3">저장</button>
 	      				</div>
 	      			</div>
- 				</form>     			
+ 				</form>
       		</div>
       	</div>
       </div>
-      
+
       <script>
       	$(function(){
       		$("#profile").click(function(){
-      			$("#myProfile").modal("show")    			
+      			$("#myProfile").modal("show")
       		});
-      		
+
       		$('#datetimepicker1').datetimepicker({
                 format: 'L'
             });
-      		
+
       		$('#datetimepicker2').datetimepicker({
                 format: 'L',
                 useCurrent: false
             });
 
-      	});    
+      	});
       </script>
-      
-  <!-- General JS Scripts --> 
+
+  <!-- General JS Scripts -->
   <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -340,7 +339,7 @@ $(function(){
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="resources/assets/js/stisla.js"></script>
 
-	<!-- JS Libraies 
+	<!-- JS Libraies
   <script src="resources/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
   <script src="resources/node_modules/chart.js/dist/Chart.min.js"></script>
   <script src="resources/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
