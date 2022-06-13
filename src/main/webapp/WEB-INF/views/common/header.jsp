@@ -19,6 +19,8 @@
   <link rel="stylesheet" href="resources/assets/css/components.css">
   
   <!-- 캘린더 cdn -->
+
+
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
@@ -58,6 +60,19 @@
   </style>
 </head>
 <body>
+<script type="text/javascript">
+
+$(function(){
+	let msg = "${msg}";
+	if(msg != ""){
+		alert(msg);
+	
+	}
+})
+
+
+
+</script>
 	<div  class="navbar-bg"></div>
       <nav class="navbar navbar-expand-lg main-navbar">
         <form class="form-inline mr-auto">
@@ -193,7 +208,7 @@
           </li>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
             <img alt="image" src="resources/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
-            <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div></a>
+            <div class="d-sm-none d-lg-inline-block">Hi, ${sessionScope.loginEmp.name}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-title">Logged in 5 min ago</div>
               <a href="#" class="dropdown-item has-icon" id="profile">
@@ -214,13 +229,20 @@
               </a>
 	           
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item has-icon text-danger">
+              <a href="/loout.do" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> 로그아웃
               </a>
             </div>
           </li>
         </ul>
       </nav>
+      <script>
+      /*  function logout() {
+          $('#endTime_area').text();
+
+        }*/
+
+      </script>
       
 
       

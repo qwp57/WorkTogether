@@ -8,4 +8,6 @@ public interface EmployeeService {
 
 	void insertEmp(Employee emp) throws Exception;
 
+	Employee loginEmp(Employee emp) throws Exception;
+
 }

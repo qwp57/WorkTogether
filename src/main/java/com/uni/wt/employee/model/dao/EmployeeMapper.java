@@ -11,4 +11,6 @@ public interface EmployeeMapper {
 
 	public int insertEmp(Employee emp);
 
+	public Employee loginEmp(Employee emp);
+
 }

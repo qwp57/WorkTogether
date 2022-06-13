@@ -1,8 +1,8 @@
 package com.uni.wt.employee.model.service;
 
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +20,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Autowired
 	private EmployeeMapper empMapper;
 	
-	@Autowired
-	private SqlSessionTemplate sqlSession;
-
 	@Override
 	public int idCheck(String userId) throws Exception{
 		log.info("Service단에서 "+userId);
@@ -40,6 +37,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 			throw new Exception("회원가입에 실패하였습니다.");
 		}
 		
+		//에러뜨면 롤백되는거 확인
+	}
+
+	@Override
+	public Employee loginEmp(Employee emp) throws Exception {
+		
+		Employee result = empMapper.loginEmp(emp);
+		
+		return result;
 	}
 
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uni.wt.workState.model.dao.WorkStateMapper">
+ 
+ <select id="getSeq" resultType="_int">
+ SELECT WS_SEQ.NEXTVAL FROM DUAL
+ </select>
+ 
+ <insert id="insertInTime" parameterType="Map">
+ 	INSERT INTO WORK_TIME (WORK_NO, EMP_NO, IN_TIME, OUT_TIME)
+ 	VALUES(#{todaySeq}, #{emp_no}, SYSDATE,NULL)
+ </insert>
+ 
+</mapper>

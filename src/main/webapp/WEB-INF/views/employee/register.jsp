@@ -26,9 +26,19 @@
 <!-- Template CSS -->
 <link rel="stylesheet" href="resources/assets/css/style.css">
 <link rel="stylesheet" href="resources/assets/css/components.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
+<script type="text/javascript">
+$(function(){
+	let errorMsg = "${errorMsg}";
+	if(errorMsg != ""){
+		alert(errorMsg);
+		
+	}
+})
+</script>
 	<div id="app">
 		<section class="section">
 			<div class="container mt-5">
@@ -105,7 +115,7 @@
 									</div>
 									<div class="form-group">
 										<button type="button" class="btn btn-primary btn-lg btn-block"
-											tabindex="4" onclick="validation();">가입 신청</button>
+											tabindex="9" onclick="validation();">가입 신청</button>
 									</div>
 
 								</form>
