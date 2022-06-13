@@ -117,8 +117,6 @@ $(function(){
 									</div>
 									<div class="form-group">
 										<button type="button" id="enrollBtn" class="btn btn-primary btn-lg btn-block"
-											tabindex="4" onclick="validation();">가입 신청</button>
-										<button type="button" class="btn btn-primary btn-lg btn-block"
 											tabindex="9" onclick="validation();">가입 신청</button>
 									</div>
 
