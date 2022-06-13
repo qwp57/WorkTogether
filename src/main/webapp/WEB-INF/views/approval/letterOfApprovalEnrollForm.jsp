@@ -30,31 +30,9 @@
 		width: 17%;		
 	}
 </style>
-<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-
 
 </head>
 <body>
-	<script>		
-		$(function () {
-	        $('#summernote').summernote({
-	            placeholder: '내용을 입력해주세요',
-	            tabsize: 2,
-	            height: 300,
-	            toolbar: [
-	                ['style', ['style']],
-	                ['font', ['bold', 'underline']],
-	                ['color', ['color']],
-	                ['ul', 'ol', 'paragraph'],
-	                ['table', ['table']],
-	                ['insert', ['link', 'picture', 'video']],
-	            ]
-	        });
-	    })
-
-	</script>
-		
 	<jsp:include page="../common/header.jsp"/>
 	<jsp:include page="../common/sidebar.jsp"/>
 	
@@ -225,6 +203,26 @@
 			</div>
 		</div>	
 	</div>
+	<script>		
+		$(function () {
+			console.log("test");
+			
+	        $('#summernote').summernote({
+	            placeholder: '내용을 입력해주세요',
+	            tabsize: 2,
+	            height: 300,
+	            toolbar: [
+	                ['style', ['style']],
+	                ['font', ['bold', 'underline']],
+	                ['color', ['color']],
+	                ['ul', 'ol', 'paragraph'],
+	                ['table', ['table']],
+	                ['insert', ['link', 'picture', 'video']],
+	            ]
+	        });
+	    })
+
+	</script>
 	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
