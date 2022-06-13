@@ -67,7 +67,21 @@ margin: 0;
        					<tr>
        						<th class="th">상태 메시지</th>
        						<td class="td">
-	       						<div class="input-group">
+       							<div class="input-group">
+       								<input type="text" class="form-control" placeholder="상태메시지를 작성해주세요">
+       								<div class="input-group-append">
+       								<select class=" form-control sorttmenu sorttmenu-rD2" id="">
+									    <option>진행 중</option>
+									    <option>요청됨</option>
+									    <option>완료됨</option>
+								  	</select>
+       								</div>
+       								<div class="input-group-append">
+       								 <button class="btn btn-outline-secondary" type="button">작성 완료</button>
+       								</div>
+       							</div>
+       						
+	       						<!-- <div class="input-group">
 	       							<textarea class="rD-2-textarea" placeholder="상태메시지를 작성해주세요" ></textarea>
 	       							<select class="sorttmenu sorttmenu-rD2" id="">
 									    <option>진행 중</option>
@@ -75,7 +89,7 @@ margin: 0;
 									    <option>완료됨</option>
 								  	</select>
 								  	 <button class="btn btn-outline-secondary" type="button">작성 완료</button>
-	       						</div>
+	       						</div> -->
        						</td>
        					</tr>
        					<tr>

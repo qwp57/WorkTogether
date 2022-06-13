@@ -61,7 +61,6 @@
 	<aop:config>
 
 		<aop:pointcut expression="execution(* com.uni.wt..*ServiceImpl*.*(..))" id="serviceMethod"/>
-
 		<aop:advisor id= "transactionAdvisor" pointcut-ref = "serviceMethod" advice-ref="txAdvice"/>
 	</aop:config>
 	

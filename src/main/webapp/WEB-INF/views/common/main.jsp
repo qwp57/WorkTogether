@@ -17,10 +17,14 @@
      height: 300px;
  }
  .body2{
-     height: 500px;
+     height: 100%;
  }
  .ioImg{/*근무체크 화살표 버튼*/
  	width: 100%;
+    cursor: pointer;
+ }
+ .ioImg:active{
+    background-color: lightgray;
  }
  #status_Change{/*근무체크 상태*/
  	background-color: lightgray;
@@ -38,8 +42,8 @@
 }
 #Click_io_img{/*출퇴근부분 */
 height: 200px;
-padding-top: 50px;
-padding-bottom: 50px;
+padding-top: 20px;
+padding-bottom: 0;
 display: flex;
 justify-content: space-around;
 }
@@ -53,26 +57,38 @@ font-size: 16px;
 }
 
 .status_button{/*근무상태버튼 통합div*/
-width: 80%;
+width: 90%;
 display: flex;
 justify-content: space-around;
 margin-top: 20px;
 
 }
-.sbtn{/*근무상태 버튼 css*/
+
+#click_status_1, #click_status_2, #click_status_3, #click_status_4{/*근무상태 버튼 css*/
 padding: 10px;
 padding-left: 30px;
 padding-right: 30px;
-font-size: 15px;
+font-size: 18px;
 font-weight: bold;
+font-family: 'Nanum Gothic', sans-serif;
 border-radius: 5px;
-background-color: lightgray;
+background-color: #7C8EFC;
+color: white;
 border: 0px;
+outline: none;
 box-shadow: 5px 5px 10px -3px gray;
 
 }
+#click_status_1:active, #click_status_2:active, #click_status_3:active, #click_status_4:active{
+box-shadow: 0 0 0 0;
+}
 
-
+.time_text{
+    font-size: 20px;
+    font-weight: bold;
+    font-family:'Nanum Gothic', sans-serif;
+    color: black;
+}
 
 .listViewTable {
 	text-align: center;
@@ -153,6 +169,15 @@ td:last-child {
 </style>
 </head>
 <body>
+<script type="text/javascript">
+    $(function(){
+        let msg = "${msg}";
+        if(msg != ""){
+            alert(msg);
+            
+        }
+    })
+    </script>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 
@@ -176,8 +201,9 @@ td:last-child {
                                                  src="resources/assets/img/avatar/avatar-1.png"
                                                  id="profileImg" class="img-fluid">
                                             <div class="user-details">
-                                                <div class="user-name"><p>Hasan Basri</p></div>
-                                                <div class="text-job text-muted"><p>Web Developer</p></div>
+                                                <div class="user-name"><p>${sessionScope.loginEmp.name}</p></div>
+                                                <div class="text-job text-muted"><p>${sessionScope.loginEmp.job_code}</p></div>
+                                                <input type="text" id="empno" value="${sessionScope.loginEmp.emp_no}" hidden>
                                                 <div class="user-cta">
                                                     <button class="btn btn-primary follow-btn"
                                                             data-follow-action="alert('user1 followed');"
@@ -199,8 +225,8 @@ td:last-child {
                                 <hr>
                                 <br>
                                 <h3>영업부 2팀</h3><br>
-                                <h4>영업부 1팀</h4>
-                                <h4>영업부 1팀</h4>
+                                <h4>영업부 1팀</h4><br>
+                                <h4>영업부 1팀</h4><br>
                             </div>
                         </div>
                     </div>
@@ -230,26 +256,26 @@ td:last-child {
                                             <img class="ioImg" id="startTime"
                                                    src="resources/assets/img/arrow-up.png"
                                                    alt="">
-                                            <div>출근하기</div>
-                                            <div id="startTime_area">00:00:00</div>
+                                            <div class="time_text">출 근</div>
+                                            <div class="time_text" id="startTime_area">00:00:00</div>
                                         </div>
                                         <div id="v-line"></div>
                                         <div class="Io_Click">
                                             <img class="ioImg" id="endTime"
                                                    src="resources/assets/img/arrow-down.png">
-                                            <div>퇴근하기</div>
-                                            <div id="endTime_area">00:00:00</div>
+                                            <div class="time_text">퇴 근</div>
+                                            <div class="time_text" id="endTime_area">00:00:00</div>
                                         </div>
                                     </div>
 
                                     <div id="status_buttons">
                                         <div class="status_button">
-                                            <button class="sbtn" id="click_status_1">근무</button>
-                                            <button class="sbtn" id="click_status_2">회의</button>
+                                            <button class="sbtn" id="click_status_1">근 무</button>
+                                            <button class="sbtn" id="click_status_2">회 의</button>
                                         </div>
                                         <div class="status_button">
-                                            <button class="sbtn" id="click_status_3">외출</button>
-                                            <button class="sbtn" id="click_status_4">외근</button>
+                                            <button class="sbtn" id="click_status_3">외 출</button>
+                                            <button class="sbtn" id="click_status_4">외 근</button>
                                         </div>
                                     </div>
 
@@ -353,6 +379,43 @@ function getClock() {
 }
 
 setInterval(getClock, 1000);
+
+
+$('#startTime').click(function(){
+
+    empno = $('#empno').val();
+    console.log(empno);
+    console.log('되나');
+
+    $.ajax({
+        url:"insertInTime.do", 
+        data : {emp_no : empno },
+        type : "post",
+        success : function(result){
+            console.log(result);
+            if(result == 'success'){
+            	console.log('왜 시간이 안 나오지');
+                let in_time = new Date();
+                var in_time_Hour = String(in_time.getHours()).padStart(2,"0");
+                var in_time_min = String(in_time.getMinutes()).padStart(2,"0");
+                var in_time_sec = String(in_time.getSeconds()).padStart(2, "0");
+
+                let in_time_text = in_time_Hour+":"+in_time_min+":"+in_time_sec;
+                console.log(in_time_text);
+     
+                $('#startTime_area').text(in_time_text);
+                console.log($('#startTime_area').text(in_time_text));
+
+                let name = $('.user-name').children().text();
+                alert(name+'님이 출근했습니다.');
+                console.log(name+'님이 출근했습니다.');
+            }
+        }, 
+        error : function(){console.log("ajax 통신실패")}
+    })
+    
+
+});
 </script>
 
 
