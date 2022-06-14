@@ -1,7 +1,8 @@
 package com.uni.wt.workState.service;
 
-import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.Spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -113,6 +114,15 @@ public class WorkStateServiceImpl implements WorkStateService{
 	public void deleteTodaySeq() {
 		todaySeq = 0;
 		
+	}
+
+
+	@Override
+	public Map<Spring, Object> selectMyWork() throws Exception {
+		
+		Map<Spring, Object> paramMap = wsMapper.selectMyWork(todaySeq);
+		
+		return null;
 	}
 
 

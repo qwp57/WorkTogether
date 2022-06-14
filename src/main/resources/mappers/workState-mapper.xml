@@ -47,4 +47,6 @@
  
  </select>
  
+ <select id="selectMyWork" parameterType="_int" resultType="map"></select>
+ 
 </mapper>
