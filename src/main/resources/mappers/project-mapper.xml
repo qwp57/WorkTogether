@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uni.wt.project.model.dao.ProjectMapper">
+	<resultMap type="Project" id="projectSet">
+		<id property="pj_no" column="PJ_NO"/>
+		<result property="pj_title" column="PJ_TITLE"/>
+		<result property="pj_content" column="PJ_CONTENT"/>
+		<result property="create_date" column="CREATE_DATE"/>
+		<result property="board_power" column="BOARD_POWER"/>
+		<result property="reply_power" column="REPLY_POWER"/>
+		<result property="file_power" column="FILE_POWER"/>
+		<result property="status" column="STATUS"/>
+	</resultMap>
+
+
+	<insert id="insertProject" parameterType="Project">
+		INSERT INTO PROJECT
+		VALUES(PJ_SEQ.NEXTVAL, #{pj_title}, #{pj_content}, SYSDATE, #{board_power}, #{reply_power}, #{file_power}, DEFAULT )
+	</insert>
+
+	<select id="selectAllProject" resultMap="projectSet">
+		SELECT *
+		FROM PROJECT
+		WHERE STATUS = 'Y'
+	</select>
+
+	<select id="selectOneProject" parameterType="_int" resultMap="projectSet">
+		SELECT *
+		FROM PROJECT
+		WHERE STATUS = 'Y'
+		AND PJ_NO = #{pj_no}
+	</select>
+</mapper>

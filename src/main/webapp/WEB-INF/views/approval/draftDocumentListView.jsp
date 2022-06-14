@@ -73,7 +73,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<tr id="test">
 							<td>2022-05-28</td>
 							<td>-</td>
 							<td>일반 품의서</td>
@@ -106,7 +106,7 @@
 							<td><span class="status">진행중</span></td>
 						</tr>
 						
-						<tr>
+						<tr id="test2">
 							<td>2022-05-22</td>
 							<td>2022-05-24</td>
 							<td>지출 결의서</td>
@@ -121,7 +121,7 @@
 							<td><span class="status">완료</span></td>
 						</tr>
 						
-						<tr>
+						<tr id="test3">
 							<td>2022-05-18</td>
 							<td>2022-05-20</td>
 							<td>회의록</td>
@@ -244,7 +244,24 @@
 	    	</div>
 		</div>
 	</div>
-	
+	<script>
+		$(function(){
+			$("#draftList tbody #test").click(function(){
+				//결재 양식 번호와 문서 번호를 가지고 간다.
+				location.href="myDetailLetterOfApproval.do";
+			});
+			
+			$("#draftList tbody #test2").click(function(){
+				//결재 양식 번호와 문서 번호를 가지고 간다.
+				location.href="myDetailExpenditure.do";
+			});
+			
+			$("#draftList tbody #test3").click(function(){
+				//결재 양식 번호와 문서 번호를 가지고 간다.
+				location.href="myDetailtheMinutesOfAMeeting.do";
+			});
+		});
+	</script>
 	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

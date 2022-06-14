@@ -158,6 +158,7 @@ $(function(){
    <!--  <script src="resources/assets/js/scripts.js"></script>--><!-- 부트스트랩 툴에서 유효성 검사하는 거 -->
    <script src="resources/assets/js/custom.js"></script> 
 
+
    <!-- Page Specific JS File -->
    
      <script src="resources/assets/js/register.js"></script>

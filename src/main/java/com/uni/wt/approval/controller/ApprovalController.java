@@ -1,10 +1,17 @@
 package com.uni.wt.approval.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.uni.wt.approval.model.dto.Approval;
+import com.uni.wt.approval.model.service.ApprovalService;
+
 @Controller
 public class ApprovalController {
+	
+	@Autowired
+	private ApprovalService approvalService;
 	
 	//전자결재 홈으로 이동
 	@RequestMapping("approvalMain.do")
@@ -24,15 +31,19 @@ public class ApprovalController {
 		return "approval/approvalDocumentListView";
 	}
 	
-	//일반 품의서로 이동
+	//일반 품의서 작성으로 이동
 	@RequestMapping("letterOfApprovalEnrollForm.do")
 	public String letterOfApprovalEnrollForm() {
 		return "approval/letterOfApprovalEnrollForm";
 	}
 	
+	//일반 품의서 작성
+	//@RequestMapping("insertLetterOfApproval.do")
+	//public String insertLetterOfApproval(Approval ap, )
+	
 	//지출 결의서로 이동
 	@RequestMapping("expenditureEnrollForm.do")
-	public String expenditureEnrollForm() {
+	public String expenditureEnrollForm() {		
 		return "approval/expenditureEnrollForm";
 	}
 	
@@ -40,5 +51,59 @@ public class ApprovalController {
 	@RequestMapping("theMinutesOfAMeetingEnrollForm.do")
 	public String theMinutesOfAMeetingForm() {
 		return "approval/theMinutesOfAMeetingEnrollForm";
+	}
+	
+	//일반 품의서 디테일로 이동
+	@RequestMapping("myDetailLetterOfApproval.do")
+	public String selectMyLetterOfApproval() {
+		return "approval/myLetterOfApprovalDetailView";
+	}
+	
+	//지출 결의서 디테일로 이동
+	@RequestMapping("myDetailExpenditure.do")
+	public String selectMyExpenditure() {
+		return "approval/myExpenditureDetailView";
+	}
+	
+	//회의록 디테일로 이동
+	@RequestMapping("myDetailtheMinutesOfAMeeting.do")
+	public String selectMytheMinutesOfAMeeting() {
+		return "approval/myTheMinutesOfAMeetingDetailView";
+	}
+	
+	//일반 품의서 수정으로 이동
+	@RequestMapping("updateMyLetterOfApproval.do")
+	public String updateMyLetterOfApprovalForm() {
+		return "approval/myLetterOfApprovalUpdateForm";
+	}
+	
+	//지출 결의서 수정으로 이동
+	@RequestMapping("updateMyExpenditure.do")
+	public String updateMyExpenditureForm() {
+		return "approval/myExpenditureUpdateForm";
+	}
+	
+	//회의록 수정으로 이동
+	@RequestMapping("updateMyTheMinutesOfAMeeting.do")
+	public String updateMyTheMinutesOfAMeetingForm() {
+		return "approval/myTheMinutesOfAMeetingUpdateForm";
+	}
+	
+	//일반 품의서 결재 디테일로 이동
+	@RequestMapping("appDetailLetterOfApproval.do")
+	public String selectAppLetterOfApproval() {
+		return "approval/appLetterOfApprovalDetailView";
+	}
+	
+	//지출 결의서 결재 디테일로 이동
+	@RequestMapping("appDetailExpenditure.do")
+	public String selectAppExpenditure() {
+		return "approval/appExpenditureDetailView";
+	}
+	
+	//회의록 결재 디테일로 이동
+	@RequestMapping("appDetailtheMinutesOfAMeeting.do")
+	public String selectApptheMinutesOfAMeeting() {
+		return "approval/appTheMinutesOfAMeetingDetailView";
 	}
 }

@@ -45,7 +45,7 @@
     }
 
     .newPj {
-    	color: white !important;
+        color: white !important;
         width: 180px;
         height: 70px;
         font-family: 'Nanum Gothic', sans-serif;
@@ -89,7 +89,8 @@
     .color-3 {
         background: #5D9CEC;
     }
-  	.color-4 {
+
+    .color-4 {
         background: #8a40f2;
     }
 
@@ -120,10 +121,10 @@
         grid-column: 2/3;
     }
 
-#postTodo{
-    height: 70%;
-}
-  
+    #postTodo {
+        height: 70%;
+    }
+
     .card-body {
         padding-bottom: 0px !important;
     }
@@ -302,8 +303,6 @@
     }
 
 
-
-
     .boardEnrollBtn tr td:hover {
         cursor: pointer;
         color: #6777ef;
@@ -342,13 +341,13 @@
                                             <a class="dropdown-item" href="#" id="setColor">색상 설정</a> <a
                                                 class="dropdown-item" href="#" id="setTag">태그 설정</a> <a
                                                 class="dropdown-item" href="#">참여자 조회</a> <a
-                                                class="dropdown-item" href="#"  id="setPj">프로젝트 설정</a>
+                                                class="dropdown-item" href="#" id="setPj">프로젝트 설정</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">프젝트 나가기</a>
                                         </div>
                                     </div>
-                                    <p id="pjDetail"></p>
-                                    <h5 id="pjTitle">프로젝트 제목</h5>
+                                    <p id="pjDetail">${pj.pj_content}</p>
+                                    <h5 id="pjTitle">${pj.pj_title}</h5>
                                     <a href="#" id="inviteBtn"
                                        class="btn btn-icon icon-left btn-secondary"><i
                                             class="far fa-user"></i> +초대하기</a>
@@ -434,10 +433,10 @@
                              aria-haspopup="true" aria-expanded="false"/>
                         <h4>&nbsp;&nbsp;필터</h4>
                         <div class="dropdown-menu dropright">
-                            <a class="dropdown-item" href="#">전체</a>     
+                            <a class="dropdown-item" href="#">전체</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">글</a> 
-                            <a class="dropdown-item" href="#">업무</a> 
+                            <a class="dropdown-item" href="#">글</a>
+                            <a class="dropdown-item" href="#">업무</a>
                             <a class="dropdown-item" href="#">일정</a>
                             <a class="dropdown-item" href="#">할 일</a>
                         </div>
@@ -486,8 +485,8 @@
                                         </td>
 
                                     </tr>
-                                    
-                                     <c:forEach var="index" begin="1" end="3">
+
+                                    <c:forEach var="index" begin="1" end="3">
                                         <tr>
                                             <td style="width: 7%; text-align: right; color: #f3a435 ;"><span
                                                     class='bi bi-file-text'></span></td>
@@ -529,29 +528,30 @@
                 </div>
             </div>
             <div class="section-body">
-					<div class="row mt-sm-4 ">
-						<div class="col-md-12 col-lg-12" style="margin-left: 450px;">
+                <div class="row mt-sm-4 ">
+                    <div class="col-md-12 col-lg-12" style="margin-left: 450px;">
 
-							<div class="buttons">
-								<nav aria-label="Page navigation example">
-									<ul class="pagination text-center">
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-												<span class="sr-only">이전</span>
-										</a></li>
-										<li class="page-item"><a class="page-link" href="#">1</a></li>
-										<li class="page-item"><a class="page-link" href="#">2</a></li>
-										<li class="page-item"><a class="page-link" href="#">3</a></li>
-										<li class="page-item"><a class="page-link" href="#"
-											aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-												<span class="sr-only">다음</span>
-										</a></li>
-									</ul>
-								</nav>
-							</div>
-						</div>
-					</div>
-				</div>
+                        <div class="buttons">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination text-center">
+                                    <li class="page-item"><a class="page-link" href="#"
+                                                             aria-label="Previous"> <span
+                                            aria-hidden="true">&laquo;</span>
+                                        <span class="sr-only">이전</span>
+                                    </a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#"
+                                                             aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+                                        <span class="sr-only">다음</span>
+                                    </a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
 </div>
@@ -572,8 +572,7 @@
             <!-- modal body : 내용 -->
             <form class="form" id="">
                 <div class="modal-body">
-                    <input type="text" class="form-control" id="memberSearching"
-                           placeholder="사원명으로 검색">
+                    <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
                     <table class="inviteTable">
                         <c:forEach var="index" begin="1" end="5">
                             <tr>
@@ -625,29 +624,30 @@
                     <form>
 
 
-                    <input type="text" class="form-control" id="memberSearching"
-                           placeholder="사원명으로 검색">
-                    <table class="inviteTable">
-                        <c:forEach var="index" begin="1" end="5">
-                            <tr>
-                                <td style="width: 20%" rowspan="2"><span class='bi bi-person-circle fa-2x'></span>
+                        <input type="text" class="form-control" id="memberSearching"
+                               placeholder="사원명으로 검색">
+                        <table class="inviteTable">
+                            <c:forEach var="index" begin="1" end="5">
+                                <tr>
+                                    <td style="width: 20%" rowspan="2"><span class='bi bi-person-circle fa-2x'></span>
 
-                                </td>
-                                <th style="width: 40%">테스트</th>
-                                <td rowspan="2" style="width: 20%; text-align: right;">
-                                    <div class="col-lg-12 text-center">
-                                        <button type="button" class="btn btn-primary btn-md sm-3 selectTodoFor">선택</button>
-                                    </div>
-                                </td>
+                                    </td>
+                                    <th style="width: 40%">테스트</th>
+                                    <td rowspan="2" style="width: 20%; text-align: right;">
+                                        <div class="col-lg-12 text-center">
+                                            <button type="button" class="btn btn-primary btn-md sm-3 selectTodoFor">선택
+                                            </button>
+                                        </div>
+                                    </td>
 
-                            </tr>
-                            <tr>
-                                <td>부장</td>
-                            </tr>
+                                </tr>
+                                <tr>
+                                    <td>부장</td>
+                                </tr>
 
-                        </c:forEach>
-                    </table>
-                    <br>
+                            </c:forEach>
+                        </table>
+                        <br>
                     </form>
                 </div>
             </form>
@@ -671,10 +671,9 @@
             <!-- modal body : 내용 -->
 
             <div id="postForm" style="display: block;">
-                <form class="form">
+                <form class="form" id="enrollPost" action="insertPost.do" method="post">
                     <div class="modal-body">
-                        <table class="boardEnrollBtn"
-                               style="width: 100%; height: 100%; text-align: center;">
+                        <table class="boardEnrollBtn" style="width: 100%; height: 100%; text-align: center;">
                             <tr>
                                 <td class="switchPost"><b><span class='bi bi-file-text fa-lg'>
 												&nbsp;&nbsp;글</span></b></td>
@@ -688,17 +687,18 @@
                         </table>
                         <br> <br>
                         <div class="form-group row mb-4">
+                            <input type="hidden" name="pj_no" value="${pj.pj_no}">
                             <label
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-2">제목</label>
                             <div class="col-sm-12 col-md-7 col-lg-9">
-                                <input type="text" class="form-control">
+                                <input type="text" name="board_title" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
                             <label
                                     class="col-form-label text-md-right col-12 col-md-3 col-lg-2">내용</label>
                             <div class="col-sm-12 col-md-7 col-lg-9">
-                                <div class="" id="summernote"></div>
+                                <textarea name="board_content" id="summernote"></textarea>
                             </div>
                         </div>
 
@@ -714,6 +714,7 @@
                             <div class="col-lg-1"></div>
                         </div>
                     </div>
+                </form>
             </div>
 
 
@@ -988,7 +989,8 @@
                                 <div class="col-lg-12 ml-3 mr-3">
                                     <i class="bi bi-person fa-lg"></i> &nbsp;&nbsp; <b style="color: #5cb85c">참석 1</b>
                                     &nbsp;&nbsp;<b style="color: #ac2925"> 불참 3</b>
-                                    &nbsp;&nbsp; <a style="border-bottom: 1px black solid" class="viewAttendee"> 참석자 조회</a>
+                                    &nbsp;&nbsp; <a style="border-bottom: 1px black solid" class="viewAttendee"> 참석자
+                                    조회</a>
                                     <br><br><br>
                                 </div>
                                 <div class="col-lg-12 ml-3 mr-3">
@@ -1150,56 +1152,56 @@
 </div>
 
 
-<jsp:include page="colorTagModal.jsp" />
-<jsp:include page="pjForm.jsp" />
+<jsp:include page="colorTagModal.jsp"/>
+<jsp:include page="pjForm.jsp"/>
 <script>
     $(function () {
-		$(document).on('click', '.newPj', function(){
-			$("#makePj").modal("show")
-		})
-		
-		$(document).on('click', '#setColor', function(){
-			$("#colorModal").modal("show")
-		})
-		
-		$(document).on('click', '#setTag', function(){
-			$("#tagModal").modal("show")
-		})
-		
-		$(document).on('click', '#tagEdit', function(){
-			$("#tagEditModal").modal("show")
-		})
-		
-		$(document).on('click', '.tagAddBtn', function(){
-			console.log('테스트')
-			$("#tagTable").append(
-					'<tr>'+
-					'<td><i class="fa fa-tag fa-lg"></i>'+
-					'</td>'+
-					'<th style="width: 50%">테스트</th>'+
-					'<td style="width: 20%; text-align: right;">'+
-						'<div class="custom-control custom-checkbox">'+
-							'<input type="checkbox" class="custom-control-input" id="tag6">'+
-								' <label class="custom-control-label" for="tag6"></label>'+
-						'</div>'+
-					'</td>'+
-					'<td style="width: 15%; text-align: right;">'+
-						'<div class="btn-group dropright">'+
-							'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"'+
-							   'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
-							'<div class="dropdown-menu dropright">'+
-								'<a class="dropdown-item" href="#" id="tagEdit">수정</a>'+
-								'<div class="dropdown-divider"></div>'+
-								'<a class="dropdown-item" href="#">삭제</a>'+
-							'</div>'+
-						'</div>'+
-					'</td>'+
-				'</tr>'
-					)
-		})
+        $(document).on('click', '.newPj', function () {
+            $("#makePj").modal("show")
+        })
+
+        $(document).on('click', '#setColor', function () {
+            $("#colorModal").modal("show")
+        })
+
+        $(document).on('click', '#setTag', function () {
+            $("#tagModal").modal("show")
+        })
+
+        $(document).on('click', '#tagEdit', function () {
+            $("#tagEditModal").modal("show")
+        })
+
+        $(document).on('click', '.tagAddBtn', function () {
+            console.log('테스트')
+            $("#tagTable").append(
+                '<tr>' +
+                '<td><i class="fa fa-tag fa-lg"></i>' +
+                '</td>' +
+                '<th style="width: 50%">테스트</th>' +
+                '<td style="width: 20%; text-align: right;">' +
+                '<div class="custom-control custom-checkbox">' +
+                '<input type="checkbox" class="custom-control-input" id="tag6">' +
+                ' <label class="custom-control-label" for="tag6"></label>' +
+                '</div>' +
+                '</td>' +
+                '<td style="width: 15%; text-align: right;">' +
+                '<div class="btn-group dropright">' +
+                '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"' +
+                'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+                '<div class="dropdown-menu dropright">' +
+                '<a class="dropdown-item" href="#" id="tagEdit">수정</a>' +
+                '<div class="dropdown-divider"></div>' +
+                '<a class="dropdown-item" href="#">삭제</a>' +
+                '</div>' +
+                '</div>' +
+                '</td>' +
+                '</tr>'
+            )
+        })
 
 
-        $(document).on('click', '.fa-star', function (){
+        $(document).on('click', '.fa-star', function () {
             if ($(this).hasClass("favoWhite")) {
                 $(this).removeClass("favoWhite")
                 $(this).addClass("favoYellow")
@@ -1213,12 +1215,12 @@
         })
 
 
-        $(document).on('click', '#inviteBtn', function (){
+        $(document).on('click', '#inviteBtn', function () {
             $("#inviteModal").modal("show")
 
         })
 
-        $(document).on('click', '.postFor', function (){
+        $(document).on('click', '.postFor', function () {
             $("#mentionForModal").modal("show")
 
         })
@@ -1229,7 +1231,7 @@
             $(this).find('form')[2].reset();
         })
 
-        $(document).on('click', '#postBtn', function (){
+        $(document).on('click', '#postBtn', function () {
             $("#postForm").css("display", "block")
             $("#postSch").css("display", "none")
             $("#postTodo").css("display", "none")
@@ -1239,7 +1241,7 @@
             $("#boardPost").modal("show")
         })
 
-        $(document).on('click', '#schBtn', function (){
+        $(document).on('click', '#schBtn', function () {
             $("#postForm").css("display", "none")
             $("#postSch").css("display", "block")
             $("#postTodo").css("display", "none")
@@ -1250,7 +1252,7 @@
         })
 
 
-        $(document).on('click', '#todoBtn', function (){
+        $(document).on('click', '#todoBtn', function () {
             $("#postForm").css("display", "none")
             $("#postSch").css("display", "none")
             $("#postTodo").css("display", "block")
@@ -1260,7 +1262,7 @@
             $("#boardPost").modal("show")
         })
 
-        $(document).on('click', '.ckedInput', function (){
+        $(document).on('click', '.ckedInput', function () {
             if ($(this).is(":checked")) {
                 $(this).parent().next().children(".ckedTodo").addClass("underline")
             } else {
@@ -1268,7 +1270,7 @@
             }
         })
 
-        $(document).on('click', '.switchPost', function (){
+        $(document).on('click', '.switchPost', function () {
             $(".switchSch").css("color", "black")
             $(".switchTodo").css("color", "black")
             $(".switchPost").css("color", "#6777ef")
@@ -1278,7 +1280,7 @@
 
         })
 
-        $(document).on('click', '.switchSch', function (){
+        $(document).on('click', '.switchSch', function () {
             $(".switchSch").css("color", "#6777ef")
             $(".switchTodo").css("color", "black")
             $(".switchPost").css("color", "black")
@@ -1287,7 +1289,7 @@
             $("#postTodo").css("display", "none")
         })
 
-        $(document).on('click', '.switchTodo', function (){
+        $(document).on('click', '.switchTodo', function () {
             $(".switchSch").css("color", "black")
             $(".switchTodo").css("color", "#6777ef")
             $(".switchPost").css("color", "black")
@@ -1297,36 +1299,33 @@
 
         })
 
-        $(document).on('click', '.boardTable tbody tr', function (){
+        $(document).on('click', '.boardTable tbody tr', function () {
             $("#boardView").modal("show")
 
         })
 
 
-
-
         $(".fa-plus").click(function () {
             $(".todos").append(
-
-                '<div class="form-group row">'+
-                '<div class="col-lg-1 pr-0 text-right">'+
-                '<i class="bi bi-x fa-2x" style="color: red; padding-right: 0px;"></i>'+
-                '</div>'+
-                '<div class="text-md-right col-10 col-md-7 col-lg-9">'+
-                '<input type="text" class="form-control"'+
-                'placeholder="할 일 추가 / 최대 50자">'+
-                '</div>'+
-                '<div class="col-sm-12 col-md-3 col-lg-1">'+
-                '<div class="input-group todoInput date" style="width: 100px;">'+
-                '<input type="text" style="display: none; width:25px;"'+
-                'class="form-control bg-white border-0 small todoDue">'+
-                '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>'+
-                '</div>'+
-                '</div>'+
-                '<div class="col-lg-1">'+
-                '<i class="bi bi-person fa-2x todoPerson"></i>'+
-                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'+
-                '</div>'+
+                '<div class="form-group row">' +
+                '<div class="col-lg-1 pr-0 text-right">' +
+                '<i class="bi bi-x fa-2x" style="color: red; padding-right: 0px;"></i>' +
+                '</div>' +
+                '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
+                '<input type="text" class="form-control"' +
+                'placeholder="할 일 추가 / 최대 50자">' +
+                '</div>' +
+                '<div class="col-sm-12 col-md-3 col-lg-1">' +
+                '<div class="input-group todoInput date" style="width: 100px;">' +
+                '<input type="text" style="display: none; width:25px;"' +
+                'class="form-control bg-white border-0 small todoDue">' +
+                '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-lg-1">' +
+                '<i class="bi bi-person fa-2x todoPerson"></i>' +
+                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>' +
+                '</div>' +
                 '</div>'
             )
             $('.todoInput').datepicker({
@@ -1347,7 +1346,7 @@
             })
 
 
-            $(document).on('change', '.todoDue', function (){
+            $(document).on('change', '.todoDue', function () {
                 console.log($(this).val())
                 if ($(this).val() != "") {
                     $(this).css("display", "block")
@@ -1400,14 +1399,12 @@
         })
 
 
-
-
-        $(document).on('change', '.todoDue', function (){
+        $(document).on('change', '.todoDue', function () {
             console.log($(this).val())
             if ($(this).val() != "") {
                 $(this).css("display", "block")
                 $(this).next().css("display", "none")
-                }
+            }
         })
 
 
@@ -1419,30 +1416,29 @@
 
         })
 
-        $("#close").click(function (){
+        $("#close").click(function () {
             console.log("진입확인")
             $(".todos").html(
-
-                '<div class="form-group row">'+
-                '<div class="col-lg-1 pr-0 text-right">'+
-                '</div>'+
-                '<div class="text-md-right col-10 col-md-7 col-lg-9">'+
-                '<input type="text" class="form-control"'+
-                'placeholder="할 일 추가 / 최대 50자">'+
-                '</div>'+
-                '<div class="col-sm-12 col-md-3 col-lg-1">'+
-                '<div class="input-group todoInput date" style="width: 100px;">'+
-                '<input type="text" style="display: none; width:25px;"'+
-                'class="form-control bg-white border-0 small todoDue">'+
-                '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>'+
-                '</div>'+
-                '</div>'+
-                '<div class="col-lg-1">'+
-                '<i class="bi bi-person fa-2x todoPerson"></i>'+
-                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'+
-                '</div>'+
+                '<div class="form-group row">' +
+                '<div class="col-lg-1 pr-0 text-right">' +
+                '</div>' +
+                '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
+                '<input type="text" class="form-control"' +
+                'placeholder="할 일 추가 / 최대 50자">' +
+                '</div>' +
+                '<div class="col-sm-12 col-md-3 col-lg-1">' +
+                '<div class="input-group todoInput date" style="width: 100px;">' +
+                '<input type="text" style="display: none; width:25px;"' +
+                'class="form-control bg-white border-0 small todoDue">' +
+                '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
+                '</div>' +
+                '</div>' +
+                '<div class="col-lg-1">' +
+                '<i class="bi bi-person fa-2x todoPerson"></i>' +
+                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>' +
+                '</div>' +
                 '</div>'
-        )
+            )
             $('.todoInput').datepicker({
                 format: "mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
                 autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
@@ -1459,7 +1455,7 @@
                 language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
 
 
-        })
+            })
             $(".todoDue").change(function () {
                 console.log($(this).val())
                 if ($(this).val() != "") {
@@ -1477,23 +1473,23 @@
             })
         })
 
-		
-        $(document).on('click', '#addPeople', function (){
+
+        $(document).on('click', '#addPeople', function () {
             $("#mentionForModal").modal("show")
-        })
-        
-         $(document).on('click', '.viewAttendee', function (){
-            $("#mentionForModal").modal("show")
-        })
-        
-        $(document).on('click', '.calendar', function (){
-            location.href="/detailCalendar.do"
-        })
-        $(document).on('click', '.drive', function (){
-            location.href="/drivePj.do"
         })
 
-        $(document).on('click', '.todoPerson', function (){
+        $(document).on('click', '.viewAttendee', function () {
+            $("#mentionForModal").modal("show")
+        })
+
+        $(document).on('click', '.calendar', function () {
+            location.href = "/detailCalendar.do"
+        })
+        $(document).on('click', '.drive', function () {
+            location.href = "/drivePj.do"
+        })
+
+        $(document).on('click', '.todoPerson', function () {
             var $forRemove = $(this)
             var $todo = $(this).next()
             $("#todoFor").modal("show")
@@ -1505,13 +1501,13 @@
             })
         })
 
-        $(document).on('click', '.todoFor', function (){
+        $(document).on('click', '.todoFor', function () {
             $(this).parent().html(' <i class="bi bi-person fa-2x todoPerson"></i>' +
-            		 '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'
+                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'
             )
         })
 
-        $(document).on('click', '.bi-x', function (){
+        $(document).on('click', '.bi-x', function () {
             $(this).parent().parent().remove()
         })
 

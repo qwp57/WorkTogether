@@ -69,7 +69,7 @@
 				<span><h3>일반 품의서</h3></span> 
 			</div>	
 			<section class="section-body">
-				<form id="letterOfApprovalForm"  method="post" enctype="multipart/form-data">
+				<form id="letterOfApprovalForm" method="post" action="insertLetterOfApproval.do" enctype="multipart/form-data"><!-- 첨부파일도 함께 보낸다. -->
 					<div id="letterOfApproval">
 						<div><h2 class="text-center pt-3">품의서</h2></div>							
 						<button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal">결재선 선택</button> <br><br><br>
@@ -160,15 +160,14 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<!-- modal header -->
-				<div class="modal-header">
-					<div class="modal-header">
-	   					<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>     				   				
-	   				</div>
+				<div class="modal-header">					
+	   				<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>   
+	   				<input type="image" class="text-right" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px">  				   					   				
 				</div>
 				
 				<!-- modal body -->
 				<div class="modal-body">
-					<form>
+					<form method="">
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 								<button class="btn btn-secondary" type="button">
@@ -284,6 +283,8 @@
 								<div id="refList">
 									
 								</div>
+								
+								<button type="submit" class="btn btn-primary float-right mt-5">등록</button>
 							</div>
 						</div>
 					</form>

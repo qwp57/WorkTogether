@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-	
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.uni.wt.employee.model.dao.EmployeeMapper">
 
-<resultMap type="Employee" id="employeeSet">
- 	<id property="emp_no" column="EMP_NO"/>
- 	<result property="dept_code" column="DEPT_COD"/>
- 	<result property="sub_dept_code" column="SUB_DEPT_CODE"/>
- 	<result property="job_code" column="JOB_CODE"/>
- 	<result property="join_date" column="JOIN_DATE"/>
- 	<result property="resignation_date" column="RESIGNATION_DATE"/>
- 	<result property="file_no" column="FILE_NO"/>
-</resultMap>
+	<resultMap type="Employee" id="employeeSet">
+		<id property="emp_no" column="EMP_NO"/>
+		<result property="dept_code" column="DEPT_COD"/>
+		<result property="sub_dept_code" column="SUB_DEPT_CODE"/>
+		<result property="job_code" column="JOB_CODE"/>
+		<result property="join_date" column="JOIN_DATE"/>
+		<result property="resignation_date" column="RESIGNATION_DATE"/>
+		<result property="file_no" column="FILE_NO"/>
+	</resultMap>
 
 	<select id="idCheck" parameterType="string" resultType="_int">
 		SELECT COUNT(*) FROM EMPLOYEE
 		WHERE ID = #{userId} AND STATUS != 'Q'
 	</select>
-	
+
 	<insert id="insertEmp" parameterType="Employee">
 		INSERT INTO EMPLOYEE
 		VALUES(EMP_SEQ.NEXTVAL, #{name}, #{id}, #{password}, #{email}, #{phone}, #{birth}, NULL, NULL, NULL, #{join_date}, NULL, DEFAULT, DEFAULT, NULL )
 	</insert>
-	
+
 	<select id="loginEmp"  parameterType="Employee" resultMap="employeeSet">
 		SELECT * FROM EMPLOYEE
 		WHERE ID = #{id} AND STATUS != 'Q'
