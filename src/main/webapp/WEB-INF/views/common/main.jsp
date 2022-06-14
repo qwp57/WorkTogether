@@ -170,25 +170,8 @@ td:last-child {
 </style>
 </head>
 <body>
-<script type="text/javascript">
-    $(function(){
-
-        var a = "${w.in_time}";
-             var b = ${w.emp_no};
-             var c = ${w}
-         
-             console.log(a);
-             console.log(b);
-             console.log(c);
-
-    })
-		
-</script>
-
-
 
 <div align="center">
-
     <div class="main-content">
         <div class="container">
         <section class="section">
@@ -259,6 +242,7 @@ td:last-child {
 	                                        		<c:when test="${w.status eq 'MT'}">회의중</c:when>
 	                                        		<c:when test="${w.status eq 'OT'}">외출중</c:when>
 	                                        		<c:when test="${w.status eq 'LW'}">퇴 근</c:when>
+	                                        		<c:otherwise>근무시작 전</c:otherwise>
 	                                        	</c:choose>
 	                                        </span>
 	                                    </div>
@@ -277,7 +261,7 @@ td:last-child {
                                             <img class="ioImg" id="endTime"
                                                    src="resources/assets/img/arrow-down.png">
                                             <div class="time_text">퇴 근</div>
-                                            <div class="time_text" id="endTime_area">00:00:00</div>
+                                            <div class="time_text" id="endTime_area">${w.out_time}</div>
                                         </div>
                                     </div>
 
@@ -369,7 +353,6 @@ td:last-child {
 </div>
 </div>
 <jsp:include page="../common/footer.jsp"/>
-
+<script src="resources/assets/js/workTimecheck_main.js?ver=1"></script>
 </body>
-<script src="resources/assets/js/workTimecheck_main.js"></script>
 </html>

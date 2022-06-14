@@ -20,28 +20,26 @@ import lombok.extern.slf4j.Slf4j;
 public class WorkStateServiceImpl implements WorkStateService{
 	
 	private static int todaySeq;
-	Map<String, Object> paramMap = new HashMap<String, Object>();
+//	Map<String, Object> paramMap = new HashMap<String, Object>();
 	
 	@Autowired
 	private WorkStateMapper wsMapper;
 
 	@Override
-	public int insertInTime(String emp_no) throws Exception {
+	public int insertInTime(WorkState w) throws Exception {
 		
 		todaySeq = wsMapper.getSeq();
 		log.info("todaySeq : {}", todaySeq);
-		paramMap.put("emp_no", emp_no);
-		paramMap.put("todaySeq", todaySeq);
+		w.setWork_no(todaySeq);
 		
-		int result = wsMapper.insertInTime(paramMap);
+		int result = wsMapper.insertInTime(w);
 		log.info("workStateService.insertInTime : {}", result);
-		
-		
+				
 		if(result > 0) {
-			paramMap.clear();
 			log.info("출근 등록 결과 : {}", result);
 			log.info("근무상태 근무중으로 변경 시작");
-			result += updateWorkState(emp_no, "W");
+			w.setStatus("W");
+			result += wsMapper.updateWorkStatus(w);
 			
 			return result;
 		}else {
@@ -50,40 +48,20 @@ public class WorkStateServiceImpl implements WorkStateService{
 		
 	}
 
-	@Override
-	public int updateWorkState(String emp_no, String ws) throws Exception {
-		int empno = Integer.parseInt(emp_no);
-		paramMap.put("emp_no", emp_no);
-		paramMap.put("ws", ws);
-		log.info("{}으로 근무상태 변경", ws);
-		int result = wsMapper.updateWorkState(paramMap);
-		log.info("workStateService.updateWorkState : {}", result);
-		
-		if(result > 0) {
-			paramMap.clear();
-			return result;
-		}else {
-			throw new Exception("근무상태 변경에 실패했습니다.");
-		}
-		
-		
-	}
 
 	@Override
-	public int updateOutTime(String emp_no) throws Exception {
+	public int updateOutTime(WorkState w) throws Exception {
 		
 		log.info("todaySeq : {}", todaySeq);
-		paramMap.put("emp_no", emp_no);
-		paramMap.put("todaySeq", todaySeq);
-		int result = wsMapper.updateOutTime(paramMap);
+		w.setWork_no(todaySeq);
+		int result = wsMapper.updateOutTime(w);
 		log.info("workStateService.updateOutTime : {}", result);
 		
 		if(result > 0) {
-			paramMap.clear();
 			log.info("퇴근 등록 결과 : {}", result);
 			log.info("근무상태 퇴근으로 변경 시작");
-			result += updateWorkState(emp_no, "LW");
-			todaySeq = 0;
+			w.setStatus("LW");
+			result += wsMapper.updateWorkStatus(w);
 			return result;
 		}else {
 			throw new Exception("퇴근 등록에 실패했습니다. ");
@@ -93,18 +71,51 @@ public class WorkStateServiceImpl implements WorkStateService{
 
 	@Override
 	public WorkState selectWorkState(String emp_no) throws Exception {
-		WorkState w = null;
+			WorkState w = null;
 		
 			w = wsMapper.selectWorkTime(todaySeq);
-			
-		if(w != null) {
-			
+
+			if(w != null) {
+				
 			log.info(w.toString());
 			w.setStatus(wsMapper.selectWorkState(emp_no));
+			w.setOut_time((w.getOut_time() != null) ? w.getOut_time() : "00:00:00");
 			log.info(w.toString());
-		}
+
+			}else {
+				w = new WorkState();
+				w.setIn_time("00:00:00");
+				w.setOut_time("00:00:00");
+				w.setStatus("근무시작 전");
+			}
+			
 		return w;
 	
 	}
+
+
+	@Override
+	public String updateWorkStatus(WorkState w) throws Exception {
+		
+		log.info(w.toString());
+		
+		int resNum = wsMapper.updateWorkStatus(w);
+		
+		if(resNum >0) {
+			return "success";
+		}else {
+			return "fail";
+		}
+	}
+
+
+	@Override
+	public void deleteTodaySeq() {
+		todaySeq = 0;
+		
+	}
+
+
+
 
 }
