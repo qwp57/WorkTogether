@@ -1,10 +1,17 @@
 package com.uni.wt.approval.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.uni.wt.approval.model.dto.Approval;
+import com.uni.wt.approval.model.service.ApprovalService;
+
 @Controller
 public class ApprovalController {
+	
+	@Autowired
+	private ApprovalService approvalService;
 	
 	//전자결재 홈으로 이동
 	@RequestMapping("approvalMain.do")
@@ -24,15 +31,19 @@ public class ApprovalController {
 		return "approval/approvalDocumentListView";
 	}
 	
-	//일반 품의서로 이동
+	//일반 품의서 작성으로 이동
 	@RequestMapping("letterOfApprovalEnrollForm.do")
 	public String letterOfApprovalEnrollForm() {
 		return "approval/letterOfApprovalEnrollForm";
 	}
 	
+	//일반 품의서 작성
+	//@RequestMapping("insertLetterOfApproval.do")
+	//public String insertLetterOfApproval(Approval ap, )
+	
 	//지출 결의서로 이동
 	@RequestMapping("expenditureEnrollForm.do")
-	public String expenditureEnrollForm() {
+	public String expenditureEnrollForm() {		
 		return "approval/expenditureEnrollForm";
 	}
 	
@@ -66,11 +77,13 @@ public class ApprovalController {
 		return "approval/myLetterOfApprovalUpdateForm";
 	}
 	
+	//지출 결의서 수정으로 이동
 	@RequestMapping("updateMyExpenditure.do")
 	public String updateMyExpenditureForm() {
 		return "approval/myExpenditureUpdateForm";
 	}
 	
+	//회의록 수정으로 이동
 	@RequestMapping("updateMyTheMinutesOfAMeeting.do")
 	public String updateMyTheMinutesOfAMeetingForm() {
 		return "approval/myTheMinutesOfAMeetingUpdateForm";

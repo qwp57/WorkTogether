@@ -24,11 +24,11 @@
 <body>
 <script type="text/javascript">
 $(function(){
-	let msg = "${msg}";
-	if(msg != ""){
-		alert(msg);
-		
-	}
+   let msg = "${msg}";
+   if(msg != ""){
+      alert(msg);
+      
+   }
 })
 </script>
   <div id="app">
@@ -55,7 +55,7 @@ $(function(){
 
                   <div class="form-group">
                     <div class="d-block">
-                    	<label for="password" class="control-label">Password</label>
+                       <label for="password" class="control-label">Password</label>
                     </div>
                     
                     <input id="password" type="password" class="form-control" name="password" tabindex="2" required placeholder="password를 입력해주세요">

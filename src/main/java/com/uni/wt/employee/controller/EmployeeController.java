@@ -91,7 +91,7 @@ public class EmployeeController {
 	
 	
 	
-	@RequestMapping(value="/enrollForm.do")
+	@RequestMapping(value="enrollForm.do")
 	public String enrollForm() {
 		
 		return "employee/register";
