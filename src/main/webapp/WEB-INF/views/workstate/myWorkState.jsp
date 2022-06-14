@@ -80,6 +80,7 @@ text-align: center;
 	  dd = String(dd).length === 1 ? '0' + dd : dd;
 	 
 	  thisWeek[i] = yyyy + '-' + mm + '-' + dd;
+	
 	}
 	 
 	//console.log(thisWeek);
@@ -120,9 +121,9 @@ text-align: center;
 	                                	<thead class="thead-dark">
 		                                	<tr>
 		                                		<th>주</th>
-		                                		<th>누적</th>
-		                                		<th>잔여</th>
-		                                		<th>초과</th>
+		                                		<th>총 시간</th>
+		                                		<th>초과시간</th>
+		                                		<th>누적시간</th>
 		                                		<th>기준시간</th>
 		                                		<th>휴일근무</th>
 		                                	</tr>
@@ -133,7 +134,7 @@ text-align: center;
 		                                		<td></td>
 		                                		<td></td>
 		                                		<td></td>
-		                                		<td></td>
+		                                		<td>52시간</td>
 		                                		<td></td>
 		                                	</tr>
 	                                	</tbody>
@@ -221,7 +222,7 @@ text-align: center;
                   </div>
               </div>
 </div>
-
+<script src="/resources/assets/js/workTime_ws.js"></script>
 
 
 </body>

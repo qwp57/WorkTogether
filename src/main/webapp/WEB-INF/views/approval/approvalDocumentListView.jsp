@@ -48,7 +48,7 @@
 	<div style="height: 50px"></div>
 		<div class="container">
 			<div class="title mt-5">
-				<h3>기안 문서함</h3>
+				<h3>결재 문서함</h3>
 			</div>			
 			<div class="row">
 				<div class="statusList ml-4 mt-3">

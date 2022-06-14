@@ -2,6 +2,8 @@ package com.uni.wt.workState.model.dao;
 
 import java.util.Map;
 
+import javax.swing.Spring;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.uni.wt.workState.model.dto.WorkState;
@@ -20,5 +22,7 @@ public interface WorkStateMapper {
 	public WorkState selectWorkTime(int todaySeq)throws Exception;
 
 	public String selectWorkState(String emp_no)throws Exception;
+
+	public Map<Spring, Object> selectMyWork(int todaySeq)throws Exception;
 
 }

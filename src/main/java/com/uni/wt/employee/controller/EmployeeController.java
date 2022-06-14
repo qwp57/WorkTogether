@@ -68,8 +68,8 @@ public class EmployeeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		
-		//return "common/main";
-		return "employee/login";
+		return "common/main";
+		//return "employee/login";
 
 	}
 
@@ -91,7 +91,7 @@ public class EmployeeController {
 	
 	
 	
-	@RequestMapping(value="/enrollForm.do")
+	@RequestMapping(value="enrollForm.do")
 	public String enrollForm() {
 		
 		return "employee/register";
