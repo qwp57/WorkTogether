@@ -1,12 +1,9 @@
 package com.uni.wt.workState.controller;
 
-import java.text.SimpleDateFormat;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
 
 import com.uni.wt.workState.model.dto.WorkState;
 import com.uni.wt.workState.service.WorkStateService;
@@ -51,30 +48,43 @@ public class WorkStateController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/insertInTime.do")
-	public int insertInTime(String emp_no) throws Exception {
+	@RequestMapping("/insertInTime.do")//출근시간 등록
+	public int insertInTime(WorkState w) throws Exception {
 		log.info("insertInTime.do 들어옴 ");
 		
 		
-		log.info("emp_no : {}", emp_no);
+		log.info("emp_no : {}", w.getEmp_no());
 		
-		int result = wsService.insertInTime(emp_no);
+		int result = wsService.insertInTime(w);
 		
 		
 		return result;
 	}
 	@ResponseBody
-	@RequestMapping("/updateOutTime.do")
-	public int updateOutTime(String emp_no) throws Exception {
-		log.info("insertInTime.do 들어옴 ");
+	@RequestMapping("/updateOutTime.do")//퇴근시간 등록 
+	public int updateOutTime(WorkState w) throws Exception {
+		log.info("updateOutTime.do 들어옴 ");
 		
 		
-		log.info("emp_no : {}", emp_no);
+		log.info("emp_no : {}", w.getEmp_no());
 		
-		int result = wsService.updateOutTime(emp_no);
+		int result = wsService.updateOutTime(w);
 		
 		
 		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/updateWorkStatus.do")//근무상태 변경
+	public String updateWorkStatus(WorkState w) throws Exception {
+		log.info("updateWorkStatus 들어옴 ");
+		log.info(w.toString());
+		
+		String result = wsService.updateWorkStatus(w);
+
+		return result;
+	
+		
 	}
 
 }

@@ -9,13 +9,13 @@ import com.uni.wt.workState.model.dto.WorkState;
 @Mapper
 public interface WorkStateMapper {
 
-	public int insertInTime(Map paramMap)throws Exception;
+	public int insertInTime(WorkState w)throws Exception;
 
 	public int getSeq()throws Exception;
 
-	public int updateWorkState(Map<String, Object> paramMap)throws Exception;
+	public int updateWorkStatus(WorkState w)throws Exception;
 
-	public int updateOutTime(Map<String, Object> paramMap)throws Exception;
+	public int updateOutTime(WorkState w)throws Exception;
 
 	public WorkState selectWorkTime(int todaySeq)throws Exception;
 

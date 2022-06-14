@@ -14,26 +14,31 @@
  SELECT WS_SEQ.NEXTVAL FROM DUAL
  </select>
  
- <insert id="insertInTime" parameterType="Map">
+ <insert id="insertInTime" parameterType="WorkState">
  	INSERT INTO WORK_TIME (WORK_NO, EMP_NO, IN_TIME, OUT_TIME)
- 	VALUES(#{todaySeq}, #{emp_no}, SYSDATE,NULL)
+ 	VALUES(#{work_no}, #{emp_no}, SYSDATE,NULL)
  </insert>
  
- <update id="updateWorkState" parameterType="Map">
+ <update id="updateWorkStatus" parameterType="WorkState">
  	UPDATE WORK_STATUS
- 	SET STATUS = #{ws}
+ 	SET STATUS = #{status}
  	WHERE EMP_NO = #{emp_no}
  </update>
  
- <update id="updateOutTime" parameterType="Map">
+ <update id="updateOutTime" parameterType="WorkState">
  	UPDATE WORK_TIME
  	SET OUT_TIME = SYSDATE
  	WHERE EMP_NO = #{emp_no}
- 	AND WORK_NO = #{todaySeq}
+ 	AND WORK_NO = #{work_no}
  </update>
  
  <select id="selectWorkTime" parameterType="_int" resultMap="workStateSet">
- 	SELECT * FROM WORK_TIME
+ 	SELECT 
+		WORK_NO,
+   		EMP_NO,
+    	TO_CHAR(IN_TIME,'HH24:MI:SS') AS IN_TIME,
+    	TO_CHAR(OUT_TIME,'HH24:MI:SS') AS out_TIME
+ 	FROM WORK_TIME
  	WHERE WORK_NO = #{todaySeq}
  </select>
  <select id="selectWorkState" parameterType="string" resultType="string">

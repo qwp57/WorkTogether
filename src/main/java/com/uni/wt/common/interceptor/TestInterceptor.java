@@ -11,8 +11,8 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import com.uni.wt.employee.model.dto.Employee;
 
 
-public class LoginInterceptor extends HandlerInterceptorAdapter{
-	private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
+public class TestInterceptor extends HandlerInterceptorAdapter{
+	private static final Logger logger = LoggerFactory.getLogger(TestInterceptor.class);
 	public static final String LOG_ID = "logId";
 
 	//API로그를 남기는 스프링 인터셉터라고 함.
@@ -20,17 +20,18 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
 		 HttpSession session = request.getSession();
 	        Employee loginEmp = (Employee) session.getAttribute("loginEmp");
-	        logger.info("[LoginInterceptor] : {}",loginEmp);
+	        logger.info("[TestIntercepter] : {}",loginEmp);
 
-	        if(loginEmp != null){
-	            response.sendRedirect("/main");
+	        if(loginEmp == null){
+	            response.sendRedirect("/loginForm.do");
 	            return false;
 	        }
-
-        return true;
+		
+		
+		return true;
+		
 	}
-
+	
 }
