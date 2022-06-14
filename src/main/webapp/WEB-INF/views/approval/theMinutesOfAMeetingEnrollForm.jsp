@@ -163,7 +163,8 @@
 							</tr>
 						</table>
 						
-						<div class="" id="summernote" name="loaContent"></div>	
+						<div class="mb-2"><strong>회의 내용</strong></div>
+						<div class="" id="summernote" name=""></div>	
 						
 						<div class="" >
 							<div class="mt-5" style="font-size:15px"><strong>첨부파일</strong></div>
@@ -310,6 +311,8 @@
 								<div id="refList">
 									
 								</div>
+								
+								<button type="submit" class="btn btn-primary float-right mt-5">등록</button>
 							</div>
 						</div>
 					</form>
@@ -345,6 +348,92 @@
 	            ]
 	        });
 			 
+		});
+
+		$(function(){
+			$('#datetimepicker1').datetimepicker({
+                format: 'L'
+            });
+			
+			$('#datetimepicker2').datetimepicker({
+                format: 'L'
+            });
+			
+			 $("#fileUpload").click(function(){
+		        	$("#upfile").click();
+		        });	
+		});
+		
+		$(function(){	        
+	        $("#fileUpload").click(function(){
+	        	$("#upfile").click();
+	        });			
+		
+	        $("#plusIcon1").click(function(){
+				$(this).css("display","none");
+				$("#minusIcon1").removeAttr("style");	
+				
+			});
+			
+			$("#minusIcon1").click(function(){
+				$(this).css("display","none");
+				$("#plusIcon1").removeAttr("style");				
+			});
+			
+			$("#minusIcon2").click(function(){
+				$(this).css("display","none");
+				$("#plusIcon2").removeAttr("style");	
+				
+			});
+			
+			$("#plusIcon2").click(function(){
+				$(this).css("display","none");
+				$("#minusIcon2").removeAttr("style");				
+			});
+			
+			$("#minusIcon3").click(function(){
+				$(this).css("display","none");
+				$("#plusIcon3").removeAttr("style");	
+				
+			});
+			
+			$("#plusIcon3").click(function(){
+				$(this).css("display","none");
+				$("#minusIcon3").removeAttr("style");				
+			});
+			
+			$("#minusIcon4").click(function(){
+				$(this).css("display","none");
+				$("#plusIcon4").removeAttr("style");	
+				
+			});
+			
+			$("#plusIcon4").click(function(){
+				$(this).css("display","none");
+				$("#minusIcon5").removeAttr("style");				
+			});
+			
+			$("#minusIcon5").click(function(){
+				$(this).css("display","none");
+				$("#plusIcon5").removeAttr("style");	
+				
+			});
+			
+			$("#plusIcon5").click(function(){
+				$(this).css("display","none");
+				$("#minusIcon4").removeAttr("style");				
+			});
+			
+			$("#minusIcon6").click(function(){
+				$(this).css("display","none");
+				$("#plusIcon4").removeAttr("style");	
+				
+			});
+			
+			$("#plusIcon6").click(function(){
+				$(this).css("display","none");
+				$("#minusIcon4").removeAttr("style");				
+			});
 		});
 	</script>
 

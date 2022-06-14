@@ -17,7 +17,7 @@
 		margin-right: 10px;
 	}
 	
-	#expenditure{
+	#letterOfApproval{
 		background-color: white;
 		margin-top: 30px;
 		border: 3px solid lightgray;
@@ -31,12 +31,7 @@
 	#approvalLine2{
 		width: 17%;		
 	}
-	
-	#ex_content{
-		resize: none;
-		height: 300px;
-	}
-	
+
 	#fileUpload{
 		border: 2px dotted black;
 		height: 120px;
@@ -52,20 +47,31 @@
 		height: 75%;
 		padding: 3px;
 	}
+	
+	#allWT{
+		color: black;
+	}
+	
+	#approvalAddBtn{
+		margin-top: 100px;
+	}
+	
 </style>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 </head>
 <body>
 	<div class="main-content">
-	<div style="height: 50px"></div>
+		<div style="height: 50px"></div>
 		<div class="container">
 			<div class="title mt-5 row">
 				<span><i class="bi bi-clipboard2-check-fill"></i></span>
-				<span><h3>지출 결의서</h3></span> 
+				<span><h3>일반 품의서</h3></span> 
 			</div>
 			<section class="section-body">
-				<form id="expenditureForm"  method="post" enctype="multipart/form-data">
-					<div id="expenditure">
-						<div><h2 class="text-center pt-3">지출 결의서</h2></div>							
+				<form id="letterOfApprovalForm"  method="post" enctype="multipart/form-data">
+					<div id="letterOfApproval">
+						<div><h2 class="text-center pt-3">품의서</h2></div>							
 						<button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal">결재선 선택</button> <br><br><br>
 						<table class="table table-bordered float-right" id="approvalLine1">
 							<tr>
@@ -125,112 +131,26 @@
 							<tr>
 								<th>제목</th>
 								<td colspan="5">
-									<input type="text" class="form-control" id="appTitle" name="appTitle">
+									<input type="text" class="form-control" id="appTitle" name="appTitle" value="품의서 제출합니다.">
 								</td>
 							</tr>							
-						</table>	
-						<table class="table table-bordered mt-3">
-							<tr>
-								<th style="width: 15%">구분</th>
-								<td>
-									<div class="form-check-inline">
-										<label class="form-check-label">
-											<input type="radio" class="form-check-input" name="divison">개인
-										</label>
-									</div>
-									<div class="form-check-inline">
-										<label class="form-check-label">
-											<input type="radio" class="form-check-input" name="divison">법인
-										</label>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<th>회계 기준월</th>
-								<td>
-									<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-					                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"  name="empBirth"/>
-					                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-					                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-					                    </div>
-					                </div>	   
-								</td>
-							</tr>
-							<tr>
-								<th>지출자</th>
-								<td><input type="text" class="form-control" id="spender" name="spender"></td>
-							</tr>
-							<tr>
-								<th>계좌 정보</th>
-								<td><input type="text" class="form-control" id="account" name="account"></td>
-							</tr>
-							<tr>
-								<th>지출 사유</th>
-								<td><textarea class="form-control" id="ex_content" name="ex_content"></textarea></td>
-							</tr>
-						</table>	
+						</table>		
+										
+						<div class="" id="summernote" name="loaContent">사업 목적 : 그룹웨어를 구매함으로써 불필요한 이동을 줄이고 업무 효율성을 높인다.</div>	
 						
-						<h6>지출 내역</h6>	
-						<table class="table table-bordered mt-3 text-center">
-							<thead>
-								<tr>
-									<th style="width:20%">지출 일자</th>
-									<th style="width:20%">분류</th>
-									<th style="width:20%">금액</th>
-									<th style="width:20%">사용 내역</th>
-									<th style="width:20%">비고</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-						                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2"  name="empBirth"/>
-						                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-						                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-						                    </div>
-						                </div>	 
-									</td>
-									<td>
-										<div class="input-group">
-						    				<div class="input-group-prepend">
-						    					<select class="form-control rounded-1" id="ex_division" name="ex_division">
-													<option ${(param.ex_division == "") ? "selected" : "" } value="">물품 구입비</option>
-													<option ${(param.ex_division == "") ? "selected" : "" } value="">잡비</option>	
-													<option ${(param.ex_division == "") ? "selected" : "" } value="">회식비</option>		
-													<option ${(param.ex_division == "") ? "selected" : "" } value="">식비</option>		
-													<option ${(param.ex_division == "") ? "selected" : "" } value="">교통비</option>	
-													<option ${(param.ex_division == "") ? "selected" : "" } value="">기타</option>									
-												</select>
-						    				</div>
-					    				</div>
-									</td>
-									<td><input type="text" class="form-control" id="amount" name="amount"></td>
-									<td><input type="text" class="form-control" id="ex_history" name="ex_history"></td>
-									<td><input type="text" class="form-control" id="note" name="note"></td>
-								</tr>
-							</tbody>
-							<tfoot>
-								<tr>
-									<td colspan="5">합계 : 
-										<span name="sum"> </span>
-									</td>									
-								</tr>
-							</tfoot>
-						</table>
 						<div class="" >
 							<div class="mt-5" style="font-size:15px"><strong>첨부파일</strong></div>
 							<div id="fileUpload" class="text-center mt-2 pt-5">클릭하여 파일을 추가하세요.</div>
 							<div id="fileArea">
-									<input type="file" class="" id="upfile" name="upfile" style="display:none"/>									
+								<input type="file" class="" id="upfile" name="upfile" style="display:none"/>									
 							</div>
-						</div>										
-					</div>													
+						</div>									
+					</div>
 					<div class="float-right mt-3">
-						<button type="submit" class="btn btn-primary">기안하기</button>
-						<button type="button" class="btn btn-primary" onclick="location.href='approvalMain.do'">취소하기</button>
-					</div>					
-				</form>
+						<button type="submit" class="btn btn-primary" onclick="">수정하기</button>
+						<button type="button" class="btn btn-danger" onclick="javascript:history.go(-1);">취소하기</button>
+					</div>
+				</form>	
 			</section>
 		</div>
 	</div>
@@ -240,14 +160,14 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<!-- modal header -->
-				<div class="modal-header">
-	   				<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>    
-	   				<input type="image" class="text-right" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px"> 				   				
+				<div class="modal-header">					
+	   				<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>     				   				
+					<input type="image" class="text-right" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px">
 				</div>
 				
 				<!-- modal body -->
 				<div class="modal-body">
-					<form>
+					<form method="">
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 								<button class="btn btn-secondary" type="button">
@@ -374,19 +294,23 @@
 	</div>
 	
 	<script>
-		$(function(){
-			$('#datetimepicker1').datetimepicker({
-                format: 'L'
-            });
-			
-			$('#datetimepicker2').datetimepicker({
-                format: 'L'
-            });
-			
-			 $("#fileUpload").click(function(){
-		        	$("#upfile").click();
-		        });	
-		});
+		$(function () {
+	        $('#summernote').summernote({
+	            tabsize: 2,
+	            height: 500,
+	            minHeight: null,
+	            maxHeight: null,
+	            lang: 'ko-KR',
+	            toolbar: [
+	                ['style', ['style']],
+	                ['font', ['bold', 'underline']],
+	                ['color', ['color']],
+	                ['ul', 'ol', 'paragraph'],
+	                ['table', ['table']],
+	                ['insert', ['link', 'picture', 'video']],
+	            ]
+	        });
+	    });
 		
 		$(function(){	        
 	        $("#fileUpload").click(function(){

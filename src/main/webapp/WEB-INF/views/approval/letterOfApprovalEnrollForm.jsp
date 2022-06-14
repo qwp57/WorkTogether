@@ -160,15 +160,14 @@
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<!-- modal header -->
-				<div class="modal-header">
-					<div class="modal-header">
-	   					<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>     				   				
-	   				</div>
+				<div class="modal-header">					
+	   				<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>   
+	   				<input type="image" class="text-right" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px">  				   					   				
 				</div>
 				
 				<!-- modal body -->
 				<div class="modal-body">
-					<form>
+					<form method="">
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 								<button class="btn btn-secondary" type="button">
@@ -284,6 +283,8 @@
 								<div id="refList">
 									
 								</div>
+								
+								<button type="submit" class="btn btn-primary float-right mt-5">등록</button>
 							</div>
 						</div>
 					</form>
