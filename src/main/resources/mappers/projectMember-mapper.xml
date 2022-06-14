@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uni.wt.project.projectMember.model.dao.ProjectMemberMapper">
+	<resultMap type="ProjectMember" id="projectMemberSet">
+		<id property="pj_no" column="PJ_NO"/>
+		<result property="emp_no" column="EMP_NO"/>
+		<result property="pj_color" column="PJ_COLOR"/>
+		<result property="admin" column="ADMIN"/>
+	</resultMap>
+
+	<insert id="insertProjectMember" parameterType="ProjectMember">
+		INSERT INTO PROJECT_MEMBER
+		VALUES (#{pj_no}, #{emp_no}, DEFAULT, 'Y')
+	</insert>
+
+</mapper>
