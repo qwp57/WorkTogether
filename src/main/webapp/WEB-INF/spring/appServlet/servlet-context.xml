@@ -58,6 +58,7 @@
 			<exclude-mapping path="/loginForm.do"/>
 			<exclude-mapping path="/enrollForm.do"/>
 			<exclude-mapping path="/enrollEmp.do"/>
+			<exclude-mapping path="/idCheck.do"/>
 			<beans:bean id = "TestInterceptor" class="com.uni.wt.common.interceptor.TestInterceptor"/>
 		</interceptor>
 	</interceptors> 
