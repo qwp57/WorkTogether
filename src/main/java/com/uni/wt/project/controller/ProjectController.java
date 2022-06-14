@@ -1,10 +1,6 @@
 package com.uni.wt.project.controller;
 
 import com.google.gson.GsonBuilder;
-import com.uni.wt.employee.controller.EmployeeController;
-import com.uni.wt.employee.model.dto.Employee;
-import com.uni.wt.employee.model.service.EmployeeService;
-import com.uni.wt.project.boardAll.dto.BoardAll;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.model.service.ProjectService;
 import org.slf4j.Logger;
@@ -23,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-@SessionAttributes("loginUser")
 @Controller
 public class ProjectController {
 	private static final Logger log = LoggerFactory.getLogger(ProjectController.class);
@@ -108,23 +103,6 @@ public class ProjectController {
 		return "redirect:/allProject.do";
 	}
 
-	@RequestMapping("/insertPost.do")
-	public String insertPost(@RequestParam("board_title") String board_title, @RequestParam("pj_no") int pj_no,
-							 @RequestParam("board_content") String board_content,
-							 Model m, RedirectAttributes redirect) throws Exception {
-		log.info("글내용 : " + board_content);
 
-		BoardAll boardAll = new BoardAll();
-		boardAll.setBoard_type(1);
-		boardAll.setPj_no(pj_no);
-		//boardAll.setWriter( 작성자 세션에서 넣기 );
-		//kos
-
-		//projectService.insertPost(board_title, board_content, pj_no);
-		msgMap.put("msg", "게시물 등록 완료.");
-		redirect.addFlashAttribute("msg", msgMap);
-
-		return "redirect:/detailPj.do?pj_no=" + pj_no;
-	}
 
 }

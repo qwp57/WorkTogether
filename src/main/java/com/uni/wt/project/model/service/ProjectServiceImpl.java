@@ -1,5 +1,7 @@
 package com.uni.wt.project.model.service;
 
+import com.uni.wt.project.boardAll.model.dao.BoardAllMapper;
+import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.model.dao.ProjectMapper;
 import com.uni.wt.project.model.dto.Project;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +23,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void insertProject(Project project) throws Exception{
-
         int result = projectMapper.insertProject(project);
-
         if(result < 0) {
             throw new Exception("프로젝트 생성에 실패하였습니다.");
         }

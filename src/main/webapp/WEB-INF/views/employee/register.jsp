@@ -69,7 +69,7 @@ $(function(){
 									<div class="form-group">
 										<label for="userId">아이디</label>
 										<!--<div id="checkResult" style="display:none; font-size:0.8em"></div>-->
-										<input id="userId" type="text" class="form-control" name="userId"
+										<input id="userId" type="text" class="form-control" name="id"
 											tabindex="2" required autofocus placeholder="id를 입력해주세요">
 										<div class="invalid-feedback">아이디는 영어 대/소문자와 숫자만 가능합니다</div>
 									</div>

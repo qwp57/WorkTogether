@@ -691,14 +691,14 @@
                             <label
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-2">제목</label>
                             <div class="col-sm-12 col-md-7 col-lg-9">
-                                <input type="text" name="board_title" class="form-control">
+                                <input type="text" name="post_title" class="form-control">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
                             <label
                                     class="col-form-label text-md-right col-12 col-md-3 col-lg-2">내용</label>
                             <div class="col-sm-12 col-md-7 col-lg-9">
-                                <textarea name="board_content" id="summernote"></textarea>
+                                <textarea name="post_content" id="summernote"></textarea>
                             </div>
                         </div>
 

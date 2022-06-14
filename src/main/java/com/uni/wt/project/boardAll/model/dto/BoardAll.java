@@ -1,8 +1,6 @@
-package com.uni.wt.project.boardAll.dto;
+package com.uni.wt.project.boardAll.model.dto;
 
 import java.sql.Date;
-
-import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -12,7 +10,7 @@ public class BoardAll {
 
     private int pj_no;
 
-    private int board_type;
+    private String board_type;
 
     private int writer;
 
