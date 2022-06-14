@@ -357,9 +357,6 @@ td:last-child {
 									</tbody>
 								</table>                              
                             </div>
-
-                             
-
                         </div>
                     </div>
                 </div>

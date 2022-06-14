@@ -125,7 +125,7 @@
 							<tr>
 								<th>제목</th>
 								<td colspan="5">
-									<input type="text" class="form-control" id="appTitle" name="appTitle">
+									<input type="text" class="form-control" id="appTitle" name="appTitle" value="2022-05-20 법인카드 사용">
 								</td>
 							</tr>							
 						</table>	
@@ -158,15 +158,15 @@
 							</tr>
 							<tr>
 								<th>지출자</th>
-								<td><input type="text" class="form-control" id="spender" name="spender"></td>
+								<td><input type="text" class="form-control" id="spender" name="spender" value="배대리"></td>
 							</tr>
 							<tr>
 								<th>계좌 정보</th>
-								<td><input type="text" class="form-control" id="account" name="account"></td>
+								<td><input type="text" class="form-control" id="account" name="account" value="우리은행"></td>
 							</tr>
 							<tr>
 								<th>지출 사유</th>
-								<td><textarea class="form-control" id="ex_content" name="ex_content"></textarea></td>
+								<td><textarea class="form-control" id="ex_content" name="ex_content" value="회의"></textarea></td>
 							</tr>
 						</table>	
 						
@@ -205,15 +205,15 @@
 						    				</div>
 					    				</div>
 									</td>
-									<td><input type="text" class="form-control" id="amount" name="amount"></td>
-									<td><input type="text" class="form-control" id="ex_history" name="ex_history"></td>
-									<td><input type="text" class="form-control" id="note" name="note"></td>
+									<td><input type="text" class="form-control" id="amount" name="amount" value="10000"></td>
+									<td><input type="text" class="form-control" id="ex_history" name="ex_history" value="회의 물품"></td>
+									<td><input type="text" class="form-control" id="note" name="note" value=""></td>
 								</tr>
 							</tbody>
 							<tfoot>
 								<tr>
 									<td colspan="5">합계 : 
-										<span name="sum"> </span>
+										<span name="sum">10000원</span>
 									</td>									
 								</tr>
 							</tfoot>
@@ -227,9 +227,9 @@
 						</div>										
 					</div>													
 					<div class="float-right mt-3">
-						<button type="submit" class="btn btn-primary">기안하기</button>
-						<button type="button" class="btn btn-primary" onclick="location.href='approvalMain.do'">취소하기</button>
-					</div>					
+						<button type="submit" class="btn btn-primary" onclick="">수정하기</button>
+						<button type="button" class="btn btn-danger" onclick="javascript:history.go(-1);">취소하기</button>
+					</div>				
 				</form>
 			</section>
 		</div>
@@ -460,6 +460,7 @@
 			});
 		});
 	</script>
-	<jsp:include page="../common/footer.jsp"/>
+
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
