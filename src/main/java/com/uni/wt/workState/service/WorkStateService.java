@@ -4,12 +4,16 @@ import com.uni.wt.workState.model.dto.WorkState;
 
 public interface WorkStateService {
 
-	int insertInTime(String emp_no) throws Exception;
+	int insertInTime(WorkState w) throws Exception;
 
-	int updateWorkState(String emp_no, String ws)throws Exception;
-
-	int updateOutTime(String emp_no)throws Exception;
+	int updateOutTime(WorkState w)throws Exception;
 	
 	WorkState selectWorkState(String todaySeq) throws Exception;
+
+	String updateWorkStatus(WorkState w)throws Exception;
+
+	void deleteTodaySeq();
+
+	
 
 }

@@ -1,6 +1,7 @@
 package com.uni.wt.employee.controller;
 
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -74,15 +75,14 @@ public class EmployeeController {
 
 	@RequestMapping("/main")
 	public String mainHome(@ModelAttribute("loginEmp") Employee emp, Model m) throws Exception {
-		
+		//로그인된 상태가 아니면 에러남
 		if(emp != null) {
 			log.info("로그인 이후 메인화면 : {}님 입장",emp.getName());
 			//근무상태 불러오기 
 			WorkState w= wsService.selectWorkState(String.valueOf(emp.getEmp_no()));
 			
 			m.addAttribute("w", w);
-			
-			
+
 		}
 		
 		return "common/main";
@@ -156,8 +156,11 @@ public class EmployeeController {
 		return "redirect:/main";
 	}
 	
-	@RequestMapping("/loout.do")
+	@RequestMapping("/logout.do")
 	public String logout(SessionStatus status) {
+			
+			wsService.deleteTodaySeq();
+		
 		status.setComplete();
 		
 		return "redirect:/loginForm.do";

@@ -6,19 +6,8 @@ $(function(){
 	$('#current_Date').text(dayfm);
 	
 	getClock();
-	
-		var a = "${w.in_time}";
-		var b = "${w.emp_no}";
-		var c = "${w}"
-	
-		console.log(a);
-		console.log(b);
-		console.log(c);
-		
-		
-	
-	
-	
+
+
 })
 
 function getClock() {
@@ -34,9 +23,9 @@ setInterval(getClock, 1000);
 
 
 $('#startTime').click(function(){
-
+    let name = $('.user-name').children().text();
     empno = $('#empno').val();
-    if($('#status_Change').text().trim() == ""){
+    if($('#status_Change').text().trim() == "근무시작 전"){
 
         $.ajax({
             url:"insertInTime.do", 
@@ -54,16 +43,14 @@ $('#startTime').click(function(){
                     let in_time_text = in_time_Hour+":"+in_time_min+":"+in_time_sec;
                     console.log(in_time_text);
                     $('#startTime_area').text(in_time_text);
-    
                     $('#status_Change').text("근무중");
-                    
-                   
-                    let name = $('.user-name').children().text();
                     alert(name+'님이 출근했습니다.');
                 }
             }, 
             error : function(){console.log("ajax 통신실패")}
         })
+    }else if($('#status_Change').text().trim() == "퇴 근"){
+        alert(name+"님은 이미 퇴근했습니다.");
     }else{
         let name = $('.user-name').children().text(); 
         alert(name+"님은 이미 출근을 했습니다. ");
@@ -74,9 +61,15 @@ $('#startTime').click(function(){
 })
 
 $('#endTime').click(function(){
-    empno = $('#empno').val();
+    var empno = $('#empno').val();
+    var statusText = $('#status_Change').text().trim();
+    let name = $('.user-name').children().text();
 
-    if($('#status_Change').text() != "" || $('#status_Change').text() != "퇴 근"){
+    if(statusText == '근무시작 전'){
+        alert(name+"님은 아직 출근 전입니다.");
+    }else if(statusText == '퇴 근'){
+        alert(name+"님은 이미 퇴근했습니다.");
+    }else{
         $.ajax({
             url :"updateOutTime.do",
             data : {emp_no : empno},
@@ -93,10 +86,7 @@ $('#endTime').click(function(){
                     let in_time_text = in_time_Hour+":"+in_time_min+":"+in_time_sec;
                     console.log(in_time_text);
                     $('#endTime_area').text(in_time_text);
-    
                     $('#status_Change').text("퇴 근");
-    
-                    let name = $('.user-name').children().text();
                     alert(name+'님이 퇴근했습니다.');
                 }
     
@@ -105,11 +95,77 @@ $('#endTime').click(function(){
     
         })
 
-    }else{
-        let name = $('.user-name').children().text();
-                  
-        alert(name+"님은 아직 퇴근할 수 없습니다.");
     }
+
+
+})
+
+$('.sbtn').click(function(event){
+    var empno = $('#empno').val();
+    var statusbtn = $(this).text().trim();
+    var status;
+    switch(statusbtn){
+        case '근 무':
+            status = "W";
+            break;
+        case '외 근':
+            status = "OW";
+            break;
+        case '회 의': 
+            status = 'MT';
+            break;
+        case '외 출':
+            status = 'OT';
+            break;
+    }
+
+    console.log(status);
+   var curStatus =  $('#status_Change').text().trim()
+    if(curStatus == '근무시작 전'){
+        alert("아직 출근 전입니다.");
+    }else if(curStatus == '퇴 근'){
+        alert("이미 퇴근했습니다.");
+    }else{
+
+        $.ajax({
+            url :"updateWorkStatus.do",
+            data :{emp_no : empno,
+                    status : status},
+            type :"post",
+            success :function(result){
+                if(result == "success"){
+                    let name = $('.user-name').children().text();
+                    var text = "";
+                    switch(statusbtn){
+                        case '근 무':
+                            text = "근무중";
+                            break;
+                        case '외 근':
+                            text = "외근중";
+                            break;
+                        case '회 의': 
+                             text = '회의중';
+                            break;
+                        case '외 출':
+                            text = '외출중';
+                            break;
+                    }
+                    alert(name+'님의 상태가 '+text+"으로 변경되었습니다");
+                    $('#status_Change').text(text);
+                    console.log("변경할 상태 : "+text);
+                    console.log("현재 상태 "+$('#status_Change').text());
+                }else{
+                    alert(result);
+                }
+            },
+            error :function(){
+                console.log("ajax 통신실패")
+            }
+        })
+        
+    }
+
+
 
 
 })

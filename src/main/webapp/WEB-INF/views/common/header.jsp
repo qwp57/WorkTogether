@@ -216,7 +216,7 @@ $(function(){
               </a>
 	           
               <div class="dropdown-divider"></div>
-              <a href="/loout.do" class="dropdown-item has-icon text-danger">
+              <a href="/logout.do" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> 로그아웃
               </a>
             </div>
