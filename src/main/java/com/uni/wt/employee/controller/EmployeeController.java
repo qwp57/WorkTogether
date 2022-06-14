@@ -68,8 +68,8 @@ public class EmployeeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		
-		//return "common/main";
-		return "employee/login";
+		return "common/main";
+		//return "employee/login";
 
 	}
 

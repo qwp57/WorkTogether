@@ -1,10 +1,17 @@
 package com.uni.wt.workState.controller;
 
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.swing.Spring;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.workState.model.dto.WorkState;
 import com.uni.wt.workState.service.WorkStateService;
 
@@ -18,7 +25,19 @@ public class WorkStateController {
 	private WorkStateService wsService;
 	
 	@RequestMapping("workStateMain.do")
-	public String workStateMain() {
+	public String workStateMain(HttpServletRequest request, Model m) throws Exception {
+//		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+//		
+//		if(emp != null) {
+//			
+//			log.info(emp.toString());
+//		}
+//		
+//		Map<Spring, Object> paramMap = wsService.selectMyWork();
+		
+		
+		
+		
 		
 		return "workstate/myWorkState";
 	}
