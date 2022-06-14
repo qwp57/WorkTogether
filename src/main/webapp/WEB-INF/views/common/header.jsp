@@ -16,8 +16,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css" integrity="sha384-eoTu3+HydHRBIjnCVwsFyCpUDZHZSFKEJD0mc3ZqSBSb6YhZzRHeiomAUWCstIWo" crossorigin="anonymous">
 
   <!-- Template CSS -->
-  <link rel="stylesheet" href="resources/assets/css/style.css">
-  <link rel="stylesheet" href="resources/assets/css/components.css">
+  <link rel="stylesheet" href="/resources/assets/css/style.css">
+  <link rel="stylesheet" href="/resources/assets/css/components.css">
 
   <!-- 캘린더 cdn -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js"></script>
@@ -117,7 +117,7 @@ $(function(){
 								<a href="/chatRoom.do" class="dropdown-item dropdown-item-unread" onClick="window.open(this.href, '', 'width=470, height=680'); return false;">
 									<div class="dropdown-item-avatar">
 										<img alt="image"
-											src="resources/assets/img/avatar/avatar-1.png"
+											src="/resources/assets/img/avatar/avatar-1.png"
 											class="rounded-circle">
 										<div class="is-online"></div>
 									</div>
@@ -193,7 +193,7 @@ $(function(){
             </div>
           </li>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-            <img alt="image" src="resources/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+            <img alt="image" src="/resources/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
             <div class="d-sm-none d-lg-inline-block">Hi, ${sessionScope.loginEmp.name}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-title">Logged in 5 min ago</div>
@@ -241,7 +241,7 @@ $(function(){
       			<!-- modal header : 제목 -->
       			<div class="modal-header">
       				<span><h3 class="modal-title text-left">나의 기본 정보</h3></span>
-      				<span><input type="image" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px"></span>
+      				<span><input type="image" data-dismiss="modal" src="/resources/assets/img/close.png/" style="width:20px"></span>
       			</div>
       			<!-- modal body : 내용 -->
       			<form class="form" id="myProfileUpdate">
@@ -251,7 +251,7 @@ $(function(){
 	      						<th style="width: 15%">&nbsp;프로필 사진</th>
 	      						<td colspan="3" style="height: 40%">
 	      							<img style="height: 100px" alt="image"
-	                                                 src="resources/assets/img/avatar/avatar-1.png"
+	                                                 src="/resources/assets/img/avatar/avatar-1.png"
 	                                                 id="profileImg" class="img-fluid m-3 rounded-circle">
 	                               	<span class="filebox">
 	                               		<label for="ex_file">+</label>
@@ -336,7 +336,7 @@ $(function(){
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-  <script src="resources/assets/js/stisla.js"></script>
+  <script src="/resources/assets/js/stisla.js"></script>
 
 	<!-- JS Libraies
   <script src="resources/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
@@ -346,11 +346,11 @@ $(function(){
   <script src="resources/node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>-->
 
   <!-- Template JS File -->
-  <script src="resources/assets/js/scripts.js"></script>
-  <script src="resources/assets/js/custom.js"></script>
+  <script src="/resources/assets/js/scripts.js"></script>
+  <script src="/resources/assets/js/custom.js"></script>
 
   <!-- Page Specific JS File -->
-  <script src="resources/assets/js/page/index.js"></script>
+  <script src="/resources/assets/js/page/index.js"></script>
 
 </body>
 </html>

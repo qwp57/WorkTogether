@@ -96,7 +96,7 @@
 		background: #917B56;
 	}
 
-	.color-8 {
+	.color-gray{
 		background: gray;
 	}
 
@@ -507,14 +507,33 @@
 				$(this).removeClass("favoWhite")
 				$(this).addClass("favoYellow")
 				console.log("즐겨찾기 추가할것")
+				var $pj_no = $(this).parent(".project__icon").prev().val()
+				console.log("pj_no : " + $pj_no)
+				insertBookmark($pj_no)
 			} else if ($(this).hasClass("favoYellow")) {
 				$(this).removeClass("favoYellow")
 				$(this).addClass("favoWhite")
 				console.log("즐겨찾기 제거할것")
+				var $pj_no = $(this).parent(".project__icon").prev().val()
+				console.log("pj_no : " + $pj_no)
+				removeBookmark($pj_no);
 			}
 			e.stopPropagation()
 		})
+		function insertBookmark(pj_no) {
+			$.ajax({
+				url: 'project/iserrtBookmark.do',
+				success: function(list){
+					$.each(list, function(i, obj){
+						console.log(obj)
 
+
+					});
+				}
+			});
+
+
+		}
 
 		$(document).on("click", ".fa-cog", function (){
 			$("#totalProjectEditBar").css("display", "block")
@@ -575,7 +594,7 @@
 		$(document).on("click", ".project", function (){
 			console.log($(this).children('input[class=pj_no]').val())
 			var $pj_no = $(this).children('input[class=pj_no]').val()
-			location.href = "/detailPj.do?pj_no="+$pj_no;
+			location.href = "/project/detailPj.do?pj_no="+$pj_no;
 		})
 
 		$(document).on("click", "#tagEdit", function (){
@@ -619,7 +638,7 @@
 <script>
 	$(function() {
 		$.ajax({
-			url: 'selectAllProjcet.do',
+			url: 'project/selectAllProjcet.do',
 			success: function(list){
 				$projects = $('.projects');
 				$projects.html('');

@@ -1,7 +1,5 @@
 package com.uni.wt.project.model.service;
 
-import com.uni.wt.project.boardAll.model.dao.BoardAllMapper;
-import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.model.dao.ProjectMapper;
 import com.uni.wt.project.model.dto.Project;
 import lombok.extern.slf4j.Slf4j;
@@ -31,12 +29,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ArrayList<Project> selectAllProject() throws Exception {
-        return projectMapper.selectAllProject();
+    public ArrayList<Project> selectAllProject(int loginEmp) throws Exception {
+        return projectMapper.selectAllProject(loginEmp);
     }
 
     @Override
     public Project selectOneProject(int pj_no) throws Exception {
         return projectMapper.selectOneProject(pj_no);
+    }
+
+    @Override
+    public int nextPjNo() throws Exception {
+        return projectMapper.nextPjNo();
     }
 }
