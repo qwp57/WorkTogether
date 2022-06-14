@@ -14,12 +14,18 @@
 		<typeAlias type="com.uni.wt.employee.model.dto.Employee" alias="Employee"/>
 		<typeAlias type="com.uni.wt.workState.model.dto.WorkState" alias="WorkState"/>
 		<typeAlias type="com.uni.wt.project.model.dto.Project" alias="Project"/>
+		<typeAlias type="com.uni.wt.project.projectMember.model.dto.ProjectMember" alias="ProjectMember"/>
+		<typeAlias type="com.uni.wt.project.boardAll.model.dto.BoardAll" alias="BoardAll"/>
+		<typeAlias type="com.uni.wt.project.post.model.dto.Post" alias="Post"/>
 	</typeAliases>
 	
 	<mappers>
 		<mapper resource="/mappers/employee-mapper.xml"/>
 		<mapper resource="/mappers/workState-mapper.xml"/>
 		<mapper resource="/mappers/project-mapper.xml"/>
+		<mapper resource="/mappers/projectMember-mapper.xml"/>
+		<mapper resource="/mappers/boardAll-mapper.xml"/>
+		<mapper resource="/mappers/post-mapper.xml"/>
 	</mappers>
 	
 </configuration>

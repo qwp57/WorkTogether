@@ -21,9 +21,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void insertProject(Project project) throws Exception{
-
         int result = projectMapper.insertProject(project);
-
         if(result < 0) {
             throw new Exception("프로젝트 생성에 실패하였습니다.");
         }
@@ -31,12 +29,17 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ArrayList<Project> selectAllProject() throws Exception {
-        return projectMapper.selectAllProject();
+    public ArrayList<Project> selectAllProject(int loginEmp) throws Exception {
+        return projectMapper.selectAllProject(loginEmp);
     }
 
     @Override
     public Project selectOneProject(int pj_no) throws Exception {
         return projectMapper.selectOneProject(pj_no);
+    }
+
+    @Override
+    public int nextPjNo() throws Exception {
+        return projectMapper.nextPjNo();
     }
 }

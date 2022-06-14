@@ -10,7 +10,9 @@ public interface ProjectMapper {
 
     public int insertProject(Project pj);
 
-    public ArrayList<Project> selectAllProject();
+    public ArrayList<Project> selectAllProject(int loginEmp);
 
     Project selectOneProject(int pj_no);
+
+    int nextPjNo();
 }

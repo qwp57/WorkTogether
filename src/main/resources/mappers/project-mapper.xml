@@ -13,17 +13,20 @@
 		<result property="file_power" column="FILE_POWER"/>
 		<result property="status" column="STATUS"/>
 	</resultMap>
-
+	<select id="nextPjNo" resultType="int">
+		SELECT PJ_SEQ.NEXTVAL FROM DUAL
+	</select>
 
 	<insert id="insertProject" parameterType="Project">
 		INSERT INTO PROJECT
-		VALUES(PJ_SEQ.NEXTVAL, #{pj_title}, #{pj_content}, SYSDATE, #{board_power}, #{reply_power}, #{file_power}, DEFAULT )
+		VALUES(#{pj_no}, #{pj_title}, #{pj_content}, SYSDATE, #{board_power}, #{reply_power}, #{file_power}, DEFAULT )
 	</insert>
 
-	<select id="selectAllProject" resultMap="projectSet">
+	<select id="selectAllProject" resultMap="projectSet" parameterType="int">
 		SELECT *
 		FROM PROJECT
 		WHERE STATUS = 'Y'
+		AND PJ_NO IN (SELECT PJ_NO FROM PROJECT_MEMBER WHERE EMP_NO = ${loginEmp})
 	</select>
 
 	<select id="selectOneProject" parameterType="_int" resultMap="projectSet">
