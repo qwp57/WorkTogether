@@ -17,4 +17,6 @@ public interface ProjectService {
     ArrayList<Project> selectMyProject(int loginEmp) throws Exception;
 
     ArrayList<Project> selectMyBookmarkProject(int loginEmp) throws Exception;
+
+    int getProjectMemberCount(int pj_no) throws Exception;
 }

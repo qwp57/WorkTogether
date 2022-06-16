@@ -400,7 +400,7 @@
 <jsp:include page="pjForm.jsp"/>
 <script>
     $(function () {
-
+        //console.log('확인 : ' + projectMemberCount(9))
         $(document).on("click", "#tag", function () {
             if ($("input:checkbox[name='checkedPj']:checked").length <= 0) {
                 alert("프로젝트를 체크해주세요")
@@ -609,7 +609,7 @@
                             '<h3 class="project__title">' + obj.pj_title + '</h3>' +
                             '<p class="project__count">' +
                             '<i class="fa fa-user" style="color: white;">&nbsp;' + projectMemberCount(obj.pj_no) + '</i>' +
-                            '	</p>' +
+                            '</p>' +
                             '<p class="project__date">' +
                             '<i class="fa fa-flag" style="color: white;">&nbsp;' + obj.create_date + '</i>' +
                             '</p>' +
@@ -742,17 +742,21 @@
             }
         })
     }
+
     function projectMemberCount(pj_no) {
+        var count;
         $.ajax({
             url: 'project/projectMemberCount.do',
+            async: false,
             data: {
                 "pj_no": pj_no
             },
             success: function (result) {
-                console.log(result)
-                return(result)
+                //console.log(result)
+                count = result
             }
         })
+        return count
     }
 
     $(function () {

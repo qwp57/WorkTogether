@@ -9,9 +9,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="경로수정">
+    <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="jackson 버전 변경">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/dao/ProjectMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/dao/ProjectMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/project-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mappers/project-mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allProject.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allProject.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,6 +194,7 @@
       <workItem from="1655313507141" duration="183000" />
       <workItem from="1655315820979" duration="264000" />
       <workItem from="1655316138285" duration="214000" />
+      <workItem from="1655367073355" duration="4119000" />
     </task>
     <task id="LOCAL-00001" summary="commit">
       <created>1655124496590</created>

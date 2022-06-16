@@ -39,6 +39,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public int getProjectMemberCount(int pj_no) throws Exception{
+        return projectMapper.getProjectMemberCount(pj_no);
+    }
+
+    @Override
     public Project selectOneProject(int pj_no) throws Exception {
         return projectMapper.selectOneProject(pj_no);
     }

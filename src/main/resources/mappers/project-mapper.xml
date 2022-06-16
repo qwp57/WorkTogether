@@ -45,5 +45,9 @@
 		WHERE STATUS = 'Y'
 		AND PJ_NO = #{pj_no}
 	</select>
-
+	<select id="getProjectMemberCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM PROJECT_MEMBER
+		WHERE PJ_NO = #{pj_no}
+	</select>
 </mapper>

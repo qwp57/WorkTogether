@@ -80,8 +80,9 @@ public class ProjectController {
 	public String projectMemberCount(@RequestParam("pj_no") int pj_no) throws Exception {
 
 		log.info("pj_no : "+pj_no);
-
-		return "8";
+		int result = projectService.getProjectMemberCount(pj_no);
+		log.info("멤버 카운트 : " + result);
+		return String.valueOf(result);
 	}
 
 	@ResponseBody

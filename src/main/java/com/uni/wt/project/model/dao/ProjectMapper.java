@@ -17,4 +17,5 @@ public interface ProjectMapper {
 
     int nextPjNo();
 
+    int getProjectMemberCount(int pj_no);
 }
