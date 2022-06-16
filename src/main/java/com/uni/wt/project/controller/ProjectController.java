@@ -1,5 +1,6 @@
 package com.uni.wt.project.controller;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.model.dto.Project;
@@ -11,16 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -40,13 +40,70 @@ public class ProjectController {
 		return "project/allProject";
 	}
 	@ResponseBody
-	@RequestMapping(value = "selectAllProjcet", produces="application/json; charset=utf-8")
+	@RequestMapping(value = "/selectAllProject", produces="application/json; charset=utf-8")
 	public String selectAllProject(HttpSession session) throws Exception {
-		ArrayList<Project> list = projectService.selectAllProject(((Employee)session.getAttribute("loginEmp")).getEmp_no());
-		log.info("프로젝트 전체조회 : " + list.toString());
-		return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(list);
+		int loginEmp = ((Employee)session.getAttribute("loginEmp")).getEmp_no();
+		ArrayList<Project> myProjects = projectService.selectMyProject(loginEmp);
+		ArrayList<Project> bookmarkProjects = projectService.selectMyBookmarkProject(loginEmp);
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		log.info("bookmarkProjects : " + bookmarkProjects);
+		ArrayList myAllProjects = new ArrayList();
+		myAllProjects.add(myProjects);
+		myAllProjects.add(bookmarkProjects);
+		return gson.toJson(myAllProjects);
 	}
-	
+	@ResponseBody
+	@RequestMapping(value = "/selectProjectColor", produces="application/json; charset=utf-8")
+	public String selectProjectColor(HttpSession session) throws Exception {
+		int loginEmp = ((Employee)session.getAttribute("loginEmp")).getEmp_no();
+		ArrayList<ProjectMember> list = projectMemberService.selectProjectColor(loginEmp);
+		return new GsonBuilder().create().toJson(list);
+	}
+	@ResponseBody
+	@RequestMapping(value = "/setProjectColor.do", produces="application/json; charset=utf-8")
+	public String setProjectColor(HttpSession session, @RequestParam("selectedProjects[]") List<String> list, @RequestParam("selectedColor") String color) throws Exception {
+		int loginEmp = ((Employee)session.getAttribute("loginEmp")).getEmp_no();
+
+		log.info("선택된 프로젝트 : "+list.toString());
+		for (int i = 0; i < list.size(); i++){
+			ProjectMember pjm = new ProjectMember();
+			pjm.setEmp_no(loginEmp);
+			pjm.setPj_color(color);
+			pjm.setPj_no(Integer.parseInt(list.get(i)));
+			projectMemberService.setProjectColor(pjm);
+		}
+		log.info("색상 : " + color);
+		return "색상 설정 완료";
+	}
+	@ResponseBody
+	@RequestMapping(value = "/projectMemberCount.do", produces="application/json; charset=utf-8")
+	public String projectMemberCount(@RequestParam("pj_no") int pj_no) throws Exception {
+
+		log.info("pj_no : "+pj_no);
+
+		return "8";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/insertBookmark.do", produces = "application/text;charset=utf8")
+	public String insertBookmark(@RequestParam("pj_no") int pj_no, HttpSession session, ProjectMember pjm) throws Exception {
+
+		pjm.setPj_no(pj_no);
+		pjm.setEmp_no(((Employee)session.getAttribute("loginEmp")).getEmp_no());
+		projectMemberService.insertBookmark(pjm);
+
+		return "즐겨찾기 추가";
+	}
+	@ResponseBody
+	@RequestMapping(value = "/removeBookmark.do", produces = "application/text;charset=utf8")
+	public String removeBookmark(@RequestParam("pj_no") int pj_no, HttpSession session, ProjectMember pjm) throws Exception {
+
+		pjm.setPj_no(pj_no);
+		pjm.setEmp_no(((Employee)session.getAttribute("loginEmp")).getEmp_no());
+		projectMemberService.removeBookmark(pjm);
+
+		return "즐겨찾기 제거";
+	}
 	@RequestMapping("/detailPj.do")
 	public String detailPj(@RequestParam("pj_no") int pj_no, Model m) throws Exception {
 
@@ -112,7 +169,7 @@ public class ProjectController {
 		msgMap.put("msg", "프로젝트 생성 완료.");
 		redirect.addFlashAttribute("msg", msgMap);
 
-		return "redirect:/allProject.do";
+		return "redirect:/project";
 	}
 
 
