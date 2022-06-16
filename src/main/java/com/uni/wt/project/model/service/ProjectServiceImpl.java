@@ -2,6 +2,7 @@ package com.uni.wt.project.model.service;
 
 import com.uni.wt.project.model.dao.ProjectMapper;
 import com.uni.wt.project.model.dto.Project;
+import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -41,6 +42,31 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public int getProjectMemberCount(int pj_no) throws Exception{
         return projectMapper.getProjectMemberCount(pj_no);
+    }
+
+    @Override
+    public void addTag(ProjectTag pjTag) throws Exception {
+      
+        int result =  projectMapper.addTag(pjTag);
+        if(result < 0) {
+            throw new Exception("태그 등록에 실패하였습니다.");
+        }
+    }
+
+    @Override
+    public void editTag(ProjectTag pjTag) throws Exception {
+        int result =  projectMapper.editTag(pjTag);
+        if(result < 0) {
+            throw new Exception("태그 수정에 실패하였습니다.");
+        }
+    }
+
+    @Override
+    public void removeTag(ProjectTag pjTag) throws Exception {
+        int result =  projectMapper.removeTag(pjTag);
+        if(result < 0) {
+            throw new Exception("태그 삭제에 실패하였습니다.");
+        }
     }
 
     @Override

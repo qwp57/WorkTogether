@@ -8,10 +8,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link href="${pageContext.request.contextPath}/resources/css/reset.css"
-          rel="stylesheet" type="text/css">
-    <link
-            href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
             rel="stylesheet">
     <script src="https://kit.fontawesome.com/f2449ad7e5.js" crossorigin="anonymous"></script>
 </head>
@@ -53,6 +50,9 @@
         -text: white;
     }
 
+
+    /*  색상 관련 */
+
     .colors {
         -text: white;
         margin: 20px;
@@ -83,7 +83,6 @@
         background: #8a40f2;
     }
 
-
     .color-5 {
         background: #82B553;
     }
@@ -99,6 +98,9 @@
     .color-8 {
         background: gray;
     }
+
+
+
 
     .project:hover {
         box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.4);
@@ -146,19 +148,6 @@
         }
     }
 
-    /* .project__link::after {
-            position: absolute;
-            top: 25px;
-            left: 0;
-            content: "";
-            width: 0%;
-            height: 3px;
-            background-color: rgba(255, 255, 255, 0.6);
-            transition: all 0.5s;
-        }
-        .project__link:hover::after {
-            width: 100%;
-        }*/
 
     .newPj {
         width: 180px;
@@ -186,9 +175,6 @@
         color: black;
     }
 
-    .project .project__title {
-        justify-content: center;
-    }
 
     .custom-radio {
         position: relative;
@@ -251,7 +237,7 @@
     }
 
 
-    td {
+    .listViewTable tr td {
         padding: 10px;
     }
 
@@ -290,8 +276,8 @@
         color: lightgray;
     }
 
-    #editBarClose, .select-clear, .project, .listViewTable tr, .fa-cog,
-    .fa-th-list, .fa-th-large, .fa-ellipsis-v, .fa-plus {
+    #editBarClose, .select-clear, .project, .listViewTable tr, .pjSettingBtn,
+    .listViewBtn, .largeViewBtn, .fa-ellipsis-v, .fa-plus {
         cursor: pointer
     }
 
@@ -304,10 +290,10 @@
     <nav id="test" class="navbar bg-primary"
          style="display: block; height: 100px; text-align: center;">
         <br> <i class='fa fa-paint-brush fa-lg' style='color: white;'></i>
-        <a class="navbar-brand" href="#" id="color">색상 설정</a> <i
+        <a class="navbar-brand" href="#" id="colorSettingBtn">색상 설정</a> <i
             class='fa fa-tags fa-lg' style='color: white;'></i> <a
-            class="navbar-brand" href="#" id="tag">프로젝트 태그 설정</a> <a
-            id="editBarClose"><i class='fa fa-window-close fa-2x'
+            class="navbar-brand" href="#" id="tagSettingBtn">프로젝트 태그 설정</a> <a
+            id="editBarClose"><i class='fa fa-window-close fa-2x' id="closeTagSettingBtn"
                                  style='color: white;'></i></a>
         <div style="height: 80px;"></div>
 
@@ -334,13 +320,13 @@
 
             <div class="topmenu" style="text-align: right;">
                 <div class="menuIcon">
-                    <i class='fa fa-cog fa-2x'></i>
+                    <i class='fa fa-cog fa-2x pjSettingBtn'></i>
                 </div>
                 <div class="menuIcon">
-                    <i class='fa fa-th-list fa-2x'></i>
+                    <i class='fa fa-th-list fa-2x listViewBtn'></i>
                 </div>
                 <div class="menuIcon">
-                    <i class='fa fa-th-large fa-2x' style="color: black;"></i>
+                    <i class='fa fa-th-large fa-2x largeViewBtn' style="color: black;"></i>
                 </div>
             </div>
         </div>
@@ -371,26 +357,26 @@
             </div>
             <div class="topmenu" style="text-align: right;">
                 <div class="menuIcon">
-                    <i class='fa fa-cog fa-2x'></i>
+                    <i class='fa fa-cog fa-2x pjSettingBtn'></i>
                 </div>
                 <div class="menuIcon">
-                    <i class='fa fa-th-list fa-2x'></i>
+                    <i class='fa fa-th-list fa-2x listViewBtn'></i>
                 </div>
                 <div class="menuIcon">
-                    <i class='fa fa-th-large fa-2x'></i>
+                    <i class='fa fa-th-large fa-2x largeViewBtn'></i>
                 </div>
             </div>
         </div>
         <div style="height: 30px;"></div>
         <h3 class="favorite" style="display: none;">즐겨찾기</h3>
         <div class="lists">
-            <div id="favoListProjects">
-            </div>
+            <table id="favoListProjects" class="listViewTable">
+            </table>
             <div style="width: 100%; height: 30px;"></div>
             <h3 class="myProjects" style="display:none;">참여중</h3>
             <div style="width: 100%; height: 30px;"></div>
-            <div id="myListProjects">
-            </div>
+            <table id="myListProjects" class="listViewTable">
+            </table>
         </div>
     </div>
 </div>
@@ -400,17 +386,22 @@
 <jsp:include page="pjForm.jsp"/>
 <script>
     $(function () {
-        //console.log('확인 : ' + projectMemberCount(9))
-        $(document).on("click", "#tag", function () {
+
+        //참여중인 프로젝트 로드
+        loadProjects()
+
+
+        $(document).on("click", "#tagSettingBtn", function () {
             if ($("input:checkbox[name='checkedPj']:checked").length <= 0) {
                 alert("프로젝트를 체크해주세요")
                 return false;
             }
+            loadTag()
             $("#tagModal").modal("show")
         })
 
 
-        $(document).on("click", "#color", function () {
+        $(document).on("click", "#colorSettingBtn", function () {
             if ($("input:checkbox[name='checkedPj']:checked").length <= 0) {
                 alert("프로젝트를 체크해주세요")
                 return false;
@@ -419,7 +410,7 @@
         })
 
 
-        $(document).on("click", ".fa-star", function (e) {
+        $(document).on("click", ".favoBtn", function (e) {
             if ($(this).hasClass("favoWhite")) {
                 $(this).removeClass("favoWhite")
                 $(this).addClass("favoYellow")
@@ -448,6 +439,43 @@
             e.stopPropagation()
         })
 
+        function loadTag(){
+            $.ajax({
+                url: 'project/loadTag.do',
+                success: function (list) {
+                    $.parseJSON(list);
+                    //console.log(list)
+                    $("#tagTable").html('')
+                    $.each($.parseJSON(list), function (i, obj) {
+                        $("#tagTable").append(
+                            '<tr>' +
+                            '<td><i class="fa fa-tag fa-lg"></i>'+
+                            '</td>'+
+                            '<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>'+
+                            '<td style="width: 20%; text-align: right;">'+
+                            '<div class="custom-control custom-checkbox">'+
+                            '<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+                            '<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>'+
+                            '</div>'+
+                            '</td>'+
+                            '<td style="width: 15%; text-align: right;">'+
+                            '<div class="btn-group dropright">'+
+                            '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
+                            '<div class="dropdown-menu dropright">'+
+                            '<a class="dropdown-item editTag" href="#">수정</a>'+
+                            '<div class="dropdown-divider"></div>'+
+                            '<a class="dropdown-item deleteTag" href="#">삭제</a>'+
+                            '</div>'+
+                            '</div>'+
+                            '</td>'+
+                            '</tr>'
+                        )
+                    })
+                }
+
+            });
+        }
+
         function insertBookmark(pj_no) {
             $.ajax({
                 url: 'project/insertBookmark.do',
@@ -474,28 +502,27 @@
             });
         }
 
-        $(document).on("click", ".fa-cog", function () {
+        $(document).on("click", ".pjSettingBtn", function () {
             $("#totalProjectEditBar").css("display", "block")
             $(".pjCheck").css("display", "block")
         })
 
-
-        $(document).on("click", ".fa-window-close", function () {
+        $(document).on("click", "#closeTagSettingBtn", function () {
             $(".pjCheck").css("display", "none")
         })
 
-        $(document).on("click", ".fa-th-list", function () {
+        $(document).on("click", ".listViewBtn", function () {
             $(".largeView").css("display", "none")
             $(".listView").css("display", "block")
-            $(".fa-th-list").css("color", "black")
-            $(".fa-th-large").css("color", "")
+            $(".listViewBtn").css("color", "black")
+            $(".largeViewBtn").css("color", "")
         })
 
-        $(document).on("click", ".fa-th-large", function () {
+        $(document).on("click", ".largeViewBtn", function () {
             $(".listView").css("display", "none")
             $(".largeView").css("display", "block")
-            $(".fa-th-large").css("color", "black")
-            $(".fa-th-list").css("color", "")
+            $(".largeViewBtn").css("color", "black")
+            $(".listViewBtn").css("color", "")
         })
 
         $(document).on("click", "#editBarClose", function () {
@@ -508,11 +535,16 @@
         })
 
         $(document).on("change", ".pjCheckAll", function () {
-            console.log("체크변경")
-            console.log($(this))
-            console.log($('.pjCheckAll:checked'))
-            var checkedCnt = $('.pjCheckAll:checked').length;
-            console.log(checkedCnt)
+
+            //console.log("체크변경")
+            //console.log($(this).val())
+            if($(this).hasClass('largeViewCheck')){
+                $(".listViewTable").find('#listCkedPj' + $(this).val()).prop("checked", $(this).prop("checked"))
+            }else if($(this).hasClass('listViewCheck')){
+                $(".projects").find("#largeCkedPj" + $(this).val()).prop("checked", $(this).prop("checked"))
+            }
+            var checkedCnt = $('.pjCheckAll:checked').length/2;
+            //console.log(checkedCnt)
             $(".select-count").text(checkedCnt + "개 프로젝트가 선택되었습니다.")
         })
 
@@ -522,7 +554,7 @@
 
 
         $(document).on("click", ".tagAddBtn", function () {
-            $("#AddTagModal").modal("show")
+            $("#addTagModal").modal("show")
         })
 
         $(document).on("click", ".newPj", function () {
@@ -540,46 +572,96 @@
             location.href = "/project/detailPj.do?pj_no=" + $pj_no;
         })
 
-        $(document).on("click", "#tagEdit", function () {
+        $(document).on("click", ".editTag", function () {
+            $tag_name = $(this).parent().parent().parent().parent().children(".tagName").text()
+            $tag_no = $(this).parent().parent().parent().parent().find(".tagInput").val()
+            console.log($tag_name)
+            $("#tagEditInput").val($tag_name)
             $("#tagEditModal").modal("show")
+            $("#editTagBtn").click(function (){
+                if($("#tagEditInput").val() == ""){
+                    alert("태그를 입력해주세요.")
+                    return false
+                }
+                editTag($tag_no)
+
+            })
         })
 
-        $(document).on("click", "#addTag", function () {
-            $("#tagTable").append(
-                '<tr>' +
-                '<td><i class="fa fa-tag fa-lg"></i>' +
-                '</td>' +
-                '<th style="width: 50%">테스트</th>' +
-                '<td style="width: 20%; text-align: right;">' +
-                '<div class="custom-control custom-checkbox">' +
-                '<input type="checkbox" class="custom-control-input" id="tag6">' +
-                ' <label class="custom-control-label" for="tag6"></label>' +
-                '</div>' +
-                '</td>' +
-                '<td style="width: 15%; text-align: right;">' +
-                '<div class="btn-group dropright">' +
-                '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"' +
-                'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
-                '<div class="dropdown-menu dropright">' +
-                '<a class="dropdown-item" href="#" id="tagEdit">수정</a>' +
-                '<div class="dropdown-divider"></div>' +
-                '<a class="dropdown-item" href="#">삭제</a>' +
-                '</div>' +
-                '</div>' +
-                '</td>' +
-                '</tr>'
-            )
+        $(document).on("click", ".deleteTag", function () {
+            if(confirm("삭제하시겠습니까?")){
+                $tag_no = $(this).parent().parent().parent().parent().find(".tagInput").val()
+                console.log($tag_no)
+                removeTag($tag_no)
+            }
+
         })
+
+        $("#addTagBtn").click(function (){
+            if($("#addTagInput").val() == ""){
+                alert("태그를 입력해주세요.")
+                return false
+            }
+            addTag()
+            //console.log($("#addTagInput").val())
+        })
+        $("#saveTagBtn").click(function (){
+
+
+        })
+
+
+
+        function addTag(){
+            $.ajax({
+                url: 'project/addTag.do',
+                data:{
+                    "tag_name": $("#addTagInput").val()
+                },
+                async:false,
+                success: function (data) {
+                    console.log(data)
+                }
+            })
+            loadTag()
+        }
+
+        function editTag(tag_no){
+            $.ajax({
+                url: 'project/editTag.do',
+                data:{
+                    "tag_name": $("#tagEditInput").val(),
+                    "tag_no": tag_no
+                },
+                async:false,
+                success: function (data) {
+                    console.log(data)
+                }
+            })
+            loadTag()
+        }
+        function removeTag(tag_no){
+            $.ajax({
+                url: 'project/removeTag.do',
+                data:{
+                    "tag_no": tag_no
+                },
+                async:false,
+                success: function (data) {
+                    console.log(data)
+                }
+            })
+            loadTag()
+        }
+
     })
 
 
-</script>
-<script>
+
     function loadProjects() {
         $.ajax({
             url: 'project/selectAllProject.do',
             success: function (list) {
-
 
                 //console.log(list[0].length)
                 //console.log(list[1].length)
@@ -597,18 +679,18 @@
                             '<div class="project">' +
                             '<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
                             '<div class="project__icon">' +
-                            '<i class="fa fa-star fa-2x favoYellow largeView"></i>' +
+                            '<i class="fa fa-star fa-2x favoYellow largeView favoBtn"></i>' +
                             '</div>' +
                             '<div class="project__check pjCheck" style="display: none;">' +
                             '<div class="custom-control custom-checkbox">' +
-                            '<input type="checkbox" class="custom-control-input pjCheckAll" value="' + obj.pj_no + '" name="checkedPj" id="ckedPj' + obj.pj_no + '">' +
-                            '<label class="custom-control-label"  for="ckedPj' + obj.pj_no + '">' +
+                            '<input type="checkbox" class="custom-control-input pjCheckAll largeViewCheck" value="' + obj.pj_no + '" name="checkedPj" id="largeCkedPj' + obj.pj_no + '">' +
+                            '<label class="custom-control-label"  for="largeCkedPj' + obj.pj_no + '">' +
                             '</label>' +
                             '</div>' +
                             '</div>' +
                             '<h3 class="project__title">' + obj.pj_title + '</h3>' +
                             '<p class="project__count">' +
-                            '<i class="fa fa-user" style="color: white;">&nbsp;' + projectMemberCount(obj.pj_no) + '</i>' +
+                            '<i class="fa fa-user" style="color: white;">&nbsp;' + obj.count + '</i>' +
                             '</p>' +
                             '<p class="project__date">' +
                             '<i class="fa fa-flag" style="color: white;">&nbsp;' + obj.create_date + '</i>' +
@@ -616,12 +698,12 @@
                             '</div>'
                         )
                         $favoListProjects.append(
-                            '<table class="listViewTable">' +
+
                             '<tr style="width: 100%;">' +
                             '<td>' +
                             '<div class="custom-control custom-checkbox pjCheck" style="display: none;">' +
-                            '<input type="checkbox" class="custom-control-input pjCheckAll" value="' + obj.pj_no + '" name="checkedPj" id="ckedPj' + obj.pj_no + '">' +
-                            '<label class="custom-control-label"  for="ckedPj' + obj.pj_no + '"></label>' +
+                            '<input type="checkbox" class="custom-control-input pjCheckAll listViewCheck" value="' + obj.pj_no + '" id="listCkedPj' + obj.pj_no + '">' +
+                            '<label class="custom-control-label"  for="listCkedPj' + obj.pj_no + '"></label>' +
                             '</div>' +
                             '</td>' +
                             '<td>' +
@@ -630,16 +712,16 @@
                             '</div>' +
                             '</td>' +
                             '<td style="width: 10%;">' +
-                            '<i class="icon fa fa-star fa-2x favoYellow listView"></i></td>' +
+                            '<i class="icon fa fa-star fa-2x favoYellow listView favoBtn"></i></td>' +
                             '<th style="width: 40%; text-align: left;">' + obj.pj_title + '</th>' +
                             '<td style="width: 20%">' +
-                            '<i class="fa fa-user">&nbsp;' + projectMemberCount(obj.pj_no) + '</i>' +
+                            '<i class="fa fa-user">&nbsp;' + obj.count + '</i>' +
                             '</td>' +
                             '<td style="width: 30%;">' +
                             '<i class="fa fa-flag"></i>&nbsp;' + obj.create_date +
                             '</td>' +
-                            '</tr>' +
-                            '</table>'
+                            '</tr>'
+
                         )
                     })
                     $favoLargeProjects.append('<div style="width: 100%; height: 30px;"></div>')
@@ -660,17 +742,17 @@
                             '<div class="project">' +
                             '<input  name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
                             '<div class="project__icon">' +
-                            '<i class="fa fa-star fa-2x favoWhite largeView"></i>' +
+                            '<i class="fa fa-star fa-2x favoWhite largeView favoBtn"></i>' +
                             '</div>' +
                             '<div class="project__check pjCheck" style="display: none;">' +
                             '<div class="custom-control custom-checkbox">' +
-                            '<input type="checkbox" class="custom-control-input pjCheckAll" value="' + obj.pj_no + '" name="checkedPj" id="ckedPj' + obj.pj_no + '">' +
-                            '<label class="custom-control-label" for="ckedPj' + obj.pj_no + '"></label>' +
+                            '<input type="checkbox" class="custom-control-input pjCheckAll largeViewCheck" value="' + obj.pj_no + '" name="checkedPj" id="largeCkedPj' + obj.pj_no + '">' +
+                            '<label class="custom-control-label" for="largeCkedPj' + obj.pj_no + '"></label>' +
                             '</div>' +
                             '</div>' +
                             '<h3 class="project__title">' + obj.pj_title + '</h3>' +
                             '<p class="project__count">' +
-                            '<i class="fa fa-user" style="color: white;">&nbsp;' + projectMemberCount(obj.pj_no) + '</i>' +
+                            '<i class="fa fa-user" style="color: white;">&nbsp;' + obj.count + '</i>' +
                             '</p>' +
                             '<p class="project__date">' +
                             '<i class="fa fa-flag" style="color: white;">&nbsp;' + obj.create_date + '</i>' +
@@ -678,12 +760,12 @@
                             '</div>'
                         )
                         $myListProjects.append(
-                            '<table class="listViewTable">' +
+
                             '<tr style="width: 100%;">' +
                             '<td>' +
                             '<div class="custom-control custom-checkbox pjCheck" style="display: none;">' +
-                            '<input type="checkbox" class="custom-control-input pjCheckAll" value="' + obj.pj_no + '" name="checkedPj" id="ckedPj' + obj.pj_no + '">' +
-                            '<label class="custom-control-label"  for="ckedPj' + obj.pj_no + '"></label>' +
+                            '<input type="checkbox" class="custom-control-input pjCheckAll listViewCheck" value="' + obj.pj_no + '" id="listCkedPj' + obj.pj_no + '">' +
+                            '<label class="custom-control-label"  for="listCkedPj' + obj.pj_no + '"></label>' +
                             '</div>' +
                             '</td>' +
                             '<td>' +
@@ -692,16 +774,16 @@
                             '</div>' +
                             '</td>' +
                             '<td style="width: 10%;">' +
-                            '<i class="icon fa fa-star fa-2x favoWhite listView"></i></td>' +
+                            '<i class="icon fa fa-star fa-2x favoWhite listView favoBtn"></i></td>' +
                             '<th style="width: 40%; text-align: left;">' + obj.pj_title + '</th>' +
                             '<td style="width: 20%">' +
-                            '<i class="fa fa-user">&nbsp;' + projectMemberCount(obj.pj_no) + '</i>' +
+                            '<i class="fa fa-user">&nbsp;' + obj.count + '</i>' +
                             '</td>' +
                             '<td style="width: 30%;">' +
                             '<i class="fa fa-flag"></i>&nbsp;' + obj.create_date +
                             '</td>' +
-                            '</tr>' +
-                            '</table>'
+                            '</tr>'
+
                         )
 
 
@@ -743,26 +825,8 @@
         })
     }
 
-    function projectMemberCount(pj_no) {
-        var count;
-        $.ajax({
-            url: 'project/projectMemberCount.do',
-            async: false,
-            data: {
-                "pj_no": pj_no
-            },
-            success: function (result) {
-                //console.log(result)
-                count = result
-            }
-        })
-        return count
-    }
 
-    $(function () {
-        loadProjects()
 
-    })
 
 </script>
 <script>
@@ -772,7 +836,7 @@
         $("#totalProjectEditBar").css("display", "none")
     }
 
-    function closeColorModal() {
+    function saveColor() {
         if ($("input:radio[name='customRadio']:checked").length <= 0) {
             alert("색상을 선택해주세요.")
             return false;
@@ -787,10 +851,28 @@
         //console.log(selectedColor)
         $("#colorModal").modal("hide")
         setColor(selectedProjects, selectedColor)
+        $("input:radio[name='customRadio']").prop("checked", false)
         closeMenu()
         loadProjects()
+    }
 
+    function saveTag() {
+        if ($("input:checkbox[name='tagInput']:checked").length <= 0) {
+            alert("태그를 선택해주세요.")
+            return false;
+        }
+        var selectedProjects = []
+        $("input:checkbox[name='checkedPj']:checked").each(function () {
+            selectedProjects.push($(this).val());
+        })
+        var selectedTags = []
+        $("input:checkbox[name='tagInput']:checked").each(function () {
+            selectedTags.push($(this).val());
+        })
 
+        $("#tagModal").modal("hide")
+        setTag(selectedProjects, selectedTags)
+        closeMenu()
     }
 
     function setColor(selectedProjects, selectedColor) {
@@ -801,13 +883,25 @@
                 "selectedColor": selectedColor
             },
             success: function (data) {
-                console.log('data')
+                console.log(data)
 
             }
         })
-
     }
 
+    function setTag(selectedProjects, selectedTags){
+        $.ajax({
+            url: 'project/setProjectTag.do',
+            data: {
+                "selectedProjects": selectedProjects,
+                "selectedTags": selectedTags
+            },
+            success: function (data) {
+                console.log(data)
+
+            }
+        })
+    }
 
 </script>
 

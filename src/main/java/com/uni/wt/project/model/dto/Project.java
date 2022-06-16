@@ -26,4 +26,7 @@ public class Project {
 
     private String status;
 
+    private int count;
+
+
 }

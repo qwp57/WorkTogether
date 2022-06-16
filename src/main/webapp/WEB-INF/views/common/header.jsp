@@ -349,8 +349,6 @@ $(function(){
   <script src="/resources/assets/js/scripts.js"></script>
   <script src="/resources/assets/js/custom.js"></script>
 
-  <!-- Page Specific JS File -->
-  <script src="/resources/assets/js/page/index.js"></script>
 
 </body>
 </html>

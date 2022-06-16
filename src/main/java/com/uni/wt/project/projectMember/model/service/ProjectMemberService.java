@@ -1,6 +1,7 @@
 package com.uni.wt.project.projectMember.model.service;
 
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
+import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 
 import java.util.ArrayList;
 
@@ -14,4 +15,8 @@ public interface ProjectMemberService {
     ArrayList<ProjectMember> selectProjectColor(int loginEmp);
 
     void setProjectColor(ProjectMember pjm) throws Exception;
+
+    ArrayList<ProjectTag> loadTag(int loginEmp) throws Exception;
+
+    void setProjectTag(ProjectTag projectTag) throws Exception;
 }
