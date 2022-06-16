@@ -29,8 +29,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ArrayList<Project> selectAllProject(int loginEmp) throws Exception {
-        return projectMapper.selectAllProject(loginEmp);
+    public ArrayList<Project> selectMyProject(int loginEmp) throws Exception {
+        return projectMapper.selectMyProject(loginEmp);
+    }
+
+    @Override
+    public ArrayList<Project> selectMyBookmarkProject(int loginEmp) throws Exception {
+        return projectMapper.selectMyBookmarkProject(loginEmp);
     }
 
     @Override
@@ -42,4 +47,5 @@ public class ProjectServiceImpl implements ProjectService {
     public int nextPjNo() throws Exception {
         return projectMapper.nextPjNo();
     }
+
 }

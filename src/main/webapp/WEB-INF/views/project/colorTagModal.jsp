@@ -225,7 +225,7 @@
 			<div class="modal-header">
 				<span><h3 class="modal-title text-left">프로젝트 태그 설정</h3></span> <span><input
 					type="image" data-dismiss="modal"
-					src="resources/assets/img/close.png/" style="width: 20px;"></span>
+					src="/resources/assets/img/close.png/" style="width: 20px;"></span>
 			</div>
 			<!-- modal body : 내용 -->
 			<form class="form" id="tagSave">
@@ -285,7 +285,7 @@
 			<div class="modal-header">
 				<span><h4 class="modal-title text-left">프로젝트 태그 추가</h4></span> <span><input
 					type="image" data-dismiss="modal"
-					src="resources/assets/img/close.png/" style="width: 20px;"></span>
+					src="/resources/assets/img/close.png/" style="width: 20px;"></span>
 			</div>
 			<!-- modal body : 내용 -->
 			<form class="form" id="tagAdd">
@@ -316,7 +316,7 @@
 			<div class="modal-header">
 				<span><h4 class="modal-title text-left">프로젝트 태그 수정</h4></span> <span><input
 					type="image" data-dismiss="modal"
-					src="resources/assets/img/close.png/" style="width: 20px;"></span>
+					src="/resources/assets/img/close.png/" style="width: 20px;"></span>
 			</div>
 			<!-- modal body : 내용 -->
 			<form class="form" id="tagAdd">
@@ -347,7 +347,7 @@
 			<div class="modal-header">
 				<span><h3 class="modal-title text-left">프로젝트 색상 설정</h3></span> <span><input
 					type="image" data-dismiss="modal"
-					src="resources/assets/img/close.png/" style="width: 20px;"></span>
+					src="/resources/assets/img/close.png/" style="width: 20px;"></span>
 			</div>
 			<!-- modal body : 내용 -->
 			<form class="form" id="pjColorsave">
@@ -356,7 +356,7 @@
 						<tr>
 							<c:forEach var="index" begin="1" end="4">
 								<td><div class="pjColors color-${index }"><div class="custom-control custom-radio">
-										<input type="radio" name="customRadio"
+										<input type="radio" name="customRadio" value="color-${index}"
 											   class="custom-control-input" id="color${index}"> <label
 											class="custom-control-label" for="color${index}"></label>
 									</div></div>
@@ -366,9 +366,9 @@
 						<tr>
 							<c:forEach var="index" begin="5" end="8">
 								<td><div class="pjColors color-${index }"><div class="custom-control custom-radio">
-										<input type="radio" name="customRadio"
-											   class="custom-control-input" id="color${index}"> <label
-											class="custom-control-label" for="color${index}"></label>
+										<input type="radio" name="customRadio" value="color-${index}"
+											   class="custom-control-input" id="color${index}">
+									<label class="custom-control-label" for="color${index}"></label>
 									</div></div>
 									</td>
 							</c:forEach>
@@ -377,7 +377,7 @@
 				</div>
 				<div class="modal-footer">
 					<div class="col-lg-12 text-center">
-						<button type="submit" class="btn btn-primary btn-lg mb-3">저장</button>
+						<button type="button" class="btn btn-primary btn-lg mb-3" onclick="closeColorModal();">저장</button>
 					</div>
 				</div>
 			</form>
@@ -385,4 +385,5 @@
 	</div>
 </div>
 </body>
+
 </html>

@@ -36,7 +36,7 @@
 			<div class="tel-name">
 				<p class="tel-title">내 프로필</p>
 				<div class="tel-my">
-					<img alt="image" src="resources/assets/img/avatar/avatar-1.png"
+					<img alt="image" src="/resources/assets/img/avatar/avatar-1.png"
 						class="rounded-circle ml-3" width="35px" height="35px"> <span
 						class="tel-my-desc ml-3"> <a href="#">사원명</a>
 					</span>
@@ -56,7 +56,7 @@
 						<div class="prof-bottom">
 							<c:forEach begin="1" end="15">
 								<p class="prof-content">
-									<img alt="image" src="resources/assets/img/avatar/avatar-1.png"
+									<img alt="image" src="/resources/assets/img/avatar/avatar-1.png"
 										class="rounded-circle ml-3" width="35px" height="35px">
 									<span class="prof-email ml-3">사원명</span>
 									<span class='bi bi-chat fa-lg' style="float:right; margin-right:30px;"></span>

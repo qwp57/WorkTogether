@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/post")
 public class PostController {
     private static final Logger log = LoggerFactory.getLogger(PostController.class);
 
@@ -44,6 +45,6 @@ public class PostController {
         msgMap.put("msg", "게시물 등록 완료.");
         redirect.addFlashAttribute("msg", msgMap);
 
-        return "redirect:/detailPj.do?pj_no=" + pj_no;
+        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
 }
