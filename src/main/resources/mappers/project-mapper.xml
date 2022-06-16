@@ -22,17 +22,28 @@
 		VALUES(#{pj_no}, #{pj_title}, #{pj_content}, SYSDATE, #{board_power}, #{reply_power}, #{file_power}, DEFAULT )
 	</insert>
 
-	<select id="selectAllProject" resultMap="projectSet" parameterType="int">
+	<select id="selectMyProject" resultMap="projectSet" parameterType="int">
+		SELECT * FROM PROJECT
+		WHERE STATUS = 'Y'
+	  	AND PJ_NO IN (SELECT PJ_NO FROM PROJECT_MEMBER WHERE EMP_NO = #{loginEmp}
+						MINUS
+						SELECT PJ_NO FROM PJ_BOOKMARK WHERE EMP_NO = #{loginEmp})
+		ORDER BY PJ_NO
+	</select>
+
+	<select id="selectMyBookmarkProject" resultMap="projectSet" parameterType="int">
 		SELECT *
 		FROM PROJECT
 		WHERE STATUS = 'Y'
-		AND PJ_NO IN (SELECT PJ_NO FROM PROJECT_MEMBER WHERE EMP_NO = ${loginEmp})
+	    AND PJ_NO IN (SELECT PJ_NO FROM PJ_BOOKMARK WHERE EMP_NO = #{loginEmp})
+		ORDER BY PJ_NO
 	</select>
 
-	<select id="selectOneProject" parameterType="_int" resultMap="projectSet">
+	<select id="selectOneProject" parameterType="int" resultMap="projectSet">
 		SELECT *
 		FROM PROJECT
 		WHERE STATUS = 'Y'
 		AND PJ_NO = #{pj_no}
 	</select>
+
 </mapper>

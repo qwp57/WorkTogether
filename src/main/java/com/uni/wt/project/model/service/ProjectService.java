@@ -9,9 +9,12 @@ public interface ProjectService {
 
     void insertProject(Project project) throws Exception;
 
-    ArrayList<Project> selectAllProject(int loginEmp) throws Exception;
 
     Project selectOneProject(int pj_no) throws Exception;
 
     int nextPjNo() throws Exception;
+
+    ArrayList<Project> selectMyProject(int loginEmp) throws Exception;
+
+    ArrayList<Project> selectMyBookmarkProject(int loginEmp) throws Exception;
 }

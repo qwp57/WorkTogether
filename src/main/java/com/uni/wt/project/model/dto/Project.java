@@ -25,4 +25,5 @@ public class Project {
     private String file_power;
 
     private String status;
+
 }

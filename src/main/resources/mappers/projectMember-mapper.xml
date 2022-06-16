@@ -14,5 +14,23 @@
 		INSERT INTO PROJECT_MEMBER
 		VALUES (#{pj_no}, #{emp_no}, DEFAULT, 'Y')
 	</insert>
-
+	<insert id="insertBookmark" parameterType="ProjectMember">
+		INSERT INTO PJ_BOOKMARK
+		VALUES (#{pj_no}, #{emp_no})
+	</insert>
+	<delete id="removeBookmark" parameterType="ProjectMember">
+		DELETE FROM PJ_BOOKMARK
+		WHERE PJ_NO = #{pj_no}
+		AND EMP_NO = #{emp_no}
+	</delete>
+	<select id="selectProjectColor" resultMap="projectMemberSet">
+		SELECT * FROM  PROJECT_MEMBER
+		WHERE EMP_NO = #{loginEmp}
+	</select>
+	<update id="setProjectColor" parameterType="ProjectMember">
+		UPDATE PROJECT_MEMBER
+		SET PJ_COLOR = #{pj_color}
+		WHERE PJ_NO = #{pj_no}
+		AND EMP_NO = #{emp_no}
+	</update>
 </mapper>

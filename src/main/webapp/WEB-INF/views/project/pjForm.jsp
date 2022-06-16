@@ -19,10 +19,10 @@
 				<div class="modal-header">
 					<span><h3 class="modal-title text-left">프로젝트 생성</h3></span> <span><input
 						type="image" data-dismiss="modal"
-						src="resources/assets/img/close.png/" style="width: 20px;"></span>
+						src="/resources/assets/img/close.png/" style="width: 20px;"></span>
 				</div>
 				<!-- modal body : 내용 -->
-				<form class="form" id="enrollPj" action="insertPj.do" method="post">
+				<form class="form" id="enrollPj" action="/project/insertPj.do" method="post">
 					<div class="modal-body">
 						<div class="col-lg-12 text-center mt-5">
 							<hr>

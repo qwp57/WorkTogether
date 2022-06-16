@@ -567,7 +567,7 @@
             <div class="modal-header">
                 <span><h3 class="modal-title text-left">참석자 추가</h3></span> <span><input
                     type="image" data-dismiss="modal"
-                    src="resources/assets/img/close.png/" style="width: 20px;"></span>
+                    src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
             <form class="form" id="">
@@ -616,7 +616,7 @@
             <div class="modal-header">
                 <span><h3 class="modal-title text-left">담당자 선택</h3></span> <span><input
                     type="image" data-dismiss="modal"
-                    src="resources/assets/img/close.png/" style="width: 20px;"></span>
+                    src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
             <form class="form" id="">
@@ -665,13 +665,13 @@
             <div class="modal-header">
 					<span><h3 class="modal-title text-left" style="color: gray;">게시물
 							작성</h3></span> <span><input type="image" data-dismiss="modal" id="close"
-                                                        src="resources/assets/img/close.png/"
+                                                        src="/resources/assets/img/close.png/"
                                                         style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
 
             <div id="postForm" style="display: block;">
-                <form class="form" id="enrollPost" action="insertPost.do" method="post">
+                <form class="form" id="enrollPost" action="/post/insertPost.do" method="post">
                     <div class="modal-body">
                         <table class="boardEnrollBtn" style="width: 100%; height: 100%; text-align: center;">
                             <tr>
@@ -890,7 +890,7 @@
                 </div>
                 <span><input
                         type="image" data-dismiss="modal"
-                        src="resources/assets/img/close.png/" style="width: 20px;"></span>
+                        src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
             <div id="postView" style="display: block;">
