@@ -26,6 +26,7 @@
 		<mapper resource="/mappers/projectMember-mapper.xml"/>
 		<mapper resource="/mappers/boardAll-mapper.xml"/>
 		<mapper resource="/mappers/post-mapper.xml"/>
+		<mapper resource="/mappers/admin-mapper.xml"/>
 	</mappers>
 	
 </configuration>
