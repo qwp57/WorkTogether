@@ -12,6 +12,7 @@
 		<result property="join_date" column="JOIN_DATE"/>
 		<result property="resignation_date" column="RESIGNATION_DATE"/>
 		<result property="file_no" column="FILE_NO"/>
+		<result property="create_date" column="CREATE_DATE"/>
 	</resultMap>
 
 	<select id="idCheck" parameterType="string" resultType="_int">
@@ -21,7 +22,7 @@
 
 	<insert id="insertEmp" parameterType="Employee">
 		INSERT INTO EMPLOYEE
-		VALUES(EMP_SEQ.NEXTVAL, #{name}, #{id}, #{password}, #{email}, #{phone}, #{birth}, NULL, NULL, NULL, #{join_date}, NULL, DEFAULT, DEFAULT, NULL )
+		VALUES(EMP_SEQ.NEXTVAL, #{name}, #{id}, #{password}, #{email}, #{phone}, #{birth}, NULL, NULL, NULL, #{join_date}, NULL, DEFAULT, DEFAULT, NULL, SYSDATE )
 	</insert>
 
 	<select id="loginEmp"  parameterType="Employee" resultMap="employeeSet">

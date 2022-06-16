@@ -204,7 +204,7 @@ $(function(){
               <h5 class="dropdown-header">
 	            <i class="fas fa-cog"></i> 관리자 설정
 	          </h5>
-	          <a class="dropdown-item has-icon ml-3" href="adminApproval.do">
+	          <a class="dropdown-item has-icon ml-3" href="adminApprovalList.do">
               	<i class="bi bi-check-square-fill"></i>가입 승인
               </a>
 	       	  <a class="dropdown-item has-icon ml-3" href="departmentManagement.do">
