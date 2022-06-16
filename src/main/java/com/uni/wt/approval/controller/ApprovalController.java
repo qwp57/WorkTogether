@@ -38,8 +38,11 @@ public class ApprovalController {
 	}
 	
 	//일반 품의서 작성
-	//@RequestMapping("insertLetterOfApproval.do")
-	//public String insertLetterOfApproval(Approval ap, )
+	@RequestMapping("insertLetterOfApproval.do")
+	public String insertLetterOfApproval() {
+		return "approval/letterOfApprovalEnrollForm";
+		
+	}
 	
 	//지출 결의서로 이동
 	@RequestMapping("expenditureEnrollForm.do")

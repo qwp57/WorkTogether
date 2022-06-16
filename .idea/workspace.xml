@@ -11,22 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="경로수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/dao/ProjectMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/dao/ProjectMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/dto/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/dto/Project.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/post/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/post/controller/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/dao/ProjectMemberMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/dao/ProjectMemberMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/service/ProjectMemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/service/ProjectMemberService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/service/ProjectMemberServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/service/ProjectMemberServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/project-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mappers/project-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/projectMember-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mappers/projectMember-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/chat/chatinvite.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/chat/chatinvite.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allProject.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allProject.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/colorTagModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/colorTagModal.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/pjForm.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/pjForm.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
