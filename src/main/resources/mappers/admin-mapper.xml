@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uni.wt.admin.model.dao.AdminMapper">
+	<!-- employee resultMap -->
+	<resultMap type="Employee" id="employeeResultSet">
+		<id property="emp_no" column="EMP_NO"/>
+		<result property="dept_code" column="DEPT_CODE"/>
+		<result property="sub_dept_code" column="SUB_DEPT_CODE"/>
+		<result property="job_code" column="JOB_CODE"/>
+		<result property="join_date" column="JOIN_DATE"/>
+		<result property="resignation_date" column="RESIGNATION_DATE"/>
+		<result property="file_no" column="FILE_NO"/>
+		<result property="create_date" column="CREATE_DATE"/>
+	</resultMap>
+
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE 
+		WHERE STATUS='W'
+		OR STATUS='R'
+	</select>
+
+	<select id="selectList" resultMap="employeeResultSet">
+		SELECT *
+		FROM EMPLOYEE
+		WHERE STATUS='W'
+		OR STATUS='R'
+		ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<!-- 가입 승인 -->
+	<update id="adminApproval" parameterType="_int">
+		UPDATE EMPLOYEE
+		SET STATUS='I'
+		WHERE EMP_NO=#{emp_no}
+		AND NOT STATUS IN ('Q')
+	</update>
+	
+	<!-- 승인 거부 -->
+	<update id="adminReject" parameterType="_int">
+		UPDATE EMPLOYEE
+		SET STATUS='R'
+		WHERE EMP_NO=#{emp_no}
+		AND NOT STATUS IN ('Q')
+	</update>
+	
+	<!-- 거부 사유 작성 -->
+	<update id="rejectReason" parameterType="Map">
+		UPDATE EMPLOYEE
+		SET REJECT_REASON=#{rComment}
+		WHERE EMP_NO=#{empNo}
+	</update>
+</mapper>
+        

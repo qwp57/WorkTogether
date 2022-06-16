@@ -37,7 +37,7 @@
 		height: 120px;
 	}
 	
-	#lineList, #refList{
+	#lineList{
 		background-color: lightgray;
 		padding: 3px;
 	}
@@ -46,6 +46,11 @@
 		background-color: lightgray;
 		height: 75%;
 		padding: 3px;
+	}
+	
+	#refList{
+		background-color: lightgray;
+		margin-top: -30px;
 	}
 	
 	#allWT{
@@ -124,10 +129,14 @@
 					    			</div>
 								</td>									
 							</tr>
+							<!-- 
 							<tr>
 								<th>수신참조</th>
-								<td colspan="5" name="referee">김대리</td>
+								<td colspan="5" name="referee">
+									<button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#refModal">수신참조자 선택</button>
+								</td>
 							</tr>
+							 -->
 							<tr>
 								<th>제목</th>
 								<td colspan="5">
@@ -166,8 +175,8 @@
 				</div>
 				
 				<!-- modal body -->
-				<div class="modal-body">
-					<form method="">
+				<form method="">
+					<div class="modal-body">
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 								<button class="btn btn-secondary" type="button">
@@ -256,40 +265,41 @@
 										</div>
 									</div>
 								</div>
-								
-								<div>
-									<h6 class="mt-3">결재선</h6>
-									<div class="input-group mb-3 input-group-sm">										
+								<div class="mt-3">
+									<h6>결재선</h6>
+									<div class="input-group input-group-sm">										
 										<!-- 결재선 선택-->
 										<div class="input-group-prepend" style="width:100%">
 											<select class="form-select custom-select border-1 rounded-1" id="approvalLevel" name="approvalLevel">
-												<option ${(param.job == "") ? "selected" : "" } value="">레벨 1</option>
-												<option ${(param.job == "") ? "selected" : "" } value="">레벨 2</option>
+												<option ${(param.approvalLevel == "") ? "selected" : "" } value="">레벨 1</option>
+												<option ${(param.approvalLevel == "") ? "selected" : "" } value="">레벨 2</option>
 											</select>
 										</div>	
 									</div>	
-								</div>
+								</div>	
 							</div>
-							<div class="col-lg-3 ml-5" id="approvalAddBtn">
-								<div><button type="button" class="btn btn-secondary mb-2" id="appLineAdd">결재 > </button></div>
-								<div><button type="button" class="btn btn-secondary mt-2" id="appRefAdd">참조 > </button></div>
+							<div class="col-lg-3 text-center" id="approvalAddBtn">
+								<div><button type="button" class="btn btn-secondary mt-5" id="appLineAdd">결재 > </button></div>
+								<!-- <div><button type="button" class="btn btn-secondary mt-2" id="appRefAdd">참조 > </button></div>  -->
 							</div>
 							<div class="col-lg-4">
 								<div id="addList">
 									<div>1레벨</div>
 								</div>
 								
-								<h6 class="mt-3">참조</h6>
+								<!-- 									
+								<h6>참조</h6>
 								<div id="refList">
-									
-								</div>
-								
-								<button type="submit" class="btn btn-primary float-right mt-5">등록</button>
+									<div></div>
+								</div>		
+								 -->
+								 <button type="submit" class="btn btn-primary float-right mt-5">등록</button>	
 							</div>
-						</div>
-					</form>
-				</div>
-			</div>
+							
+						</div>					
+					</div>								
+				</form>
+			</div>			
 		</div>	
 	</div>
 	

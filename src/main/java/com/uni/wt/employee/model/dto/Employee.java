@@ -46,4 +46,8 @@ public class Employee {
 	private String admin;
 	
 	private String file_no;
+	
+	private String create_date;
+	
+	private String reject_reason;
 }
