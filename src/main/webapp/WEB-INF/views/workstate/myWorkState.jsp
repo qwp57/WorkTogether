@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,7 +20,7 @@ width: auto;
 .section-body{
 margin-left: 20px;
 margin-right: 20px;
-margin-top: 50px;
+margin-top: 0px;
 }
 
 .workTable{
@@ -41,6 +42,16 @@ height: 20px;
 width: 100px;
 text-align: center;
 }
+.workTime{
+background-color: green;
+}
+.workTimeinHoliday{
+background-color: red;
+}
+#beforeWeek, #afterWeek{
+cursor: pointer;
+
+}
 
 
 
@@ -52,13 +63,11 @@ text-align: center;
 <div style="height: 100px"></div>
 	<a href="workStateMain.do"><h2>내 근무</h2></a>
 	<a href="teamWorkState.do"><h2 style="color: gray">구성원 근무</h2></a>
-	
-	<select class="form-control" id="selectweek">
-	    <option>5월 8일 ~ 5월 14일</option>
-	    <option>Ketchup</option>
-	    <option>Relish</option>
+	<span id="beforeWeek">◀</span>
+	<select class="form-control" id="selectweek" name = "selectedWeek">
+	 
   	</select>
-  	
+  	<span id="afterWeek">▶</span>
 	<script type="text/javascript">
 
 	var currentDay = new Date();  
@@ -103,8 +112,8 @@ text-align: center;
                                                  src="resources/assets/img/avatar/avatar-1.png"
                                                  id="profileImg" class="img-fluid">
                                             <div class="user-details">
-                                                <div class="user-name"><h3>홍길동 대리</h3></div>
-                                                <div class="text-job text-muted"><h6>인사부 소속</h6></div>
+                                                <div class="user-name"><h3>${loginEmp.name}</h3></div>
+                                                <div class="text-job text-muted"><h6>${loginEmp.job_code}</h6></div>
                                             </div>
                                         </div>
                                     </div>
@@ -121,21 +130,35 @@ text-align: center;
 	                                	<thead class="thead-dark">
 		                                	<tr>
 		                                		<th>주</th>
-		                                		<th>총 시간</th>
-		                                		<th>초과시간</th>
-		                                		<th>누적시간</th>
+		                                		<th>누적 시간</th>
+		                                		<th>잔여 시간</th>
+		                                		<th>초과 시간</th>
 		                                		<th>기준시간</th>
 		                                		<th>휴일근무</th>
 		                                	</tr>
 	                                	</thead>
 	                                	<tbody>
-		                                	<tr>
-		                                		<td>2</td>
+		                                	<tr class="workTotalTime">
 		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
+		                                		<td>${weekWork["TOTALTIME"]}</td>
+		                                		<c:choose>
+		                                			<c:when test="${weekWork['LEFTTIME'] >= 0}">
+		                                				<td>${weekWork["LEFTTIME"]}</td>
+		                                			</c:when>
+		                                			<c:otherwise>
+		                                				<td>0</td>
+		                                			</c:otherwise>
+		                                		</c:choose>
+		                                		<c:choose>
+			                                		<c:when test="${weekWork['OVERTIME'] > 0 }">
+			                                			<td>${weekWork["OVERTIME"]}</td>
+			                                		</c:when>
+			                                		<c:otherwise>
+			                                			<td>0</td>
+			                                		</c:otherwise>
+			                                	</c:choose>
 		                                		<td>52시간</td>
-		                                		<td></td>
+		                                		<td>${weekWork["HOLIDAY"]}</td>
 		                                	</tr>
 	                                	</tbody>
 	                                </table>
@@ -183,35 +206,8 @@ text-align: center;
 		                                		<th class="TLtablecss DT">총 근무시간</th>
 		                                	</tr>
 	                                	</thead>
-	                                	<tbody>
-		                                	<tr>
-		                                		<td class="DT">2</td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td></td>
-		                                		<td class="DT"></td>
-		                                	</tr>
+	                                	<tbody id = "timelineTableData">
+		                                	
 	                                	</tbody>
 	                                </table>
                             	</div>
@@ -222,7 +218,88 @@ text-align: center;
                   </div>
               </div>
 </div>
-<script src="/resources/assets/js/workTime_ws.js"></script>
+<script src="/resources/assets/js/myWork_ws.js?ver=1"></script>
+<script type="text/javascript">
+
+	let timesum = [];
+	let workday = new Array();
+	let startTime = new Array();
+	let holiday = new Array();
+
+$(function() {
+	
+
+	<c:forEach items="${workTime}" var="item" varStatus = "status">
+		timesum[${status.index}]=${item['TIMESUM']}; 
+		wd = "${item['WORKDAY']}";
+		wdidx = wd.indexOf("/");
+		workday[${status.index}] = wd.substring(0, wdidx);
+		startTime[${status.index}] = Number(wd.substring(wdidx+1));
+		
+	</c:forEach>
+	<c:forEach items="${holiday}" var="item" varStatus = "status">
+		var hday = "${item}";
+		holiday[${status.index}] = hday.substring(4,6)+"."+hday.substring(6);
+	</c:forEach>
+	
+
+	console.log(workday);
+	console.log(startTime);
+	console.log(timesum);
+	console.log(holiday);
+	
+	
+	timecolor(workday, startTime, timesum, holiday);
+	
+	
+})
+
+
+function timecolor(workday, startTime, timesum, holiday){
+
+	for(let j = 0; j<workday.length; j++){
+		let a = holiday[j]; 
+		for(let i = 1; i<=7; i++){
+		let day = $('#timelineTableData tr:nth-child('+i+') td:nth-child(1)').text();
+			
+			if(a.includes(day) && a.includes(workday[i-1])){
+				console.log("휴일이다")
+				green(i, startTime[j], timesum[j]);
+				
+			}else if(day == workday[j]){
+				console.log("평일이다")
+				red(i, startTime[j], timesum[j]);
+				
+			}
+			
+		}
+	}
+	
+}
+
+
+function green(i, startTime, timesum) {
+	
+	for(let k = 1; k<=timesum; k++){
+		 $('#timelineTableData tr:nth-child('+i+') td:nth-child('+(startTime+k)+')').addClass("workTimeinHoliday");
+		 $('#timelineTableData tr:nth-child('+i+') td:last').text(timesum);
+		}
+	
+	
+}
+
+function red(i, startTime, timesum) {
+	for(let k = 1; k<=timesum; k++){
+		 $('#timelineTableData tr:nth-child('+i+') td:nth-child('+(startTime+k)+')').addClass("workTime");
+		 $('#timelineTableData tr:nth-child('+i+') td:last').text(timesum);
+		}
+	
+	
+}
+
+
+
+</script>
 
 
 </body>

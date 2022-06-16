@@ -1,5 +1,6 @@
 package com.uni.wt.workState.service;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.Spring;
@@ -18,7 +19,11 @@ public interface WorkStateService {
 
 	void deleteTodaySeq();
 
-	Map<Spring, Object> selectMyWork() throws Exception;
+	Map<Spring, Object> selectMyWork(String startday, int emp_no, ArrayList<String> weekHoliday) throws Exception;
+
+	ArrayList<Integer> selectWorkTimeList(String startday, int emp_no) throws Exception;
+
+
 
 	
 

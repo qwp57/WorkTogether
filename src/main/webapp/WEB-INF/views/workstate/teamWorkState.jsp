@@ -48,7 +48,7 @@ width: auto;
 <jsp:include page="../common/sidebar.jsp"/>
 <div class="main-content">
 <div style="height: 100px"></div>
-	<a href="workStateMain.do"><h2 style="color: gray">내 근무</h2></a>
+	<a href="workState.do"><h2 style="color: gray">내 근무</h2></a>
 	<a href="teamWorkState.do"><h2 >구성원 근무</h2></a>
 	
 	<select class="form-control" id="selectweek">
