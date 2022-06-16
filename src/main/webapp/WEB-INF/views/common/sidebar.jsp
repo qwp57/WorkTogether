@@ -31,7 +31,7 @@
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i> <span>근태관리</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link" href="/vacationMgtMain.do">휴가관리</a></li>
-                  <li><a class="nav-link" href="/workStateMain.do">근무기록</a></li>
+                  <li><a class="nav-link" href="/workState.do">근무기록</a></li>
                   <li><a class="nav-link" href="/workStatistics.do">통계</a></li>
                 </ul>
               </li>

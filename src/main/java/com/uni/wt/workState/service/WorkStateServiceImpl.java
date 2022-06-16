@@ -1,5 +1,7 @@
 package com.uni.wt.workState.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Spring;
@@ -21,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WorkStateServiceImpl implements WorkStateService{
 	
 	private static int todaySeq;
-//	Map<String, Object> paramMap = new HashMap<String, Object>();
+	Map<String, Object> paramMap = new HashMap<String, Object>();
 	
 	@Autowired
 	private WorkStateMapper wsMapper;
@@ -118,11 +120,33 @@ public class WorkStateServiceImpl implements WorkStateService{
 
 
 	@Override
-	public Map<Spring, Object> selectMyWork() throws Exception {
+	public Map<Spring, Object> selectMyWork(String startday, int emp_no, ArrayList<String> weekHoliday) throws Exception {
 		
-		Map<Spring, Object> paramMap = wsMapper.selectMyWork(todaySeq);
+		paramMap.put("startday", startday);
+		paramMap.put("emp_no", emp_no);
+		paramMap.put("weekHoliday", weekHoliday);
 		
-		return null;
+		Map<Spring, Object> resultMap = wsMapper.selectMyWork(paramMap);
+		
+		paramMap.clear();
+		
+		if(resultMap ==null) {
+			throw new Exception("내 근태관리 데이터 조회에 실패했습니다");
+		}
+		
+		return resultMap;
+	}
+
+
+	@Override
+	public ArrayList<Integer> selectWorkTimeList(String startday, int emp_no) throws Exception {//하루에 몇 시간 일했나 
+		
+		paramMap.put("startday", startday);
+		paramMap.put("emp_no", emp_no);
+		
+		 ArrayList<Integer> resultList = wsMapper.selectWorkTimeList(paramMap);
+		// TODO Auto-generated method stub
+		return resultList;
 	}
 
 

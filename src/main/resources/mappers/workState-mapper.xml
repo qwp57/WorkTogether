@@ -47,6 +47,34 @@
  
  </select>
  
- <select id="selectMyWork" parameterType="_int" resultType="map"></select>
+ <select id="selectMyWork" parameterType="map" resultType="map">
+ SELECT
+	SUM(ROUND((OUT_TIME - IN_TIME)*24)) AS TOTALTIME,
+	52-SUM(ROUND((OUT_TIME - IN_TIME)*24)) AS LEFTTIME,
+	SUM(ROUND((OUT_TIME - IN_TIME)*24))-52 AS OVERTIME,
+	(SELECT 
+		SUM(ROUND((OUT_TIME - IN_TIME)*24)) 
+	FROM WORK_TIME 
+	WHERE TO_CHAR(IN_TIME, 'YYYYMMDD') IN
+	<foreach collection="weekHoliday" item="arr" open="(" close=")" separator=",">
+	 #{arr}
+	</foreach>
+	AND EMP_NO = #{emp_no}
+	) AS HOLIDAY
+FROM WORK_TIME
+WHERE IN_TIME BETWEEN TO_DATE(#{startday}, 'YYYYMMDD') AND TO_DATE(#{startday}, 'YYYYMMDD')+7
+AND EMP_NO = #{emp_no}
+GROUP BY EMP_NO
  
+ </select>
+ 
+ <select id="selectWorkTimeList" parameterType="map" resultType="map">
+ SELECT
+    TO_CHAR(IN_TIME, 'FMMM.DD/HH24') AS WORKDAY,
+    ROUND((OUT_TIME-IN_TIME)*24) AS TIMESUM
+FROM WORK_TIME
+WHERE EMP_NO = #{emp_no}
+AND IN_TIME BETWEEN TO_DATE(#{startday}, 'YYYY.MM.DD') AND TO_DATE(#{startday}, 'YYYY.MM.DD')+7
+ </select>
+ 	
 </mapper>

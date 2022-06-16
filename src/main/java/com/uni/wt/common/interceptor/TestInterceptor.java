@@ -15,8 +15,7 @@ public class TestInterceptor extends HandlerInterceptorAdapter{
 	private static final Logger logger = LoggerFactory.getLogger(TestInterceptor.class);
 	public static final String LOG_ID = "logId";
 
-	//API로그를 남기는 스프링 인터셉터라고 함.
-	//https://catsbi.oopy.io/9ed2ec2b-b8f3-43f7-99fa-32f69f059171
+
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {

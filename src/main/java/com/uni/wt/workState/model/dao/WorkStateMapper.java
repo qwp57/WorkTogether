@@ -1,5 +1,6 @@
 package com.uni.wt.workState.model.dao;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.Spring;
@@ -19,10 +20,12 @@ public interface WorkStateMapper {
 
 	public int updateOutTime(WorkState w)throws Exception;
 
-	public WorkState selectWorkTime(int todaySeq)throws Exception;
+	public WorkState selectWorkTime(int todaySeq)throws Exception;//메인에 근무상태 조회
 
 	public String selectWorkState(String emp_no)throws Exception;
 
-	public Map<Spring, Object> selectMyWork(int todaySeq)throws Exception;
+	public Map<Spring, Object> selectMyWork(Map<String, Object> paramMap)throws Exception;
+
+	public ArrayList<Integer> selectWorkTimeList(Map<String, Object> paramMap)throws Exception;
 
 }
