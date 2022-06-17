@@ -92,13 +92,16 @@ $('#selectweek').on("change", function(){//주차를 선택하면 타임라인 �
     let year = Number($(this).children('option:selected').text().substring(0,4));//년도만 잘라내고 
     let month = Number($(this).children('option:selected').text().substring(6,midx));//월만 잘라내고 
     let date = Number($(this).children('option:selected').text().substring(9, didx));//일만 잘라낸다.
-    
-    
-    console.log("인덱스 : "+($(this).index())+1);
-    $('.workTotalTime td:nth-child(1)').text(($(this).index())+1);
 
     let tempDate = new Date(year+"-"+month+"-"+date);
-   // console.log(tempDate);
+
+    var idx = $("#selectweek option").index( $("#selectweek option:selected") );
+    
+    $('.workTotalTime td:nth-child(1)').text(idx+1);
+
+
+
+
 
     $('#timelineTableData').empty();
 
@@ -239,21 +242,29 @@ function red(i, startTime, timesum) {
 
 function totalWork(resultMap){
 
+    
+        $('.workTotalTime td:nth-child(2)').text('0');
+        $('.workTotalTime td:nth-child(3)').text('0');
+        $('.workTotalTime td:nth-child(4)').text('0');
+        $('.workTotalTime td:nth-child(6)').text('0');
+
+
+        $('.workTotalTime td:nth-child(2)').text(resultMap.TOTALTIME);
+    
+        if(resultMap.LEFTTIME >= 0){
+            $('.workTotalTime td:nth-child(3)').text(resultMap.LEFTTIME);
+        }else{
+            $('.workTotalTime td:nth-child(3)').text('0');
+        }
+    
+        if(resultMap.OVERTIME >= 0){
+            $('.workTotalTime td:nth-child(4)').text(resultMap.OVERTIME);
+        }else{
+            $('.workTotalTime td:nth-child(4)').text('0');
+        }
+    
+        $('.workTotalTime td:nth-child(6)').text(resultMap.HOLIDAY);
+        
   
 
-    $('.workTotalTime td:nth-child(2)').text(resultMap.TOTALTIME);
-
-    if(resultMap.LEFTTIME >= 0){
-        $('.workTotalTime td:nth-child(3)').text(resultMap.LEFTTIME);
-    }else{
-        $('.workTotalTime td:nth-child(3)').text('0');
-    }
-
-    if(resultMap.OVERTIME >= 0){
-        $('.workTotalTime td:nth-child(4)').text(resultMap.OVERTIME);
-    }else{
-        $('.workTotalTime td:nth-child(4)').text('0');
-    }
-
-    $('.workTotalTime td:nth-child(6)').text(resultMap.HOLIDAY);
 }

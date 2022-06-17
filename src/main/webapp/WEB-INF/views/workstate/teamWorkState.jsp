@@ -28,6 +28,10 @@ margin-top: 50px;
 .pagination{
 	justify-content: center;
 }
+#beforeWeek, #afterWeek{
+cursor: pointer;
+
+}
 /*#searchwrap{
 display: flex;
 justify-content: center;
@@ -50,13 +54,11 @@ width: auto;
 <div style="height: 100px"></div>
 	<a href="workState.do"><h2 style="color: gray">내 근무</h2></a>
 	<a href="teamWorkState.do"><h2 >구성원 근무</h2></a>
-	
-	<select class="form-control" id="selectweek">
-	    <option>5월 8일 ~ 5월 14일</option>
-	    <option>Ketchup</option>
-	    <option>Relish</option>
+	<span id="beforeWeek">◀</span>
+	<select class="form-control" id="selectweek" name = "selectedWeek">
+	 
   	</select>
-  	
+  	<span id="afterWeek">▶</span>
 	<hr>
  	<div class="section-body">
         <h2 class="section-title" style="text-align: left;"> </h2>
@@ -111,43 +113,8 @@ width: auto;
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-  
-
-	var currentDay = new Date();  
-	var theYear = currentDay.getFullYear();
-	var theMonth = currentDay.getMonth();
-	var theDate  = currentDay.getDate();
-	var theDayOfWeek = currentDay.getDay();
-	//console.log(theDayOfWeek);
-	let week = new Array('일', '월', '화', '수', '목','금', '토');
-	 
-	var thisWeek = [];
-	 
-	for(var i=0; i<7; i++) {
-	  var resultDay = new Date(theYear, theMonth, theDate + (i - theDayOfWeek));
-	  var mm = Number(resultDay.getMonth()) + 1;
-	  var dd = resultDay.getDate();
-	  var day = resultDay.getDay();
-	 
-	  mm = String(mm).length === 1 ? '0' + mm : mm;
-	  dd = String(dd).length === 1 ? '0' + dd : dd;
-	  
-	 $('#thead').children().eq(i+2).text(mm + '월 ' + dd+"일 ("+week[day]+")" );
-	  console.log($('#thead').children().eq(i+2).text());
-	  
-	 
-	  thisWeek[i] = mm + '월 ' + dd+"일";
-	}
-	
-	
-	 
-	//console.log(thisWeek);
-	
-	
-	
-	
-    </script>
+   
+<script src="/resources/assets/js/teamWorkTime_ws.js?ver=11"></script>
              
 
 </div>
