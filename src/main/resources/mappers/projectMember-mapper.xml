@@ -9,6 +9,12 @@
 		<result property="pj_color" column="PJ_COLOR"/>
 		<result property="admin" column="ADMIN"/>
 	</resultMap>
+	<resultMap id="ProjectTagSet" type="ProjectTag">
+		<id property="tag_no" column="TAG_NO"/>
+		<result property="tag_name" column="TAG_NAME"/>
+		<result property="emp_no" column="EMP_NO"/>
+		<result property="pj_no" column="PJ_NO"/>
+	</resultMap>
 
 	<insert id="insertProjectMember" parameterType="ProjectMember">
 		INSERT INTO PROJECT_MEMBER
@@ -33,4 +39,14 @@
 		WHERE PJ_NO = #{pj_no}
 		AND EMP_NO = #{emp_no}
 	</update>
+	<insert id="setProjectTag" parameterType="ProjectTag">
+		INSERT INTO PROJECT_TAG
+		VALUES (#{tag_no}, #{pj_no})
+	</insert>
+	<select id="loadTag" parameterType="int" resultMap="ProjectTagSet">
+		SELECT *
+		FROM MB_PJ_TAG
+		WHERE EMP_NO = #{loginEmp}
+		ORDER BY TAG_NO
+	</select>
 </mapper>

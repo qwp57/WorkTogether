@@ -1,6 +1,7 @@
 package com.uni.wt.project.model.service;
 
 import com.uni.wt.project.model.dto.Project;
+import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 
 import java.util.ArrayList;
 
@@ -17,4 +18,12 @@ public interface ProjectService {
     ArrayList<Project> selectMyProject(int loginEmp) throws Exception;
 
     ArrayList<Project> selectMyBookmarkProject(int loginEmp) throws Exception;
+
+    int getProjectMemberCount(int pj_no) throws Exception;
+
+    void addTag(ProjectTag pjTag) throws Exception;
+
+    void editTag(ProjectTag pjTag) throws Exception;
+
+    void removeTag(ProjectTag pjTag) throws Exception;
 }

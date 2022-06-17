@@ -570,7 +570,7 @@
                     src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
-            <form class="form" id="">
+            <form class="form">
                 <div class="modal-body">
                     <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
                     <table class="inviteTable">
@@ -619,7 +619,7 @@
                     src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
-            <form class="form" id="">
+            <form class="form">
                 <div class="modal-body">
                     <form>
 
@@ -894,7 +894,7 @@
             </div>
             <!-- modal body : 내용 -->
             <div id="postView" style="display: block;">
-                <form class="form" id="">
+                <form class="form">
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="row ml-5 mr-5">
@@ -964,7 +964,7 @@
 
 
             <div id="schView" style="display: block;">
-                <form class="form" id="">
+                <form class="form">
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="row ml-5 mr-5">
@@ -1156,6 +1156,8 @@
 <jsp:include page="pjForm.jsp"/>
 <script>
     $(function () {
+        datepickerLoad()
+
         $(document).on('click', '.newPj', function () {
             $("#makePj").modal("show")
         })
@@ -1328,22 +1330,6 @@
                 '</div>' +
                 '</div>'
             )
-            $('.todoInput').datepicker({
-                format: "mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-                autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-                clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
-                daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
-                disableTouchKeyboard: false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
-                templates: {
-                    leftArrow: '&laquo;',
-                    rightArrow: '&raquo;'
-                }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-                showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
-                todayHighlight: true,	//오늘 날짜에 하이라이팅 기능 기본값 :false
-                weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
-                language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-
-            })
 
 
             $(document).on('change', '.todoDue', function () {
@@ -1364,25 +1350,28 @@
 
         })
 
+        function datepickerLoad() {
+
+            $('.todoInput').datepicker({
+                format: "mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
+                autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
+                clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
+                daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
+                disableTouchKeyboard: false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
+                templates: {
+                    leftArrow: '&laquo;',
+                    rightArrow: '&raquo;'
+                }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
+                showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
+                todayHighlight: true,	//오늘 날짜에 하이라이팅 기능 기본값 :false
+                weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
+                language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+
+            })
+        }
 
         $('#datepicker').datepicker({
-            format: "mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-            autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-            clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
-            daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
-            disableTouchKeyboard: false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
-            templates: {
-                leftArrow: '&laquo;',
-                rightArrow: '&raquo;'
-            }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-            showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
-            todayHighlight: true,	//오늘 날짜에 하이라이팅 기능 기본값 :false
-            weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
-            language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-
-        })
-        $('.todoInput').datepicker({
-            format: "mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
+            format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
             autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
             clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
             daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
@@ -1439,80 +1428,67 @@
                 '</div>' +
                 '</div>'
             )
-            $('.todoInput').datepicker({
-                format: "mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-                autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-                clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
-                daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
-                disableTouchKeyboard: false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
-                templates: {
-                    leftArrow: '&laquo;',
-                    rightArrow: '&raquo;'
-                }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-                showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
-                todayHighlight: true,	//오늘 날짜에 하이라이팅 기능 기본값 :false
-                weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
-                language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+            datepickerLoad()
 
-
-            })
-            $(".todoDue").change(function () {
-                console.log($(this).val())
-                if ($(this).val() != "") {
-                    $(this).css("display", "block")
-                    $(this).next().css("display", "none")
-
-                }
-            })
-            $('.todoInput').datepicker().on("clearDate", function (e) {
-                console.log(e.currentTarget)
-                var $test = e.currentTarget;
-                $($test).children(".todoCalendar").css("display", "block")
-                $($test).children(".todoDue").css("display", "none")
-
-            })
         })
 
 
-        $(document).on('click', '#addPeople', function () {
-            $("#mentionForModal").modal("show")
-        })
+        $(".todoDue").change(function () {
+            console.log($(this).val())
+            if ($(this).val() != "") {
+                $(this).css("display", "block")
+                $(this).next().css("display", "none")
 
-        $(document).on('click', '.viewAttendee', function () {
-            $("#mentionForModal").modal("show")
+            }
         })
+        $('.todoInput').datepicker().on("clearDate", function (e) {
+            console.log(e.currentTarget)
+            var $test = e.currentTarget;
+            $($test).children(".todoCalendar").css("display", "block")
+            $($test).children(".todoDue").css("display", "none")
 
-        $(document).on('click', '.calendar', function () {
-            location.href = "/detailCalendar.do"
         })
-        $(document).on('click', '.drive', function () {
-            location.href = "/drivePj.do"
-        })
-
-        $(document).on('click', '.todoPerson', function () {
-            var $forRemove = $(this)
-            var $todo = $(this).next()
-            $("#todoFor").modal("show")
-            $(".selectTodoFor").click(function () {
-                console.log($todo)
-                console.log($(this))
-                $todo.html('테스트')
-                $forRemove.remove()
-            })
-        })
-
-        $(document).on('click', '.todoFor', function () {
-            $(this).parent().html(' <i class="bi bi-person fa-2x todoPerson"></i>' +
-                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'
-            )
-        })
-
-        $(document).on('click', '.bi-x', function () {
-            $(this).parent().parent().remove()
-        })
-
-
     })
+
+
+    $(document).on('click', '#addPeople', function () {
+        $("#mentionForModal").modal("show")
+    })
+
+    $(document).on('click', '.viewAttendee', function () {
+        $("#mentionForModal").modal("show")
+    })
+
+    $(document).on('click', '.calendar', function () {
+        location.href = "/project/detailCalendar.do"
+    })
+    $(document).on('click', '.drive', function () {
+        location.href = "/project/drivePj.do"
+    })
+
+    $(document).on('click', '.todoPerson', function () {
+        var $forRemove = $(this)
+        var $todo = $(this).next()
+        $("#todoFor").modal("show")
+        $(".selectTodoFor").click(function () {
+            console.log($todo)
+            console.log($(this))
+            $todo.html('테스트')
+            $forRemove.remove()
+        })
+    })
+
+    $(document).on('click', '.todoFor', function () {
+        $(this).parent().html(' <i class="bi bi-person fa-2x todoPerson"></i>' +
+            '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'
+        )
+    })
+
+    $(document).on('click', '.bi-x', function () {
+        $(this).parent().parent().remove()
+    })
+
+
 </script>
 <script type="text/javascript">
     var sum = Number("{{sum}}");

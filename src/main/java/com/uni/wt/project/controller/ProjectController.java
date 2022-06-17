@@ -6,6 +6,7 @@ import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.model.service.ProjectService;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
+import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.project.projectMember.model.service.ProjectMemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,14 @@ public class ProjectController {
 	public String selectAllProject(HttpSession session) throws Exception {
 		int loginEmp = ((Employee)session.getAttribute("loginEmp")).getEmp_no();
 		ArrayList<Project> myProjects = projectService.selectMyProject(loginEmp);
+		for(int i = 0; i < myProjects.size(); i++){
+			myProjects.get(i).setCount(projectService.getProjectMemberCount(myProjects.get(i).getPj_no()));
+
+		}
 		ArrayList<Project> bookmarkProjects = projectService.selectMyBookmarkProject(loginEmp);
+		for(int i = 0; i < bookmarkProjects.size(); i++){
+			bookmarkProjects.get(i).setCount(projectService.getProjectMemberCount(bookmarkProjects.get(i).getPj_no()));
+		}
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		log.info("bookmarkProjects : " + bookmarkProjects);
 		ArrayList myAllProjects = new ArrayList();
@@ -75,14 +83,57 @@ public class ProjectController {
 		log.info("색상 : " + color);
 		return "색상 설정 완료";
 	}
+
 	@ResponseBody
-	@RequestMapping(value = "/projectMemberCount.do", produces="application/json; charset=utf-8")
-	public String projectMemberCount(@RequestParam("pj_no") int pj_no) throws Exception {
-
-		log.info("pj_no : "+pj_no);
-
-		return "8";
+	@RequestMapping(value = "/setProjectTag.do", produces="application/json; charset=utf-8")
+	public String setProjectTag(HttpSession session, @RequestParam("selectedProjects[]") List<String> pj_list, @RequestParam("selectedTags[]")  List<String> tag_list) throws Exception {
+		for (int i = 0; i < pj_list.size(); i++){
+			for (int j = 0; j < tag_list.size(); j++){
+				ProjectTag projectTag = new ProjectTag();
+				projectTag.setTag_no(Integer.parseInt(tag_list.get(j)));
+				projectTag.setPj_no(Integer.parseInt(pj_list.get(i)));
+				log.info("프로젝트 태그 : " + projectTag);
+				projectMemberService.setProjectTag(projectTag);
+			}
+		}
+		return "태그 설정 완료";
 	}
+
+
+	@ResponseBody
+	@RequestMapping(value = "/addTag.do", produces="application/json; charset=utf-8")
+	public String addTag(HttpSession session, @RequestParam("tag_name") String tag_name) throws Exception {
+		int loginEmp = ((Employee)session.getAttribute("loginEmp")).getEmp_no();
+
+		//log.info("태그 명 : " + tag_name);
+		ProjectTag pjTag = new ProjectTag();
+		pjTag.setTag_name(tag_name);
+		pjTag.setEmp_no(loginEmp);
+		projectService.addTag(pjTag);
+		return "태그 등록 성공";
+	}
+	@ResponseBody
+	@RequestMapping(value = "/editTag.do", produces="application/json; charset=utf-8")
+	public String editTag(@RequestParam("tag_no") int tag_no,@RequestParam("tag_name") String tag_name) throws Exception {
+
+//		log.info("태그 번호 : " + tag_no);
+//		log.info("태그 명 : " + tag_name);
+		ProjectTag pjTag = new ProjectTag();
+		pjTag.setTag_no(tag_no);
+		pjTag.setTag_name(tag_name);
+		projectService.editTag(pjTag);
+		return "태그 수정 성공";
+	}
+	@ResponseBody
+	@RequestMapping(value = "/removeTag.do", produces="application/json; charset=utf-8")
+	public String removeTag(@RequestParam("tag_no") int tag_no) throws Exception {
+
+		ProjectTag pjTag = new ProjectTag();
+		pjTag.setTag_no(tag_no);
+		projectService.removeTag(pjTag);
+		return "태그 삭제 성공";
+	}
+	
 
 	@ResponseBody
 	@RequestMapping(value = "/insertBookmark.do", produces = "application/text;charset=utf8")
@@ -104,6 +155,17 @@ public class ProjectController {
 
 		return "즐겨찾기 제거";
 	}
+	@ResponseBody
+	@RequestMapping(value = "/loadTag.do", produces = "application/text;charset=utf8")
+	public String loadTag(HttpSession session) throws Exception {
+		int loginEmp = ((Employee)session.getAttribute("loginEmp")).getEmp_no();
+
+		ArrayList<ProjectTag> list = projectMemberService.loadTag(loginEmp);
+		log.info(list.toString());
+
+		return new GsonBuilder().create().toJson(list);
+	}
+
 	@RequestMapping("/detailPj.do")
 	public String detailPj(@RequestParam("pj_no") int pj_no, Model m) throws Exception {
 

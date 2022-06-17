@@ -23,7 +23,7 @@
             <div class="modal-header">
                 <span><h3 class="modal-title text-left">프로젝트 초대</h3></span> <span><input
                     type="image" data-dismiss="modal"
-                    src="resources/assets/img/close.png/" style="width: 20px;"></span>
+                    src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
             <form class="form" id="tagSave">
