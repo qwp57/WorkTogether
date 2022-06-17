@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.uni.wt.admin.model.dao.AdminMapper;
+import com.uni.wt.admin.model.dto.Department;
 import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 
@@ -59,11 +60,47 @@ public class AdminServiceImpl implements AdminService{
 		int result2 = 0;
 		if(result1 > 0) {
 			result2 = adminMapper.rejectReason(map);
+			System.out.println("result2" + result2);
 		}else {
 			throw new Exception("가입 거부에 실패하였습니다.");
 		}
 		
 		return result2;
+	}
+
+	@Override
+	public ArrayList<Department> selectUpperList() throws Exception {
+		
+		return adminMapper.selectUpperList();
+	}
+
+	@Override
+	public int addDeptList(Map<String, Object> map) {
+		
+		int upperDeptCode = Integer.parseInt(String.valueOf(map.get("upperDeptCode"))); 
+		
+		int result = 0;
+		if(upperDeptCode == 1) { //상위 부서가 없다는 뜻, 그냥 가장 최상위 부서에 속한 부서
+			//부서 insert하기
+			result = adminMapper.addDeptList(map);
+		}else {
+			//하위 부서 insert하기
+			result = adminMapper.addUpperDeptList(map);
+		}
+				
+		return result;
+	}
+
+	@Override
+	public int deleteDeptList(int deptCode) {
+		
+		return adminMapper.deleteDeptList(deptCode);
+	}
+
+	@Override
+	public int updateDeptList(Map<String, Object> map) {
+		
+		return adminMapper.updateDeptList(map);
 	}
 
 

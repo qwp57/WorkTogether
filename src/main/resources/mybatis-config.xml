@@ -18,7 +18,7 @@
 		<typeAlias type="com.uni.wt.project.projectMember.model.dto.ProjectTag" alias="ProjectTag"/>
 		<typeAlias type="com.uni.wt.project.boardAll.model.dto.BoardAll" alias="BoardAll"/>
 		<typeAlias type="com.uni.wt.project.post.model.dto.Post" alias="Post"/>
-
+		<typeAlias type="com.uni.wt.admin.model.dto.Department" alias="Department"/>
 	</typeAliases>
 	
 	<mappers>

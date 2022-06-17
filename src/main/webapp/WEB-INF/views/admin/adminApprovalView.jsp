@@ -193,10 +193,9 @@
 
 	
 	<script type="text/javascript">
-		//방법 1
+		//모달 창으로 데이터 보내기
 		function modalEmpInfo(clicked_element) {
 			var row_td = clicked_element.getElementsByTagName("td"); //클릭한 tr의 td 태그 리스트를 받는다.
-			var modal = document.getElementById("adminModal"); //modal 아이디로 modal 정보를 변수에 저장한다.
 			
 			//모달 id에 innerHtml로 row_td의 값들을 넣어준다.
 			document.getElementById("empNo").innerHTML = row_td[0].innerHTML;
@@ -208,8 +207,6 @@
 			document.getElementById("empBirth").innerHTML = row_td[6].innerHTML;
 			document.getElementById("empCreateDate").innerHTML = row_td[7].innerHTML;
 			
-			//모달 창 띄우기 -> data-dismiss 안먹음
-			//modal.style.display = 'block';
 		}
 		//모달창 열기
 		$(function(){
@@ -246,8 +243,8 @@
 						$.ajax({
 							type: "post",
 							url: "adminReject.do",
-							data: {empNo : $("#empNo").text(),
-									rComment : $("rComment").val()},
+							data: {empNo : $('#empNo').text(),
+									rComment : $('#rComment').val()},
 							success: function(status){ //데이터를 보내고 리턴값을 받아온다.
 								if(status > 0){
 									alert("가입 거부 완료");
@@ -266,6 +263,14 @@
 					alert("반려 사유를 작성해주세요.");
 				}
 			});
+			
+			//승인 대기인 것만 보여주기
+			//$('#waiting').click(function(){
+			//	$.ajax({
+			//		type: "post",
+			//		url: "approval"
+			//	})
+			//});
 			
 		});
 	</script>

@@ -13,14 +13,24 @@
 		<result property="file_no" column="FILE_NO"/>
 		<result property="create_date" column="CREATE_DATE"/>
 	</resultMap>
+	
+	<!-- dept resultMap -->
+	<resultMap type="Department" id="departmenteResultSet">
+		<id property="deptCode" column="DEPT_CODE"/>
+		<result property="deptName" column="DEPT_NAME"/>
+		<result property="deptLevel" column="DEPT_LEVEL"/>
+		<result property="upperDeptCode" column="UPPER_DEPT_CODE"/>
+	</resultMap>
 
+	<!-- 가입승인 -->
+	<!-- 페이지 조회 -->
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM EMPLOYEE 
 		WHERE STATUS='W'
 		OR STATUS='R'
 	</select>
-
+	<!-- 가입 승인 대기, 거부 list 조회 -->
 	<select id="selectList" resultMap="employeeResultSet">
 		SELECT *
 		FROM EMPLOYEE
@@ -50,6 +60,47 @@
 		UPDATE EMPLOYEE
 		SET REJECT_REASON=#{rComment}
 		WHERE EMP_NO=#{empNo}
+	</update>
+	
+	
+	<!-- 부서 관리 -->
+	<!-- 상위 부서 조회 -> 계층형 쿼리 -->
+	<select id="selectUpperList" resultMap="departmenteResultSet">
+		SELECT *
+		FROM DEPARTMENT
+		START WITH UPPER_DEPT_CODE IS NULL
+		CONNECT BY PRIOR DEPT_CODE=UPPER_DEPT_CODE		
+	</select>
+	
+	<!-- 부서 추가 -->
+	<insert id="addDeptList" parameterType="Map">
+		INSERT INTO DEPARTMENT		
+		VALUES(DEPT_SEQ.NEXTVAL, #{addDeptName}, 1, 1)
+	</insert>
+	
+	<!-- 하위 부서 추가 -->
+	<insert id="addUpperDeptList" parameterType="Map">
+		INSERT INTO DEPARTMENT		
+		VALUES(DEPT_SEQ.NEXTVAL, #{addDeptName}, 2, #{upperDeptCode})
+	</insert>
+	
+	<!-- 부서 삭제 -->
+	<delete id="deleteDeptList" parameterType="_int">
+		DELETE FROM 
+		(SELECT *
+		FROM DEPARTMENT
+		WHERE DEPT_CODE 
+		IN (SELECT DEPT_CODE
+		    FROM DEPARTMENT
+		    WHERE UPPER_DEPT_CODE=#{deptCode})
+		    OR DEPT_CODE=#{deptCode})
+	</delete>
+	
+	<!-- 부서명 수정 -->
+	<update id="updateDeptList" parameterType="Map">
+		UPDATE DEPARTMENT
+		SET DEPT_NAME=${deptName}
+		WHERE DEPT_CODE=${deptCode}
 	</update>
 </mapper>
         
