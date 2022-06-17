@@ -45,5 +45,22 @@
 		WHERE STATUS = 'Y'
 		AND PJ_NO = #{pj_no}
 	</select>
-
+	<select id="getProjectMemberCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM PROJECT_MEMBER
+		WHERE PJ_NO = #{pj_no}
+	</select>
+	<insert id="addTag" parameterType="ProjectTag">
+		INSERT INTO MB_PJ_TAG
+		VALUES (TAG_SEQ.NEXTVAL, #{tag_name}, #{emp_no})
+	</insert>
+	<update id="editTag" parameterType="ProjectTag">
+		UPDATE MB_PJ_TAG
+		SET TAG_NAME = #{tag_name}
+		WHERE TAG_NO = #{tag_no}
+	</update>
+	<delete id="removeTag" parameterType="ProjectTag">
+		DELETE FROM MB_PJ_TAG
+		WHERE TAG_NO = #{tag_no}
+	</delete>
 </mapper>

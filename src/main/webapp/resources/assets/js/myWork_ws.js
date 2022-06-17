@@ -1,5 +1,4 @@
-let weekArray = new Array();//option text를 저장할 array
-let weekvalue = new Array();//option value를 저장할 array
+
 let thisMonth = new Date();//이번달
 
 
@@ -40,34 +39,31 @@ function getWeekOfMonth(date){//주차를 구하는 함수
 };
 
 function weekSelectList(date){//달의 주차별 option을 구하는 메소드 
-    let first = new Date(date.getFullYear()+'/'+(date.getMonth()+1)+'/01');
-    let last = new Date(date.getFullYear(), (date.getMonth()+1), 0);
+    let weekArray = new Array();//option text를 저장할 array
+    let weekvalue = new Array();//option value를 저장할 array
+
+    let first = new Date(date.getFullYear()+'/'+(date.getMonth()+1)+'/01');//1일
+    let last = new Date(date.getFullYear(), (date.getMonth()+1), 0);//30일
     let lastWeek = getWeekOfMonth(last);//마지막주차
 
-   
-    let optionValue= first.getFullYear()+"."+(first.getMonth()+1)+"."+first.getDate();
-    let optionText = first.getFullYear()+"년 "+(first.getMonth()+1)+"월 "+first.getDate()+"일 ~ "
-                    +first.getFullYear()+"년 "+(first.getMonth()+1)+"월 " + (first.getDate()+(6-first.getDay()))+"일";
+    first.setDate(first.getDate()-first.getDay());//첫째주 일요일
+    //console.log("firstSunday : "+first.getDate());
+   last.setDate(last.getDate()+(6-last.getDay()));//마지막주 토요일
+    //console.log("lastSaturday : "+last.getDate());
+   // console.log("마지막 주차 : "+lastWeek);
 
-    first.setDate(first.getDate()+(6-first.getDay()));
-
-
+    let optionValue;
+    let optionText;
     for(let i = 0; i<lastWeek; i++){
-        
+
+        optionValue= first.getFullYear()+""+String(first.getMonth()+1).padStart(2,'0')+""+String(first.getDate()).padStart(2, '0');
+        optionText = first.getFullYear()+"년 "+(first.getMonth()+1)+"월 "+first.getDate()+"일 ~ ";
+        first.setDate(first.getDate()+(6-first.getDay()));
+        optionText += first.getFullYear()+"년 "+(first.getMonth()+1)+"월 "+first.getDate()+"일";
         weekArray[i] = optionText;
         weekvalue[i] = optionValue;
+        first.setDate(first.getDate()+1);//다음주 일요일
 
-        first.setDate(first.getDate()+1);//다음주 일요일 날짜
-        optionValue = first.getFullYear()+"."+(first.getMonth()+1)+"."+first.getDate();
-        optionText = first.getFullYear()+"년 "+(first.getMonth()+1)+"월 "+first.getDate()+"일 ~ "
-                    +first.getFullYear()+"년 "+(first.getMonth()+1)+"월 ";
-        first.setDate(first.getDate()+6);//토요일 날짜 
-
-        if(i == lastWeek-2){//만약 마지막 주차면//이미 위에서 array에 data가 들어갔기 때문에 lastweek-2 의 data는 들어가지 않는다. 
-            optionText += last.getDate()+"일";
-        }else{
-            optionText += first.getDate()+"일";
-        }
     }
 
     setWeekList(weekArray, weekvalue);
@@ -77,7 +73,9 @@ function setWeekList(weekArray, weekvalue){//option 리스트를 배치
     $('#selectweek').empty();
 
     for(let i = 0; i<weekArray.length; i++){
-        console.log("weekArray["+i+"] : "+weekArray[i]);
+        // console.log("weekArray["+i+"] : "+weekArray[i]);
+        // console.log("weekvalue["+i+"] : "+weekvalue[i]);
+
 
         let option = "<option value="+weekvalue[i]+">"+weekArray[i]+"</option>";
         
@@ -88,30 +86,42 @@ function setWeekList(weekArray, weekvalue){//option 리스트를 배치
 
 
 $('#selectweek').on("change", function(){//주차를 선택하면 타임라인 테이블을 배치 
-    console.log($(this).children('option:selected').text());
+  //  console.log($(this).children('option:selected').text());
     let midx = $(this).children('option:selected').text().indexOf('월');
     let didx = $(this).children('option:selected').text().indexOf('일');
+    let year = Number($(this).children('option:selected').text().substring(0,4));//년도만 잘라내고 
     let month = Number($(this).children('option:selected').text().substring(6,midx));//월만 잘라내고 
-    let date = Number($(this).children('option:selected').text().substring(9, didx));//일만 잘라낸다. 
+    let date = Number($(this).children('option:selected').text().substring(9, didx));//일만 잘라낸다.
+
+    let tempDate = new Date(year+"-"+month+"-"+date);
+
+    var idx = $("#selectweek option").index( $("#selectweek option:selected") );
+    
+    $('.workTotalTime td:nth-child(1)').text(idx+1);
+
+
+
+
 
     $('#timelineTableData').empty();
 
    for(let i = 0; i< 7; i++){
-    timelineTable = "<tr><td class='DT'>"+month+"."+(date+i)+"<td></td><td></td><td></td><td></td><td></td>"+
+    timelineTable = "<tr><td class='DT'>"+(tempDate.getMonth()+1)+"."+tempDate.getDate()+"<td></td><td></td><td></td><td></td><td></td>"+
                     "<td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>"+
                     "</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td class='DT'></td></tr>" ;
-
+    tempDate.setDate(tempDate.getDate()+1);
     $('#timelineTableData').append(timelineTable);
 
-    workController();
-
-   }
+    
+}
+let selectstart = year+String(month).padStart(2,'0')+String(date).padStart(2,'0');
+workController(selectstart);
 
 })
 
 $('#beforeWeek').click(function() {
   thisMonth.setMonth(thisMonth.getMonth()-(1));
-  console.log(thisMonth);
+ // console.log(thisMonth);
 
   let week = getWeekOfMonth(thisMonth);
   $('.workTotalTime > td').eq(0).text(week);
@@ -138,18 +148,45 @@ $('#afterWeek').click(function() {
 
 })
 
+
 function workController(){
-    let startday = $(this).children('option:selected').text()
+    let startday = $('#selectweek').children('option:selected').val();
+
 
     $.ajax({
         type: 'POST',
-        url: 'workState.do',
+        url: 'workStateSelectWeek.do',
         data: {"startday":startday},
-        dataType: 'JSON',
-        contentType : "application/json; charset=UTF-8",
-        success: function(sectionDate)
-        {
-            console.log(sectionDate);
+       
+        success: function(Date){
+            let obj = JSON.parse(Date);
+
+            let timesum = [];
+            let workday = new Array();
+            let startTime = new Array();
+            let holiday = new Array();
+
+            for(let i = 0; i<obj.workTime.length; i++){
+                timesum[i]= obj.workTime[i].TIMESUM;
+                let wd = obj.workTime[i].WORKDAY;
+                let wdidx = wd.indexOf("/");
+                workday[i] = wd.substring(0,wdidx);
+                startTime[i] = Number(wd.substring(wdidx+1));
+            }
+
+            for(let i = 0; i<obj.weekHoliday.length; i++){
+                let hday = obj.weekHoliday[i];
+                holiday[i] =  String(hday.substring(4,6)).replace(/(^0+)/, "")+"."+String(hday.substring(6)).replace(/(^0+)/, "");
+            }
+
+            console.log("workday : "+workday);
+            console.log("startTime : "+startTime);
+            console.log("timesum : "+timesum);
+            console.log("holiday : "+holiday);
+
+            totalWork(obj.resultMap);
+            timecolor(workday, startTime, timesum, holiday);
+      
         },
         error: function(sectionDate)
         {
@@ -157,5 +194,77 @@ function workController(){
         }
 
     })
+
+}
+
+
+function timecolor(workday, startTime, timesum, holiday){
+
+	for(let j = 0; j<workday.length; j++){
+		let a = holiday[j]; 
+		for(let i = 1; i<=7; i++){
+		let day = $('#timelineTableData tr:nth-child('+i+') td:nth-child(1)').text();
+			
+			if(a.includes(day) && a.includes(workday[i-1])){
+				console.log("휴일이다")
+				green(i, startTime[j], timesum[j]);
+				
+			}else if(day == workday[j]){
+				console.log("평일이다")
+				red(i, startTime[j], timesum[j]);
+				
+			}
+			
+		}
+	}
+	
+}
+
+
+function green(i, startTime, timesum) {
+	
+	for(let k = 1; k<=timesum; k++){
+		 $('#timelineTableData tr:nth-child('+i+') td:nth-child('+(startTime+k)+')').addClass("workTimeinHoliday");
+		 $('#timelineTableData tr:nth-child('+i+') td:last').text(timesum);
+		}
+	
+	
+}
+
+function red(i, startTime, timesum) {
+	for(let k = 1; k<=timesum; k++){
+		 $('#timelineTableData tr:nth-child('+i+') td:nth-child('+(startTime+k)+')').addClass("workTime");
+		 $('#timelineTableData tr:nth-child('+i+') td:last').text(timesum);
+		}
+	
+	
+}
+
+function totalWork(resultMap){
+
+    
+        $('.workTotalTime td:nth-child(2)').text('0');
+        $('.workTotalTime td:nth-child(3)').text('0');
+        $('.workTotalTime td:nth-child(4)').text('0');
+        $('.workTotalTime td:nth-child(6)').text('0');
+
+
+        $('.workTotalTime td:nth-child(2)').text(resultMap.TOTALTIME);
+    
+        if(resultMap.LEFTTIME >= 0){
+            $('.workTotalTime td:nth-child(3)').text(resultMap.LEFTTIME);
+        }else{
+            $('.workTotalTime td:nth-child(3)').text('0');
+        }
+    
+        if(resultMap.OVERTIME >= 0){
+            $('.workTotalTime td:nth-child(4)').text(resultMap.OVERTIME);
+        }else{
+            $('.workTotalTime td:nth-child(4)').text('0');
+        }
+    
+        $('.workTotalTime td:nth-child(6)').text(resultMap.HOLIDAY);
+        
+  
 
 }

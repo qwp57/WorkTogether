@@ -368,10 +368,10 @@
         })
 
         $(document).on('click', '.home', function () {
-            location.href = "/detailPj.do"
+            location.href = "/project/detailPj.do"
         })
         $(document).on('click', '.drive', function () {
-            location.href = "/drivePj.do"
+            location.href = "/project/drivePj.do"
         })
 
         $(document).on('click', '#inviteBtn', function () {

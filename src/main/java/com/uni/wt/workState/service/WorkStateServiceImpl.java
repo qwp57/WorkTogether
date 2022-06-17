@@ -130,10 +130,6 @@ public class WorkStateServiceImpl implements WorkStateService{
 		
 		paramMap.clear();
 		
-		if(resultMap ==null) {
-			throw new Exception("내 근태관리 데이터 조회에 실패했습니다");
-		}
-		
 		return resultMap;
 	}
 

@@ -1,6 +1,7 @@
 package com.uni.wt.project.projectMember.model.dao;
 
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
+import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
@@ -16,4 +17,8 @@ public interface ProjectMemberMapper {
     ArrayList<ProjectMember> selectProjectColor(int loginEmp);
 
     int setProjectColor(ProjectMember pjm);
+
+    ArrayList<ProjectTag> loadTag(int loginEmp);
+
+    int setProjectTag(ProjectTag projectTag);
 }

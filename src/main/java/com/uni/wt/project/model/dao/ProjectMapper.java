@@ -1,5 +1,6 @@
 package com.uni.wt.project.model.dao;
 
+import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import org.apache.ibatis.annotations.Mapper;
 import com.uni.wt.project.model.dto.Project;
 
@@ -17,4 +18,11 @@ public interface ProjectMapper {
 
     int nextPjNo();
 
+    int getProjectMemberCount(int pj_no);
+
+    int addTag(ProjectTag pjTag);
+
+    int editTag(ProjectTag pjTag);
+
+    int removeTag(ProjectTag pjTag);
 }
