@@ -1,8 +1,6 @@
 package com.uni.wt.workState.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +9,7 @@ import javax.swing.Spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,32 +37,9 @@ public class WorkStateController {
 	public ModelAndView workState(HttpServletRequest request, ModelAndView mv) throws Exception {
 		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
 		log.info("[현재 로그인한 유저]  : {}", emp.toString());
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-		
-		
-		Calendar c = Calendar.getInstance();//오늘 날짜 
-		c.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);//요일을 일요일로 설정
-		String startday = sdf.format(c.getTime());
-			
-		
-		log.info("선택 주 일요일 : {}", startday);
-		
-		ArrayList<String> weekHoliday = (ArrayList<String>) lunarCal.WeekHoliday(startday);
-		log.info("[선택 주 휴일] : {} ", weekHoliday.toString());
-		Map<Spring, Object> resultMap = wsService.selectMyWork(startday, emp.getEmp_no(), weekHoliday);
-		ArrayList<Integer> workTime = wsService.selectWorkTimeList(startday, emp.getEmp_no());
-		
-
-		if(resultMap !=null&&workTime != null) {
-			log.info("[선택 주 근로시간] : {}",resultMap.toString());//{LEFTTIME=25, TOTALTIME=27, OVERTIME=-25}
-			log.info("일주일 근로시간 리스트 : {}" , workTime.toString());
-		}
 		
 		
 		mv.setViewName("workstate/myWorkState");
-		mv.addObject("weekWork", resultMap);
-		mv.addObject("holiday", weekHoliday);
-		mv.addObject("workTime", workTime);
 		
 		
 		return mv;
@@ -96,7 +72,13 @@ public class WorkStateController {
 	}
 	
 	@RequestMapping("teamWorkState.do")
-	public String teamWorkState() {
+	public String teamWorkState(HttpServletRequest request, Model m) {
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		log.info("[현재 로그인한 유저]  : {}", emp.toString());
+		//ArrayList<Employee> empList = wsService.selectTeamWorkList(emp);
+		
+	//	m.addAttribute("empList", empList);
+		
 		
 		return "workstate/teamWorkState";
 	}
