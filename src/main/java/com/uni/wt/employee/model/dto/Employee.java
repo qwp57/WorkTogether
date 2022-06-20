@@ -32,7 +32,7 @@ public class Employee {
 	
 	private String dept_code;
 	
-	private String sub_dept_code;
+	private String upper_dept_code;
 	
 	private String job_code;
 	

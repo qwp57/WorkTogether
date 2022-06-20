@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,7 +69,9 @@ width: 100%;
 				
 				<div class="modal-body">
 				<div class="modal-body-title">휴가정보</div>
-				<form role="form" id="vac-Form" action="/" method="post" enctype="multipart/form-data">
+				<form role="form" id="vac-Form" action="insertVacation.do" method="post" enctype="multipart/form-data">
+					<input class="nonVisible" type="number" name="vcategory_no">
+					<input class="nonVisible" type="text" name="emp_no" value="${loginEmp.emp_no}" >
 				  <div class="form-row">
 				    <div class="col-5">
 				      시작일
@@ -80,22 +83,22 @@ width: 100%;
 				  </div>
 				  <div class="form-row formrow">
 				    <div class="col-5">
-				      <input type="date" class="form-control" placeholder="시작일">
+				      <input type="date" name="start_date" class="form-control" placeholder="시작일">
 				    </div>
 				    <div class="col"><i class='fa-solid fa-arrow-right-long' id="arrow"></i></div>
 				    <div class="col-5">
-				      <input type="date" class="form-control" placeholder="종료일">
+				      <input type="date" name="end_date" class="form-control" placeholder="종료일">
 				    </div>
 				  </div>
 				  <div class="form-row formrow">
 				    <div class="col">
-				      <textarea class="vac-textarea" placeholder="휴가 사유를 작성해주세요" rows="10"></textarea>
+				      <textarea name="content" class="vac-textarea" placeholder="휴가 사유를 작성해주세요" rows="10"></textarea>
 				    </div>
 				  </div>
 				  <div class="form-row formrow">
 				    <div class="col">
 				      <div class="custom-file">
-			            <input type="file" class="custom-file-input" id="vac-file">
+			            <input type="file" name="uploadFile" class="custom-file-input" id="vac-file">
 			            <label class="custom-file-label" for="customFile" id="file-label">증빙자료</label>
 			        </div>
 			       </div>
@@ -103,26 +106,26 @@ width: 100%;
 				   <div class="form-row formrow">
 				    <div class="col-5 input-group">
 				    <label id="approval-name">결재자</label>
-				      <select name="approval" class="form-control" placeholder="결재자를 선택하세요">
-						  <option value="volvo">Volvo</option>
-						  <option value="saab">Saab</option>
-						  <option value="fiat">Fiat</option>
-						  <option value="audi">Audi</option>
+				      <select name="approval_no" class="form-control" placeholder="결재자를 선택하세요">
+						  <c:forEach items="${SupvEmp}" var="emp">
+						  	<option value="${emp.emp_no}">${emp.name} ${emp.job_code}</option>
+						  </c:forEach>
 						</select>
 				    </div>
 				  </div>
-				</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-        			<button type="button" class="btn btn-primary">휴가 등록</button>
+        			<button type="submit" class="btn btn-primary">휴가 등록</button>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
 <script type="text/javascript">
 $(function(){
 		$(".card").click(function(){
+
 			$("#vacForm").modal("show")  
 			
 		let vacName = $(this).children().children().eq(1).text();
@@ -130,9 +133,14 @@ $(function(){
 			
 		let vacIcon = $(this).children().children().eq(0).attr("class");
 		$('#modal-icon').attr("class", vacIcon);
+
+		$('input[name = vcategory_no]').val($(this).find('.nonVisible').text());
+
+		
 		});
 		
 		$('#modal-icon').css("font-size", "300%");
+
 		
 
 	});  
