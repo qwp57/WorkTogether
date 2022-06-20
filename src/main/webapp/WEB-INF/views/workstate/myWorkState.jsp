@@ -218,7 +218,7 @@ cursor: pointer;
                   </div>
               </div>
 </div>
-<script src="/resources/assets/js/myWork_ws.js?ver=11"></script>
+<script src="/resources/assets/js/myWork_ws.js?ver=2"></script>
 
 
 </body>

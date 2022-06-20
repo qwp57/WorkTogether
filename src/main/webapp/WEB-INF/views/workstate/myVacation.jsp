@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +20,7 @@ display: inline-block;
 margin-right: 20px;
 color: black;
 }
-#selectweek{
+#selectyear, #selectyearWrap{
 display: inline-block;
 width: auto;
 }
@@ -71,6 +73,10 @@ margin-top: 10px;
 	width: 100%;
 	
 }
+.vac-menu-content tr th{
+	height : 80px;	
+}
+
 .vmenustate{
 	width: 100px;
 }
@@ -90,6 +96,15 @@ border-radius: 100px;
 font-family: 'Nanum Gothic', sans-serif;
 }
 
+.nonVisible{
+display: none;
+}
+.statusCss{
+padding: 10px; 
+border-radius: 5px;
+width: 100%;
+}
+
 </style>
 <body>
 <jsp:include page="../common/header.jsp"/>
@@ -98,12 +113,13 @@ font-family: 'Nanum Gothic', sans-serif;
 <div class="wrap">
 	<a href="vacationMgtMain.do"><h3 class="menuTitle">내 휴가</h3></a>
 	<a href="teamVacation.do"><h3 class="menuTitle" style="color: gray">구성원 휴가</h3></a>
-	
-	<select class="form-control" id="selectweek">
-	    <option>2022년</option>
-	    <option>Ketchup</option>
-	    <option>Relish</option>
+	<form action="vacationMgtMain.do" method="post" id="selectyearWrap">
+	<select class="form-control" id="selectyear" name="year">
+		<c:forEach items="${years}" var="y">
+			<option value="${y}">${y}년</option>
+		</c:forEach>
   	</select>
+  	</form>
   	<div class="vac-menu-title" style="color: gray">휴가 개요</div>
   	<hr>
   	<div class="section-body">
@@ -113,7 +129,8 @@ font-family: 'Nanum Gothic', sans-serif;
   					<div class="card-body">
 					<i class='fa fa-user icon'></i>
 					<div class="vac-name">연차</div>
-					<div class="vac-days">남은 기간 3일</div>
+					<p class="nonVisible">1</p>
+					<div class="vac-days">남은 기간 ${days[0]}일</div>
   					</div>
   				</div>
   			</div>
@@ -122,6 +139,7 @@ font-family: 'Nanum Gothic', sans-serif;
   					<div class="card-body">
   					<i class='fa fa-envelope icon'></i>
   					<div class="vac-name">조의</div>
+					<p class="nonVisible">2</p>
   					</div>
   				</div>
   			</div>
@@ -130,6 +148,7 @@ font-family: 'Nanum Gothic', sans-serif;
   					<div class="card-body">
 					<i class='fas fa-user-friends icon' style="font-size: 400%"></i>
   					<div class="vac-name">가족돌봄</div>
+					  <p class="nonVisible">3</p>
   					</div>
   				</div>
   			</div>
@@ -138,6 +157,7 @@ font-family: 'Nanum Gothic', sans-serif;
   					<div class="card-body">
 						<i class='fa fa-bed icon'></i>
 						<div class="vac-name">병가</div>
+						<p class="nonVisible">4</p>
   					</div>
   				</div>
   			</div>
@@ -151,6 +171,7 @@ font-family: 'Nanum Gothic', sans-serif;
   					<div class="card-body">
 					<i class='fa fa-heart icon'></i>
 					<div class="vac-name">결혼</div>
+					<p class="nonVisible">5</p>
   					</div>
   				</div>
   			</div>
@@ -159,6 +180,7 @@ font-family: 'Nanum Gothic', sans-serif;
   					<div class="card-body">
   					<i class="fa-solid fa-circle-exclamation icon"></i>
   					<div class="vac-name">기타</div>
+					  <p class="nonVisible">6</p>
   					</div>
   				</div>
   			</div>
@@ -167,7 +189,8 @@ font-family: 'Nanum Gothic', sans-serif;
   					<div class="card-body">
   					<i class='fa fa-plane icon'></i>
   					<div class="vac-name">리프레시</div>
-  					<div class="vac-days">남은 기간 0일</div>
+  					<div class="vac-days">남은 기간 ${days[1]}일</div>
+					<p class="nonVisible">7</p>
   					</div>
   				</div>
   			</div>
@@ -175,8 +198,9 @@ font-family: 'Nanum Gothic', sans-serif;
   				<div class="card h-100" id="card8">
   					<div class="card-body">
   					<i class="fa-solid fa-sun icon"></i>  
-  					<div class="vac-name">바캉스</div>					
-  					<div class="vac-days">남은기간 0일</div>
+  					<div class="vac-name">바캉스</div>
+					<p class="nonVisible">8</p>					
+  					<div class="vac-days">남은기간 ${days[2]}일</div>
   					</div>
   				</div>
   			</div>
@@ -186,13 +210,44 @@ font-family: 'Nanum Gothic', sans-serif;
   	<div class="section-body">
   		<div class="vac-menu-title"> 휴가 예정 </div>
   		<table class="vac-menu-content">
-  			<tr>
-  				<th><i class='fa fa-bed icon'></i></th>
-  				<th class="vac-detail">병가 | 2022.06.03(금)~2022.06.07(화)</th>
-  				<th class="vac-detail">총 2일</th>
-  				<th class="vmenustate"><button class="btn btn-primary btn-lg">승인</button></th>
-  				<th class="vmenustate"><button class="btn btn-secondary btn-lg">취소</button></i></th>
-  			</tr>
+  			<c:forEach begin="0" end="2" items="${newVacList}" var="vac" >
+  				<tr>
+  				<c:choose>
+  					<c:when test="${vac.vcategory_no eq '연차'}">
+  						<th width="50px"><i class='fa fa-user icon'></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '조의'}">
+  						<th width="50px"><i class='fa fa-envelope icon'></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '가족돌봄'}">
+  						<th width="50px"><i class='fas fa-user-friends icon' style="font-size: 400%"></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '병가'}">
+  						<th width="50px"><i class='fa fa-bed icon'></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '결혼'}">
+  						<th width="50px"><i class='fa fa-heart icon'></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '기타'}">
+  						<th width="50px"><i class="fa-solid fa-circle-exclamation icon"></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '리프레시'}">
+  						<th width="50px"><i class='fa fa-plane icon'></i></th>
+  					</c:when>
+  					<c:otherwise>
+  						<th width="50px"><i class="fa-solid fa-sun icon"></i> </th>
+  					</c:otherwise>
+  				</c:choose>
+  					<th class="vac-detail"> ${vac.vcategory_no} | <fmt:formatDate value="${vac.start_date}" pattern="yyyy년 MM월 dd일(E)"/> ~ <fmt:formatDate value="${vac.end_date}" pattern="yyyy년 MM월 dd일(E)"/></th>
+					<th class="vac-detail">총 ${vac.totaldays}일</th>
+					<c:choose>
+  						<c:when test="${vac.status eq 'W'}"><th><span  class="statusCss" style="background-color: lightgray; padding: 10px; border-radius: 5px;">승인 대기</span></th></c:when>
+  						<c:when test="${vac.status eq 'A'}"><th><span class="statusCss" style="background-color: skyblue; padding: 10px; border-radius: 5px;">승인 완료</span></th></c:when>
+  						<c:otherwise><th><span class="statusCss" style="background-color: red; padding: 10px; border-radius: 5px;">승인 거부</span></th></c:otherwise>
+  					</c:choose>
+  					<th class="vmenustate"><button class="btn btn-secondary btn-lg" onclick="deleteVac('${vac.vac_no}')">삭제</button></th>
+				</tr>
+  			</c:forEach>
   		</table>
   	</div>
   	<div style="position:relative;">
@@ -203,13 +258,44 @@ font-family: 'Nanum Gothic', sans-serif;
   	<div class="section-body">
   		<div class="vac-menu-title"> 사용 내역 </div>
   		<table class="vac-menu-content">
-  			<tr>
-  				<th><i class='fa fa-bed icon'></i></th>
-  				<th class="vac-detail">병가 | 2022.06.03(금)~2022.06.07(화)</th>
-  				<th class="vac-detail">총 2일</th>
-  				<th class="vmenustate"><button class="btn btn-primary btn-lg">승인</button></th>
-  				<th class="vmenustate"><button class="btn btn-secondary btn-lg">삭제</button></th>
-  			</tr>
+  			<c:forEach begin="0" end="2" items="${oldVacList}" var="vac" >
+  				<tr>
+  				<c:choose>
+  					<c:when test="${vac.vcategory_no eq '연차'}">
+  						<th width="50px"><i class='fa fa-user icon'></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '조의'}">
+  						<th width="50px"><i class='fa fa-envelope icon'></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '가족돌봄'}">
+  						<th width="50px"><i class='fas fa-user-friends icon' style="font-size: 400%"></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '병가'}">
+  						<th width="50px"><i class='fa fa-bed icon'></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '결혼'}">
+  						<th width="50px"><i class='fa fa-heart icon'></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '기타'}">
+  						<th width="50px"><i class="fa-solid fa-circle-exclamation icon"></i></th>
+  					</c:when>
+  					<c:when test="${vac.vcategory_no eq '리플레쉬'}">
+  						<th width="50px"><i class='fa fa-plane icon'></i></th>
+  					</c:when>
+  					<c:otherwise>
+  						<th width="50px"><i class="fa-solid fa-sun icon"></i> </th>
+  					</c:otherwise>
+  				</c:choose>
+  					<th class="vac-detail"> ${vac.vcategory_no} | <fmt:formatDate value="${vac.start_date}" pattern="yyyy년 MM월 dd일(E)"/> ~ <fmt:formatDate value="${vac.end_date}" pattern="yyyy년 MM월 dd일(E)"/></th>
+					<th class="vac-detail">총 ${vac.totaldays}일</th>
+					<c:choose>
+  						<c:when test="${vac.status eq 'W'}"><th><span style="background-color: lightgray;">승인 대기</span></th></c:when>
+  						<c:when test="${vac.status eq 'A'}"><th><span style="background-color: skyblue;">승인 완료</span></th></c:when>
+  						<c:otherwise><th><span style="background-color: red;">승인 거부</span></th></c:otherwise>
+  					</c:choose>
+  					<th class="vmenustate"><button class="btn btn-secondary btn-lg" onclick="deleteVac('${vac.vac_no}')">삭제</button></th>
+				</tr>
+  			</c:forEach>
   		</table>
   	</div>
   	<div style="position:relative;">
@@ -226,7 +312,162 @@ font-family: 'Nanum Gothic', sans-serif;
 
 <jsp:include page="../workstate/vacApplication.jsp"/>
 
+ <script type="text/javascript">
+ let newVacList = new Array();
+ let oldVacList = new Array();
+ let idx = 0;
+ let Vac;
+ let week = new Array('일', '월', '화', '수', '목','금', '토');
+ 
+<c:forEach items="${oldVacList}" var="vac">
 
+	 Vac = {
+		vac_no : "${vac.vac_no}",
+		emp_no : "${vac.emp_no}",
+		vcategory_no :"${vac.vcategory_no}",
+		start_date : "${vac.start_date}",
+		end_date : "${vac.end_date}",
+		status : "${vac.status}",
+		totaldays : "${vac.totaldays}"
+	}
+	
+	oldVacList[idx] = Vac;
+	idx++;
+</c:forEach>
+
+idx = 0;
+
+<c:forEach items="${newVacList}" var="vac">
+Vac = {
+		vac_no : "${vac.vac_no}",
+		emp_no : "${vac.emp_no}",
+		vcategory_no :"${vac.vcategory_no}",
+		start_date : "${vac.start_date}",
+		end_date : "${vac.end_date}",
+		status : "${vac.status}",
+		totaldays : "${vac.totaldays}"
+	}
+
+newVacList[idx] = Vac;
+idx++;
+</c:forEach>
+console.log(newVacList)
+console.log(oldVacList)
+
+
+$(function() {
+	let selectedyear = "${selectedYear}";
+	
+	$('#selectyear option[value = '+selectedyear+']').prop("selected", true);
+	
+})
+
+$('#selectyear').change(function() {
+	$('#selectedweekWrap').submit();
+})
+
+
+
+$('#all-List-0').click(function(){//휴가 예정
+	let test;
+	$('.vac-menu-content').eq(0).html("");
+	 newVacList.forEach((v, index, array) =>{
+	 		test = "<tr><th>";
+	 		
+	 		if(v.status == "W"){
+	 			test +="<span style='background-color: lightgray; padding: 5px; border-radius: 5px;'>승인 대기</span></th>"
+	 		}else if(v.status == "A"){
+	 			test += "<span style='background-color: skyblue; padding: 5px; border-radius: 5px;'>승인 완료</span></th>"
+	 		}else{
+	 			test += "<th><span style='background-color: red; padding: 5px; border-radius: 5px;'>승인 거부</span></th>"	
+	 		}
+	 		
+	 		let vca = vcategoryName(v.vcategory_no);
+	 		test +=vca
+	 		let term = vacationTerm(v.start_date, v.end_date);
+	 		
+	 		test +="<th class='vac-detail'> "+v.vcategory_no+" | "+term+"</th>";
+			test += "<th class='vac-detail'>총 "+v.totaldays+"일</th>";
+			test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
+					+"<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th></tr>";
+
+	 $('.vac-menu-content').eq(0).append(test);
+	 
+		});
+	
+	 console.log(test);
+	//console.log($('.vac-menu-content').eq(0).html(test));
+	
+	
+})
+
+
+function vcategoryName(category) {
+	
+	let result ;
+	
+	if(category =="연차"){
+		result = "<th width='50px'><i class='fa fa-user icon'></i></th>"
+		}else if(category =="조의"){
+			result = "<th width='50px'><i class='fa fa-envelope icon'></i></th>"
+		}else if(category =="가족돌봄"){
+			result = "<th width='50px'><i class='fas fa-user-friends icon' style='font-size: 400%'></i></th>"
+		}else if(category =="병가"){
+			result = "<th width='50px'><i class='fa fa-bed icon'></i></th>"
+		}else if(category =="결혼"){
+			result = "<th width='50px'><i class='fa fa-heart icon'></i></th>"
+		}else if(category =="기타"){
+			result = "<th width='50px'><i class='fa-solid fa-circle-exclamation icon'></i></th>"
+		}else if(category =="리플레쉬"){
+			result = "<th width='50px'><i class='fa fa-plane icon'></i></th>"
+		}else if(category =="바캉스"){
+			result = "<th width='50px'><i class='fa-solid fa-sun icon'></i> </th>"
+		}
+	
+	return result;
+	
+}
+
+function vacationTerm(start_date, end_date) {
+	let sDate = new Date(start_date);
+	let eDate = new Date(end_date);
+	
+	let result = sDate.getFullYear()+"년 "+String(sDate.getMonth()+1).padStart(2,'0')+"월 "+String(sDate.getDate()).padStart(2,'0')+"일("+week[sDate.getDay()]+") ~ "
+				+eDate.getFullYear()+"년 "+String((eDate.getMonth()+1)).padStart(2,'0')+"월 "+String(eDate.getDate()).padStart(2,'0')+"일("+week[eDate.getDay()]+")";
+	return result;
+	
+}
+
+
+$('#all-List-1').click(function(){//휴가 사용 내역
+	let test;
+	 $('.vac-menu-content').eq(1).html("");
+	 oldVacList.forEach((v, index, array) =>{
+	 		test = "<tr>";
+	 		
+	 		
+	 		let vca = vcategoryName(v.vcategory_no);
+	 		test +=vca
+	 		let term = vacationTerm(v.start_date, v.end_date);
+	 		
+	 		test +="<th class='vac-detail'> "+v.vcategory_no+" | "+term+"</th>";
+			test += "<th class='vac-detail'>총 "+v.totaldays+"일</th>";
+			test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
+					+"<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th></tr>";
+
+	 
+	 $('.vac-menu-content').eq(1).append(test);
+		});
+	
+	 console.log(test);
+//	console.log($('.vac-menu-content').eq(1).html(test));
+	
+	
+})
+
+
+
+</script>
 
 
 </body>

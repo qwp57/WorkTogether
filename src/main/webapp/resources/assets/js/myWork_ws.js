@@ -183,6 +183,7 @@ function workController(){
             console.log("startTime : "+startTime);
             console.log("timesum : "+timesum);
             console.log("holiday : "+holiday);
+            console.log("obj.resultMap : "+obj.resultMap);
 
             totalWork(obj.resultMap);
             timecolor(workday, startTime, timesum, holiday);
@@ -204,26 +205,47 @@ function timecolor(workday, startTime, timesum, holiday){
 		let a = holiday[j]; 
 		for(let i = 1; i<=7; i++){
 		let day = $('#timelineTableData tr:nth-child('+i+') td:nth-child(1)').text();
-			
-			if(a.includes(day) && a.includes(workday[i-1])){
-				console.log("휴일이다")
-				green(i, startTime[j], timesum[j]);
-				
-			}else if(day == workday[j]){
-				console.log("평일이다")
-				red(i, startTime[j], timesum[j]);
-				
-			}
+
+            if(day == workday[j]){
+
+                let hoN=holidayorNot(day, holiday);
+
+                if(hoN){
+                    console.log("휴일이다 : "+startTime[j])
+                    green(i, startTime[j], timesum[j]);
+                    
+                }else{
+                    console.log("평일이다")
+                    red(i, startTime[j], timesum[j]);
+                    
+                }
+
+            }
 			
 		}
 	}
 	
 }
 
+function holidayorNot(day, holiday){
+    let hoN=false;
+
+    for(let i = 0; i<holiday.length; i++){
+        if(holiday[i] == day){
+            hoN = true;
+        }
+
+    }
+
+    return hoN;
+
+}
+
 
 function green(i, startTime, timesum) {
 	
 	for(let k = 1; k<=timesum; k++){
+       
 		 $('#timelineTableData tr:nth-child('+i+') td:nth-child('+(startTime+k)+')').addClass("workTimeinHoliday");
 		 $('#timelineTableData tr:nth-child('+i+') td:last').text(timesum);
 		}

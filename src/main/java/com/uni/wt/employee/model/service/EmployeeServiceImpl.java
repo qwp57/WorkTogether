@@ -1,8 +1,9 @@
 package com.uni.wt.employee.model.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public Employee loginEmp(Employee emp) throws Exception {
 		
 		Employee result = empMapper.loginEmp(emp);
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<Employee> selectSupvEmpList(Employee emp) throws Exception {//WorkStateController에서 씀 
+		
+		ArrayList<Employee> result = empMapper.selectSupvEmpList(emp);
+		
+		log.info("[결재자 목록] : {}",result.toString());
 		
 		return result;
 	}

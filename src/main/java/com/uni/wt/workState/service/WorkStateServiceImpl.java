@@ -6,12 +6,17 @@ import java.util.Map;
 
 import javax.swing.Spring;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.uni.wt.common.commonFile.SearchDto;
+import com.uni.wt.common.dto.PageInfo;
+import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.workState.model.dao.WorkStateMapper;
+import com.uni.wt.workState.model.dto.Vacation;
 import com.uni.wt.workState.model.dto.WorkState;
 
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 @Primary
 public class WorkStateServiceImpl implements WorkStateService{
 	
-	private static int todaySeq;
-	Map<String, Object> paramMap = new HashMap<String, Object>();
+	
+	private Map<String, Object> paramMap = new HashMap<String, Object>();
 	
 	@Autowired
 	private WorkStateMapper wsMapper;
@@ -31,7 +36,7 @@ public class WorkStateServiceImpl implements WorkStateService{
 	@Override
 	public int insertInTime(WorkState w) throws Exception {
 		
-		todaySeq = wsMapper.getSeq();
+		int todaySeq = wsMapper.getSeq();
 		log.info("todaySeq : {}", todaySeq);
 		w.setWork_no(todaySeq);
 		
@@ -55,8 +60,11 @@ public class WorkStateServiceImpl implements WorkStateService{
 	@Override
 	public int updateOutTime(WorkState w) throws Exception {
 		
-		log.info("todaySeq : {}", todaySeq);
-		w.setWork_no(todaySeq);
+		String temp = wsMapper.getWorkNO(w.getEmp_no());
+		
+		int workNo = Integer.parseInt( temp== null ? "0" : temp);
+		
+		w.setWork_no(workNo);
 		int result = wsMapper.updateOutTime(w);
 		log.info("workStateService.updateOutTime : {}", result);
 		
@@ -75,8 +83,11 @@ public class WorkStateServiceImpl implements WorkStateService{
 	@Override
 	public WorkState selectWorkState(String emp_no) throws Exception {
 			WorkState w = null;
+			String temp = wsMapper.getWorkNO(emp_no);
+			
+			int workNo = Integer.parseInt( temp== null ? "0" : temp);
 		
-			w = wsMapper.selectWorkTime(todaySeq);
+			w = wsMapper.selectWorkTime(workNo);
 
 			if(w != null) {
 				
@@ -114,7 +125,7 @@ public class WorkStateServiceImpl implements WorkStateService{
 
 	@Override
 	public void deleteTodaySeq() {
-		todaySeq = 0;
+		
 		
 	}
 
@@ -141,9 +152,144 @@ public class WorkStateServiceImpl implements WorkStateService{
 		paramMap.put("emp_no", emp_no);
 		
 		 ArrayList<Integer> resultList = wsMapper.selectWorkTimeList(paramMap);
-		// TODO Auto-generated method stub
+		 
+		 paramMap.clear();
+		
 		return resultList;
 	}
+
+
+	@Override
+	public ArrayList<Object> selectTeamWorkList(Employee emp, ArrayList<String> weekHoliday, String startday, PageInfo pi)
+			throws Exception {
+		
+		//int offset = (pi)
+		
+		paramMap.put("startday", startday);
+		paramMap.put("weekHoliday", weekHoliday);
+		paramMap.put("emp", emp);
+		
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Object> resultMap = wsMapper.selectTeamWorkList(paramMap, rwB);
+		paramMap.clear();
+		
+		
+		
+		
+		return resultMap;
+	}
+
+
+	@Override
+	public int selectTeamEmpCount(Employee emp) {
+		
+		
+		return wsMapper.selectTeamEmpCount(emp);
+	}
+
+
+	@Override
+	public ArrayList<Object> selectTeamWeekList(Employee emp, String startday, PageInfo pi) throws Exception {// 팀원들 일주일 근무시간 리스트 
+		
+		String[] dayArr = {"SUN", "MON", "TUE", "WED", "THU","FRI","SAT"};
+		paramMap.put("startday", startday);
+		paramMap.put("emp", emp);
+		paramMap.put("dayArr", dayArr);
+		
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Object> resultMap = wsMapper.selectTeamWeekList(paramMap, rwB);
+		paramMap.clear();
+		
+		return resultMap;
+	}
+
+
+	@Override
+	public ArrayList<Integer> selectVacDays(Employee emp) throws Exception {
+		
+		ArrayList<Integer> result = wsMapper.selectVacDays(emp);
+		log.info("[휴가 남은 일수] : {}", result.toString());
+		
+		return result;
+	}
+
+
+	@Override
+	public int insertVacation(Vacation vac) {
+		
+		int result;
+		try {
+			result = wsMapper.insertVacation(vac);
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
+
+
+	@Override
+	public ArrayList<String> selectYears(Employee emp) throws Exception {
+		
+		return wsMapper.selectYears(emp);
+	}
+
+
+	@Override
+	public ArrayList<Vacation> selectVacList(Employee emp, String tag, String year) throws Exception {
+		paramMap.put("tag", tag);
+		paramMap.put("emp", emp);
+		paramMap.put("year", year);
+		 ArrayList<Vacation> result = wsMapper.selectVacList(paramMap);
+		paramMap.clear();
+		return result ;
+	}
+
+
+	@Override
+	public int getTeamVacCount(String year, Employee emp, SearchDto sd) throws Exception {
+		paramMap.put("year", year);
+		paramMap.put("emp", emp);
+		paramMap.put("sd", sd);
+		int cnt = wsMapper.getTeamVacCount(paramMap);
+		paramMap.clear();
+		log.info("[전체 휴가내역 개수] : {}", cnt);
+		return cnt;
+	}
+
+
+	@Override
+	public ArrayList<Vacation> selectTeamVacList(Employee emp, String year, PageInfo pi, SearchDto sd) throws Exception {
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
+		
+		paramMap.put("year", year);
+		paramMap.put("emp", emp);
+		paramMap.put("sd", sd);
+		
+		ArrayList<Vacation> result = wsMapper.selectTeamVacList(paramMap, rwB);
+		log.info("[팀원들 휴가 내역] : {} ", result.toString());
+		paramMap.clear();
+		return result;
+	}
+
+
+	@Override
+	public ArrayList<String> getYearsCnt(Employee emp) throws Exception {
+		
+		return wsMapper.getYearsCnt(emp);
+	}
+
+
+	
+
+
 
 
 

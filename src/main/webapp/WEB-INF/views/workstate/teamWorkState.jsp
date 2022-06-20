@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,6 +32,13 @@ margin-top: 50px;
 #beforeWeek, #afterWeek{
 cursor: pointer;
 
+}
+.nonvisible{
+	display: none;
+}
+
+.page-item{
+	cursor: pointer;
 }
 /*#searchwrap{
 display: flex;
@@ -81,33 +89,66 @@ width: auto;
                             	</tr>
                             </thead>
                             <tbody>
-                            	<tr>
-                            		<td>
-                            			<img alt="image"
-                                                 src="resources/assets/img/avatar/avatar-1.png"
-                                                 id="profileImg" class="img-fluid rounded-circle"><span>홍길동 대리</span>
-                            		</td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            	</tr>
+                            <c:forEach items="${empList}" var="emp" varStatus="e">
+								<tr>
+									<td>
+									<img alt="image"
+                                         src="resources/assets/img/profile/${emp.CHANGE_NAME }"
+                                         id="profileImg" class="img-fluid rounded-circle"><span>${emp.NAME} ${emp.JOB_NAME}</span>
+									</td>
+									<td>
+										<p>누적 시간 : ${emp.TOTALTIME}h</p>
+									<c:if test="${emp.OVERTIME < 0}">
+										<p>초과 시간 : 0 h</p>
+									</c:if>
+									<c:if test="${emp.OVERTIME >= 0}">
+										<p>초과 시간 : ${emp.OVERTIME}h</p>
+									</c:if>
+										<p>휴일 근무 : ${emp.HOLIDAY}h</p>
+									</td>
+									<td>${weekList[e.index].SUN}h</td>
+                            		<td>${weekList[e.index].MON}h</td>
+                            		<td>${weekList[e.index].TUE}h</td>
+                            		<td>${weekList[e.index].WED}h</td>
+                            		<td>${weekList[e.index].THU}h</td>
+                            		<td>${weekList[e.index].FRI}h</td>
+                            		<td>${weekList[e.index].SAT}h</td>
+								</tr>
+							</c:forEach>
                             </tbody>
                         </table>
                    
                     </div>
                     <ul class="pagination">
-						<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item"><a class="page-link" href="#">4</a></li>
-						<li class="page-item"><a class="page-link" href="#">5</a></li>
-						<li class="page-item"><a class="page-link" href="#">Next</a></li>
+						<c:choose>
+							<c:when test="${ pi.currentPage ne 1 }">
+								<li class="page-item" onclick="beforeAfterPage(-1)"><a class="page-link" href="#">Previous</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+							</c:otherwise>
+						</c:choose>
+						
+						<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+							<c:choose>
+							<c:when test="${ pi.currentPage ne p }">
+									<li class="page-item" onclick="changePage('${ p }')"><a class="page-link" href="#">${ p }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="#">${ p }</a></li>
+							</c:otherwise>
+						</c:choose>
+						</c:forEach>
+						
+						
+						<c:choose>
+							<c:when test="${ pi.currentPage ne pi.maxPage }">
+								<li class="page-item" onclick="beforeAfterPage(-1)"><a class="page-link" href="#">Next</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
                 </div>
             </div>
@@ -118,7 +159,11 @@ width: auto;
              
 
 </div>
-
+<form action="teamWorkState.do" method="post" id="teamForm">
+	<input class="nonvisible" type="text" value="${startday}" name="startday" id="startdayId">
+	<input class="nonvisible" type="text" value="${pi.currentPage}" name="currentPage" id="currantPageId">
+</form>
+<jsp:include page="../common/footer.jsp"/>
 
 </body>
 </html>

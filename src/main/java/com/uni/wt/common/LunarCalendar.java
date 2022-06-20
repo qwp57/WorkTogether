@@ -165,14 +165,6 @@ public class LunarCalendar {
 			
 		};
 		
-		for(int i= weekHoliday.size(); i<7; i++) {
-			
-			
-				weekHoliday.add("0000.00.00");
-		
-			
-		}
-		
 		
     	return weekHoliday;
     	
