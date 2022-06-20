@@ -485,9 +485,7 @@
                 },
                 success: function (data) {
                     console.log(data + "성공")
-
                     loadProjects()
-
                 }
             });
         }
@@ -658,14 +656,24 @@
             })
             loadTag()
         }
+
     })
 
 
     function loadProjects() {
         $.ajax({
-            url: '/project/selectAllProject.do',
+            url: '/project/tagView.do',
+            data: {
+                "tag_no": ${projectTag.tag_no},
+                "tag_name": "${projectTag.tag_name}"
+            },
             success: function (list) {
+                $(".showTag").html('<h2>프로젝트 태그 - [' + list[2].tag_name + ']' +
+                    '<input type="text" style="display: none;" value="' + list[2].tag_no + '" class="tag_no">'+
+                    '<input type="text" style="display: none;" value="' + list[2].tag_name + '" class="tag_name">'
+                )
                 console.log(list)
+
                 //myAllProjectsByTag
                 //console.log(list[0].length)
                 //console.log(list[1].length)
@@ -903,5 +911,6 @@
     }
 
 </script>
+
 </body>
 </html>

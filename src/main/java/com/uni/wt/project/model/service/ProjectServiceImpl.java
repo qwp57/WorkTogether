@@ -70,6 +70,16 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public ArrayList<Project> selectMyBookmarkProjectByTag(ProjectTag projectTag) throws Exception {
+        return projectMapper.selectMyBookmarkProjectByTag(projectTag);
+    }
+
+    @Override
+    public ArrayList<Project> selectMyProjectByTag(ProjectTag projectTag) throws Exception {
+        return projectMapper.selectMyProjectByTag(projectTag);
+    }
+
+    @Override
     public Project selectOneProject(int pj_no) throws Exception {
         return projectMapper.selectOneProject(pj_no);
     }

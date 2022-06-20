@@ -6,8 +6,8 @@
 
 	<resultMap type="Employee" id="employeeSet">
 		<id property="emp_no" column="EMP_NO"/>
-		<result property="dept_code" column="DEPT_COD"/>
-		<result property="sub_dept_code" column="SUB_DEPT_CODE"/>
+		<result property="dept_code" column="DEPT_CODE"/>
+		<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
 		<result property="job_code" column="JOB_CODE"/>
 		<result property="join_date" column="JOIN_DATE"/>
 		<result property="resignation_date" column="RESIGNATION_DATE"/>
@@ -29,6 +29,17 @@
 	<select id="loginEmp"  parameterType="Employee" resultMap="employeeSet">
 		SELECT * FROM EMPLOYEE
 		WHERE ID = #{id} AND STATUS != 'Q'
+	</select>
+	
+	<select id="selectSupvEmpList" parameterType="Employee" resultMap="employeeSet">
+		SELECT 
+		    EMP_NO,
+		    NAME,
+		    JOB_NAME AS JOB_CODE
+		FROM EMPLOYEE A 
+		JOIN JOB B ON A.JOB_CODE = B.JOB_CODE
+<![CDATA[WHERE A.JOB_CODE < #{job_code}
+		AND DEPT_CODE = #{dept_code} ]]>
 	</select>
 
 </mapper>

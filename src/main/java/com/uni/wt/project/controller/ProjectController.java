@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +40,7 @@ public class ProjectController {
 	public String allProject() {
 
 		return "project/allProject";
+
 	}
 	@ResponseBody
 	@RequestMapping(value = "/selectAllProject", produces="application/json; charset=utf-8")
@@ -47,7 +49,6 @@ public class ProjectController {
 		ArrayList<Project> myProjects = projectService.selectMyProject(loginEmp);
 		for(int i = 0; i < myProjects.size(); i++){
 			myProjects.get(i).setCount(projectService.getProjectMemberCount(myProjects.get(i).getPj_no()));
-
 		}
 		ArrayList<Project> bookmarkProjects = projectService.selectMyBookmarkProject(loginEmp);
 		for(int i = 0; i < bookmarkProjects.size(); i++){
@@ -176,6 +177,45 @@ public class ProjectController {
 
 		return "project/detailPj";
 	}
+	@RequestMapping("/tagViewSelect.do")
+	public ModelAndView tagViewSelect (@RequestParam("tag_no") int tag_no, @RequestParam("tag_name") String tag_name, ModelAndView mv){
+		ProjectTag projectTag = new ProjectTag();
+		projectTag.setTag_no(tag_no);
+		projectTag.setTag_name(tag_name);
+		log.info("태그확인 : " + projectTag);
+		mv.addObject("projectTag", projectTag).setViewName("project/projectViewByTag");
+		return mv;
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/tagView.do", produces="application/json; charset=utf-8")
+	public String tagView(@RequestParam("tag_no") int tag_no, @RequestParam("tag_name") String tag_name, HttpSession session) throws Exception {
+
+		ProjectTag projectTag = new ProjectTag();
+		projectTag.setTag_no(tag_no);
+		projectTag.setTag_name(tag_name);
+		projectTag.setEmp_no(((Employee)session.getAttribute("loginEmp")).getEmp_no());
+
+		ArrayList<Project> myProjectsByTag = projectService.selectMyProjectByTag(projectTag);
+		for(int i = 0; i < myProjectsByTag.size(); i++){
+			myProjectsByTag.get(i).setCount(projectService.getProjectMemberCount(myProjectsByTag.get(i).getPj_no()));
+		}
+		ArrayList<Project> bookmarkProjectsByTag = projectService.selectMyBookmarkProjectByTag(projectTag);
+		for(int i = 0; i < bookmarkProjectsByTag.size(); i++){
+			bookmarkProjectsByTag.get(i).setCount(projectService.getProjectMemberCount(bookmarkProjectsByTag.get(i).getPj_no()));
+		}
+
+
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		ArrayList myAllProjectsByTag = new ArrayList();
+		myAllProjectsByTag.add(myProjectsByTag);
+		myAllProjectsByTag.add(bookmarkProjectsByTag);
+		myAllProjectsByTag.add(projectTag);
+		log.info(myAllProjectsByTag.toString());
+		return gson.toJson(myAllProjectsByTag);
+	}
+
+
 	@RequestMapping("/detailCalendar.do")
 	public String detailCalendar() {
 		return "project/detailCalendar";

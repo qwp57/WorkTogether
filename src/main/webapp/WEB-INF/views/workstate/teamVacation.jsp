@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,13 +20,12 @@ display: inline-block;
 margin-right: 20px;
 color: black;
 }
-#selectweek{
+#selectyear{
 display: inline-block;
 width: auto;
 }
 .wrap{
-margin-left: 200px;
-margin-right: 200px;
+
 margin-top: 100px;
 }
 .section-body{
@@ -40,10 +41,13 @@ margin-top: 10px;
 }
 #profileImg{
 	width: 90px;
-	margin: 20px
+	margin: 5px;
 }
 .pagination{
 	justify-content: center;
+}
+.nonvisible{
+	display: none;
 }
 
 #searchwrap{
@@ -83,22 +87,28 @@ width: 15%;
 font-size: 17px;
 font-family: 'Nanum Gothic', sans-serif;
 }
+.main-content{
+	width: 1300px;
+
+}
+
 
 
 </style>
 <body>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
-<div class="main-content">
+<div class="main-content" >
 <div class="wrap">
 	<a href="vacationMgtMain.do"><h2 style="color: gray">내 휴가</h2></a>
 	<a href="teamVacation.do"><h2>구성원 휴가</h2></a>
 	
-	<select class="form-control" id="selectweek">
-	    <option>2022년</option>
-	    <option>Ketchup</option>
-	    <option>Relish</option>
+	<select class="form-control" id="selectyear">
+		<c:forEach items="${years}" var="y">
+			<option value="${y}">${y}년</option>
+		</c:forEach>
   	</select>
+  	
   	<div class="vac-menu-title" style="color: gray">휴가 개요</div>
   	<hr>
   	<div class="section-body">
@@ -116,51 +126,78 @@ font-family: 'Nanum Gothic', sans-serif;
                             		<th>종류</th>
                             		<th>사유내용</th>
                             		<th>증명자료</th>
-                            		<th>잔여휴가</th>
                             		<th>상태</th>
                             		
                             	</tr>
                             </thead>
                             <tbody>
-                            	<tr>
-                            		<td>
-                            			<img alt="image"
-                                                 src="resources/assets/img/avatar/avatar-1.png"
-                                                 id="profileImg" class="img-fluid rounded-circle"><span>홍길동 대리</span>
-                            		</td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		<td></td>
-                            		
-                            	</tr>
+                            <c:forEach items="#{teamVacList}" var="t">
+                            <tr>
+                            	<td><span>${t.emp_no} ${t.job}님</span></td>
+                            	<td><fmt:formatDate value="${t.start_date}" pattern="yyyy.MM.dd(E)"/> ~ <fmt:formatDate value="${t.end_date}" pattern="yyyy.MM.dd(E)"/></td>
+                            	<td>총 ${t.totaldays}일</td>
+                            	<td>${t.vcategory_no}</td>
+                            	<td>${t.content}</td>
+                            	<td><a href="/resources/upload_files/${t.fileChangeName}" download type="text/example">${t.fileOriginName}</a></td>
+                            	<td>
+                            		<c:choose>
+					  					<c:when test="${t.status eq 'W'}"><span style="background-color: lightgray; padding: 5px; border-radius: 5px;">승인 대기</span></c:when>
+					  					<c:when test="${t.status eq 'A'}"><span style="background-color: skyblue; padding: 5px; border-radius: 5px;">승인 완료</span></c:when>
+					  					<c:otherwise><span style="background-color: red; padding: 5px; border-radius: 5px;">승인 거부</span></c:otherwise>
+					  				</c:choose>
+                            	</td>
+                            </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                    
                     </div>
                     <ul class="pagination">
-						<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item"><a class="page-link" href="#">4</a></li>
-						<li class="page-item"><a class="page-link" href="#">5</a></li>
-						<li class="page-item"><a class="page-link" href="#">Next</a></li>
+						<c:choose>
+							<c:when test="${ pi.currentPage ne 1 }">
+								<li class="page-item" onclick="beforeAfterPage(-1)"><a class="page-link" href="#">Previous</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+							</c:otherwise>
+						</c:choose>
+						
+						<c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+							<c:choose>
+							<c:when test="${ pi.currentPage ne p }">
+									<li class="page-item" onclick="changePage('${ p }')"><a class="page-link" href="#">${ p }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="#">${ p }</a></li>
+							</c:otherwise>
+						</c:choose>
+						</c:forEach>
+						
+						
+						<c:choose>
+							<c:when test="${ pi.currentPage ne pi.maxPage }">
+								<li class="page-item" onclick="beforeAfterPage(-1)"><a class="page-link" href="#">Next</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
-					<div id="searchwrap">
-		            <div id="search">
-				        <select class="searchForm" id="selectsearch">
-					    	<option>이름</option>
-					    	<option>Ketchup</option>
-					    	<option>Relish</option>
+					<form action="teamVacation.do" method="get" id="teamForm">
+						<input class="nonvisible" type="text" value="${year}" name="year" id="startyearId">
+						<input class="nonvisible" type="text" value="${pi.currentPage}" name="currentPage" id="currantPageId">
+						<input class="nonvisible" type="text" value="${sd.searchKeyword}" name="searchKeyword" id="searchText" >
+					<div id="searchwrap">	
+					<div id="search">
+				        <select class="searchForm" id="selectsearch" name="searchTarget">
+					    	<option value="author">작성자</option>
+					    	<option value="content">내용</option>
 				  		</select>
 						<input type="text" class="searchForm" id="searchText" placeholder="검색 키워드를 입력하세요!">
-						<button class="btn btn-primary" type="button" id="searchbtn">검색</button>
+						<button class="btn btn-primary" type="button" id="searchbtn" onclick="searchSubmit();">검색</button>
 					</div>
 					</div>
+					</form>
                 </div>
             </div>
         </div>
@@ -171,7 +208,18 @@ font-family: 'Nanum Gothic', sans-serif;
 </div>
 </div>
 <br><br>
-
 <jsp:include page="../common/footer.jsp"/>
+<script src="resources/assets/js/teamVacation.js?ver=1"></script>
+<script type="text/javascript">
+$(function() {
+	let selectedyear = "${year}";
+	$('#selectyear option[value = '+selectedyear+']').prop("selected", true);
+
+	let searchTarget = "${sd.searchTarget}";
+	$('#selectsearch option[value = '+searchTarget+']').prop("selected", true);
+	
+})
+
+</script>
 </body>
 </html>
