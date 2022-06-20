@@ -93,7 +93,7 @@
 										<label class="form-check-label">
 											<c:if test="${ ul.deptLevel == 1 }">																	
 										 	    <input type="checkbox" class="form-check-input" value="${ ul.deptCode }" name="deptCheck"> <!-- id를 deptCode로 주고, onclick 함수에 deptCode를 함께 넘긴다. -->			 							   
-										    	<input type="text" class="deptName" name="deptName" value="${ ul.deptName }">
+										    	<input type="text" class="deptName" name="deptName" value="${ ul.deptName }"> <!-- 체크된 박스의 형제 라인 input 찾아서 배열에 넣기 -->
 										    	<input class="d-none" value="${ ul.deptCode }" name="deptCode"/>
 											</c:if>										
 										</label>
@@ -222,26 +222,37 @@
 			}
 		}
 		
+		/*function updateDeptName(value){
+			var updateList = new Array();
+			var updateName = value.getElementsByName("deptName");
+			//var size = document.getElementsByName("deptName").length;
+			
+			for(var i = 0; i < size; i++){
+				updateList.push(updateName[i].value);
+				console.log(updateList);
+			}
+			
+			return updateList;
+		}*/
+		
 		//체크 박스 선택 후 저장 버튼 클릭 시 이벤트
 		function update_checked(){
-			var checkBoxArr = new Array(); //배열	
+			var checkBoxArr = new Array(); //배열		
 			var updateList = new Array();
 			$("input:checkbox[name=deptCheck]:checked").each(function(){ //반복문을 돌려서 체크 된 것을 뽑음
 				checkBoxArr.push($(this).val()); //체크 된 것을 뽑아서 배열에 push한다. -> push : 배열의 마지막에 새로운 요소를 추가한 후, 변경된 배열의 길이를 반환		 
-				updateList.push($("input[name=deptName]").val())
 				console.log(checkBoxArr);
 			});
 			
-			//input 박스 변경을 감지 -> 변경된 것만 값을 배열에 넣어준다.
-			/*$("input[name=deptName]").keyup(function() {
-				updateList.push($(this).val());
+			$("input:checkbox[name=deptCheck]:checked").each(function(){
+				updateList.push($(this).next().val());
 				console.log(updateList);
-			});*/
+			});
 			
 			if(checkBoxArr == 0){
 				alert("수정할 부서를 선택하세요.");
-			}else if(checkBoxArrs == updateList){
-				alert("수정할 부서 개수와 체크 박스 개수가 일치 해야 합니다.");
+			}else if(checkBoxArr.length != updateList.length){
+				alert("체크 박스와 수정할 부서가 일치해야 합니다.");
 			}else {
 				$.ajax({
 					type: "post",

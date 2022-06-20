@@ -71,6 +71,14 @@
 </style>
 </head>
 <body>	
+<script>
+$(function(){
+	   let msg = "${msg}";
+	   if(msg != ""){
+	      alert(msg);      
+	   }
+	})
+</script>
 	<div class="main-content">
 	<div style="height: 50px"></div>
 		<div class="container">
@@ -82,11 +90,12 @@
 				<span>사원 추가</span>
 			</button>
 			
+			<!-- 검색 영역 -->
 			<div class="section-body">
 				<div class="searchOption">
 					<div class="searchTitle mb-3">검색옵션</div>
 					<div class="text-center">
-						<form id="search" method="get">
+						<form id="search" action="searchEmp.do">
 							<table class="table table-bordered">
 								<tr class="thead-light">
 									<th>상태</th>
@@ -115,9 +124,11 @@
 											<!-- 부서 키워드 선택 토글 -->
 											<div class="input-group-prepend" style="width:100px">
 												<select class="form-select custom-select border-1 rounded-1" id="searchDept" name="dept">
-													<option ${(param.dept == "") ? "selected" : "" } value="">관리부</option>
-													<option ${(param.dept == "") ? "selected" : "" } value="">생산부</option>
-													<option ${(param.dept == "") ? "selected" : "" } value="">영업부</option>
+													<c:forEach items="${ deptList }" var="dl">
+														<c:if test="${ dl.deptLevel == 1 }">
+															<option value="${ dl.deptCode }">${ dl.deptName }</option>
+														</c:if>
+													</c:forEach>
 												</select>
 											</div>							
 										</div>	
@@ -126,11 +137,13 @@
 									<th>팀</th>
 									<td class="text-left">
 										<div class="input-group mb-3 input-group-sm">
-											<!-- 하위부서 키워드 선택 토글-> 위의 부서 선택 키워드에 따라서 달라진다.(if 사용) -->
 											<div class="input-group-prepend" style="width:100px">
 												<select class="form-select custom-select border-1 rounded-1" id="searchDeptUppper" name="deptUpper">
-													<option ${(param.deptUpper == "") ? "selected" : "" } value="">인사팀</option>
-													<option ${(param.deptUpper == "") ? "selected" : "" } value="">재무회계팀</option>
+													<c:forEach items="${ deptList }" var="dl">																										
+														<c:if test="${ dl.deptLevel == 2 }">					
+															<option value="${ dl.deptCode }">${ dl.deptName }</option>
+														</c:if>	
+													</c:forEach>
 												</select>
 											</div>							
 										</div>
@@ -143,13 +156,13 @@
 											<!-- 직급 키워드 선택 토글 -->
 											<div class="input-group-prepend" style="width:100px">
 												<select class="form-select custom-select border-1 rounded-1" id="searchJob" name="job">
-													<option ${(param.job == "") ? "selected" : "" } value="">대표</option>
-													<option ${(param.job == "") ? "selected" : "" } value="">부사장</option>
-													<option ${(param.job == "") ? "selected" : "" } value="">부장</option>
-													<option ${(param.job == "") ? "selected" : "" } value="">차장</option>
-													<option ${(param.job == "") ? "selected" : "" } value="">과장</option>
-													<option ${(param.job == "") ? "selected" : "" } value="">대리</option>
-													<option ${(param.job == "") ? "selected" : "" } value="">사원</option>
+													<option value="J1">대표</option>
+													<option value="J2">부사장</option>
+													<option value="J3">부장</option>
+													<option value="J4">차장</option>
+													<option value="J5">과장</option>
+													<option value="J6">대리</option>
+													<option value="J7">사원</option>
 												</select>
 											</div>							
 										</div>
@@ -179,127 +192,34 @@
 			<table class="table table-hover thead-light mt-3" id="employeeList">
 				<thead>
 					<tr>
-						<th style="width:15%">사번</th>
+						<th style="width:7%">사번</th>
 						<th style="width:10%">이름</th>
-						<th style="width:10%">부서</th>
-						<th style="width:15%">팀</th>
+						<th style="width:13%">팀</th>
 						<th style="width:10%">직급</th>
+						<th style="width:13%">생년월일</th>
 						<th style="width:15%">휴대폰번호</th>
-						<th style="width:13%">이메일</th>
+						<th style="width:15%">이메일</th>
 						<th style="width:10%">상태</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<!-- <td class="empNo">사번</td>을 숨겨놓는다. -->
-						<td>2022-00010</td>
-						<td>이사원</td>
-						<td>관리부</td>
-						<td>인사팀</td>
-						<td>사원</td>
-						<td>010-1111-2222</td>
-						<td>1996-09-11</td>
-						<td><span class="status">재직</span></td>
-					</tr>
-					
-					<tr>
-						<td>2022-00009</td>
-						<td>김사원</td>
-						<td>관리부</td>
-						<td>인사팀</td>
-						<td>사원</td>
-						<td>010-1212-1212</td>
-						<td>1996-09-11</td>
-						<td><span class="status">재직</span></td>
-					</tr>
-					
-					<tr>
-						<td>2022-00008</td>
-						<td>최사원</td>
-						<td>생산부</td>
-						<td>생산팀</td>
-						<td>사원</td>
-						<td>010-3333-4444</td>
-						<td>1996-09-11</td>
-						<td><span class="status">재직</span></td>
-					</tr>
-					
-					<tr>
-						<td>2022-00007</td>
-						<td>권사원</td>
-						<td>생산부</td>
-						<td>재무회계팀</td>
-						<td>사원</td>
-						<td>010-5555-6666</td>
-						<td>1996-09-11</td>
-						<td><span class="status">재직</span></td>
-					</tr>
-					
-					<tr>
-						<td>2022-00006</td>
-						<td>박사원</td>
-						<td>영업부</td>
-						<td>영업팀</td>
-						<td>사원</td>
-						<td>010-7777-8888</td>
-						<td>1996-09-11</td>
-						<td><span class="status">재직</span></td>
-					</tr>
-					
-					<tr>
-						<td>2022-00005</td>
-						<td>양사원</td>
-						<td>생산부</td>
-						<td>재무회계팀</td>
-						<td>사원</td>
-						<td>010-9999-1010</td>
-						<td>1996-09-11</td>
-						<td><span class="status">재직</span></td>
-					</tr>
-					
-					<tr>
-						<td>2022-00004</td>
-						<td>심사원</td>
-						<td>영업부</td>
-						<td>고객지원팀</td>
-						<td>사원</td>
-						<td>010-3434-5656</td>
-						<td>1996-09-11</td>
-						<td><span class="status">퇴직</span></td>
-					</tr>
-					
-					<tr>
-						<td>2022-00003</td>
-						<td>백사원</td>
-						<td>영업부</td>
-						<td>고객지원팀</td>
-						<td>사원</td>
-						<td>010-6767-8989</td>
-						<td>1996-09-11</td>
-						<td><span class="status">퇴직</span></td>
-					</tr>
-					
-					<tr>
-						<td>2022-00002</td>
-						<td>강사원</td>
-						<td>생산부</td>
-						<td>품질관리팀</td>
-						<td>사원</td>
-						<td>010-3434-7878</td>
-						<td>1996-09-11</td>
-						<td><span class="status">재직</span></td>
-					</tr>
-					
-					<tr>
-						<td>2022-00001</td>
-						<td>홍사원</td>
-						<td>관리부</td>
-						<td>인사팀</td>
-						<td>사원</td>
-						<td>010-9999-4567</td>
-						<td>1996-09-11</td>
-						<td><span class="status">퇴직</span></td>
-					</tr>
+					<c:forEach items="${ empList }" var="el">
+						<tr>
+							<td>${ el.emp_no }</td>
+							<td>${ el.name }</td>
+							<td>${ el.dept_name }</td>
+							<td>${ el.job_name }</td>
+							<td>${ el.birth }</td>
+							<td>${ el.phone }</td>
+							<td>${ el.email }</td>
+							<c:if test="${ el.status == 'I'}">
+								<td><span class="status" style="color: white; background-color: skyblue; border-radius: 5px;">재직</span></td>
+							</c:if>
+							<c:if test="${ el.status == 'Q'}">
+								<td><span class="status" style="color: white; background-color: red; border-radius: 5px;">퇴직</span></td>
+							</c:if>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>			
 			
@@ -343,7 +263,7 @@
 	<div class="modal" id="addModal" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
-				<form method="post">
+				<form>
 					<!-- modal header -->
 					<div class="modal-header">
 						<div class="modal-header">
@@ -360,47 +280,41 @@
 						<div class="inputRequired mt-3 ml-4 mr-4 row">
 							<div class="col-lg-6 form-group">
 								<label for="empName">이름*</label>
-								<input type="text" class="form-control" id="empName" required>
+								<input type="text" class="form-control" id="empName" name="name" required>
 							</div>
 							<div class="col-lg-6 form-group">
 								<label for="empId">아이디*</label>
-								<input type="text" class="form-control" id="empId" required>
+								<input type="text" class="form-control" id="empId" name="id" required>
 							</div>
 						</div>
 						<div class="inputRequired mt-3 ml-4 mr-4 row">
 							<div class="col-lg-6 form-group">
 								<label for="empPassword">비밀번호*</label>
-								<input type="text" class="form-control" id="empPassword" required>
+								<input type="text" class="form-control" id="empPassword" name="password" required>
 							</div>
 							<div class="col-lg-6 form-group">
 								<label for="empEmail">이메일*</label>
-								<input type="text" class="form-control" id="empEmail" required>
+								<input type="text" class="form-control" id="empEmail" name="email" required>
 							</div>
 						</div>
 						<div class="inputRequired mt-3 ml-4 mr-4 row">
 							<div class="col-lg-6 form-group">
 								<label for="empPhone">핸드폰 번호*</label>
-								<input type="text" class="form-control" id="empPhone" required>
+								<input type="text" class="form-control" id="empPhone" name="phone" required>
 							</div>
 							<div class="col-lg-6 form-group">
 								<label>생년월일*</label>
 								 <div class="input-group date mt-2" id="datetimepicker1" data-target-input="nearest">
-						            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1" value="">
-						            <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-						                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-						            </div>
+									<input id="birth" type="date" class="form-control" name="birth" tabindex="7">
+	                              	<div class="invalid-feedback">생년월일을 입력해주세요</div>
 						        </div>
 							</div>
 						</div>
 						<div class="inputRequired mt-3 ml-4 mr-4 row">
 							<div class="col-lg-6 form-group">
 								<label>입사일*</label>
-								 <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-						            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2" value="">
-						            <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-						                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-						            </div>
-						        </div>
+								 <input id="join_date" type="date" class="form-control" name="join_date" tabindex="8">
+                              <div class="invalid-feedback">입사일을 입력해주세요</div>
 							</div>
 						</div>
 						
@@ -410,48 +324,48 @@
 						<div class="inputRequired mt-3 ml-4 mr-4 row">
 							<div class="col-lg-6 form-group">
 								<label for="empDept">부서</label>
-								<select class="form-select custom-select border-1 rounded-1" id="empDept" name="empDept">
-									<option ${(param.empDept == "") ? "selected" : "" } value="">관리부</option>
-									<option ${(param.empDept == "") ? "selected" : "" } value="">생산부</option>
-									<option ${(param.empDept == "") ? "selected" : "" } value="">영업부</option>
+								<select class="form-select custom-select border-1 rounded-1" id="empDept" name="upper_dept_code">
+									<c:forEach items="${ deptList }" var="dl">
+										<c:if test="${ dl.deptLevel == 1 }">
+											<option value="${ dl.deptCode }">${ dl.deptName }</option>
+										</c:if>
+									</c:forEach>
 								</select>
 							</div>
 							<div class="col-lg-6 form-group">
 								<label for="empDeptUpper">하위 부서</label>  
-								<select class="form-select custom-select border-1 rounded-1" id="empDeptUpper" name="empDeptUpper">
-									<option ${(param.empDeptUpper == "") ? "selected" : "" } value="">인사팀</option>
-									<option ${(param.empDeptUpper == "") ? "selected" : "" } value="">재무회계팀</option>
+								<select class="form-select custom-select border-1 rounded-1" id="empDeptUpper" name="dept_code">
+									<c:forEach items="${ deptList }" var="dl">																										
+										<c:if test="${ dl.deptLevel == 2 }">					
+											<option value="${ dl.deptCode }">${ dl.deptName }</option>
+										</c:if>	
+									</c:forEach>
 								</select>
 							</div>
 						</div>
 						<div class="inputRequired mt-3 ml-4 mr-4 row">
 							<div class="col-lg-6 form-group">
 								<label for="empJob">직위</label>
-								<select class="form-select custom-select border-1 rounded-1" id="empJob" name="empJob">
-									<option ${(param.empJob == "") ? "selected" : "" } value="">대표</option>
-									<option ${(param.empJob == "") ? "selected" : "" } value="">부사장</option>
-									<option ${(param.empJob == "") ? "selected" : "" } value="">부장</option>
-									<option ${(param.empJob == "") ? "selected" : "" } value="">차장</option>
-									<option ${(param.empJob == "") ? "selected" : "" } value="">과장</option>
-									<option ${(param.empJob == "") ? "selected" : "" } value="">대리</option>
-									<option ${(param.empJob == "") ? "selected" : "" } value="">사원</option>
+								<select class="form-select custom-select border-1 rounded-1" id="empJob" name="job_code">
+									<option value="J1">대표</option>
+									<option value="J2">부사장</option>
+									<option value="J3">부장</option>
+									<option value="J4">차장</option>
+									<option value="J5">과장</option>
+									<option value="J6">대리</option>
+									<option value="J7">사원</option>
 								</select>
 							</div>
 							<div class="col-lg-6 form-group">
 								<label>퇴직일</label>  
-								<div class="input-group date mt-2" id="datetimepicker3" data-target-input="nearest">
-						            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker3" value="">
-						            <div class="input-group-append" data-target="#datetimepicker3" data-toggle="datetimepicker">
-						                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-						            </div>
-						        </div>
+								<input id="resignation_date" type="date" class="form-control" name="resignation_date" tabindex="8">
 							</div>
 						</div>
 					</div>
 					
 					<!-- modal footer -->
 					<div class="modal-footer mb-3">
-						<button type="submit" class="btn btn-primary">저장</button>
+						<button type="button" class="btn btn-primary" id="saveBtn">저장</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
 					</div>
 				</form>
@@ -531,16 +445,21 @@
 							<div class="col-lg-6 form-group">
 								<label for="newEmpDept">부서</label>
 								<select class="form-select custom-select border-1 rounded-1" id="newEmpDept" name="newEmpDept">
-									<option ${(param.newEmpDept == "") ? "selected" : "" } value="">관리부</option>
-									<option ${(param.newEmpDept == "") ? "selected" : "" } value="">생산부</option>
-									<option ${(param.newEmpDept == "") ? "selected" : "" } value="">영업부</option>
+									<c:forEach items="${ deptList }" var="dl">
+										<c:if test="${ dl.deptLevel == 1 }">
+											<option value="${ dl.deptCode }">${ dl.deptName }</option>
+										</c:if>
+									</c:forEach>
 								</select>
 							</div>
 							<div class="col-lg-6 form-group">
 								<label for="newEmpDeptUpper">하위 부서</label>  
 								<select class="form-select custom-select border-1 rounded-1" id="newEmpDeptUpper" name="newEmpDeptUpper">
-									<option ${(param.newEmpDeptUpper == "") ? "selected" : "" } value="">인사팀</option>
-									<option ${(param.newEmpDeptUpper == "") ? "selected" : "" } value="">재무회계팀</option>
+									<c:forEach items="${ deptList }" var="dl">																										
+										<c:if test="${ dl.deptLevel == 2 }">					
+											<option value="${ dl.deptCode }">${ dl.deptName }</option>
+										</c:if>	
+									</c:forEach>
 								</select>
 							</div>
 						</div>
@@ -548,13 +467,13 @@
 							<div class="col-lg-6 form-group">
 								<label for="newEmpJob">직위</label>
 								<select class="form-select custom-select border-1 rounded-1" id="newEmpJob" name="newEmpJob">
-									<option ${(param.newEmpJob == "") ? "selected" : "" } value="">대표</option>
-									<option ${(param.newEmpJob == "") ? "selected" : "" } value="">부사장</option>
-									<option ${(param.newEmpJob == "") ? "selected" : "" } value="">부장</option>
-									<option ${(param.newEmpJob == "") ? "selected" : "" } value="">차장</option>
-									<option ${(param.newEmpJob == "") ? "selected" : "" } value="">과장</option>
-									<option ${(param.newEmpJob == "") ? "selected" : "" } value="">대리</option>
-									<option ${(param.newEmpJob == "") ? "selected" : "" } value="">사원</option>
+									<option value="J1">대표</option>
+									<option value="J2">부사장</option>
+									<option value="J3">부장</option>
+									<option value="J4">차장</option>
+									<option value="J5">과장</option>
+									<option value="J6">대리</option>
+									<option value="J7">사원</option>
 								</select>
 							</div>
 							<div class="col-lg-6 form-group">
@@ -580,38 +499,15 @@
 	</div>
 	
 	<script>
-		$(function(){
-			$('#datetimepicker1').datetimepicker({ 
-				format: 'L'
+		/*$(function(){
+			$("#saveBtn").click(function(){
+				$.ajax({
+					type: "post",
+					method: "addEmployee.do",
+					data: {}
+				})
 			});
-			
-	        $('#datetimepicker2').datetimepicker({
-	            format: 'L'
-	        });
-	        
-	        $('#datetimepicker3').datetimepicker({
-	            format: 'L'
-	        });			
-		});
-		
-		$(function(){
-			$("#employeeList tbody tr").click(function(){
-				//위에서 사번을 모달로 넘기면 제이쿼리에서 받아서 사용한다.
-				$("#updateModal").modal("show");
-			});
-	        
-	        $('#datetimepicker4').datetimepicker({ 
-				format: 'L'
-			});
-			
-	        $('#datetimepicker5').datetimepicker({
-	            format: 'L'
-	        });
-	        
-	        $('#datetimepicker6').datetimepicker({
-	            format: 'L'
-	        });
-		});
+		});*/
 	</script>
 	
 	<jsp:include page="../common/footer.jsp"/>

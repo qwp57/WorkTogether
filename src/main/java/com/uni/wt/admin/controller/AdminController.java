@@ -35,7 +35,7 @@ public class AdminController {
 		return "organizationChart/organizationChartView";
 	}
 	
-	//가입 승인
+	//가입 승인 리스트 조회
 	@RequestMapping("adminApprovalList.do")
 	public String adminApprovalPage(@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage, Model model) {
 		
@@ -136,9 +136,10 @@ public class AdminController {
 		Map<String,Object> map = new HashMap<String,Object>();
 		
 		for(int i=0; i < checkBoxArr.size(); i++) {
-			map.put("deptCode", checkBoxArr.get(i));
-			String deptName = String.valueOf(updateList.get(i));
-			map.put("deptName", deptName);
+			map.put("deptCode", Integer.parseInt(String.valueOf(checkBoxArr.get(i))));			
+			map.put("deptName", String.valueOf(updateList.get(i)));
+			
+			log.info(updateList.get(i));
 			
 			result = adminService.updateDeptList(map);
 		}
@@ -146,8 +147,34 @@ public class AdminController {
 		return String.valueOf(result);
 	}
 	
+	//인사 관리 리스트 조회
 	@RequestMapping("employeeManagement.do")
-	public String employeeManagementPage() {
+	public String employeeManagementPage(@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage, Model model) throws Exception {
+		
+		//총 게시글 개수
+		int listCount = adminService.empListCount();
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		
+		ArrayList<Employee> empList = adminService.selectEmpList(pi);
+		//부서 조회
+		ArrayList<Department> deptList = adminService.selectUpperList();
+		log.info("deptList : " + deptList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("empList", empList);
+		model.addAttribute("deptList", deptList);
+		
+		return "admin/employeeManagementView";
+	}
+	
+	//사원 추가
+	@RequestMapping("addEmployee.do")
+	public String addEmployee(Employee emp, Model model) throws Exception {
+		
+		adminService.addEmployee(emp);
+		
+		model.addAttribute("msg", "사원 추가가 완료되었습니다.");
+		
 		return "admin/employeeManagementView";
 	}
 }

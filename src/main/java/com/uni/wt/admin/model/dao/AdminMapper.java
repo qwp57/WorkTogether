@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.uni.wt.admin.model.dto.Department;
+import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 
 @Mapper
@@ -16,7 +17,7 @@ public interface AdminMapper {
 	int selectListCount();
 
 	ArrayList<Employee> selectList(RowBounds rowBounds);
-
+	
 	int adminApproval(int empNo);
 
 	int adminReject(int empNo);
@@ -32,5 +33,11 @@ public interface AdminMapper {
 	int deleteDeptList(int deptCode);
 
 	int updateDeptList(Map<String, Object> map);
-	
+
+	int empListCount();
+
+	ArrayList<Employee> selectEmpList(PageInfo pi);
+
+	int addEmployee(Employee emp);
+
 }
