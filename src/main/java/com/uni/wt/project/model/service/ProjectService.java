@@ -26,4 +26,8 @@ public interface ProjectService {
     void editTag(ProjectTag pjTag) throws Exception;
 
     void removeTag(ProjectTag pjTag) throws Exception;
+
+    ArrayList<Project> selectMyBookmarkProjectByTag(ProjectTag projectTag) throws Exception;
+
+    ArrayList<Project> selectMyProjectByTag(ProjectTag projectTag) throws Exception;
 }

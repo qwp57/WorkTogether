@@ -25,4 +25,8 @@ public interface ProjectMapper {
     int editTag(ProjectTag pjTag);
 
     int removeTag(ProjectTag pjTag);
+
+    ArrayList<Project> selectMyBookmarkProjectByTag(ProjectTag tag_no);
+
+    ArrayList<Project> selectMyProjectByTag(ProjectTag tag_no);
 }

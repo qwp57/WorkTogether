@@ -38,7 +38,26 @@
 	    AND PJ_NO IN (SELECT PJ_NO FROM PJ_BOOKMARK WHERE EMP_NO = #{loginEmp})
 		ORDER BY PJ_NO
 	</select>
-
+	<select id="selectMyProjectByTag" resultMap="projectSet" parameterType="ProjectTag">
+		SELECT *
+		FROM PROJECT
+		WHERE STATUS = 'Y'
+		  AND PJ_NO IN (SELECT PJ_NO FROM PROJECT_MEMBER WHERE EMP_NO = #{emp_no}
+						MINUS
+						SELECT PJ_NO FROM PJ_BOOKMARK WHERE EMP_NO = #{emp_no}
+						INTERSECT
+						SELECT PJ_NO FROM PROJECT_TAG WHERE TAG_NO = #{tag_no})
+		ORDER BY PJ_NO
+	</select>
+	<select id="selectMyBookmarkProjectByTag" resultMap="projectSet" parameterType="ProjectTag">
+		SELECT *
+		FROM PROJECT
+		WHERE STATUS = 'Y'
+		  AND PJ_NO IN (SELECT PJ_NO FROM PJ_BOOKMARK WHERE EMP_NO = #{emp_no}
+						INTERSECT
+						SELECT PJ_NO FROM PROJECT_TAG WHERE TAG_NO = #{tag_no})
+		ORDER BY PJ_NO
+	</select>
 	<select id="selectOneProject" parameterType="int" resultMap="projectSet">
 		SELECT *
 		FROM PROJECT
