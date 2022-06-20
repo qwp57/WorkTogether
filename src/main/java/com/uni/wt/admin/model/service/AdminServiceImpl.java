@@ -40,7 +40,7 @@ public class AdminServiceImpl implements AdminService{
 		
 		return adminMapper.selectList(rowBounds);
 	}
-
+	
 	@Override
 	public int adminApproval(int empNo) {
 
@@ -48,8 +48,7 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public int adminReject(Map<String, Object> map) throws Exception {
-		
+	public int adminReject(Map<String, Object> map) throws Exception {		
 		//회원 status r로 바꾸기
 		//Object를 int로 형 변환하여 mapper로 보낸다.
 		//오브젝트를 (String)으로 바로 형 변환하여 사용하면 오류가 발생한다.
@@ -99,12 +98,34 @@ public class AdminServiceImpl implements AdminService{
 
 	@Override
 	public int updateDeptList(Map<String, Object> map) {
-		
+
 		return adminMapper.updateDeptList(map);
+	}
+
+	@Override
+	public int empListCount() throws Exception {
+		
+		return adminMapper.empListCount();
+	}
+
+	@Override
+	public ArrayList<Employee> selectEmpList(PageInfo pi) {
+		
+		return adminMapper.selectEmpList(pi);
+	}
+
+	@Override
+	public void addEmployee(Employee emp) throws Exception {
+		
+		int result = adminMapper.addEmployee(emp);
+		
+		if(result < 0) {
+			throw new Exception("사원 추가에 실패하였습니다.");
+		}
+
 	}
 
 
 
-	
 
 }

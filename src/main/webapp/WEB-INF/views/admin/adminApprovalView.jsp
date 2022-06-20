@@ -85,10 +85,10 @@
 							<td>${ ad.birth }</td>
 							<td>${ ad.create_date }</td>
 							<c:if test="${ ad.status == 'W'}">
-								<td><span class="status p-2" style="color: white; background-color: skyblue; border-radius: 5px;">대기</span></td>
+								<td><span class="status p-5" style="color: white; background-color: skyblue; border-radius: 5px;">대기</span></td>
 							</c:if>
 							<c:if test="${ ad.status == 'R'}">
-								<td><span class="status p-2" style="color: white; background-color: red; border-radius: 5px;">반려</span></td>
+								<td><span class="status p-5" style="color: white; background-color: red; border-radius: 5px;">반려</span></td>
 							</c:if>
 						</tr>
 					</c:forEach>					
@@ -227,11 +227,11 @@
 						if(status > 0){
 							alert("가입 승인 완료");
 						}else {
-							alert("가입 승인 실패")
+							alert("가입 승인 실패");
 						}
 					},
 					error: function(){ //통신 실패시 
-						console.log("통신 실패")
+						console.log("통신 실패");
 					}
 				});
 			});

@@ -32,9 +32,13 @@ public class Employee {
 	
 	private String dept_code;
 	
+	private String dept_name;
+	
 	private String upper_dept_code;
 	
 	private String job_code;
+	
+	private String job_name;
 	
 	@NotNull(message = "입사일이 빈 값입니다.")
 	private Date join_date;
