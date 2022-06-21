@@ -1,5 +1,6 @@
 package com.uni.wt.admin.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,11 +9,15 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.uni.wt.admin.model.dto.Department;
 import com.uni.wt.admin.model.service.AdminService;
@@ -27,6 +32,9 @@ public class AdminController {
 	
 	@Autowired
 	private AdminService adminService;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	//부서 조회
 	@RequestMapping("organizationChart.do")
@@ -169,12 +177,52 @@ public class AdminController {
 	
 	//사원 추가
 	@RequestMapping("addEmployee.do")
-	public String addEmployee(Employee emp, Model model) throws Exception {
+	public String addEmployee(Employee emp, RedirectAttributes redirect) throws Exception {
+		//비밀번호 암호화
+		log.info("암호화 전 : " + emp.getPassword());
+		String encPwd = bCryptPasswordEncoder.encode(emp.getPassword());
+		log.info("암호화 후 : " + emp.getPassword());
+		
+		emp.setPassword(encPwd);
 		
 		adminService.addEmployee(emp);
+		log.info("emp : " + emp);
 		
-		model.addAttribute("msg", "사원 추가가 완료되었습니다.");
+		redirect.addFlashAttribute("msg", "사원 추가가 완료 되었습니다.");
 		
-		return "admin/employeeManagementView";
+		return "redirect:employeeManagement.do";
+	}
+	
+	//사원 정보 업데이트 뷰 이동
+	@RequestMapping("updateView.do")
+	public ModelAndView updateView(int eno, ModelAndView mv) throws Exception {
+		
+		Employee selectEmp = adminService.updateView(eno);
+		
+		ArrayList<Department> deptList = adminService.selectUpperList();
+		log.info("selectEmp : "+ selectEmp);
+		mv.addObject("selectEmp", selectEmp).addObject("deptList", deptList).setViewName("admin/employeeManagementUpdateView");
+		
+		return mv;
+	}
+	
+	//사원 정보 업데이트
+	@RequestMapping("updateEmployeeInfo.do")
+	public ModelAndView updateEployee(Employee emp, @RequestParam(value="resignationDate", required = false) String resignationDate, ModelAndView mv) throws Exception {
+		log.info("resignationDate : " + resignationDate);
+		//퇴직일이 있을 수도 있고 없을 수도 있다. -> 없는 경우에는 그냥 정보 업데이트, 있는 경우에는 상태까지 변경	
+		if(resignationDate.equals("")) {
+		//if(StringUtils.isEmpty(resignationDate)) {
+			adminService.updateEmployee(emp);
+			log.info("정보 업데이트");
+		}else {
+			//emp.setResignation_date(resignationDate);
+			adminService.updateEmployeeResignation(emp);
+			log.info("정보 업데이트");
+		}
+		
+		mv.addObject("eno", emp.getEmp_no()).setViewName("redirect:updateView.do");
+		
+		return mv;
 	}
 }

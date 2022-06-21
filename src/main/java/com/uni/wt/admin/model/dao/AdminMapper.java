@@ -40,4 +40,10 @@ public interface AdminMapper {
 
 	int addEmployee(Employee emp);
 
+	Employee updateView(int eno);
+
+	int updateEmployee(Employee emp);
+
+	int updateEmployeeResignation(Employee emp);
+
 }
