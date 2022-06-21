@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -87,14 +86,19 @@ public class ProjectController {
 
 	@ResponseBody
 	@RequestMapping(value = "/setProjectTag.do", produces="application/json; charset=utf-8")
-	public String setProjectTag(HttpSession session, @RequestParam("selectedProjects[]") List<String> pj_list, @RequestParam("selectedTags[]")  List<String> tag_list) throws Exception {
+	public String setProjectTag(@RequestParam("selectedProjects[]") List<String> pj_list, @RequestParam("selectedTags[]")  List<String> tag_list) throws Exception {
+
 		for (int i = 0; i < pj_list.size(); i++){
 			for (int j = 0; j < tag_list.size(); j++){
 				ProjectTag projectTag = new ProjectTag();
 				projectTag.setTag_no(Integer.parseInt(tag_list.get(j)));
 				projectTag.setPj_no(Integer.parseInt(pj_list.get(i)));
-				log.info("프로젝트 태그 : " + projectTag);
-				projectMemberService.setProjectTag(projectTag);
+				//log.info("프로젝트 태그 : " + projectTag);
+				int check = projectMemberService.checkProjectByTag(projectTag);
+				//log.info("중복 되는 태그설정 : " + projectTag + check);
+				if (check == 0){
+					projectMemberService.setProjectTag(projectTag);
+				}
 			}
 		}
 		return "태그 설정 완료";
@@ -117,8 +121,8 @@ public class ProjectController {
 	@RequestMapping(value = "/editTag.do", produces="application/json; charset=utf-8")
 	public String editTag(@RequestParam("tag_no") int tag_no,@RequestParam("tag_name") String tag_name) throws Exception {
 
-//		log.info("태그 번호 : " + tag_no);
-//		log.info("태그 명 : " + tag_name);
+		log.info("태그 번호 : " + tag_no);
+		log.info("태그 명 : " + tag_name);
 		ProjectTag pjTag = new ProjectTag();
 		pjTag.setTag_no(tag_no);
 		pjTag.setTag_name(tag_name);
@@ -158,23 +162,47 @@ public class ProjectController {
 	}
 	@ResponseBody
 	@RequestMapping(value = "/loadTag.do", produces = "application/text;charset=utf8")
-	public String loadTag(HttpSession session) throws Exception {
+	public String loadTag(HttpSession session, @RequestParam(value = "pj_no", required = false) String pj_noStr) throws Exception {
 		int loginEmp = ((Employee)session.getAttribute("loginEmp")).getEmp_no();
 
 		ArrayList<ProjectTag> list = projectMemberService.loadTag(loginEmp);
-		log.info(list.toString());
+		if(pj_noStr !=  null){
+			int pj_no = Integer.parseInt(pj_noStr);
+			ProjectTag projectTag = new ProjectTag();
+			projectTag.setEmp_no(loginEmp);
+			projectTag.setPj_no(pj_no);
+			ArrayList<ProjectTag> tagListByPjNo = projectMemberService.loadTagByPj(projectTag);
+			log.info("pj_no에 등록된 태그" + tagListByPjNo.toString());
+			Map<String, ArrayList<ProjectTag>> map = new HashMap<>();
+			map.put("tagByEmpNo", list);
+			map.put("tagByPjNo", tagListByPjNo);
+			return new GsonBuilder().create().toJson(map);
 
-		return new GsonBuilder().create().toJson(list);
+		}else{
+			log.info(list.toString());
+
+			return new GsonBuilder().create().toJson(list);
+		}
+
 	}
 
+
+
 	@RequestMapping("/detailPj.do")
-	public String detailPj(@RequestParam("pj_no") int pj_no, Model m) throws Exception {
+	public String detailPj(@RequestParam("pj_no") int pj_no, Model m, HttpSession session) throws Exception {
 
-
+		ProjectTag projectTag = new ProjectTag();
+		projectTag.setPj_no(pj_no);
+		projectTag.setEmp_no(((Employee)session.getAttribute("loginEmp")).getEmp_no());
+		ArrayList<ProjectMember> list = projectMemberService.selectProjectColor(projectTag);
+		//log.info("색상 단건조회 : " + list.toString());
 		Project pj = projectService.selectOneProject(pj_no);
-		log.info("프로젝트 상세보기 pj : " + pj);
-		m.addAttribute("pj", pj);
+		//log.info("프로젝트 상세보기 pj : " + pj);
+		int checkBookmark = projectMemberService.checkBookmark(projectTag);
 
+		m.addAttribute("checkBookmark", checkBookmark);
+		m.addAttribute("pj", pj);
+		m.addAttribute("pjMember", list.get(0));
 		return "project/detailPj";
 	}
 	@RequestMapping("/tagViewSelect.do")

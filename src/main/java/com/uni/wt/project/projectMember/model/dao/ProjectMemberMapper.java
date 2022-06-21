@@ -15,10 +15,17 @@ public interface ProjectMemberMapper {
     int removeBookmark(ProjectMember pjm);
 
     ArrayList<ProjectMember> selectProjectColor(int loginEmp);
+    ArrayList<ProjectMember> selectProjectColor(ProjectTag projectTag);
 
     int setProjectColor(ProjectMember pjm);
 
     ArrayList<ProjectTag> loadTag(int loginEmp);
 
+    ArrayList<ProjectTag> loadTagByPj(ProjectTag projectTag);
+
     int setProjectTag(ProjectTag projectTag);
+
+    int checkProjectByTag(ProjectTag projectTag);
+
+    int checkBookmark(ProjectTag pj_no);
 }
