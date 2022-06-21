@@ -15,9 +15,10 @@ import java.util.ArrayList;
 @Slf4j
 @Service
 @Primary
-public class ProjectMemberServiceImpl implements ProjectMemberService{
+public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Autowired
     private ProjectMemberMapper projectMemberMapper;
+
     @Override
     public void insertProjectMember(ProjectMember pjm) throws Exception {
         projectMemberMapper.insertProjectMember(pjm);
@@ -28,7 +29,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
         log.info("[ProjectServiceImpl] pj_no : " + pjm.getPj_no());
         int result = projectMemberMapper.insertBookmark(pjm);
 
-        if (result < 0){
+        if (result < 0) {
             throw new Exception("즐겨찾기 추가 실패");
         }
     }
@@ -37,22 +38,27 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
     public void removeBookmark(ProjectMember pjm) throws Exception {
         int result = projectMemberMapper.removeBookmark(pjm);
 
-        if (result < 0){
+        if (result < 0) {
             throw new Exception("즐겨찾기 삭제 실패");
         }
     }
 
     @Override
     public ArrayList<ProjectMember> selectProjectColor(int loginEmp) {
-
         return projectMemberMapper.selectProjectColor(loginEmp);
+    }
+
+    @Override
+    public ArrayList<ProjectMember> selectProjectColor(ProjectTag projectTag) {
+
+        return projectMemberMapper.selectProjectColor(projectTag);
     }
 
     @Override
     public void setProjectColor(ProjectMember pjm) throws Exception {
         int result = projectMemberMapper.setProjectColor(pjm);
 
-        if (result < 0){
+        if (result < 0) {
             throw new Exception("색상 설정 실패");
         }
     }
@@ -62,12 +68,27 @@ public class ProjectMemberServiceImpl implements ProjectMemberService{
         return projectMemberMapper.loadTag(loginEmp);
     }
 
+    public ArrayList<ProjectTag> loadTagByPj(ProjectTag projectTag) throws Exception {
+        return projectMemberMapper.loadTagByPj(projectTag);
+    }
+
     @Override
     public void setProjectTag(ProjectTag projectTag) throws Exception {
         int result = projectMemberMapper.setProjectTag(projectTag);
 
-        if (result < 0){
+        if (result < 0) {
             throw new Exception("태그 설정 실패");
         }
+    }
+
+    @Override
+    public int checkProjectByTag(ProjectTag projectTag) throws Exception {
+
+        return projectMemberMapper.checkProjectByTag(projectTag);
+    }
+
+    @Override
+    public int checkBookmark(ProjectTag projectTag) throws Exception {
+        return projectMemberMapper.checkBookmark(projectTag);
     }
 }

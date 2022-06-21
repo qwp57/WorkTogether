@@ -409,32 +409,23 @@
 
 
         $(document).on("click", ".favoBtn", function (e) {
+            if ($(this).hasClass("listView")) {
+                var $pj_no = $(this).parent("td").prev().children(".colors").find("input[name='pj_no']").val()
+            } else {
+                var $pj_no = $(this).parent(".project__icon").prev().val()
+            }
+            //console.log("pj_no : " + $pj_no)
             if ($(this).hasClass("favoWhite")) {
                 $(this).removeClass("favoWhite")
                 $(this).addClass("favoYellow")
                 console.log("즐겨찾기 추가할것")
-                console.log($(".tag_no").val())
-
-                if ($(this).hasClass("listView")) {
-                    var $pj_no = $(this).parent("td").prev().children(".colors").find("input[name='pj_no']").val()
-                } else {
-                    var $pj_no = $(this).parent(".project__icon").prev().val()
-                }
-
-                //console.log("pj_no : " + $pj_no)
                 insertBookmark($pj_no)
 
             } else if ($(this).hasClass("favoYellow")) {
                 $(this).removeClass("favoYellow")
                 $(this).addClass("favoWhite")
                 console.log("즐겨찾기 제거할것")
-                if ($(this).hasClass("listView")) {
-                    var $pj_no = $(this).parent("td").prev().children(".colors").find("input[name='pj_no']").val()
-                } else {
-                    var $pj_no = $(this).parent(".project__icon").prev().val()
-                }
 
-                //console.log("pj_no : " + $pj_no)
                 removeBookmark($pj_no);
             }
             e.stopPropagation()
@@ -578,9 +569,10 @@
         })
 
         $(document).on("click", ".editTag", function () {
-            $tag_name = $(this).parent().parent().parent().parent().children(".tagName").text()
-            $tag_no = $(this).parent().parent().parent().parent().find(".tagInput").val()
+            $tag_name = $(this).parents("tr").find(".tagName").text()
+            $tag_no = $(this).parents("tr").find(".tagInput").val()
             console.log($tag_name)
+            console.log($tag_no)
             $("#tagEditInput").val($tag_name)
             $("#tagEditModal").modal("show")
             $("#editTagBtn").click(function () {
@@ -595,7 +587,7 @@
 
         $(document).on("click", ".deleteTag", function () {
             if (confirm("삭제하시겠습니까?")) {
-                $tag_no = $(this).parent().parent().parent().parent().find(".tagInput").val()
+                $tag_no = $(this).parents("tr").find(".tagInput").val()
                 console.log($tag_no)
                 removeTag($tag_no)
             }
@@ -631,6 +623,7 @@
         }
 
         function editTag(tag_no) {
+            //console.log($("#tagEditInput").val())
             $.ajax({
                 url: '/project/editTag.do',
                 data: {
@@ -639,7 +632,7 @@
                 },
                 async: false,
                 success: function (data) {
-                    console.log(data)
+                    //console.log(data)
                 }
             })
             loadTag()
@@ -896,7 +889,7 @@
                 "selectedTags": selectedTags
             },
             success: function (data) {
-                console.log(data)
+                //console.log(data)
 
             }
         })

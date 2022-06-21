@@ -235,8 +235,12 @@
                     <div class="card-body">
                         <h3 class="text-left">프로젝트 태그</h3>
                         <hr>
-                        <table id="tagTable">
+                        <h3 id="tagNullInfo" style="display: none; text-align: center">생성된 태그가 없습니다.</h3>
+                        <table id="tagTable" style="width: 100%">
                         </table>
+                        <div class="text-center" style="width: 100%">
+                            <i class="fa fa-plus fa-2x tagAddBtn"></i>
+                        </div>
                         <br>
                     </div>
                 </div>
@@ -252,9 +256,10 @@
     $(function () {
         loadTag()
         $(document).on("click", ".editTag", function () {
-            $tag_name = $(this).parent().parent().parent().parent().children(".tagName").text()
-            $tag_no = $(this).parent().parent().parent().parent().find(".tagInput").val()
+            $tag_name = $(this).parents("tr").find(".tagName").text()
+            $tag_no = $(this).parents("tr").find(".tag_no").val()
             console.log($tag_name)
+            console.log($tag_no)
             $("#tagEditInput").val($tag_name)
             $("#tagEditModal").modal("show")
             $("#editTagBtn").click(function () {
@@ -268,42 +273,62 @@
 
         })
 
+        $(document).on("click", ".tagAddBtn", function () {
+            $("#addTagModal").modal("show")
+        })
+
+        $("#addTagBtn").click(function () {
+            if ($("#addTagInput").val() == "") {
+                alert("태그를 입력해주세요.")
+                return false
+            }
+            addTag()
+            //console.log($("#addTagInput").val())
+        })
+
         $(document).on("click", ".deleteTag", function () {
             if (confirm("삭제하시겠습니까?")) {
-                $tag_no = $(this).parent().parent().parent().parent().find(".tagInput").val()
+                $tag_no = $(this).parents("tr").find(".tag_no").val()
                 console.log($tag_no)
                 removeTag($tag_no)
             }
 
         })
+
         function loadTag() {
             $.ajax({
                 url: '/project/loadTag.do',
                 success: function (list) {
-                    $.parseJSON(list);
                     console.log(list)
+                    console.log(list.length)
                     $("#tagTable").html('')
-                    $.each($.parseJSON(list), function (i, obj) {
-                        $("#tagTable").append(
-                            '<tr>' +
-                            '<td class="moveTrigger"><i class="fa fa-tag fa-lg"><input type="text" value="' + obj.tag_no + '" style="display: none;" class="tag_no"></i>' +
-                            '</td>' +
-                            '<th class="tagName moveTrigger" style="width: 50%">' + obj.tag_name + '</th>' +
-                            '<td style="width: 20%; text-align: right;">' +
-                            '</td>' +
-                            '<td style="width: 15%; text-align: right;">' +
-                            '<div class="btn-group sidemenu dropright">' +
-                            '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
-                            '<div class="dropdown-menu dropright">' +
-                            '<a class="dropdown-item editTag" href="#">수정</a>' +
-                            '<div class="dropdown-divider"></div>' +
-                            '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
-                            '</div>' +
-                            '</div>' +
-                            '</td>' +
-                            '</tr>'
-                        )
-                    })
+                    if (list.length == 2) {
+                        $("#tagNullInfo").css("display", "block")
+                        $("#tagTable").css("display", "none")
+                    } else {
+                        $("#tagNullInfo").css("display", "none")
+                        $("#tagTable").css("display", "block")
+                        $.each($.parseJSON(list), function (i, obj) {
+                            $("#tagTable").append(
+                                '<tr style="width: 100%">' +
+                                '<td class="moveTrigger"><i class="fa fa-tag fa-lg"><input type="text" value="' + obj.tag_no + '" style="display: none;" class="tag_no"></i>' +
+                                '</td>' +
+                                '<th class="tagName moveTrigger" style="width: 50%">' + obj.tag_name + '</th>' +
+                                '<td style="width: 15%; text-align: right;">' +
+                                '<div class="btn-group sidemenu dropright">' +
+                                '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+                                '<div class="dropdown-menu dropright">' +
+                                '<a class="dropdown-item editTag" href="#">수정</a>' +
+                                '<div class="dropdown-divider"></div>' +
+                                '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+                                '</div>' +
+                                '</div>' +
+                                '</td>' +
+                                '</tr>'
+                            )
+                        })
+
+                    }
                 }
 
             });
@@ -318,7 +343,7 @@
                 },
                 async: false,
                 success: function (data) {
-                    console.log(data)
+                    //console.log(data)
                 }
             })
             loadTag()
@@ -338,7 +363,21 @@
             loadTag()
         }
 
-        $(document).on('click', ".moveTrigger", function loadTagView (){
+        function addTag() {
+            $.ajax({
+                url: '/project/addTag.do',
+                data: {
+                    "tag_name": $("#addTagInput").val()
+                },
+                async: false,
+                success: function (data) {
+                    console.log(data)
+                }
+            })
+            loadTag()
+        }
+
+        $(document).on('click', ".moveTrigger", function loadTagView() {
 
             $tag_no = $(this).parent().find(".tag_no").val()
             $tag_name = $(this).parent().find(".tagName").text()

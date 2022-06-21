@@ -29,9 +29,15 @@
 		WHERE PJ_NO = #{pj_no}
 		AND EMP_NO = #{emp_no}
 	</delete>
-	<select id="selectProjectColor" resultMap="projectMemberSet">
+	<select id="selectProjectColor" resultMap="projectMemberSet" parameterType="ProjectTag">
 		SELECT * FROM  PROJECT_MEMBER
-		WHERE EMP_NO = #{loginEmp}
+		<if test="pj_no != null">
+			WHERE EMP_NO = #{emp_no}
+			AND PJ_NO = #{pj_no}
+		</if>
+		<if test="pj_no == null">
+			WHERE EMP_NO = ${loginEmp}
+		</if>
 	</select>
 	<update id="setProjectColor" parameterType="ProjectMember">
 		UPDATE PROJECT_MEMBER
@@ -48,5 +54,24 @@
 		FROM MB_PJ_TAG
 		WHERE EMP_NO = #{loginEmp}
 		ORDER BY TAG_NO
+	</select>
+	<select id="loadTagByPj" parameterType="ProjectTag" resultMap="ProjectTagSet">
+		SELECT *
+		FROM MB_PJ_TAG JOIN PROJECT_TAG USING(TAG_NO)
+		WHERE EMP_NO = #{emp_no}
+		  AND PJ_NO = #{pj_no}
+	</select>
+	<select id="checkProjectByTag" parameterType="ProjectTag" resultType="int">
+		SELECT COUNT(*)
+		FROM PROJECT_TAG
+		WHERE TAG_NO = #{tag_no}
+		AND PJ_NO = #{pj_no}
+	</select>
+
+	<select id="checkBookmark" parameterType="ProjectTag" resultType="int">
+		SELECT COUNT(*)
+		FROM PJ_BOOKMARK
+		WHERE EMP_NO = #{emp_no}
+		AND PJ_NO = #{pj_no}
 	</select>
 </mapper>

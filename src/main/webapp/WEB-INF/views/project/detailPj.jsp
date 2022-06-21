@@ -116,7 +116,7 @@
         grid-template-rows: 50px 50px 60px;
     }
 
-    .fa-star {
+    .favoBtn {
         grid-row: 1/2;
         grid-column: 2/3;
     }
@@ -150,7 +150,7 @@
         line-height: 40px;
     }
 
-    .btn-secondary, .fa-star, #pjMenu, #pjTitle {
+    .btn-secondary, .favoBtn, #pjMenu, #pjTitle {
         margin-top: 25px;
     }
 
@@ -294,7 +294,7 @@
         color: white;
     }
 
-    #caSetting:hover, .fa-star:hover, .fa-ellipsis-v:hover, .navMenu:hover, .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch, .switchTodo {
+    #caSetting:hover, .favoBtn:hover, .fa-ellipsis-v:hover, .navMenu:hover, .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch, .switchTodo {
         cursor: pointer;
     }
 
@@ -331,15 +331,15 @@
                                     <button class="btn btn-primary newPj">+ 새 프로젝트</button>
                                 </div>
                                 <div class="detailTop">
-                                    <div class="colors color-1"></div>
-                                    <i class='icon fa fa-star fa-2x favoYellow'></i>
+                                    <div class="colors ${pjMember.pj_color}"></div>
+                                    <i class='icon fa fa-star fa-2x favoBtn <c:choose><c:when test="${checkBookmark > 0}">favoYellow</c:when><c:otherwise>favoWhite</c:otherwise></c:choose>'></i>
                                     <div class="btn-group dropright" id="pjMenu">
                                         <i class='fa fa-ellipsis-v fa-2x' data-toggle="dropdown"
                                            aria-haspopup="true" aria-expanded="false"
                                            style="width: 30px;"></i>
                                         <div class="dropdown-menu dropright">
                                             <a class="dropdown-item" href="#" id="setColor">색상 설정</a> <a
-                                                class="dropdown-item" href="#" id="setTag">태그 설정</a> <a
+                                                class="dropdown-item" href="#" id="tagSettingBtn">태그 설정</a> <a
                                                 class="dropdown-item" href="#">참여자 조회</a> <a
                                                 class="dropdown-item" href="#" id="setPj">프로젝트 설정</a>
                                             <div class="dropdown-divider"></div>
@@ -1166,12 +1166,17 @@
             $("#colorModal").modal("show")
         })
 
-        $(document).on('click', '#setTag', function () {
+        $(document).on('click', '#tagSettingBtn', function () {
+            loadTag()
             $("#tagModal").modal("show")
         })
 
         $(document).on('click', '#tagEdit', function () {
             $("#tagEditModal").modal("show")
+        })
+
+        $(document).on('click', '.disconnectingTagBtn', function () {
+            console.log($(this).prev().find('input[name=tagInput]').val())
         })
 
         $(document).on('click', '.tagAddBtn', function () {
@@ -1203,17 +1208,24 @@
         })
 
 
-        $(document).on('click', '.fa-star', function () {
+        $(document).on("click", ".favoBtn", function (e) {
+            var pj_no = ${pj.pj_no}
+                console.log("pj_no : " + pj_no)
+
             if ($(this).hasClass("favoWhite")) {
                 $(this).removeClass("favoWhite")
                 $(this).addClass("favoYellow")
                 console.log("즐겨찾기 추가할것")
+
+                insertBookmark(pj_no)
+
             } else if ($(this).hasClass("favoYellow")) {
                 $(this).removeClass("favoYellow")
                 $(this).addClass("favoWhite")
                 console.log("즐겨찾기 제거할것")
+
+                removeBookmark(pj_no);
             }
-            e.stopPropagation()
         })
 
 
@@ -1488,7 +1500,110 @@
         $(this).parent().parent().remove()
     })
 
+    function saveColor() {
+        if ($("input:radio[name='customRadio']:checked").length <= 0) {
+            alert("색상을 선택해주세요.")
+            return false;
+        }
+        var selectedProjects = []
+        selectedProjects.push(${pj.pj_no})
+        var selectedColor = $("input:radio[name='customRadio']:checked").val()
+        console.log(selectedProjects)
+        console.log(selectedColor)
+        $("#colorModal").modal("hide")
+        setColor(selectedProjects, selectedColor)
+        $("input:radio[name='customRadio']").prop("checked", false)
+    }
 
+    function setColor(selectedProjects, selectedColor) {
+        $.ajax({
+            url: '/project/setProjectColor.do',
+            data: {
+                "selectedProjects": selectedProjects,
+                "selectedColor": selectedColor
+            },
+            success: function (data) {
+                //console.log(data)
+
+            }
+        })
+    }
+
+    function insertBookmark(pj_no) {
+        $.ajax({
+            url: '/project/insertBookmark.do',
+            data: {
+                pj_no: pj_no
+            },
+            success: function (data) {
+                console.log(data + "성공")
+
+            }
+        });
+    }
+
+    function removeBookmark(pj_no) {
+        $.ajax({
+            url: '/project/removeBookmark.do',
+            data: {
+                pj_no: pj_no
+            },
+            success: function (data) {
+                console.log(data + "성공")
+
+            }
+        });
+    }
+
+    function loadTag() {
+        $.ajax({
+            url: '/project/loadTag.do',
+            data: {
+                pj_no: ${pj.pj_no}
+            },
+            success: function (data) {
+                data = $.parseJSON(data)
+                // console.log(data)
+                // console.log(data.tagByEmpNo)
+                // console.log(data.tagByPjNo)
+                $("#tagTable").html('')
+                $.each(data.tagByEmpNo, function (i, obj) {
+                    $("#tagTable").append(
+                        '<tr>' +
+                        '<td><i class="fa fa-tag fa-lg"></i>' +
+                        '</td>' +
+                        '<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
+                        '<td style="width: 20%; text-align: right;">' +
+                        '<div class="custom-control custom-checkbox">' +
+                        '<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+                        '<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
+                        '</div>' +
+                        '</td>' +
+                        '<td style="width: 15%; text-align: right;">' +
+                        '<div class="btn-group dropright">' +
+                        '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+                        '<div class="dropdown-menu dropright">' +
+                        '<a class="dropdown-item editTag" href="#">수정</a>' +
+                        '<div class="dropdown-divider"></div>' +
+                        '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>'
+                    )
+                })
+                $.each(data.tagByPjNo, function (i, obj) {
+                    $('#tag' + obj.tag_no).next('label').css("display", "none")
+                    $('#tag' + obj.tag_no).parent().css("display", "none")
+                    $('#tag' + obj.tag_no).parents("td").append(
+                        '<i class="bi bi-dash-square mr-2 disconnectingTagBtn"></i>'
+                    )
+                })
+
+            }
+
+        });
+    }
 </script>
 <script type="text/javascript">
     var sum = Number("{{sum}}");

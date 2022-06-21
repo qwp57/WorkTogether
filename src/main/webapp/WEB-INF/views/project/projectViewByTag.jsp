@@ -576,9 +576,10 @@
         })
 
         $(document).on("click", ".editTag", function () {
-            $tag_name = $(this).parent().parent().parent().parent().children(".tagName").text()
-            $tag_no = $(this).parent().parent().parent().parent().find(".tagInput").val()
+            $tag_name = $(this).parents("tr").find(".tagName").text()
+            $tag_no = $(this).parents("tr").find(".tagInput").val()
             console.log($tag_name)
+            console.log($tag_no)
             $("#tagEditInput").val($tag_name)
             $("#tagEditModal").modal("show")
             $("#editTagBtn").click(function () {
@@ -593,7 +594,7 @@
 
         $(document).on("click", ".deleteTag", function () {
             if (confirm("삭제하시겠습니까?")) {
-                $tag_no = $(this).parent().parent().parent().parent().find(".tagInput").val()
+                $tag_no = $(this).parents("tr").find(".tagInput").val()
                 console.log($tag_no)
                 removeTag($tag_no)
             }
@@ -904,7 +905,7 @@
                 "selectedTags": selectedTags
             },
             success: function (data) {
-                console.log(data)
+                //console.log(data)
 
             }
         })
