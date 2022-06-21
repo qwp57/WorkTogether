@@ -310,8 +310,21 @@ public class WorkStateController {
 		String result = wsService.updateWorkStatus(w);
 
 		return result;
-	
 		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value ="updateVacStatus.do")
+	public String updateVacStatus(Vacation vac) throws Exception{
+		
+		log.info(vac.toString());
+		
+		wsService.updateVacStatus(vac);
+		
+		String name =wsService.getName(vac.getVac_no());
+		
+		log.info(name);
+		return name;
 	}
 
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,8 +55,8 @@ justify-content: center;}
          		</button>
          	</div>
          	
+		<form role="form" action="insertRequestWork.do" method="post" enctype="multipart/form-data">
          	<div class="modal-body">
-         		  <form role="form" action="" method="post" enctype="multipart/form-data">
          			<table class="table table-bordered">
          				<tbody class="tbody">
          					<tr>
@@ -63,99 +64,86 @@ justify-content: center;}
          						<td class="td"><input type="text" name="title" class="form-control" tabindex="1" required ></td>
          						<th class="th">프로젝트</th>
          						<td class="td">
-         							<select class="form-control" id="" name="projectName" tabindex="2">
-									    <option>프로젝트 이름</option>
-									    <option>Ketchup</option>
-									    <option>Relish</option>
+         							<select class="form-control" name="pj_no" tabindex="2">
+         							<c:if test="${empty prjList}"><option value="">참여중 프로젝트가 없습니다</option></c:if>
+         							<c:if test="${!empty prjList}">
+	         							<c:forEach items="${prjList}" var="p">
+	         								<option value="${p.pj_no}">${p.pj_title}</option>
+	         							</c:forEach>
+	         						</c:if>
 								  	</select>
+								  	
          						</td>
          					</tr>
          					<tr>
          						<th class="th">소속부서</th>
          						<td class="td">
-         						<select class="form-control" id="" name="department" tabindex="3">
-								    <option>프로젝트 이름</option>
-								    <option>Ketchup</option>
-								    <option>Relish</option>
+         						<select class="form-control" id="dept" tabindex="3">
+								    <c:forEach items="${deptList }" var="d">
+								    	<option value="${d.DEPT_CODE}">${d.DEPT_NAME}</option>
+								    </c:forEach>
 							  	</select>
          						</td>
          						<th class="th">담당자</th>
          						<td class="td">
-         						<select class="form-control" id="" name="res-name" tabindex="4">
-								    <option>프로젝트 이름</option>
-								    <option>Ketchup</option>
-								    <option>Relish</option>
+         						<select class="form-control" id="res_memberId" name="res_member" tabindex="4">
+								   
 							  	</select>
          						</td>
        						</tr>
        						<tr>
          						<th class="th">기한 유무</th>
          						<td class="td">
-								  <input  type="radio" name="termYN" id="inlineRadio1" value="">
-								  <label  for="inlineRadio1" class="termlabel">기한 있음</label>
-								  <input  type="radio" name="termYN" id="inlineRadio2" value="">
-								  <label  for="inlineRadio2" class="termlabel">기한 없음</label>
+								  <input  type="radio" class="termRadio" value="Y" name="termYN">
+								  <label  for="inlineRadio1" class="termlabel termRadio">기한 있음</label>
+								  <input  type="radio" class="termRadio" value="N" name="termYN">
+								  <label  for="inlineRadio2" class="termlabel termRadio">기한 없음</label>
          						</td>
          						<th class="th">기한</th>
-         						<td class="td"><input type="date" class="form-control"></td>
+         						<td class="td"><input type="date" id="termId" class="form-control" name="" disabled></td>
        						</tr>
        						<tr>
          						<th class="th">중요도</th>
          						<td class="td">
-         						  <input  type="radio" name="important" id="inlineRadio1" value="">
+         						  <input  type="radio" name="important" id="inlineRadio1" value="1">
 								  <label  for="inlineRadio1" class="termlabel">상</label>
-								  <input  type="radio" name="important" id="inlineRadio2" value="">
+								  <input  type="radio" name="important" id="inlineRadio2" value="2">
 								  <label  for="inlineRadio2" class="termlabel">중</label>
-								  <input  type="radio" name="important" id="inlineRadio2" value="">
+								  <input  type="radio" name="important" id="inlineRadio2" value="3">
 								  <label  for="inlineRadio2" class="termlabel">하</label>
          						</td>
          						<th class="th">첨부파일</th>
          						<td class="td">
          							<div class="input-group">
-									  <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+									  <input type="text" class="form-control" id="file-label" placeholder="파일 첨부" aria-label="Recipient's username" aria-describedby="basic-addon2">
 									  <div class="input-group-append">
-									    <button class="btn btn-outline-secondary" type="button">파일 첨부</button>
+									    <button class="btn btn-outline-secondary" id="rw_file" type="button">파일 첨부</button>
 									  </div>
 									</div>
-									<input type="file" name="" id="rq-file" hidden>
+									<input type="file" name="upload_file" id="upload-file" hidden>
          						</td>
        						</tr>
        						<tr>
          						<th class="th">내용</th>
          						<td colspan="3">
-         						<textarea class="rw-textarea" placeholder="요청할 업무 내용을 작성해 주세요" rows="10"></textarea>
+         						<textarea class="rw-textarea" name="content" placeholder="요청할 업무 내용을 작성해 주세요" rows="10"></textarea>
          						</td>
          					</tr>
          				</tbody>
          			</table>
-         		</form>
-         	</div>
-         	<div class="modal-footer">
-				<button type="button" class="btn btn-secondary btns" data-dismiss="modal">취소</button>
-	      		<button type="button" class="btn btn-primary btns">확인</button>
-			</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary btns" data-dismiss="modal">취소</button>
+					<button type="submit" class="btn btn-primary btns">확인</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
 
 <script type="text/javascript">
-	$(function(){
-		$("#rw-application").click(function(){
-			$('#rwApplicationModal').modal("show");
-		})
-		
-	})
 	
-	$("#rw-file").on('change', function(){  // 값이 변경되면
-		if(window.FileReader){  // modern browser
-			var filename = $(this)[0].files[0].name;
-		} else {  // old IE
-				var filename = $(this).val().split('/').pop().split('\\').pop();  // 파일명만 추출
-		}
-	
-			// 추출한 파일명 삽입
-		$("#file-label").text(filename);
-	});
 </script>
+<script src="/resources/assets/js/rwAppli.js?ver=2"></script>
 </body>
 </html>
