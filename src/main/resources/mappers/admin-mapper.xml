@@ -6,7 +6,7 @@
 	<resultMap type="Employee" id="employeeResultSet">
 		<id property="emp_no" column="EMP_NO"/>
 		<result property="dept_code" column="DEPT_CODE"/>
-		<result property="sub_dept_code" column="SUB_DEPT_CODE"/>
+		<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
 		<result property="job_code" column="JOB_CODE"/>
 		<result property="join_date" column="JOIN_DATE"/>
 		<result property="resignation_date" column="RESIGNATION_DATE"/>
@@ -147,7 +147,35 @@
 	<!-- 사원 추가 -->
 	<insert id="addEmployee" parameterType="Employee">
 		INSERT INTO EMPLOYEE
-		VALUESE(EMP_SEQ.NEXTVAL, #{name} ,#{id}, #{password}, #{email}, #{phone}, #{birth}, #{dept_code}, #{upper_dept_code}, #{job_code}, #{join_date}, NULL, DEFAULT, DEFAULT, NULL, SYSDATE, NULL)
+		VALUES(EMP_SEQ.NEXTVAL, #{name} ,#{id}, #{password}, #{email}, #{phone}, #{birth}, #{dept_code}, #{upper_dept_code}, #{job_code}, #{join_date}, NULL, 'I', DEFAULT, NULL, SYSDATE, NULL)
 	</insert>
+	
+	<!-- 사원 업데이트 모달 -->
+	<select id="updateView" parameterType="_int" resultMap="employeeResultSet">
+		SELECT 
+		    A.*,
+		    DEPT_NAME,
+		    JOB_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		WHERE (STATUS='I'
+		OR STATUS='Q')
+		AND EMP_NO=#{eno}		
+	</select>
+	
+	<!-- 사원 정보 추가 -> 퇴직일 없는 경우 -->
+	<insert id="updateEmployee" parameterType="Employee">
+		UPDATE EMPLOYEE
+		SET NAME=#{name}, EMAIL=#{email}, PHONE=#{phone}, BIRTH=#{birth}, JOIN_DATE=#{join_date}, DEPT_CODE=#{dept_code}, UPPER_DEPT_CODE=#{upper_dept_code}, JOB_CODE=#{job_code}
+		WHERE EMP_NO=#{emp_no}
+	</insert>
+	
+	<!-- 사원 정보 추가 -> 퇴직일 있는 경우 -->
+	<update id="updateEmployeeResignation" parameterType="Employee">
+		UPDATE EMPLOYEE
+		SET NAME=#{name}, EMAIL=#{email}, PHONE=#{phone}, BIRTH=#{birth}, JOIN_DATE=#{join_date}, DEPT_CODE=#{dept_code}, UPPER_DEPT_CODE=#{upper_dept_code}, JOB_CODE=#{job_code}, RESIGNATION_DATE=#{resignation_date}, STATUS='Q'
+		WHERE EMP_NO=#{emp_no}
+	</update>
 </mapper>
         

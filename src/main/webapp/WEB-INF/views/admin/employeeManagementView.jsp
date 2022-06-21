@@ -71,14 +71,6 @@
 </style>
 </head>
 <body>	
-<script>
-$(function(){
-	   let msg = "${msg}";
-	   if(msg != ""){
-	      alert(msg);      
-	   }
-	})
-</script>
 	<div class="main-content">
 	<div style="height: 50px"></div>
 		<div class="container">
@@ -213,10 +205,10 @@ $(function(){
 							<td>${ el.phone }</td>
 							<td>${ el.email }</td>
 							<c:if test="${ el.status == 'I'}">
-								<td><span class="status" style="color: white; background-color: skyblue; border-radius: 5px;">재직</span></td>
+								<td><span class="status p-2" style="color: white; background-color: skyblue; border-radius: 5px;">재직</span></td>
 							</c:if>
 							<c:if test="${ el.status == 'Q'}">
-								<td><span class="status" style="color: white; background-color: red; border-radius: 5px;">퇴직</span></td>
+								<td><span class="status p-2" style="color: white; background-color: Firebrick; border-radius: 5px;">퇴직</span></td>
 							</c:if>
 						</tr>
 					</c:forEach>
@@ -228,7 +220,7 @@ $(function(){
 	          <ul class="pagination">
 	          	  <c:choose>
 		          		 <c:when test="${ pi.currentPage ne 1 }">
-		          			<li class="page-item"><a class="page-link" href="listBoard.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+		          			<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
 		          		 </c:when>
 		          		 <c:otherwise>
 		          			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
@@ -238,7 +230,7 @@ $(function(){
 	              <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 		              	<c:choose>
 			           		<c:when test="${ pi.currentPage ne p }">
-			              		<li class="page-item"><a class="page-link" href="listBoard.do?currentPage=${ p }">${ p }</a></li>
+			              		<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ p }">${ p }</a></li>
 			           		</c:when>
 			           		<c:otherwise>
 			           			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
@@ -248,10 +240,10 @@ $(function(){
         
 	              	<c:choose>
 		          		<c:when test="${ pi.currentPage ne pi.maxPage }">
-		          			<li class="page-item"><a class="page-link" href="listBoard.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		          			<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
 		          		</c:when>
 		          		<c:otherwise>
-		          			<li class="page-item disabled"><a class="page-link" href="listBoard.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+		          			<li class="page-item disabled"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
 		          		</c:otherwise>
 	          		</c:choose>
 	         	 </ul>
@@ -263,7 +255,7 @@ $(function(){
 	<div class="modal" id="addModal" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog modal-xl">
 			<div class="modal-content">
-				<form>
+				<form method="post" action="addEmployee.do">
 					<!-- modal header -->
 					<div class="modal-header">
 						<div class="modal-header">
@@ -304,20 +296,15 @@ $(function(){
 							</div>
 							<div class="col-lg-6 form-group">
 								<label>생년월일*</label>
-								 <div class="input-group date mt-2" id="datetimepicker1" data-target-input="nearest">
 									<input id="birth" type="date" class="form-control" name="birth" tabindex="7">
-	                              	<div class="invalid-feedback">생년월일을 입력해주세요</div>
-						        </div>
 							</div>
 						</div>
 						<div class="inputRequired mt-3 ml-4 mr-4 row">
 							<div class="col-lg-6 form-group">
 								<label>입사일*</label>
 								 <input id="join_date" type="date" class="form-control" name="join_date" tabindex="8">
-                              <div class="invalid-feedback">입사일을 입력해주세요</div>
 							</div>
 						</div>
-						
 						<div class="requiredTitle mt-3 ml-4 mr-4 row">
 							<span class="col-lg-2 mt-1"><h6>인사정보 입력</h6></span>
 						</div>
@@ -356,135 +343,6 @@ $(function(){
 									<option value="J7">사원</option>
 								</select>
 							</div>
-							<div class="col-lg-6 form-group">
-								<label>퇴직일</label>  
-								<input id="resignation_date" type="date" class="form-control" name="resignation_date" tabindex="8">
-							</div>
-						</div>
-					</div>
-					
-					<!-- modal footer -->
-					<div class="modal-footer mb-3">
-						<button type="button" class="btn btn-primary" id="saveBtn">저장</button>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	
-	<!-- 사원 정보 모달 창 -> 행을 클릭하면 그 회원의 정보를 수정할 수 있는 모달 창이 뜬다.(그 회원의 정보가 뜬다) -->
-	<div class="modal" id="updateModal" data-backdrop="static" data-keyboard="false">
-		<div class="modal-dialog modal-xl">
-			<div class="modal-content">
-				<form method="post">
-					<!-- modal header -->
-					<div class="modal-header">
-						<div class="modal-header">
-	      					<h4 class="modal-title text-left" style="color:black">사원 정보</h4>     				   				
-	      				</div>
-					</div>
-					
-					<!-- modal body -->
-					<div class="modal-body">
-						<div class="requiredTitle mt-3 ml-4 mr-4 row">
-							<span class="col-lg-2 mt-1"><h6>기본정보 입력</h6></span>
-							<span class="required">입력 필수</span>
-						</div>
-						<div class="inputRequired mt-3 ml-4 mr-4 row">
-							<div class="col-lg-6 form-group">
-								<label for="newEmpName">이름*</label>
-								<input type="text" class="form-control" id="newEmpName" required value="이사원">
-							</div>
-							<div class="col-lg-6 form-group">
-								<label for="newEmpId">아이디*</label>
-								<input type="text" class="form-control" id="newEmpId" required>
-							</div>
-						</div>
-						<div class="inputRequired mt-3 ml-4 mr-4 row">
-							<div class="col-lg-6 form-group">
-								<label for="newEmpPassword">비밀번호*</label>
-								<input type="text" class="form-control" id="newEmpPassword" required>
-							</div>
-							<div class="col-lg-6 form-group">
-								<label for="newEmpEmail">이메일*</label>
-								<input type="text" class="form-control" id="newEmpEmail" required>
-							</div>
-						</div>
-						<div class="inputRequired mt-3 ml-4 mr-4 row">
-							<div class="col-lg-6 form-group">
-								<label for="newEmpPhone">핸드폰 번호*</label>
-								<input type="text" class="form-control" id="newEmpPhone" required>
-							</div>
-							<div class="col-lg-6 form-group">
-								<label>생년월일*</label>
-								 <div class="input-group date mt-2" id="datetimepicker4" data-target-input="nearest">
-						            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker4" value="">
-						            <div class="input-group-append" data-target="#datetimepicker4" data-toggle="datetimepicker">
-						                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-						            </div>
-						        </div>
-							</div>
-						</div>
-						<div class="inputRequired mt-3 ml-4 mr-4 row">
-							<div class="col-lg-6 form-group">
-								<label>입사일*</label>
-								 <div class="input-group date" id="datetimepicker5" data-target-input="nearest">
-						            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker5" value="">
-						            <div class="input-group-append" data-target="#datetimepicker5" data-toggle="datetimepicker">
-						                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-						            </div>
-						        </div>
-							</div>
-						</div>
-						
-						<div class="requiredTitle mt-3 ml-4 mr-4 row">
-							<span class="col-lg-2 mt-1"><h6>인사정보 입력</h6></span>
-						</div>
-						<div class="inputRequired mt-3 ml-4 mr-4 row">
-							<div class="col-lg-6 form-group">
-								<label for="newEmpDept">부서</label>
-								<select class="form-select custom-select border-1 rounded-1" id="newEmpDept" name="newEmpDept">
-									<c:forEach items="${ deptList }" var="dl">
-										<c:if test="${ dl.deptLevel == 1 }">
-											<option value="${ dl.deptCode }">${ dl.deptName }</option>
-										</c:if>
-									</c:forEach>
-								</select>
-							</div>
-							<div class="col-lg-6 form-group">
-								<label for="newEmpDeptUpper">하위 부서</label>  
-								<select class="form-select custom-select border-1 rounded-1" id="newEmpDeptUpper" name="newEmpDeptUpper">
-									<c:forEach items="${ deptList }" var="dl">																										
-										<c:if test="${ dl.deptLevel == 2 }">					
-											<option value="${ dl.deptCode }">${ dl.deptName }</option>
-										</c:if>	
-									</c:forEach>
-								</select>
-							</div>
-						</div>
-						<div class="inputRequired mt-3 ml-4 mr-4 row">
-							<div class="col-lg-6 form-group">
-								<label for="newEmpJob">직위</label>
-								<select class="form-select custom-select border-1 rounded-1" id="newEmpJob" name="newEmpJob">
-									<option value="J1">대표</option>
-									<option value="J2">부사장</option>
-									<option value="J3">부장</option>
-									<option value="J4">차장</option>
-									<option value="J5">과장</option>
-									<option value="J6">대리</option>
-									<option value="J7">사원</option>
-								</select>
-							</div>
-							<div class="col-lg-6 form-group">
-								<label>퇴직일</label>  
-								<div class="input-group date mt-2" id="datetimepicker6" data-target-input="nearest">
-						            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker6" value="">
-						            <div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
-						                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-						            </div>
-						        </div>
-							</div>
 						</div>
 					</div>
 					
@@ -498,18 +356,24 @@ $(function(){
 		</div>
 	</div>
 	
+
 	<script>
-		/*$(function(){
-			$("#saveBtn").click(function(){
-				$.ajax({
-					type: "post",
-					method: "addEmployee.do",
-					data: {}
-				})
+		/*
+		modalEmpInfo(clicked_element){ //모달창으로 데이터를 보내기 위한 함수
+			var row_td = clicked_element.getElementsByTagName("td"); //tr의 td의 정보를 담는다.
+			var eno = row_td[0].innerHTML; 
+			
+			location.href = "updateModal.do?eno=" + eno;
+		}*/
+		
+		//사번 보내기, 모달창 열기
+		$(function(){
+			$("#employeeList tbody tr").click(function(){
+				location.href = "updateView.do?eno=" + $(this).children().eq(0).text();		
 			});
-		});*/
+		});
 	</script>
-	
+
 	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

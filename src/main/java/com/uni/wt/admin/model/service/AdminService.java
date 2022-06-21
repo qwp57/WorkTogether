@@ -31,6 +31,12 @@ public interface AdminService {
 
 	void addEmployee(Employee emp) throws Exception;
 
+	Employee updateView(int eno) throws Exception;
+
+	void updateEmployee(Employee emp) throws Exception;
+
+	void updateEmployeeResignation(Employee emp) throws Exception;
+
 	
 
 }

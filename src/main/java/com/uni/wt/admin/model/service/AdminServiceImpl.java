@@ -125,6 +125,33 @@ public class AdminServiceImpl implements AdminService{
 
 	}
 
+	@Override
+	public Employee updateView(int eno) throws Exception {
+		
+		return adminMapper.updateView(eno);
+	}
+
+	@Override
+	public void updateEmployee(Employee emp) throws Exception {
+		
+		int result = adminMapper.updateEmployee(emp);
+		
+		if(result < 0) {
+			throw new Exception("회원 정보 수정에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public void updateEmployeeResignation(Employee emp) throws Exception {
+		
+		int result = adminMapper.updateEmployeeResignation(emp);
+		
+		if(result < 0) {
+			throw new Exception("회원 정보 수정에 실패하였습니다.");
+		}
+		
+	}
+
 
 
 
