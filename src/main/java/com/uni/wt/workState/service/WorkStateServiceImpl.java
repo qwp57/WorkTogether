@@ -287,6 +287,24 @@ public class WorkStateServiceImpl implements WorkStateService{
 	}
 
 
+	@Override
+	public void updateVacStatus(Vacation vac) throws Exception {
+		int result = wsMapper.updateVacStatus(vac);
+		
+		if(result <= 0) {
+			throw new Exception("휴가 신청서 상태 변경에 실패했습니다.");
+		}
+		
+	}
+
+
+	@Override
+	public String getName(int vac_no) throws Exception {
+		
+		return wsMapper.getName(vac_no);
+	}
+
+
 	
 
 

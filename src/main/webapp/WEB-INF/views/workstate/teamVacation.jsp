@@ -139,19 +139,25 @@ font-family: 'Nanum Gothic', sans-serif;
                             	<td>${t.vcategory_no}</td>
                             	<td>${t.content}</td>
                             	<td><a href="/resources/upload_files/${t.fileChangeName}" download type="text/example">${t.fileOriginName}</a></td>
-                            	<td>
-                            		<c:choose>
-					  					<c:when test="${t.status eq 'W'}"><span style="background-color: lightgray; padding: 5px; border-radius: 5px;">승인 대기</span></c:when>
-					  					<c:when test="${t.status eq 'A'}"><span style="background-color: skyblue; padding: 5px; border-radius: 5px;">승인 완료</span></c:when>
-					  					<c:otherwise><span style="background-color: red; padding: 5px; border-radius: 5px;">승인 거부</span></c:otherwise>
-					  				</c:choose>
+                            	<td class="dropdown">
+									
+									<c:choose>
+										<c:when test="${t.status eq 'W'}"><button class="btn btn-secondary btn-lg dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown">승인 대기</button></c:when>
+										<c:when test="${t.status eq 'A'}"><button class="btn btn-primary btn-lg dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown">승인 완료</button></c:when>
+										<c:otherwise><button class="btn btn-danger btn-lg dropdown-toggle" id="dropdownMenuButton1" data-toggle="dropdown">승인 거부</button></c:otherwise>
+									</c:choose>
+									<div class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+										<li><a class="dropdown-item" onclick="changeStatus('A', ${t.vac_no}, this);">✅ 승인 완료</a></li>
+										<li><a class="dropdown-item" onclick="changeStatus('W', ${t.vac_no}, this);">⛔ 승인 대기</a></li>
+										<li><a class="dropdown-item" onclick="changeStatus('RJ', ${t.vac_no}, this);">❌ 승인 거부</a></li>
+									</div>
+									
                             	</td>
                             </tr>
                             </c:forEach>
                             </tbody>
                         </table>
-                   
-                    </div>
+
                     <ul class="pagination">
 						<c:choose>
 							<c:when test="${ pi.currentPage ne 1 }">

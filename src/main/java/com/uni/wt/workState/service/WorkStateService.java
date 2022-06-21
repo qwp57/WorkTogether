@@ -47,6 +47,10 @@ public interface WorkStateService {
 
 	ArrayList<String> getYearsCnt(Employee emp)throws Exception;
 
+	void updateVacStatus(Vacation vac) throws Exception;
+
+	String getName(int vac_no)throws Exception;
+
 
 
 

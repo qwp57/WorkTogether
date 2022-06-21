@@ -248,6 +248,7 @@ WHERE APPROVAL_NO = #{emp_no}
 
 <select id="selectTeamVacList" parameterType="map" resultMap="vacationSet">
 SELECT 
+	A.VAC_NO,
     B.NAME AS EMP_NO,
     C.JOB_NAME AS JOB,
     A.START_DATE,
@@ -277,6 +278,21 @@ AND A.APPROVAL_NO = #{emp.emp_no}
 	</choose>
 </if>
 ORDER BY A.START_DATE DESC
+</select>
+
+
+<update id="updateVacStatus" parameterType="Vacation">
+UPDATE VACATION_LOG
+SET STATUS = #{status}
+WHERE VAC_NO = #{vac_no}
+</update>
+
+<select id="getName" parameterType="_int" resultType="string">
+SELECT
+    NAME
+FROM VACATION_LOG
+JOIN EMPLOYEE USING(EMP_NO)
+WHERE VAC_NO = #{vac_no}
 </select>
 
 </mapper>

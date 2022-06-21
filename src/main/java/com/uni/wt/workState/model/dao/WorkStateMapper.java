@@ -53,6 +53,10 @@ public interface WorkStateMapper {
 
 	public ArrayList<String> getYearsCnt(Employee emp)throws Exception;
 
+	public int updateVacStatus(Vacation vac)throws Exception;
+
+	public String getName(int vac_no)throws Exception;
+
 	
 
 	

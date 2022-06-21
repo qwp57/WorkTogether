@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uni.wt.requestWork.model.dao.RequestWorkMapper">
+ 
+<resultMap type="Employee" id="employeeSet">
+	<id property="emp_no" column="EMP_NO"/>
+	<result property="dept_code" column="DEPT_CODE"/>
+	<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+	<result property="job_code" column="JOB_CODE"/>
+	<result property="file_no" column="FILE_NO"/>
+</resultMap>
+
+<resultMap type="Project" id="projectSet">
+	<id property="pj_no" column="PJ_NO"/>
+	<result property="pj_title" column="PJ_TITLE"/>
+</resultMap>
+ 
+ <select id="selectDeptList" resultType="map">
+ SELECT
+ 	DEPT_CODE,
+    DEPT_NAME
+FROM DEPARTMENT
+WHERE DEPT_LEVEL = 2
+ 
+ </select>
+ 
+ <select id="getDeptMember" parameterType="_int" resultMap="employeeSet">
+ SELECT
+    EMP_NO, 
+    NAME
+FROM EMPLOYEE
+WHERE DEPT_CODE = #{dept_code}
+ </select>
+ 
+ <select id="selectProjectList" parameterType="_int" resultMap="projectSet">
+ SELECT
+    A.PJ_NO,
+    B.PJ_TITLE
+FROM PROJECT_MEMBER A
+JOIN PROJECT B ON A.PJ_NO = B.PJ_NO
+WHERE EMP_NO =#{emp_no}
+ </select>
+ 
+ <insert id="insertRequestWork" parameterType="RequestWork">
+ INSERT INTO RW
+ VALUES(RW_SEQ.NEXTVAL, #{req_member}, #{res_member}, #{title}, #{content}, #{pj_no}, #{term}, #{important}, DEFAULT, NULL, SYSDATE, NULL, #{req_file}, NULL)
+ </insert>
+ 
+</mapper>
