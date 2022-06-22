@@ -1,6 +1,7 @@
 package com.uni.wt.admin.controller;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.uni.wt.admin.model.dto.Department;
+import com.uni.wt.admin.model.dto.EmployeeSearchCondition;
 import com.uni.wt.admin.model.service.AdminService;
 import com.uni.wt.common.Pagination;
 import com.uni.wt.common.dto.PageInfo;
@@ -216,12 +217,67 @@ public class AdminController {
 			adminService.updateEmployee(emp);
 			log.info("정보 업데이트");
 		}else {
-			//emp.setResignation_date(resignationDate);
+			//포맷터
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String foragttedDate = simpleDateFormat.format(resignationDate);
+			
+			Date resignation_date = java.sql.Date.valueOf(foragttedDate); //sql.Date는 바로 simpleDateFormat으로 파싱하여 형변환 하는 것이 불가하다.
+			
+			emp.setResignation_date(resignation_date);
 			adminService.updateEmployeeResignation(emp);
 			log.info("정보 업데이트");
 		}
 		
 		mv.addObject("eno", emp.getEmp_no()).setViewName("redirect:updateView.do");
+		
+		return mv;
+	}
+	
+	//사원 검색
+	@RequestMapping("searchEmp.do")
+	public ModelAndView searchEmp(EmployeeSearchCondition sc, String condition, String keyword, ModelAndView mv, @RequestParam(value="statusList" )List<String> statusList,
+								@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage) throws Exception {
+		log.info("condition : " + condition);
+		log.info("keyword : " + keyword);
+		log.info("statusList : " + statusList);
+		
+		//받아온 condition이 무엇이냐에 따라 어디에 set해주냐가 달라짐
+		switch(condition) {
+		case "emp_no":
+			sc.setEmp_no(keyword);
+			break;
+		case "name":
+			sc.setName(keyword);
+			break;
+		case "dept_name" :
+			sc.setDept_name(keyword);
+			break;
+		case "job_name" :
+			sc.setJob_name(keyword);
+			break;
+		}
+		
+		for(String sl : statusList) {			
+			if(sl.equals("I")) {
+				sc.setStatus("I");
+			}else if(sl.equals("Q")) {
+				sc.setStatus("Q");
+			}
+		}
+		log.info("status : " + sc.getStatus());
+		//검색했을 때 페이징 처리
+		int listCount = adminService.searchListCount(sc);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		
+		ArrayList<Employee> empList = adminService.searchEmpList(sc, pi);
+		
+		mv.addObject("empList", empList);
+		mv.addObject("pi", pi);
+		mv.addObject("condition", condition);
+		mv.addObject("keyword", keyword);
+		
+		mv.setViewName("admin/employeeManagementView");
 		
 		return mv;
 	}

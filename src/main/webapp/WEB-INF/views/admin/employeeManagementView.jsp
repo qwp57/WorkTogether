@@ -85,7 +85,7 @@
 			<!-- 검색 영역 -->
 			<div class="section-body">
 				<div class="searchOption">
-					<div class="searchTitle mb-3">검색옵션</div>
+					<div class="searchTitle mb-3">검색</div>
 					<div class="text-center">
 						<form id="search" action="searchEmp.do">
 							<table class="table table-bordered">
@@ -94,28 +94,31 @@
 									<td colspan="3" class="text-left">
 									  	<div class="form-check-inline">
 										  <label class="form-check-label">
-										    <input type="radio" class="form-check-input" name="optradio" >전체
+										    <input type="radio" class="form-check-input" name="statusList" value="" checked>전체
 										  </label>
 										</div>
 										<div class="form-check-inline">
 										  <label class="form-check-label">
-										    <input type="radio" class="form-check-input" name="optradio">재직
+										    <input type="radio" class="form-check-input" name="statusList" value="I">재직
 										  </label>
 										</div>
-										<div class="form-check-inline disabled">
+										<div class="form-check-inline">
 										  <label class="form-check-label">
-										    <input type="radio" class="form-check-input" name="optradio">퇴직
+										    <input type="radio" class="form-check-input" name="statusList" value="Q">퇴직
 										  </label>
 										</div>
 									</td>
 								</tr>
+								
 								<tr class="thead-light">
+								<!-- 
 									<th>부서</th>
 									<td class="text-left">
 									 	<div class="input-group mb-3 input-group-sm">
-											<!-- 부서 키워드 선택 토글 -->
+											<!-- 부서 키워드 선택 토글 
 											<div class="input-group-prepend" style="width:100px">
-												<select class="form-select custom-select border-1 rounded-1" id="searchDept" name="dept">
+												<select class="form-select custom-select border-1 rounded-1" id="searchDept" name="upper_dept_code">
+													<option value="">없음</option>
 													<c:forEach items="${ deptList }" var="dl">
 														<c:if test="${ dl.deptLevel == 1 }">
 															<option value="${ dl.deptCode }">${ dl.deptName }</option>
@@ -130,7 +133,8 @@
 									<td class="text-left">
 										<div class="input-group mb-3 input-group-sm">
 											<div class="input-group-prepend" style="width:100px">
-												<select class="form-select custom-select border-1 rounded-1" id="searchDeptUppper" name="deptUpper">
+												<select class="form-select custom-select border-1 rounded-1" id="searchDeptUppper" name="dept_code">
+													<option value="none">없음</option>
 													<c:forEach items="${ deptList }" var="dl">																										
 														<c:if test="${ dl.deptLevel == 2 }">					
 															<option value="${ dl.deptCode }">${ dl.deptName }</option>
@@ -140,14 +144,16 @@
 											</div>							
 										</div>
 									</td>
-								</tr>
+								 </tr>
+								
 								<tr class="thead-light">
 									<th>직급</th>
 									<td colspan="3" class="text-left">
 									  	<div class="input-group mb-3 input-group-sm">
-											<!-- 직급 키워드 선택 토글 -->
+											<!-- 직급 키워드 선택 토글 
 											<div class="input-group-prepend" style="width:100px">
-												<select class="form-select custom-select border-1 rounded-1" id="searchJob" name="job">
+												<select class="form-select custom-select border-1 rounded-1" id="searchJob" name="job_code">
+													<option value="none">없음</option>
 													<option value="J1">대표</option>
 													<option value="J2">부사장</option>
 													<option value="J3">부장</option>
@@ -159,19 +165,21 @@
 											</div>							
 										</div>
 									</td>
-								</tr>
+								</tr> -->
 							</table>
 							<div class="input-group mb-3 input-group-sm">
 								<!-- 검색 키워드 선택 토글 -->
 								<div class="input-group-prepend">
-									<select class="form-control rounded-1" id="searchSelect" name="keyword">
-										<option ${(param.keyword == "") ? "selected" : "" } value="">사번</option>
-										<option ${(param.keyword == "") ? "selected" : "" } value="">이름</option>										
+									<select class="form-control rounded-1" id="searchSelect" name="condition">
+										<option ${(param.condition == "emp_no") ? "selected" : "" } value="emp_no">사번</option>
+										<option ${(param.condition == "name") ? "selected" : "" } value="name">이름</option>		
+										<option ${(param.condition == "dept_name") ? "selected" : "" } value="dept_name">팀</option>
+										<option ${(param.condition == "job_name") ? "selected" : "" } value="job_name">직급</option> 								
 									</select>
 								</div>
 									
 								<!-- 검색어 입력 -->		
-								<input type="text" class="form-control" id="searchKey" name="searchKey" placeholder="검색어를 입력하세요." value="${param.searchKey }">	
+								<input type="text" class="form-control" id="keyword" name="keyword" placeholder="검색어를 입력하세요." value="${ keyword }">	
 								<!-- 검색 버튼 --> 
 								<input type="submit" class="btn btn-primary" id="searchBtn" value="검색">							
 							</div>
@@ -214,42 +222,69 @@
 					</c:forEach>
 				</tbody>
 			</table>			
-			
+		
+	
 			<!-- 페이징 처리 -->
-			<div id="pagingArea">
-	          <ul class="pagination">
-	          	  <c:choose>
-		          		 <c:when test="${ pi.currentPage ne 1 }">
-		          			<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
-		          		 </c:when>
-		          		 <c:otherwise>
-		          			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
-		          		 </c:otherwise>
-	          	  </c:choose>
-	          	
-	              <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
-		              	<c:choose>
-			           		<c:when test="${ pi.currentPage ne p }">
-			              		<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ p }">${ p }</a></li>
-			           		</c:when>
-			           		<c:otherwise>
-			           			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
-			           		</c:otherwise>
-		            	</c:choose>
-	               </c:forEach>
-        
-	              	<c:choose>
-		          		<c:when test="${ pi.currentPage ne pi.maxPage }">
-		          			<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
-		          		</c:when>
-		          		<c:otherwise>
-		          			<li class="page-item disabled"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
-		          		</c:otherwise>
-	          		</c:choose>
-	         	 </ul>
-	    	</div>	
-		</div>
-	</div>
+			<div id="pagingArea" align="center">
+				<!-- [이전] -->
+				<c:if test="${ pi.currentPage != 1 }">
+					<%-- keyword가 empty -> 검색하지 않는 경우 --%>
+					<c:if test="${ empty keyword }">
+							<a href="employeeManagement.do?currentPage=${ pi.currentPage-1 }">[이전]</a>
+					</c:if>
+					<%-- search가 empty아님 -> 검색하는 경우 --%>
+					<c:if test="${ !empty keyword }">
+						<c:url var="searchUrl" value="searchEmp.do">
+							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
+							<c:param name="condition" value="${ condition }"/>
+							<c:param name="search" value="${ search }"/>
+						</c:url>
+						<a href="${ searchUrl }">[이전]</a>
+					</c:if>
+				</c:if>
+				
+				<!-- [번호들] -->
+				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+					<c:if test="${ pi.currentPage eq p }">
+						<font color="red" size="4">[${ p }]</font>
+					</c:if>
+					<c:if test="${ pi.currentPage ne p }">
+						<%-- <a href="listBoard.do?currentPage=${ p }">[${ p }]</a> --%>
+						<%-- keyword가 empty -> 검색하지 않는 경우 --%>
+						<c:if test="${ empty keyword }">
+							<a href="employeeManagement.do?currentPage=${ p }">[${ p }]</a>
+						</c:if>
+						<%-- keyword가 empty아님 -> 검색하는 경우 --%>
+						<c:if test="${ !empty keyword }">
+							<c:url var="searchUrl" value="searchEmp.do">
+								<c:param name="currentPage" value="${ p }"/>
+								<c:param name="condition" value="${ condition }"/>
+								<c:param name="search" value="${ search }"/>
+							</c:url>
+							<a href="${ searchUrl }">[${ p }]</a>
+						</c:if>
+					</c:if>
+				 </c:forEach>
+				
+				<!-- [다음] -->
+				<c:if test="${ pi.currentPage ne pi.maxPage }">
+					<%-- search가 empty -> 검색하지 않는 경우 --%>
+					<c:if test="${ empty keyword }">
+							<a href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">[다음]</a>
+					</c:if>
+					<%-- search가 empty아님 -> 검색하는 경우 --%>
+					<c:if test="${ !empty keyword }">
+						<c:url var="searchUrl" value="searchEmp.do">
+							<c:param name="currentPage" value="${pi.currentPage+1  }"/>
+							<c:param name="condition" value="${ condition }"/>
+							<c:param name="search" value="${ search }"/>
+						</c:url>
+						<a href="${ searchUrl }">[다음]</a>
+					</c:if>
+				</c:if>
+			</div>	
+   		</div>
+	</div>	
 	
 	<!-- 사원 추가 모달 창 -->
 	<div class="modal" id="addModal" data-backdrop="static" data-keyboard="false">
@@ -358,13 +393,6 @@
 	
 
 	<script>
-		/*
-		modalEmpInfo(clicked_element){ //모달창으로 데이터를 보내기 위한 함수
-			var row_td = clicked_element.getElementsByTagName("td"); //tr의 td의 정보를 담는다.
-			var eno = row_td[0].innerHTML; 
-			
-			location.href = "updateModal.do?eno=" + eno;
-		}*/
 		
 		//사번 보내기, 모달창 열기
 		$(function(){

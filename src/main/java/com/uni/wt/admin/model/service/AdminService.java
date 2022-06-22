@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.uni.wt.admin.model.dto.Department;
+import com.uni.wt.admin.model.dto.EmployeeSearchCondition;
 import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 
@@ -37,6 +38,10 @@ public interface AdminService {
 
 	void updateEmployeeResignation(Employee emp) throws Exception;
 
-	
+	int searchListCount(EmployeeSearchCondition sc) throws Exception;
+
+	ArrayList<Employee> searchEmpList(EmployeeSearchCondition sc, PageInfo pi) throws Exception;
+
+
 
 }

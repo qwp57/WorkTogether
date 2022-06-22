@@ -8,6 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import com.uni.wt.admin.model.dto.Department;
+import com.uni.wt.admin.model.dto.EmployeeSearchCondition;
 import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 
@@ -45,5 +46,9 @@ public interface AdminMapper {
 	int updateEmployee(Employee emp);
 
 	int updateEmployeeResignation(Employee emp);
+
+	int searchListCount(EmployeeSearchCondition sc);
+
+	ArrayList<Employee> searchEmpList(Map<String, Object> map);
 
 }
