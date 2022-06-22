@@ -142,6 +142,7 @@ transform: scale(1.02);
 					</div>
 				</div>
 			</div>
+			<button id="btnSend"> 웹소켓 실험 </button>
 
 			<div class="section-body">
 				<div class="rw-list">
@@ -232,14 +233,7 @@ transform: scale(1.02);
 	<jsp:include page="../requestwork/rwDetail_1.jsp"></jsp:include><!-- css rwDetail_2와 공유함 -->
 	<jsp:include page="../requestwork/rwDetail_2.jsp"></jsp:include>
 	
-<script type="text/javascript">
-	$('#completed-rw').click(function() {
-		location.href="/completedRequest.do";
-	})
-	
-	$('#all-rw').click(function() {
-		location.href="/allRequest.do";
-	})
-</script>
+
+
 </body>
 </html>

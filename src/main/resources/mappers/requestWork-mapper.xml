@@ -14,6 +14,18 @@
 	<id property="pj_no" column="PJ_NO"/>
 	<result property="pj_title" column="PJ_TITLE"/>
 </resultMap>
+
+<resultMap type="RequestWork" id="requestWorkSet">
+	<id property="rw_no" column="RW_NO"/>
+	<result property="req_member" column="REQ_MEMBER"/>
+	<result property="res_member" column="RES_MEMBER"/>
+	<result property="pj_no" column="PJ_NO"/>
+	<result property="status_message" column="STATUS_MESSAGE"/>
+	<result property="create_date" column="CREATE_DATE"/>
+	<result property="modified_date" column="MODIFIED_DATE"/>
+	<result property="req_file" column="REQ_FILE"/>
+	<result property="res_file" column="RES_FILE"/>
+</resultMap>
  
  <select id="selectDeptList" resultType="map">
  SELECT
@@ -41,9 +53,24 @@ JOIN PROJECT B ON A.PJ_NO = B.PJ_NO
 WHERE EMP_NO =#{emp_no}
  </select>
  
+ <select id="getRWSeq" resultType="_int">
+ 	SELECT
+ 		RW_SEQ.NEXTVAL
+ 	FROM DUAL
+ </select>
+ 
+ 
  <insert id="insertRequestWork" parameterType="RequestWork">
  INSERT INTO RW
- VALUES(RW_SEQ.NEXTVAL, #{req_member}, #{res_member}, #{title}, #{content}, #{pj_no}, #{term}, #{important}, DEFAULT, NULL, SYSDATE, NULL, #{req_file}, NULL)
+ VALUES(#{rw_no}, #{req_member}, #{res_member}, #{title}, #{content}, #{pj_no}, #{term}, #{important}, DEFAULT, NULL, SYSDATE, NULL, #{req_file}, NULL)
  </insert>
+ 
+ <select id="selectRWDetail" parameterType="_int" resultMap="requestWorkSet">
+ 	SELECT
+ 		*
+ 	FROM RW
+ 	WHERE RW_NO = #{seqNo}
+ 
+ </select>
  
 </mapper>

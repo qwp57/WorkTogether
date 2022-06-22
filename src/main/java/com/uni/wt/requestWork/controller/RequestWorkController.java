@@ -18,6 +18,8 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.gson.GsonBuilder;
 import com.uni.wt.common.commonFile.FileService;
+import com.uni.wt.common.notice.service.NoticeService;
+import com.uni.wt.common.socket.EchoHandler;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.requestWork.model.dto.RequestWork;
@@ -27,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
+@RequestMapping("/requestWork")
 public class RequestWorkController {
 	
 	@Autowired
@@ -35,8 +38,14 @@ public class RequestWorkController {
 	@Autowired
 	private FileService fileService;
 	
+//	@Autowired
+//	private EchoHandler echoHandler;
 	
-	@RequestMapping("requestWorkMain.do")
+	@Autowired
+	private NoticeService noticeService;
+	
+	
+	@RequestMapping("/requestWorkMain.do")
 	public String requestWorkMain(HttpServletRequest request, Model m) throws Exception {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		
@@ -63,7 +72,7 @@ public class RequestWorkController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "getDeptMember.do", produces = "application/text; charset=UTF-8")
+	@RequestMapping(value = "/getDeptMember.do", produces = "application/text; charset=UTF-8")
 	public String getDeptMember(String dept_code)throws Exception{
 		log.info("부서 번호 : {}", dept_code);
 		
@@ -74,7 +83,7 @@ public class RequestWorkController {
 		return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(memberList);
 	}
 	
-	@RequestMapping("insertRequestWork.do")
+	@RequestMapping("/insertRequestWork.do")
 	public String insertRequestWork(RequestWork rw, @RequestParam(name="upload_file", required=false) MultipartFile file,
 			HttpServletRequest request, RedirectAttributes redirect) throws Exception {
 		Map<String, String> msgMap = new HashMap<String, String>(); 
@@ -94,9 +103,12 @@ public class RequestWorkController {
 		int result = rwService.insertRequestWork(rw);
 		log.info("업무신청서 결과 : {}", result);
 		
-		if(result >0) {
-			
+		if(result > 0) {
 			msgMap.put("msg", "업무가 성공적으로 요청됐습니다.");
+			
+			noticeService.insertNotice(emp, result, "RW");// 알림 insert
+			
+			
 		}else {
 			fileService.failed(Integer.parseInt(fileSeq));
 			msgMap.put("msg", "업무 요청에 실패했습니다.");
@@ -104,17 +116,20 @@ public class RequestWorkController {
 		}
 		redirect.addFlashAttribute("msg", msgMap);
 		
-		return "redirect:/requestWorkMain.do";
+		
+		
+		
+		return "redirect:/requestWork/requestWorkMain.do";
 	}
 	
-	
-	@RequestMapping("completedRequest.do")
+
+	@RequestMapping("/completedRequest.do")
 	public String completedRequest() {
 		
 		return "requestwork/rwCompleted";
 	}
 	
-	@RequestMapping("allRequest.do")
+	@RequestMapping("/allRequest.do")
 	public String allRequest() {
 		
 		return "requestwork/rwAllList";

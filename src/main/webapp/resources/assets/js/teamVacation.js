@@ -33,7 +33,7 @@ function changeStatus(status, vac_no, e){
     console.log("status : "+status+" vac_no : "+vac_no);
 
     $.ajax({
-        url : "updateVacStatus.do",
+        url : "/workState/updateVacStatus.do",
         data : {status : status,
                 vac_no : vac_no},
         type : "post",
