@@ -23,6 +23,7 @@
 		<typeAlias type="com.uni.wt.workState.model.dto.Vacation" alias="Vacation"/>
 		<typeAlias type="com.uni.wt.requestWork.model.dto.RequestWork" alias="RequestWork"/>
 		<typeAlias type="com.uni.wt.admin.model.dto.EmployeeSearchCondition" alias="EmployeeSearchCondition"/>
+		<typeAlias type="com.uni.wt.common.notice.dto.Notice" alias="Notice"/>
 	</typeAliases>
 	
 	<mappers>
@@ -35,6 +36,7 @@
 		<mapper resource="/mappers/admin-mapper.xml"/>
 		<mapper resource="/mappers/file-mapper.xml"/>
 		<mapper resource="/mappers/requestWork-mapper.xml"/>
+		<mapper resource="/mappers/notice-mapper.xml"/>
 	</mappers>
 	
 </configuration>

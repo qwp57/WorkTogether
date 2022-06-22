@@ -24,6 +24,7 @@
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
 
+	
   <style>
   .dropdown-list .dropdown-list-content:not(.is-end ):after {
 	content: normal
@@ -76,6 +77,7 @@
   </style>
 </head>
 <body>
+
 <script type="text/javascript">
 
 $(function(){
@@ -222,14 +224,49 @@ $(function(){
           </li>
         </ul>
       </nav>
-      <script>
-      /*  function logout() {
-          $('#endTime_area').text();
 
-        }*/
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.5/sockjs.min.js"></script>
+<script type="text/javascript">
 
-      </script>
+var socket = null;
 
+connect();
+
+function connect() {
+	var ws = new WebSocket('ws://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/echo-ws.do/websocket');
+	socket = ws;
+	
+	ws.onopen = function() {
+   		console.log('Info: connection opened.');
+	};
+	
+	ws.onmessage = function (event) {
+		console.log('Info : connection onmessage');
+		console.log(event);
+	};
+	
+	ws.onclose = function (event) {
+		console.log('Info : connection closed')
+	};
+	
+	ws.onerror = function (err) {
+		console.log('Error : ', err);
+	};
+
+$('#btnSend').click(function() {
+	socket.send("업무요청,최부장");
+	
+	socket.onclose();
+});
+	
+}
+
+</script>
+	
+	
+
+
+	
 
 
       <!-- 개인정보 모달창 -->

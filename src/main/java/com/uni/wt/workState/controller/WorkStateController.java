@@ -36,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequestMapping("/workState")
 public class WorkStateController {
 	
 	@Autowired
@@ -51,7 +52,7 @@ public class WorkStateController {
 	private LunarCalendar lunarCal;
 	
 	@ResponseBody
-	@RequestMapping(value="workState.do")
+	@RequestMapping(value="/workStateMain.do")
 	public ModelAndView workState(HttpServletRequest request, ModelAndView mv) throws Exception {
 		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
 		log.info("[현재 로그인한 유저]  : {}", emp.toString());
@@ -64,7 +65,7 @@ public class WorkStateController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="workStateSelectWeek.do")
+	@RequestMapping(value="/workStateSelectWeek.do")
 	public String workStateSelectWeek(HttpServletRequest request, ModelAndView mv, String startday) throws Exception {
 		log.info("startday : {}", startday);
 		Map<String, Object> data = new HashMap<String, Object>();
@@ -89,7 +90,7 @@ public class WorkStateController {
 		
 	}
 	
-	@RequestMapping("teamWorkState.do")
+	@RequestMapping("/teamWorkState.do")
 	public String teamWorkState(HttpServletRequest request, Model m, @RequestParam(value="startday", required = false) String startday,
 			@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage) throws Exception {
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
@@ -144,7 +145,7 @@ public class WorkStateController {
 		return "workstate/teamWorkState";
 	}
 	
-	@RequestMapping("vacationMgtMain.do")//휴가 메인
+	@RequestMapping("/vacationMgtMain.do")//휴가 메인
 	public String vacationMGTmain(HttpServletRequest request,Model m, @RequestParam(value = "year", required = false) String year) throws Exception {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		
@@ -196,7 +197,7 @@ public class WorkStateController {
 		return "workstate/myVacation";
 	}
 	
-	@RequestMapping("insertVacation.do")
+	@RequestMapping("/insertVacation.do")
 	public String insertVacation(Vacation vac, @RequestParam(name="uploadFile", required=false) MultipartFile file,
 			HttpServletRequest request, RedirectAttributes redirect) throws Exception {
 		Map<String, String> msgMap = new HashMap<String, String>(); 
@@ -226,12 +227,12 @@ public class WorkStateController {
 		
 		
 		
-		return "redirect:/vacationMgtMain.do";
+		return "redirect:/workState/vacationMgtMain.do";
 	}
 	
 
 
-	@RequestMapping("teamVacation.do")
+	@RequestMapping("/teamVacation.do")
 	public String teamVacation(HttpServletRequest request,Model m, @RequestParam(value = "year", required = false) String year,
 			@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage,
 			 @RequestParam(value = "searchTarget", required = false) String searchTarget,  @RequestParam(value = "searchKeyword", required = false) String searchKeyword) throws Exception {
@@ -314,7 +315,7 @@ public class WorkStateController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value ="updateVacStatus.do")
+	@RequestMapping(value ="/updateVacStatus.do")
 	public String updateVacStatus(Vacation vac) throws Exception{
 		
 		log.info(vac.toString());

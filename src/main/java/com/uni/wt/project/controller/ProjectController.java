@@ -3,8 +3,11 @@ package com.uni.wt.project.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.uni.wt.employee.model.dto.Employee;
+import com.uni.wt.project.boardAll.model.dto.BoardAll;
+import com.uni.wt.project.boardAll.model.service.BoardAllService;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.model.service.ProjectService;
+import com.uni.wt.project.post.model.service.PostService;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.project.projectMember.model.service.ProjectMemberService;
@@ -33,6 +36,10 @@ public class ProjectController {
 	private ProjectService projectService;
 	@Autowired
 	private ProjectMemberService projectMemberService;
+	@Autowired
+	PostService postService;
+	@Autowired
+	private BoardAllService boardAllService;
 	private Map<String, String> msgMap = new HashMap<String, String>();
 
 	@RequestMapping("")
@@ -42,7 +49,7 @@ public class ProjectController {
 
 	}
 	@ResponseBody
-	@RequestMapping(value = "/selectAllProject", produces="application/json; charset=utf-8")
+	@RequestMapping(value = "/selectAllProject.do", produces="application/json; charset=utf-8")
 	public String selectAllProject(HttpSession session) throws Exception {
 		int loginEmp = ((Employee)session.getAttribute("loginEmp")).getEmp_no();
 		ArrayList<Project> myProjects = projectService.selectMyProject(loginEmp);
@@ -61,10 +68,26 @@ public class ProjectController {
 		return gson.toJson(myAllProjects);
 	}
 	@ResponseBody
-	@RequestMapping(value = "/selectProjectColor", produces="application/json; charset=utf-8")
+	@RequestMapping(value = "/selectAllBoard.do", produces="application/json; charset=utf-8")
+	public String selectAllBoard(@RequestParam("pj_no") int pj_no) throws Exception {
+
+		ArrayList<BoardAll> allBoards = boardAllService.selectAllBoard(pj_no);
+
+		for (BoardAll b: allBoards) {
+			if(b.getBoard_type().equals("post")){
+				//postService.selectPost(b.getBoard_no());
+			}
+		}
+
+		log.info("게시물 전체 조회 : " + allBoards.toString());
+		return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(allBoards);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/selectProjectColor.do", produces="application/json; charset=utf-8")
 	public String selectProjectColor(HttpSession session) throws Exception {
 		int loginEmp = ((Employee)session.getAttribute("loginEmp")).getEmp_no();
-		ArrayList<ProjectMember> list = projectMemberService.selectProjectColor(loginEmp);
+		ArrayList<ProjectMember> list = projectMemberService.selectProjectColorByEmpNo(loginEmp);
 		return new GsonBuilder().create().toJson(list);
 	}
 	@ResponseBody
@@ -138,7 +161,15 @@ public class ProjectController {
 		projectService.removeTag(pjTag);
 		return "태그 삭제 성공";
 	}
-	
+
+	@ResponseBody
+	@RequestMapping(value = "/removeTagByPjNo.do", produces="application/json; charset=utf-8")
+	public String removeTagByPjNo(ProjectTag projectTag) throws Exception {
+
+		projectMemberService.removeTagByPjNo(projectTag);
+		return "태그 삭제 성공";
+	}
+
 
 	@ResponseBody
 	@RequestMapping(value = "/insertBookmark.do", produces = "application/text;charset=utf8")

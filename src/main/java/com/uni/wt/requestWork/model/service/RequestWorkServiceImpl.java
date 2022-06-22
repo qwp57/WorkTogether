@@ -44,7 +44,19 @@ public class RequestWorkServiceImpl implements RequestService{
 	@Override
 	public int insertRequestWork(RequestWork rw) throws Exception {
 		
-		return rwMapper.insertRequestWork(rw);
+		int rwSeq = rwMapper.getRWSeq();
+		
+		rw.setRw_no(rwSeq);
+		int result = rwMapper.insertRequestWork(rw);
+		
+		if(result > 0) {
+			
+			return rwSeq;
+		}else {
+			rw = null;
+			return result;
+		}
+		
 	}
 
 }
