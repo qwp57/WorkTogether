@@ -18,5 +18,10 @@
         INSERT INTO PJ_BOARD
         VALUES (#{board_no}, #{pj_no}, #{board_type}, #{writer}, SYSDATE)
     </insert>
-
+    <select id="selectAllBoard" parameterType="int" resultMap="boardAllSet">
+        SELECT *
+        FROM PJ_BOARD
+        WHERE PJ_NO = #{pj_no}
+        ORDER BY BOARD_NO DESC
+    </select>
 </mapper>
