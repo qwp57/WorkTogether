@@ -19,4 +19,8 @@ public interface RequestWorkMapper {
 
 	public int insertRequestWork(RequestWork rw)throws Exception;
 
+	public int getRWSeq()throws Exception;
+
+	public RequestWork selectRWDetail(int seqNo)throws Exception;
+
 }

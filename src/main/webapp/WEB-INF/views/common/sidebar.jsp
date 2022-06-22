@@ -30,9 +30,9 @@
               <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i> <span>근태관리</span></a>
                 <ul class="dropdown-menu">
-                  <li><a class="nav-link" href="/vacationMgtMain.do">휴가관리</a></li>
-                  <li><a class="nav-link" href="/workState.do">근무기록</a></li>
-                  <li><a class="nav-link" href="/workStatistics.do">통계</a></li>
+                  <li><a class="nav-link" href="/workState/vacationMgtMain.do">휴가관리</a></li>
+                  <li><a class="nav-link" href="/workState/workStateMain.do">근무기록</a></li>
+                  <li><a class="nav-link" href="/workState/workStatistics.do">통계</a></li>
                 </ul>
               </li>
              
@@ -82,7 +82,7 @@
               </li>
               <hr>
               <li class="nav-item ">
-                <a href="/requestWorkMain.do" class="nav-link "><i class="fas fa-exclamation"></i> <span>업무요청</span></a>
+                <a href="/requestWork/requestWorkMain.do" class="nav-link "><i class="fas fa-exclamation"></i> <span>업무요청</span></a>
               </li>
             </ul>
 

@@ -28,7 +28,7 @@ $('#startTime').click(function(){
     if($('#status_Change').text().trim() == "근무시작 전"){
 
         $.ajax({
-            url:"insertInTime.do", 
+            url:"/workState/insertInTime.do", 
             data : {emp_no : empno },
             type : "post",
             success : function(result){
@@ -71,7 +71,7 @@ $('#endTime').click(function(){
         alert(name+"님은 이미 퇴근했습니다.");
     }else{
         $.ajax({
-            url :"updateOutTime.do",
+            url :"/workState/updateOutTime.do",
             data : {emp_no : empno},
             type : "post",
             success : function(result){
@@ -128,7 +128,7 @@ $('.sbtn').click(function(event){
     }else{
 
         $.ajax({
-            url :"updateWorkStatus.do",
+            url :"/workState/updateWorkStatus.do",
             data :{emp_no : empno,
                     status : status},
             type :"post",

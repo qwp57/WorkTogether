@@ -26,13 +26,9 @@
 				/WEB-INF/spring/appServlet/aspect-context.xml		
 			</param-value>
 		</init-param>
-		<!-- 404 에러 처리 -> employeecontroller에서 hondle -> 안됌...
-		<init-param>
-			<param-name>throwExceptionIfNoHandlerFound</param-name>
-			<param-value>true</param-value>
-		</init-param>-->
-		<!--  -->
+	
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
 	</servlet>
 		
 	<!-- servers프로젝트->web.xml보면 defaultServlet 지정되어있는게 ' / ' -->
@@ -62,10 +58,8 @@
 		<error-code>404</error-code>
 		<location>/WEB-INF/views/common/errorPage-404.jsp</location>
 	</error-page>
-	<!--  <error-page>
-		<error-code>500</error-code>
-		<location>/WEB-INF/views/common/errorPageFilter.jsp</location>
-	</error-page>-->
+
+	
 
 	
 </web-app>
