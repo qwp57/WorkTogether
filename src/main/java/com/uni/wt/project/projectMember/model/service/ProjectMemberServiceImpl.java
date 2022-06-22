@@ -44,8 +44,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public ArrayList<ProjectMember> selectProjectColor(int loginEmp) {
-        return projectMemberMapper.selectProjectColor(loginEmp);
+    public ArrayList<ProjectMember> selectProjectColorByEmpNo(int loginEmp) {
+        return projectMemberMapper.selectProjectColorByEmpNo(loginEmp);
     }
 
     @Override
@@ -90,5 +90,14 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     @Override
     public int checkBookmark(ProjectTag projectTag) throws Exception {
         return projectMemberMapper.checkBookmark(projectTag);
+    }
+
+    @Override
+    public void removeTagByPjNo(ProjectTag projectTag) throws Exception {
+        int result = projectMemberMapper.removeTagByPjNo(projectTag);
+
+        if (result < 0) {
+            throw new Exception("태그 삭제 실패");
+        }
     }
 }

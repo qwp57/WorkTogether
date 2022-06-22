@@ -294,7 +294,7 @@
         color: white;
     }
 
-    #caSetting:hover, .favoBtn:hover, .fa-ellipsis-v:hover, .navMenu:hover, .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch, .switchTodo {
+    #caSetting:hover, .favoBtn:hover, .fa-ellipsis-v:hover, .navMenu:hover, .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch, .switchTodo, disconnectingTagBtn:hover {
         cursor: pointer;
     }
 
@@ -880,12 +880,12 @@
             <div class="modal-header">
                 <div class="row col-12">
                     <div class="col-lg-1">
-                        <div class="colors color-1 ml-2"
+                        <div class="colors ${pjMember.pj_color} ml-2"
                              style="margin: 0px; width:20px; height:20px;">
                         </div>
                     </div>
                     <div class="col-lg-11" style="margin-top: 10px;">
-                        <div><h5>프로젝트 제목</h5></div>
+                        <div><h5>${pj.pj_title}</h5></div>
                     </div>
                 </div>
                 <span><input
@@ -899,8 +899,8 @@
                         <div class="form-group">
                             <div class="row ml-5 mr-5">
                                 <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg'> 홍길동</span>
-                                    <span style="color: gray"> 2022-06-10 09:15</span>
+                                    <span class='bi bi-person-circle fa-lg' id="postWriter">홍길동</span>
+                                    <span style="color: gray" id="postUploadDate"> 2022-06-10 09:15</span>
                                 </div>
                                 <div class="col-lg-2 text-right">
                                     <a>수정 </a>
@@ -910,11 +910,11 @@
                                 <br><br>
 
                                 <div class="col-12">
-                                    <h3>글 제목</h3>
+                                    <h3 id="postTitle">글 제목</h3>
                                     <hr>
                                 </div>
 
-                                <div class="col-lg-12 ml-3 mr-3">
+                                <div class="col-lg-12 ml-3 mr-3" id="postContent">
                                     <p>글 내용</p>
                                     <p>글 내용</p>
                                     <p>글 내용</p>
@@ -1157,7 +1157,7 @@
 <script>
     $(function () {
         datepickerLoad()
-
+        loadBoards()
         $(document).on('click', '.newPj', function () {
             $("#makePj").modal("show")
         })
@@ -1166,46 +1166,37 @@
             $("#colorModal").modal("show")
         })
 
+        $(document).on("click", ".tagAddBtn", function () {
+            $("#addTagModal").modal("show")
+        })
+
         $(document).on('click', '#tagSettingBtn', function () {
             loadTag()
             $("#tagModal").modal("show")
         })
 
-        $(document).on('click', '#tagEdit', function () {
-            $("#tagEditModal").modal("show")
-        })
 
         $(document).on('click', '.disconnectingTagBtn', function () {
             console.log($(this).prev().find('input[name=tagInput]').val())
+            $tag_no = $(this).prev().find('input[name=tagInput]').val()
+            removeTag($tag_no)
         })
 
-        $(document).on('click', '.tagAddBtn', function () {
-            console.log('테스트')
-            $("#tagTable").append(
-                '<tr>' +
-                '<td><i class="fa fa-tag fa-lg"></i>' +
-                '</td>' +
-                '<th style="width: 50%">테스트</th>' +
-                '<td style="width: 20%; text-align: right;">' +
-                '<div class="custom-control custom-checkbox">' +
-                '<input type="checkbox" class="custom-control-input" id="tag6">' +
-                ' <label class="custom-control-label" for="tag6"></label>' +
-                '</div>' +
-                '</td>' +
-                '<td style="width: 15%; text-align: right;">' +
-                '<div class="btn-group dropright">' +
-                '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"' +
-                'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
-                '<div class="dropdown-menu dropright">' +
-                '<a class="dropdown-item" href="#" id="tagEdit">수정</a>' +
-                '<div class="dropdown-divider"></div>' +
-                '<a class="dropdown-item" href="#">삭제</a>' +
-                '</div>' +
-                '</div>' +
-                '</td>' +
-                '</tr>'
-            )
-        })
+        function removeTag(tag_no) {
+            $.ajax({
+                url: '/project/removeTagByPjNo.do',
+                data: {
+                    "tag_no": tag_no,
+                    "pj_no": ${pj.pj_no}
+                },
+                async: false,
+                success: function (data) {
+                    console.log(data)
+                }
+            })
+            loadTag()
+        }
+
 
 
         $(document).on("click", ".favoBtn", function (e) {
@@ -1528,6 +1519,35 @@
             }
         })
     }
+    function saveTag() {
+        if ($("input:checkbox[name='tagInput']:checked").length <= 0) {
+            alert("태그를 선택해주세요.")
+            return false;
+        }
+        var selectedProjects = []
+        selectedProjects.push(${pj.pj_no});
+        var selectedTags = []
+        $("input:checkbox[name='tagInput']:checked").each(function () {
+            selectedTags.push($(this).val());
+        })
+
+        $("#tagModal").modal("hide")
+        setTag(selectedProjects, selectedTags)
+
+    }
+    function setTag(selectedProjects, selectedTags) {
+        $.ajax({
+            url: '/project/setProjectTag.do',
+            data: {
+                "selectedProjects": selectedProjects,
+                "selectedTags": selectedTags
+            },
+            success: function (data) {
+                //console.log(data)
+
+            }
+        })
+    }
 
     function insertBookmark(pj_no) {
         $.ajax({
@@ -1604,6 +1624,20 @@
 
         });
     }
+
+    function loadBoards() {
+        $.ajax({
+            url: '/project/selectAllBoard.do',
+            data: {
+                pj_no: ${pj.pj_no}
+            },
+            success: function (data) {
+
+
+            }
+
+        });
+    }
 </script>
 <script type="text/javascript">
     var sum = Number("{{sum}}");
@@ -1671,6 +1705,9 @@
             ]
         });
     })
+
+
+
 </script>
 </body>
 </body>
