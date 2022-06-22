@@ -177,5 +177,143 @@
 		SET NAME=#{name}, EMAIL=#{email}, PHONE=#{phone}, BIRTH=#{birth}, JOIN_DATE=#{join_date}, DEPT_CODE=#{dept_code}, UPPER_DEPT_CODE=#{upper_dept_code}, JOB_CODE=#{job_code}, RESIGNATION_DATE=#{resignation_date}, STATUS='Q'
 		WHERE EMP_NO=#{emp_no}
 	</update>
+	
+	<!-- 검색 했을 때 searchListCount -->
+	<!-- 
+	<select id="searchListCount" parameterType="EmployeeSearchCondition" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="emp_no != null">
+			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+				<if test="status.equals('I')">
+					AND STATUS='I'
+				</if>
+				<if test="status.equals('Q')">
+					AND STATUS='Q'
+				</if>
+				<if test="!dept_code.equals('none')">
+					AND DEPT_CODE LIKE '%'||{dept_code}||'%'
+				</if>
+				<if test="!job_code.equals('none')">
+					AND JOB_CODE LIKE '%'||#{job_code}||'%'
+				</if>
+			</if>
+			<if test="name != null">
+			AND NAME LIKE '%'||#{name}||'%'
+				<if test="status.equals('I')">
+					AND STATUS='I'
+				</if>
+				<if test="status.equals('Q')">
+					AND STATUS='Q'
+				</if>
+				<if test="!dept_code.equals('none')">
+					AND DEPT_CODE LIKE '%'||#{dept_code}||'%'
+				</if>
+				<if test="!job_code.equals('none')">
+					AND JOB_CODE LIKE '%'||#{job_code}||'%'
+				</if>
+			</if>
+		</trim> 	
+	</select>
+	 -->
+	 <select id="searchListCount" parameterType="EmployeeSearchCondition" resultType="_int">
+	 	SELECT COUNT(*)
+		FROM EMPLOYEE
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="emp_no != null">
+			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+			</if>
+			<if test="name != null">
+			AND NAME LIKE '%'||#{name}||'%'
+			</if>
+			<if test="dept_name != null">
+			AND DEPT_NAME LIKE '%'||#{dept_name}||'%'
+			</if>
+			<if test="job_name != null">
+			AND JOB_NAME LIKE '%'||#{job_name}||'%'
+			</if>			
+			<if test="status == 'I' &amp;&amp; !status.equals('') &amp;&amp; status != null">
+			AND STATUS=#{status}
+			</if>
+			<if test="status == 'Q' &amp;&amp; !status.equals('') &amp;&amp; status != null">
+			AND STATUS=#{status}
+			</if>
+		</trim>
+	 </select>
+	<!-- 검색 결과 list -->
+	<!--  
+	<select id="searchEmpList" parameterType="Map" resultMap="employeeResultSet">
+		SELECT 
+		    A.*,
+		    DEPT_NAME,
+		    JOB_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="emp_no != null">
+			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+				<if test="status.equals('I')">
+					AND STATUS='I'
+				</if>
+				<if test="status.equals('Q')">
+					AND STATUS='Q'
+				</if>
+				<if test="!dept_code.equals('none')">
+					AND DEPT_CODE LIKE '%'||{dept_code}||'%'
+				</if>
+				<if test="!job_code.equals('none')">
+					AND JOB_CODE LIKE '%'||#{job_code}||'%'
+				</if>
+			</if>
+			<if test="name != null">
+			AND NAME LIKE '%'||#{name}||'%'
+				<if test="status.equals('I')">
+					AND STATUS='I'
+				</if>
+				<if test="status.equals('Q')">
+					AND STATUS='Q'
+				</if>
+				<if test="!dept_code.equals('none')">
+					AND DEPT_CODE LIKE '%'||#{dept_code}||'%'
+				</if>
+				<if test="!job_code.equals('none')">
+					AND JOB_CODE LIKE '%'||#{job_code}||'%'
+				</if>
+			</if>
+		</trim>
+		ORDER BY JOIN_DATE DESC
+	</select>
+	-->
+	<select id="searchEmpList" parameterType="Map" resultMap="employeeResultSet">
+		SELECT 
+		    A.*,
+		    DEPT_NAME,
+		    JOB_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		<trim prefix="WHERE" prefixOverrides="AND|OR">			
+			<if test="emp_no != null">
+			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+			</if>
+			<if test="name != null">
+			AND NAME LIKE '%'||#{name}||'%'
+			</if>
+			<if test="dept_name != null">
+			AND DEPT_NAME LIKE '%'||#{dept_name}||'%'
+			</if>
+			<if test="job_name != null">
+			AND JOB_NAME LIKE '%'||#{job_name}||'%'
+			</if>			
+			<if test="status == 'I' &amp;&amp; !status.equals('') &amp;&amp; status != null">
+			AND STATUS=#{status}
+			</if>
+			<if test="status == 'Q' &amp;&amp; !status.equals('') &amp;&amp; status != null">
+			AND STATUS=#{status}
+			</if>
+		</trim>
+	</select>	
 </mapper>
         

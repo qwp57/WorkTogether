@@ -5,6 +5,8 @@ import java.sql.Date;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -43,6 +45,7 @@ public class Employee {
 	@NotNull(message = "입사일이 빈 값입니다.")
 	private Date join_date;
 	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date resignation_date;
 	
 	private String status;

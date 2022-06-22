@@ -1,6 +1,7 @@
 package com.uni.wt.admin.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.uni.wt.admin.model.dao.AdminMapper;
 import com.uni.wt.admin.model.dto.Department;
+import com.uni.wt.admin.model.dto.EmployeeSearchCondition;
 import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 
@@ -148,9 +150,28 @@ public class AdminServiceImpl implements AdminService{
 		
 		if(result < 0) {
 			throw new Exception("회원 정보 수정에 실패하였습니다.");
-		}
-		
+		}		
 	}
+
+	@Override
+	public int searchListCount(EmployeeSearchCondition sc) throws Exception {
+		
+		return adminMapper.searchListCount(sc);
+	}
+
+	@Override
+	public ArrayList<Employee> searchEmpList(EmployeeSearchCondition sc, PageInfo pi) throws Exception {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		map.put("sc", sc);
+		map.put("rowBounds", rowBounds);
+		
+		return adminMapper.searchEmpList(map);
+	}
+
 
 
 

@@ -77,8 +77,8 @@
 				<form id="letterOfApprovalForm" method="post" action="insertLetterOfApproval.do" enctype="multipart/form-data"><!-- 첨부파일도 함께 보낸다. -->
 					<div id="letterOfApproval">
 						<div><h2 class="text-center pt-3">품의서</h2></div>							
-						<button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal">결재선 선택</button> <br><br><br>
-						<table class="table table-bordered float-right" id="approvalLine1">
+						 <br><br><br>
+						<table class="table table-bordered float-right" id="approvalLine2">
 							<tr>
 								<th rowspan="2" style="width:10px">결재선</th>
 								<td style="height:15px">대표이사</td>
@@ -86,14 +86,20 @@
 							<tr>
 								<td>김대표</td>								
 							</tr>
+							<tr>
+								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal">결재선 선택</button></td>
+							</tr>
 						</table>
-						<table class="table table-bordered float-right" id="approvalLine2">
+						<table class="table table-bordered float-right" id="approvalLine1">
 							<tr>
 								<th rowspan="2" style="width:10%">결재선</th>
 								<td style="height:15px">대표이사</td>
 							</tr>
 							<tr>
 								<td>김대표</td>								
+							</tr>
+							<tr>
+								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal">결재선 선택</button></td>
 							</tr>
 						</table>
 						<table class="table table-bordered mt-3">							
