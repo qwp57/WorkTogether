@@ -233,10 +233,10 @@
 			<if test="job_name != null">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status == 'I' &amp;&amp; !status.equals('') &amp;&amp; status != null">
+			<if test="status.equals('I') &amp;&amp; status != null">
 			AND STATUS=#{status}
 			</if>
-			<if test="status == 'Q' &amp;&amp; !status.equals('') &amp;&amp; status != null">
+			<if test="status.equals('Q') &amp;&amp; status != null">
 			AND STATUS=#{status}
 			</if>
 		</trim>
@@ -286,7 +286,7 @@
 		ORDER BY JOIN_DATE DESC
 	</select>
 	-->
-	<select id="searchEmpList" parameterType="Map" resultMap="employeeResultSet">
+	<select id="searchEmpList" parameterType="EmployeeSearchCondition" resultMap="employeeResultSet">
 		SELECT 
 		    A.*,
 		    DEPT_NAME,
@@ -294,7 +294,7 @@
 		FROM EMPLOYEE A
 		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
 		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
-		<trim prefix="WHERE" prefixOverrides="AND|OR">			
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="emp_no != null">
 			AND EMP_NO LIKE '%'||#{emp_no}||'%'
 			</if>
@@ -307,11 +307,11 @@
 			<if test="job_name != null">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status == 'I' &amp;&amp; !status.equals('') &amp;&amp; status != null">
-			AND STATUS=#{status}
+			<if test="status.equals('I') &amp;&amp; status != null">
+			AND STATUS='I'
 			</if>
-			<if test="status == 'Q' &amp;&amp; !status.equals('') &amp;&amp; status != null">
-			AND STATUS=#{status}
+			<if test="status.equals('Q') &amp;&amp; status != null">
+			AND STATUS='Q'
 			</if>
 		</trim>
 	</select>	

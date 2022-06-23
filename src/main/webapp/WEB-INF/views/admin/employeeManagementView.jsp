@@ -223,66 +223,80 @@
 				</tbody>
 			</table>			
 		
-	
 			<!-- 페이징 처리 -->
-			<div id="pagingArea" align="center">
-				<!-- [이전] -->
-				<c:if test="${ pi.currentPage != 1 }">
-					<%-- keyword가 empty -> 검색하지 않는 경우 --%>
-					<c:if test="${ empty keyword }">
-							<a href="employeeManagement.do?currentPage=${ pi.currentPage-1 }">[이전]</a>
-					</c:if>
-					<%-- search가 empty아님 -> 검색하는 경우 --%>
-					<c:if test="${ !empty keyword }">
-						<c:url var="searchUrl" value="searchEmp.do">
+			 <div id="pagingArea">
+	          <ul class="pagination">
+	          <!-- 이전 -->
+	          	<c:choose>
+	          		<c:when test="${ pi.currentPage ne 1 }">
+	          			<!-- 검색하지 않는 경우 -->
+	          			<c:if test="${ empty keyword }">
+	          				<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+	          			</c:if>
+	          			<!-- 검색하는 경우 -->
+	          			<c:if test="${ !empty keyword }">
+	          				<c:url var="searchUrl" value="searchEmp.do">
 							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
 							<c:param name="condition" value="${ condition }"/>
-							<c:param name="search" value="${ search }"/>
-						</c:url>
-						<a href="${ searchUrl }">[이전]</a>
-					</c:if>
-				</c:if>
-				
-				<!-- [번호들] -->
-				<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-					<c:if test="${ pi.currentPage eq p }">
-						<font color="red" size="4">[${ p }]</font>
-					</c:if>
-					<c:if test="${ pi.currentPage ne p }">
-						<%-- <a href="listBoard.do?currentPage=${ p }">[${ p }]</a> --%>
-						<%-- keyword가 empty -> 검색하지 않는 경우 --%>
-						<c:if test="${ empty keyword }">
-							<a href="employeeManagement.do?currentPage=${ p }">[${ p }]</a>
-						</c:if>
-						<%-- keyword가 empty아님 -> 검색하는 경우 --%>
-						<c:if test="${ !empty keyword }">
-							<c:url var="searchUrl" value="searchEmp.do">
-								<c:param name="currentPage" value="${ p }"/>
-								<c:param name="condition" value="${ condition }"/>
-								<c:param name="search" value="${ search }"/>
+							<c:param name="search" value="${ search }"/>							
 							</c:url>
-							<a href="${ searchUrl }">[${ p }]</a>
-						</c:if>
-					</c:if>
-				 </c:forEach>
-				
-				<!-- [다음] -->
-				<c:if test="${ pi.currentPage ne pi.maxPage }">
-					<%-- search가 empty -> 검색하지 않는 경우 --%>
-					<c:if test="${ empty keyword }">
-							<a href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">[다음]</a>
-					</c:if>
-					<%-- search가 empty아님 -> 검색하는 경우 --%>
-					<c:if test="${ !empty keyword }">
-						<c:url var="searchUrl" value="searchEmp.do">
-							<c:param name="currentPage" value="${pi.currentPage+1  }"/>
-							<c:param name="condition" value="${ condition }"/>
-							<c:param name="search" value="${ search }"/>
-						</c:url>
-						<a href="${ searchUrl }">[다음]</a>
-					</c:if>
-				</c:if>
-			</div>	
+							<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
+	          			</c:if>
+	          		</c:when>
+	          		<c:otherwise>
+	          			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+	          		</c:otherwise>
+	          	</c:choose>
+	          	
+	          	<!-- 숫자 -->
+	            <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+	             	<c:choose>
+		           		<c:when test="${ pi.currentPage ne p }">
+		           			<%-- keyword가 empty -> 검색하지 않는 경우 --%>
+							<c:if test="${ empty keyword }">
+								<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ p }">${ p }</a></li>
+							</c:if>
+		              		<%-- keyword가 empty아님 -> 검색하는 경우 --%>
+							<c:if test="${ !empty keyword }">
+								<c:url var="searchUrl" value="searchEmp.do">
+									<c:param name="currentPage" value="${ p }"/>
+									<c:param name="condition" value="${ condition }"/>
+									<c:param name="search" value="${ search }"/>							
+								</c:url>
+								<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
+							</c:if>
+		           		</c:when>
+		           		<c:otherwise>
+		           			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
+		           		</c:otherwise>
+	           		</c:choose>
+	           </c:forEach>
+	           	       
+	              <!-- 다음 페이지 -->	       
+	              <c:choose>
+	          		<c:when test="${ pi.currentPage ne pi.maxPage }">
+	          			<!-- 검색하지 않는 경우 -->
+	          			<c:if test="${ empty keyword }">
+	          				<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          			</c:if>
+	          			<!-- 검색 하는 경우 -->
+	          			<c:if test="${ !empty keyword }">
+	          				<c:if test="${ !empty keyword }">
+								<c:url var="searchUrl" value="searchEmp.do">
+									<c:param name="currentPage" value="${pi.currentPage+1  }"/>
+									<c:param name="condition" value="${ condition }"/>
+									<c:param name="search" value="${ search }"/>
+								</c:url>
+								<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>
+							</c:if>
+	          			</c:if>
+	          		</c:when>
+	          		<c:otherwise>
+	          			<li class="page-item disabled"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          		</c:otherwise>
+	          	</c:choose>
+	          </ul>
+	    	</div>
    		</div>
 	</div>	
 	

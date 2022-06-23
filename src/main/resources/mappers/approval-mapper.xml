@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uni.wt.approval.model.dao.ApprovalMapper">
+	<!-- employee resultMap -->
+	<resultMap type="Employee" id="employeeResultSet">
+		<id property="emp_no" column="EMP_NO"/>
+		<result property="dept_code" column="DEPT_CODE"/>
+		<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+		<result property="job_code" column="JOB_CODE"/>
+		<result property="join_date" column="JOIN_DATE"/>
+		<result property="resignation_date" column="RESIGNATION_DATE"/>
+		<result property="file_no" column="FILE_NO"/>
+		<result property="create_date" column="CREATE_DATE"/>
+		<result property="dept_name" column="DEPT_NAME"/>
+		<result property="job_name" column="JOB_NAME"/>
+	</resultMap>
+	
+	<!-- dept resultMap -->
+	<resultMap type="Department" id="departmenteResultSet">
+		<id property="deptCode" column="DEPT_CODE"/>
+		<result property="deptName" column="DEPT_NAME"/>
+		<result property="deptLevel" column="DEPT_LEVEL"/>
+		<result property="upperDeptCode" column="UPPER_DEPT_CODE"/>
+	</resultMap>
+	
+	<!-- 부서 조회 -->
+	<select id="selectDeptList" resultMap="departmenteResultSet">
+		SELECT *
+		FROM DEPARTMENT
+		START WITH UPPER_DEPT_CODE IS NULL
+		CONNECT BY PRIOR DEPT_CODE=UPPER_DEPT_CODE	
+	</select>
+	
+	<!-- 사원 조회 -->
+	<select id="selectEmpList" resultMap="employeeResultSet">
+		SELECT 
+			A.*,
+			DEPT_NAME,
+			JOB_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		WHERE STATUS='I'
+	</select>
+</mapper>
