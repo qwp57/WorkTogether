@@ -1,7 +1,7 @@
 package com.uni.wt.employee.controller;
 
 import java.text.DateFormat;
-import java.util.Calendar;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -25,16 +25,17 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.uni.wt.common.notice.dto.Notice;
+import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.employee.model.service.EmployeeService;
 import com.uni.wt.workState.model.dto.WorkState;
 import com.uni.wt.workState.service.WorkStateService;
-import com.uni.wt.workState.service.WorkStateServiceImpl;
 
 /**
  * Handles requests for the application home page.
  */
-@SessionAttributes("loginEmp")
+@SessionAttributes({"loginEmp", "noticeList", "unreadNotice"})
 @Controller
 public class EmployeeController {
 	
@@ -48,6 +49,9 @@ public class EmployeeController {
 	
 	@Autowired
 	private WorkStateService wsService;
+	
+	@Autowired
+	private NoticeService noticeService;
 	
 	private Map<String, String> msgMap = new HashMap<String, String>(); 
 	
@@ -68,7 +72,7 @@ public class EmployeeController {
 		model.addAttribute("serverTime", formattedDate );
 		
 		
-		return "common/main";
+		return "redirect:/main";
 		//return "employee/login";
 
 	}
@@ -77,11 +81,19 @@ public class EmployeeController {
 	public String mainHome(@ModelAttribute("loginEmp") Employee emp, Model m) throws Exception {
 		//로그인된 상태가 아니면 에러남
 		if(emp != null) {
+			String emp_no =  String.valueOf(emp.getEmp_no());
 			log.info("로그인 이후 메인화면 : {}님 입장",emp.getName());
 			//근무상태 불러오기 
-			WorkState w= wsService.selectWorkState(String.valueOf(emp.getEmp_no()));
+			WorkState w= wsService.selectWorkState(emp_no);
 			
 			m.addAttribute("w", w);
+			
+			// 알림목록 불러오기 ->세션어트리뷰트로 세션에 저장 
+			ArrayList<Notice> noticeList = noticeService.selectNoticeList(emp_no);
+			m.addAttribute("noticeList", noticeList);
+			m.addAttribute("unreadNotice", noticeList.size());// 안 읽은 알림 개수
+			
+			
 
 		}
 		

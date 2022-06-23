@@ -9,6 +9,10 @@
         <result property="board_type" column="BOARD_TYPE"/>
         <result property="writer" column="WRITER"/>
         <result property="create_date" column="CREATE_DATE"/>
+        <result property="post_title" column="POST_TITLE"/>
+        <result property="sch_title" column="SCH_TITLE"/>
+        <result property="todo_title" column="TODO_TITLE"/>
+        <result property="sch_start" column="SCH_START"/>
     </resultMap>
 
     <select id="nextBoardNo" resultType="int">
@@ -19,9 +23,17 @@
         VALUES (#{board_no}, #{pj_no}, #{board_type}, #{writer}, SYSDATE)
     </insert>
     <select id="selectAllBoard" parameterType="int" resultMap="boardAllSet">
-        SELECT *
-        FROM PJ_BOARD
+        SELECT DISTINCT A.BOARD_NO, A.PJ_NO, A.BOARD_TYPE, TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE ,E.NAME , B.POST_TITLE, C.SCH_TITLE, C.SCH_START, D.TODO_TITLE
+        FROM PJ_BOARD A
+                 LEFT JOIN BOARD_POST B
+                           ON A.BOARD_NO = B.BOARD_NO
+                 LEFT JOIN BOARD_SCHEDULE C
+                           ON A.BOARD_NO = C.BOARD_NO
+                 LEFT JOIN BOARD_TODO D
+                           ON A.BOARD_NO = D.BOARD_NO
+                 JOIN EMPLOYEE E
+                      ON A.WRITER = E.EMP_NO
         WHERE PJ_NO = #{pj_no}
-        ORDER BY BOARD_NO DESC
+        ORDER BY A.BOARD_NO DESC
     </select>
 </mapper>

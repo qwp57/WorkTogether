@@ -1,6 +1,9 @@
 package com.uni.wt.common.notice.service;
 
+import java.util.ArrayList;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -34,53 +37,78 @@ public class NoticeService {
 	@Autowired
 	private EchoHandler echoHandler;
 
-	public void insertNotice(Employee emp, int seqNo, String type) throws Exception {
+	public void insertNotice(Employee emp, int seqNo, String type, HttpServletRequest request) throws Exception {
 		//로그인된 사원 정보, 글번호, 게시판타입
 		
 		Notice notice = null;//알림 insert해줄 Notice 객체 
 		int result=0;// 등록이 됐는지 확인할 result 
 		
+		int nno = noticeMapper.getNoticeSeq();
+		
 		//타입이 RW이면 업무요청 글 알림 형식에 맞추는 에소드로 이동한다. 
 		switch(type) {
 		case "RW" :
-			notice= insertRWNotice(emp, seqNo, type);
-			result = noticeMapper.insertNotice(notice);
+			result = noticeMapper.insertNotice(insertRWNotice(emp, seqNo, type, nno));
 			break;
 		}
 		
+		//결과 확인
 		if(result <= 0) {
 			throw new Exception("알림 등록에 실패했습니다.");
 		}
 		
+		//입력한 notice 정보 완전조회
+		Notice noticeResult = noticeMapper.selectNotice(nno);
+		
+		//세션에 새 알림 저장 
+		plusNoticelist(request, noticeResult);
+		
+		
 		////////웹소켓 전송
-		websocketSend(emp, notice);
+		websocketSend(emp, noticeResult);
 		
 	}
 
 
 
-	private Notice insertRWNotice(Employee emp, int seqNo, String type)throws Exception {
+	private void plusNoticelist(HttpServletRequest request, Notice noticeResult) {
+		ArrayList<Notice>list = (ArrayList<Notice>) request.getSession().getAttribute("noticeList");
+		list.add(noticeResult);
+		
+		request.getSession().setAttribute("noticeList", list);
+		request.getSession().setAttribute("unreadNotice", list.size());
+		
+		
+	}
+
+
+
+	private Notice insertRWNotice(Employee emp, int seqNo, String type, int nno)throws Exception {
 		
 		//글번호로 업무요청 글을 조회해온다. 
 		RequestWork rw= rwMapper.selectRWDetail(seqNo);
 		
 		int emp_no = Integer.parseInt(rw.getRes_member());//수신인
-		String content = emp.getName()+"님이 업무를 요청했습니다.\n("+rw.getTitle()+")";//알림메시지
+		String content = emp.getName()+"님이 업무를 요청했습니다";//알림메시지
+		String contentDetail = rw.getTitle();
 		String url = "/requestWork/selectDetail?rno="+seqNo;//URL
 		
-		return new Notice(emp_no, type, content, url);
+		return new Notice(nno, emp_no, type, content, contentDetail,url);
 		
 	}
 	
 	private void websocketSend(Employee emp, Notice notice)throws Exception {
 		Map<String, WebSocketSession> users = echoHandler.getUsers();
 		
+		String msg = notice.getNotice_no()+","+notice.getType()+","+notice.getContent()+","+
+				notice.getContentDetail()+","+notice.getUrl()+","+notice.getCreate_date();
+		
 		for(WebSocketSession receiverSession : users.values()) {
 			Map<String, Object> map = receiverSession.getAttributes();
 			Employee e = (Employee)map.get("loginEmp");
 			if(receiverSession != null) {
 				if(e.getEmp_no() == notice.getEmp_no()) {
-					TextMessage txtMsg = new TextMessage(notice.getContent());
+					TextMessage txtMsg = new TextMessage(msg);
 					receiverSession.sendMessage(txtMsg);
 				}
 			}
@@ -88,6 +116,15 @@ public class NoticeService {
 			
 		}
 		
+		
+		
+	}
+
+
+
+	public ArrayList<Notice> selectNoticeList(String emp_no) throws Exception {
+		
+		return noticeMapper.selectNoticeList(emp_no);
 		
 		
 	}

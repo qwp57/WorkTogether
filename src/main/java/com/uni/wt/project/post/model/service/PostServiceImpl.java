@@ -40,4 +40,9 @@ public class PostServiceImpl implements PostService {
      
 
     }
+
+    @Override
+    public Post detailView(int board_no) throws Exception {
+        return postMapper.detailView(board_no);
+    }
 }

@@ -67,6 +67,7 @@ justify-content: center;}
          							<select class="form-control" name="pj_no" tabindex="2">
          							<c:if test="${empty prjList}"><option value="">참여중 프로젝트가 없습니다</option></c:if>
          							<c:if test="${!empty prjList}">
+         								<option value="0">프로젝트 없음</option>
 	         							<c:forEach items="${prjList}" var="p">
 	         								<option value="${p.pj_no}">${p.pj_title}</option>
 	         							</c:forEach>
@@ -94,10 +95,10 @@ justify-content: center;}
        						<tr>
          						<th class="th">기한 유무</th>
          						<td class="td">
-								  <input  type="radio" class="termRadio" value="Y" name="termYN">
-								  <label  for="inlineRadio1" class="termlabel termRadio">기한 있음</label>
-								  <input  type="radio" class="termRadio" value="N" name="termYN">
-								  <label  for="inlineRadio2" class="termlabel termRadio">기한 없음</label>
+								  <input  type="radio" id="termRadio1" class="termRadio" value="Y" name="termYN">
+								  <label  for="termRadio1" class="termlabel termRadio">기한 있음</label>
+								  <input  type="radio" id="termRadio2" class="termRadio" value="N" name="termYN" checked>
+								  <label  for="termRadio2" class="termlabel termRadio">기한 없음</label>
          						</td>
          						<th class="th">기한</th>
          						<td class="td"><input type="date" id="termId" class="form-control" name="" disabled></td>
@@ -109,8 +110,8 @@ justify-content: center;}
 								  <label  for="inlineRadio1" class="termlabel">상</label>
 								  <input  type="radio" name="important" id="inlineRadio2" value="2">
 								  <label  for="inlineRadio2" class="termlabel">중</label>
-								  <input  type="radio" name="important" id="inlineRadio2" value="3">
-								  <label  for="inlineRadio2" class="termlabel">하</label>
+								  <input  type="radio" name="important" id="inlineRadio3" value="3">
+								  <label  for="inlineRadio3" class="termlabel">하</label>
          						</td>
          						<th class="th">첨부파일</th>
          						<td class="td">

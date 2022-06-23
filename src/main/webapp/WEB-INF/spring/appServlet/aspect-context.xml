@@ -9,13 +9,15 @@
 	<aop:aspectj-autoproxy/>
 	
   	<bean id="loggerAspect1" class = "com.uni.wt.common.aop.LoggerAspect"/>
-	   <aop:config proxy-target-class="true">
-	      <aop:aspect id = "loggerAspect" ref="loggerAspect1">
-	           <aop:pointcut expression="execution(* com.uni.wt..*.*(..))" id="pcForAll"/>
-	         <!--  <aop:pointcut expression="execution(* com.uni.wt..*Controller*.*(..))" id="pcForAll"/>--> 
-	         <aop:around method="aroundLogAdvice" pointcut-ref="pcForAll"/>
-	      </aop:aspect>
-	   </aop:config>
+
+	<aop:config proxy-target-class="true">
+		<aop:aspect id = "loggerAspect" ref="loggerAspect1">
+			<aop:pointcut expression="execution(* com.uni.wt..*.*(..))" id="pcForAll"/>
+			<!--  <aop:pointcut expression="execution(* com.uni.wt..*Controller*.*(..))" id="pcForAll"/>-->
+			<aop:around method="aroundLogAdvice" pointcut-ref="pcForAll"/>
+		</aop:aspect>
+	</aop:config>
+
 		
 	
 	

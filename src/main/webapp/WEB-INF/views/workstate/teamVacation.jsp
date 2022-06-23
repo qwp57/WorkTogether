@@ -100,8 +100,8 @@ font-family: 'Nanum Gothic', sans-serif;
 <jsp:include page="../common/sidebar.jsp"/>
 <div class="main-content" >
 <div class="wrap">
-	<a href="vacationMgtMain.do"><h2 style="color: gray">내 휴가</h2></a>
-	<a href="teamVacation.do"><h2>구성원 휴가</h2></a>
+	<a href="/vacationMgtMain.do"><h2 style="color: gray">내 휴가</h2></a>
+	<a href="/teamVacation.do"><h2>구성원 휴가</h2></a>
 	
 	<select class="form-control" id="selectyear">
 		<c:forEach items="${years}" var="y">
@@ -215,7 +215,7 @@ font-family: 'Nanum Gothic', sans-serif;
 </div>
 <br><br>
 <jsp:include page="../common/footer.jsp"/>
-<script src="resources/assets/js/teamVacation.js?ver=1"></script>
+<script src="/resources/assets/js/teamVacation.js?ver=1"></script>
 <script type="text/javascript">
 $(function() {
 	let selectedyear = "${year}";

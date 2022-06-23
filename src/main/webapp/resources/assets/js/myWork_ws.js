@@ -155,7 +155,7 @@ function workController(){
 
     $.ajax({
         type: 'POST',
-        url: '/workState/workStateSelectWeek.do',
+        url: '/workStateSelectWeek.do',
         data: {"startday":startday},
        
         success: function(Date){
