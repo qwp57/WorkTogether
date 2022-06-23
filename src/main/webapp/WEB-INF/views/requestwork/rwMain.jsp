@@ -109,11 +109,21 @@ transform: scale(1.02);
 						<div class="col-12 col-lg-6 v-line">
 							<div class="rw-count">
 								<div class="card rw-menu rw-count-card">
-									<h1>0</h1>
+									<h1>
+									<c:choose>
+										<c:when test="${empty RQ}">0</c:when>
+										<c:otherwise>${RQ}</c:otherwise>
+									</c:choose>
+									</h1>
 									<span class="menuText">새 업무요청</span>
 								</div>
 								<div class="card rw-menu rw-count-card ">
-									<h1>0</h1>
+									<h1>
+									<c:choose>
+										<c:when test="${empty P}">0</c:when>
+										<c:otherwise>${P}</c:otherwise>
+									</c:choose>
+									</h1>
 									<span class="menuText">진행중 업무요청</span>
 								</div>
 							</div>
@@ -142,7 +152,7 @@ transform: scale(1.02);
 					</div>
 				</div>
 			</div>
-			<button id="btnSend"> 웹소켓 실험 </button>
+		
 
 			<div class="section-body">
 				<div class="rw-list">
@@ -155,34 +165,80 @@ transform: scale(1.02);
 					<table class="table  table-sm">
 						<thead class="thead">
 							<tr>
-								<th style="width: 300px; ">보낸 이</th>
+								<th style="width: 150px">글번호</th>
+								<th style="width: 200px; ">보낸 이</th>
 								<th style="width: 200px; ">중요도</th>
 								<th style="width: 600px; "> 제목</th>
-								<th style="width: 300px; ">상태</th>
-								<th style="width: 400px; ">기한</th>
-								<th style="width: 300px; "></th>
+								<th style="width: 200px; ">상태</th>
+								<th style="width: 300px; ">기한</th>
+								<th style="width: 200px; "></th>
 							</tr>
 						</thead>
 						<tbody class="tbody rs">
+						<c:forEach items="${resList}" var="r">
 							<tr>
-								<td>홍길동</td>
-								<td><button class="btn btn-sm btn-danger" style="width: 100px;">중요</button></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>${r.rw_no }</td>
+								<td>${r.req_member}</td>
+								<td>
+								<c:choose>
+									<c:when test="${r.important eq '1'}"><button class="btn btn-sm btn-danger" style="width: 100px;">상</button></c:when>
+									<c:when test="${r.important eq '2'}"><button class="btn btn-sm btn-primary" style="width: 100px;">중</button></c:when>
+									<c:otherwise><button class="btn btn-sm btn-secondary" style="width: 100px;">중</button></c:otherwise>
+								</c:choose>
+								</td>
+								<td>${r.title}</td>
+								<td>
+								<c:choose>
+									<c:when test="${r.status eq 'RQ'}">진행전</c:when>
+									<c:when test="${r.status eq 'P'}">진행중</c:when>
+									<c:when test="${r.status eq 'S'}">보류중</c:when>
+									<c:when test="${r.status eq 'CC'}">취소됨</c:when>
+									<c:when test="${r.status eq 'RF'}">거절됨</c:when>
+								</c:choose>
+								</td>
+								<td>
+								<c:choose>
+									<c:when test="${empty r.term}">기한 없음</c:when>
+									<c:otherwise>${r.term }</c:otherwise>
+								</c:choose>
+								</td>
+								<td><button>삭제버튼</button></td>
 							</tr>
+						</c:forEach>
+						<c:if test="${empty resList}"><tr><td colspan="6">조회된 내역이 없습니다.</td></tr></c:if>
 						</tbody>
 					</table>
 					
-				   <ul class="pagination">
-						<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item"><a class="page-link" href="#">4</a></li>
-						<li class="page-item"><a class="page-link" href="#">5</a></li>
-						<li class="page-item"><a class="page-link" href="#">Next</a></li>
+				       <ul class="pagination">
+						<c:choose>
+							<c:when test="${ respi.currentPage ne 1 }">
+								<li class="page-item" ><a class="page-link" href="#">Previous</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+							</c:otherwise>
+						</c:choose>
+						
+						<c:forEach begin="${ respi.startPage }" end="${ respi.endPage }" var="p">
+							<c:choose>
+							<c:when test="${ respi.currentPage ne p }">
+									<li class="page-item" ><a class="page-link" href="#">${ p }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="#">${ p }</a></li>
+							</c:otherwise>
+						</c:choose>
+						</c:forEach>
+						
+						
+						<c:choose>
+							<c:when test="${ respi.currentPage ne respi.maxPage }">
+								<li class="page-item"><a class="page-link" href="#">Next</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>
 				
@@ -197,33 +253,79 @@ transform: scale(1.02);
 					<table class="table table-sm">
 						<thead class="thead">
 							<tr>
-								<th style="width: 300px; ">담당자</th>
+								<th style="width: 150px">글번호</th>
+								<th style="width: 200px; ">담당자</th>
 								<th style="width: 200px; ">중요도</th>
 								<th style="width: 600px; "> 제목</th>
-								<th style="width: 300px; ">상태</th>
-								<th style="width: 400px; ">기한</th>
-								<th style="width: 300px; "></th>
+								<th style="width: 200px; ">상태</th>
+								<th style="width: 300px; ">기한</th>
+								<th style="width: 200px; "></th>
 							</tr>
 						</thead>
 						<tbody class="tbody rq">					
+							<c:forEach items="${reqList}" var="r">
 							<tr>
-								<td>홍길동</td>
-								<td><button class="btn btn-sm btn-danger" style="width: 100px;">중요</button></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+								<td>${r.rw_no}</td>
+								<td>${r.res_member}</td>
+								<td>
+								<c:choose>
+									<c:when test="${r.important eq '1'}"><button class="btn btn-sm btn-danger" style="width: 100px;">상</button></c:when>
+									<c:when test="${r.important eq '2'}"><button class="btn btn-sm btn-primary" style="width: 100px;">중</button></c:when>
+									<c:otherwise><button class="btn btn-sm btn-secondary" style="width: 100px;">중</button></c:otherwise>
+								</c:choose>
+								</td>
+								<td>${r.title}</td>
+								<td>
+								<c:choose>
+									<c:when test="${r.status eq 'RQ'}">진행전</c:when>
+									<c:when test="${r.status eq 'P'}">진행중</c:when>
+									<c:when test="${r.status eq 'S'}">보류중</c:when>
+									<c:when test="${r.status eq 'CC'}">취소됨</c:when>
+									<c:when test="${r.status eq 'RF'}">거절됨</c:when>
+								</c:choose>
+								</td>
+								<td>
+								<c:choose>
+									<c:when test="${empty r.term}">기한 없음</c:when>
+									<c:otherwise>${r.term }</c:otherwise>
+								</c:choose>
+								</td>
+								<td><button>삭제버튼</button></td>
 							</tr>
+						</c:forEach>
+						<c:if test="${empty reqList}"><tr><td>조회된 내역이 없습니다.</td></tr></c:if>
 						</tbody>	
 					</table>
-				<ul class="pagination">
-						<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-						<li class="page-item"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item"><a class="page-link" href="#">4</a></li>
-						<li class="page-item"><a class="page-link" href="#">5</a></li>
-						<li class="page-item"><a class="page-link" href="#">Next</a></li>
+				 <ul class="pagination">
+						<c:choose>
+							<c:when test="${ reqpi.currentPage ne 1 }">
+								<li class="page-item" ><a class="page-link" href="#">Previous</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+							</c:otherwise>
+						</c:choose>
+						
+						<c:forEach begin="${ reqpi.startPage }" end="${ reqpi.endPage }" var="p">
+							<c:choose>
+							<c:when test="${ reqpi.currentPage ne p }">
+									<li class="page-item" ><a class="page-link" href="#">${ p }</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="#">${ p }</a></li>
+							</c:otherwise>
+						</c:choose>
+						</c:forEach>
+						
+						
+						<c:choose>
+							<c:when test="${ reqpi.currentPage ne reqpi.maxPage }">
+								<li class="page-item"><a class="page-link" href="#">Next</a></li>
+							</c:when>
+							<c:otherwise>
+								<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>
+							</c:otherwise>
+						</c:choose>
 					</ul>
 				</div>
 			</div>
