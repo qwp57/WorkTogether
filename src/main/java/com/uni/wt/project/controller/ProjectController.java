@@ -73,14 +73,8 @@ public class ProjectController {
 
 		ArrayList<BoardAll> allBoards = boardAllService.selectAllBoard(pj_no);
 
-		for (BoardAll b: allBoards) {
-			if(b.getBoard_type().equals("post")){
-				//postService.selectPost(b.getBoard_no());
-			}
-		}
-
-		log.info("게시물 전체 조회 : " + allBoards.toString());
-		return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(allBoards);
+		//log.info("게시물 전체 조회 : " + new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoards));
+		return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoards);
 	}
 
 	@ResponseBody
@@ -245,6 +239,7 @@ public class ProjectController {
 		mv.addObject("projectTag", projectTag).setViewName("project/projectViewByTag");
 		return mv;
 	}
+
 
 	@ResponseBody
 	@RequestMapping(value = "/tagView.do", produces="application/json; charset=utf-8")
