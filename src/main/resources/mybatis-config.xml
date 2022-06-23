@@ -37,6 +37,7 @@
 		<mapper resource="/mappers/file-mapper.xml"/>
 		<mapper resource="/mappers/requestWork-mapper.xml"/>
 		<mapper resource="/mappers/notice-mapper.xml"/>
+		<mapper resource="/mappers/approval-mapper.xml"/>
 	</mappers>
 	
 </configuration>

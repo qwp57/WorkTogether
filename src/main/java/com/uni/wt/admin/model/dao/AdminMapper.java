@@ -17,7 +17,7 @@ public interface AdminMapper {
 
 	int selectListCount();
 
-	ArrayList<Employee> selectList(RowBounds rowBounds);
+	ArrayList<Employee> selectList(Object object, RowBounds rowBounds);
 	
 	int adminApproval(int empNo);
 
@@ -37,7 +37,7 @@ public interface AdminMapper {
 
 	int empListCount();
 
-	ArrayList<Employee> selectEmpList(PageInfo pi);
+	ArrayList<Employee> selectEmpList(Object object, RowBounds rowBounds);
 
 	int addEmployee(Employee emp);
 
@@ -49,6 +49,14 @@ public interface AdminMapper {
 
 	int searchListCount(EmployeeSearchCondition sc);
 
-	ArrayList<Employee> searchEmpList(Map<String, Object> map);
+	ArrayList<Employee> searchEmpList(EmployeeSearchCondition sc, RowBounds rowBounds);
+	
+	
+
+	
+
+
+
+	
 
 }

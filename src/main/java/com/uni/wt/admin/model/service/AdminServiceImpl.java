@@ -40,7 +40,7 @@ public class AdminServiceImpl implements AdminService{
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		return adminMapper.selectList(rowBounds);
+		return adminMapper.selectList(null, rowBounds);
 	}
 	
 	@Override
@@ -113,7 +113,10 @@ public class AdminServiceImpl implements AdminService{
 	@Override
 	public ArrayList<Employee> selectEmpList(PageInfo pi) {
 		
-		return adminMapper.selectEmpList(pi);
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		return adminMapper.selectEmpList(null, rowBounds);
 	}
 
 	@Override
@@ -165,11 +168,7 @@ public class AdminServiceImpl implements AdminService{
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
-		Map<String,Object> map = new HashMap<String,Object>();
-		map.put("sc", sc);
-		map.put("rowBounds", rowBounds);
-		
-		return adminMapper.searchEmpList(map);
+		return adminMapper.searchEmpList(sc, rowBounds);
 	}
 
 

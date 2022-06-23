@@ -52,7 +52,7 @@
                   		<a href="/theMinutesOfAMeetingEnrollForm.do">회의록</a>
                   	</div>
                   </li>
-                  <li><a class="nav-link beep beep-sidebar" href="/approvalDocument.do">결재문서함</a></li>
+                  <li><a class="nav-link" href="/approvalDocument.do">결재문서함</a></li>
                   <li><a class="nav-link" href="/draftDocument.do">기안문서함</a></li>
                 </ul>
               </li>

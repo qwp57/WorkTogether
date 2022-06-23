@@ -264,11 +264,15 @@ public class AdminController {
 				sc.setStatus("Q");
 			}
 		}
-		log.info("status : " + sc.getStatus());
-		//검색했을 때 페이징 처리
+		
+		log.info("sc : " + sc);
+		
+		//검색했을 때 페이징 처리를 위한 count
 		int listCount = adminService.searchListCount(sc);
+		log.info("listCount : " + listCount);
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		log.info("pi : " + pi);
 		
 		ArrayList<Employee> empList = adminService.searchEmpList(sc, pi);
 		

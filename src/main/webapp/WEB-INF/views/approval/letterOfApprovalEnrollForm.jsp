@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <jsp:include page="../common/header.jsp"/>
@@ -37,13 +38,7 @@
 		height: 120px;
 	}
 	
-	#lineList{
-		background-color: lightgray;
-		padding: 3px;
-	}
-	
 	#addList{
-		background-color: lightgray;
 		height: 75%;
 		padding: 3px;
 	}
@@ -77,29 +72,38 @@
 				<form id="letterOfApprovalForm" method="post" action="insertLetterOfApproval.do" enctype="multipart/form-data"><!-- 첨부파일도 함께 보낸다. -->
 					<div id="letterOfApproval">
 						<div><h2 class="text-center pt-3">품의서</h2></div>							
-						 <br><br><br>
+						<br><br><br>
 						<table class="table table-bordered float-right" id="approvalLine2">
 							<tr>
+								<th colspan="2" style="height:20px;" class="text-center" >최종 결재자</th>
+							</tr>
+							<tr>								
 								<th rowspan="2" style="width:10px">결재선</th>
-								<td style="height:15px">대표이사</td>
+								<td style="height:20px">대표이사</td>
 							</tr>
 							<tr>
-								<td>김대표</td>								
-							</tr>
+								<td>김대표</td>	
+								<td class="d-none"><input type="hidden" name="LAST_APPROVER_NO" value=""></td>							
+							</tr>							
 							<tr>
-								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal">결재선 선택</button></td>
+								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal2">결재선 선택</button></td>
 							</tr>
+
 						</table>
 						<table class="table table-bordered float-right" id="approvalLine1">
 							<tr>
+								<th colspan="2" style="height:20px;" class="text-center" >최초 결재자</th>
+							</tr>
+							<tr>
 								<th rowspan="2" style="width:10%">결재선</th>
-								<td style="height:15px">대표이사</td>
+								<td style="height:20px" id="job1"></td>
 							</tr>
 							<tr>
-								<td>김대표</td>								
+								<td id="name1"></td>
+								<td class="d-none"><input type="hidden" name="FIRST_APPROVER_NO" value=""></td>								
 							</tr>
 							<tr>
-								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal">결재선 선택</button></td>
+								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal1">결재선 선택</button></td>
 							</tr>
 						</table>
 						<table class="table table-bordered mt-3">							
@@ -171,18 +175,18 @@
 	</div>
 	
 	<!-- 결재선 선택 모달창 -->
-	<div class="modal" id="approvalLineModal" data-backdrop="static" data-keyboard="false">
-		<div class="modal-dialog modal-lg">
+	<div class="modal" id="approvalLineModal1" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog">
 			<div class="modal-content">
 				<!-- modal header -->
-				<div class="modal-header">					
-	   				<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>   
-	   				<input type="image" class="text-right" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px">  				   					   				
+				<div class="modal-header">
+	   				<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>    
+	   				<input type="image" class="text-right" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px"> 				   				
 				</div>
 				
 				<!-- modal body -->
-				<form method="">
-					<div class="modal-body">
+				<form>
+				<div class="modal-body">					
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 								<button class="btn btn-secondary" type="button">
@@ -193,119 +197,115 @@
 						</div>
 						
 						<div class="row">
-							<div class="col-lg-4 ml-3">
-								<div id="lineList">
+							<div class="ml-3">
+								<div id="lineList1">
 									<div class="orgListAll mt-3">																				
-										<span><h6>워크 투게더</h6></span>
+										<span><h5 style="color:rgb(111, 118, 237)">워크 투게더</h5></span>
 									</div>
 									
 									<div id="allWT" class="collapse show">
-										<div class="my-4 deptTree">
-											<h6 class="dept"><i class="bi bi-dash" id="minusIcon"></i>관리부</h6>
-											<div class="ml-3">
-												<a href="#deptEmp1" data-toggle="collapse">
-													<i class="bi bi-plus" id="plusIcon1"></i>
-													<i class="bi bi-dash" id="minusIcon1" style="display:none"></i>
-													<span style="color:black">인사팀</span>
-												</a>
-												<div id="deptEmp1" class="mx-4 my-2 deptUpper collapse">
-													<a href="#" style="color:black">최사장</a><!-- 사번 숨겨놓기 -->
+										<div class="my-4 ml-4">
+											<c:forEach items="${ deptList }" var="dl">					
+												<div class="my-3 ">
+													<c:if test="${ dl.deptLevel == 1 }">
+														<h6 id="deptName"><i class="bi bi-dash" id="minusIcon1"></i>${ dl.deptName }</h6>
+													</c:if>
+													<c:if test="${ dl.deptLevel == 2 }">																														
+														<a href="#deptEmp1${dl.deptCode}" data-toggle="collapse" class="ml-3" id="dept_collapse1">
+															<!-- <i class="bi bi-plus" id="plusIcon${ dl.deptCode }"></i>
+															<i class="bi bi-dash" id="minusIcon${ dl.deptCode }" style="display:none"></i> -->
+															${ dl.deptName }
+														</a>														
+													</c:if>
+													<c:forEach items="${ empList }" var="el">
+														<c:if test="${ dl.deptCode == el.dept_code }">
+															<div id="deptEmp1${dl.deptCode}" class="mx-5 my-2 deptUpper collapse">
+																<input type="radio" class="form-check-input" name="empName1" id="empName1" value="${ el.name }">${ el.name } ${el.job_name}
+																<input type="hidden" value="${ el.job_name }" id="jobName1">
+																<input type="hidden" value="${ el.emp_no }" id="empNo1">
+															</div>
+														</c:if>
+													</c:forEach>
 												</div>
-											</div>
-											<div class="ml-3">
-												<a href="#deptEmp2" data-toggle="collapse">
-													<i class="bi bi-plus" id="plusIcon2"></i>
-													<i class="bi bi-dash" id="minusIcon2" style="display:none"></i>
-													<span style="color:black">재무회계팀</span>
-												</a>
-												<div id="deptEmp2" class="mx-4 my-2 deptUpper collapse">
-													<a href="#" style="color:black">최사장</a><!-- 사번 숨겨놓기 -->
-												</div>
-											</div>
-										</div>
-										<div class="my-4 deptTree">
-											<h6 class="dept"><i class="bi bi-dash" id="minusIcon"></i>생산부</h6>
-											<div class="ml-3">
-												<a href="#deptEmp3" data-toggle="collapse">
-													<i class="bi bi-plus" id="plusIcon3"></i>
-													<i class="bi bi-dash" id="minusIcon3" style="display:none"></i>
-													<span style="color:black">생산팀</span>
-												</a>
-												<div id="deptEmp3" class="mx-4 my-2 deptUpper collapse">
-													<a href="#" style="color:black">최사장</a><!-- 사번 숨겨놓기 -->
-												</div>
-											</div>
-											<div class="ml-3">
-												<a href="#deptEmp4" data-toggle="collapse">
-													<i class="bi bi-plus" id="plusIcon4"></i>
-													<i class="bi bi-dash" id="minusIcon4" style="display:none"></i>
-													<span style="color:black">품질관리팀</span>
-												</a>
-												<div id="deptEmp4" class="mx-4 my-2 deptUpper collapse">
-													<a href="#" style="color:black">최사장</a><!-- 사번 숨겨놓기 -->
-												</div>
-											</div>
-										</div>
-										<div class="my-4 deptTree">
-											<h6 class="dept"><i class="bi bi-dash" id="minusIcon"></i>영업부</h6>
-											<div class="ml-3">
-												<a href="#deptEmp5" data-toggle="collapse">
-													<i class="bi bi-plus" id="plusIcon5"></i>
-													<i class="bi bi-dash" id="minusIcon5" style="display:none"></i>
-													<span style="color:black">영업팀</span>
-												</a>
-												<div id="deptEmp5" class="mx-4 my-2 deptUpper collapse">
-													<a href="#" style="color:black">최사장</a><!-- 사번 숨겨놓기 -->
-												</div>
-											</div>
-											<div class="ml-3">
-												<a href="#deptEmp6" data-toggle="collapse">
-													<i class="bi bi-plus" id="plusIcon6"></i>
-													<i class="bi bi-dash" id="minusIcon6" style="display:none"></i>
-													<span style="color:black">고객지원팀</span>
-												</a>
-												<div id="deptEmp6" class="mx-4 my-2 deptUpper collapse">
-													<a href="#" style="color:black">최사장</a><!-- 사번 숨겨놓기 -->
-												</div>
-											</div>
+											</c:forEach>
 										</div>
 									</div>
-								</div>
-								<div class="mt-3">
-									<h6>결재선</h6>
-									<div class="input-group input-group-sm">										
-										<!-- 결재선 선택-->
-										<div class="input-group-prepend" style="width:100%">
-											<select class="form-select custom-select border-1 rounded-1" id="approvalLevel" name="approvalLevel">
-												<option ${(param.approvalLevel == "") ? "selected" : "" } value="">레벨 1</option>
-												<option ${(param.approvalLevel == "") ? "selected" : "" } value="">레벨 2</option>
-											</select>
-										</div>	
-									</div>	
-								</div>	
+								</div> 							
 							</div>
-							<div class="col-lg-3 text-center" id="approvalAddBtn">
-								<div><button type="button" class="btn btn-secondary mt-5" id="appLineAdd">결재 > </button></div>
-								<!-- <div><button type="button" class="btn btn-secondary mt-2" id="appRefAdd">참조 > </button></div>  -->
-							</div>
-							<div class="col-lg-4">
-								<div id="addList">
-									<div>1레벨</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary float-right" id="saveBtn1">등록</button>
+					</div>
+				</form>			
+			</div>
+		</div>	
+	</div>
+	
+	<!-- 최종 결재선 선택 모달창 -->
+	<div class="modal" id="approvalLineModal2" data-backdrop="static" data-keyboard="false">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<!-- modal header -->
+				<div class="modal-header">
+	   				<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>    
+	   				<input type="image" class="text-right" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px"> 				   				
+				</div>
+				
+				<!-- modal body -->
+				<form>
+				<div class="modal-body">					
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<button class="btn btn-secondary" type="button">
+								<i class="bi bi-search"></i>
+							</button>
+							<input type="text" class="form-control" placeholder="사원 이름, 부서 검색">
+						</div>
+					</div>
+						
+					<div class="row">
+						<div class="ml-3">
+							<div id="lineList2">
+								<div class="orgListAll mt-3">																				
+									<span><h5 style="color:rgb(111, 118, 237)">워크 투게더</h5></span>
 								</div>
 								
-								<!-- 									
-								<h6>참조</h6>
-								<div id="refList">
-									<div></div>
-								</div>		
-								 -->
-								 <button type="submit" class="btn btn-primary float-right mt-5">등록</button>	
-							</div>
-							
-						</div>					
-					</div>								
-				</form>
-			</div>			
+								<div id="allWT2" class="collapse show">
+									<div class="my-4 ml-4">
+										<c:forEach items="${ deptList }" var="dl">					
+											<div class="my-3 ">
+												<c:if test="${ dl.deptLevel == 1 }">
+													<h6 id="deptName2"><i class="bi bi-dash" id="minusIcon2"></i>${ dl.deptName }</h6>
+												</c:if>
+												<c:if test="${ dl.deptLevel == 2 }">																														
+													<a href="#deptEmp2${dl.deptCode}" data-toggle="collapse" class="ml-3" id="dept_collapse2">
+														<!-- <i class="bi bi-plus" id="plusIcon${ dl.deptCode }"></i>
+														<i class="bi bi-dash" id="minusIcon${ dl.deptCode }" style="display:none"></i> -->
+														${ dl.deptName }
+													</a>														
+												</c:if>
+												<c:forEach items="${ empList }" var="el">
+													<c:if test="${ dl.deptCode == el.dept_code }">
+														<div id="deptEmp2${dl.deptCode}" class="mx-5 my-2 deptUpper collapse">
+															<input type="radio" class="form-check-input" name="name" value="${ el.name }">${ el.name } ${el.job_name}
+															<input type="hidden" value="${ el.job_name }" name="job_code">
+														</div>
+													</c:if>
+												</c:forEach>
+											</div>
+										</c:forEach>
+									</div>
+								</div>
+							</div> 							
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary float-right" id="saveBtn2">등록</button>
+				</div>
+				</form>			
+			</div>
 		</div>	
 	</div>
 	
@@ -324,80 +324,44 @@
 	                ['color', ['color']],
 	                ['ul', 'ol', 'paragraph'],
 	                ['table', ['table']],
-	                ['insert', ['link', 'picture', 'video']],
+	                ['insert', ['link', 'picture']],
 	            ]
 	        });
 	    });
-
+		
 		$(function(){	        
 	        $("#fileUpload").click(function(){
 	        	$("#upfile").click();
-	        });			
+	        });	
+	        /*
+	        $("#saveBtn1").click(function(){
+	        	var empName1 = $("input[name='empName1']:checked").val();
+				var jobCode1 = $("#jobCode1").val();
+				var empNo1 = $("#empNo1").val();
+				
+				$.ajax({
+					type: "post",
+					url: "letterOfApprovalEnrollForm.jsp",
+					data: {
+						empName1 : empName1,
+						jobCode1 : jobCode1,
+						empNo1: empNo1
+					},
+					success: 
+				});
+	        }*/
+		});
 		
-	        $("#plusIcon1").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon1").removeAttr("style");	
+		$(function(){
+			//결재선 등록 버튼 누르면 결재자 칸에 값이 들어간다.
+			$("#saveBtn1").click(function(){
+				var empName1 = $("input[name='empName1']:checked").val();
+				var jobName1 = $("#jobName1").val();
+				var empNo1 = $("#empNo1").val();
 				
-			});
-			
-			$("#minusIcon1").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon1").removeAttr("style");				
-			});
-			
-			$("#minusIcon2").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon2").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon2").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon2").removeAttr("style");				
-			});
-			
-			$("#minusIcon3").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon3").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon3").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon3").removeAttr("style");				
-			});
-			
-			$("#minusIcon4").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon4").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon4").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon5").removeAttr("style");				
-			});
-			
-			$("#minusIcon5").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon5").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon5").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon4").removeAttr("style");				
-			});
-			
-			$("#minusIcon6").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon4").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon6").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon4").removeAttr("style");				
+				document.getElementById("job1").innerHTML() = jobName1;
+				document.getElementById("name1").innerHTML() = empName1
+				$("input[name='FIRST_APPROVER_NO']").attr('value', empNo1);
 			});
 		});
 	</script>
