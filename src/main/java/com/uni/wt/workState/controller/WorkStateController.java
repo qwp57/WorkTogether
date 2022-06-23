@@ -36,7 +36,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
-@RequestMapping("/workState")
 public class WorkStateController {
 	
 	@Autowired
@@ -227,7 +226,7 @@ public class WorkStateController {
 		
 		
 		
-		return "redirect:/workState/vacationMgtMain.do";
+		return "redirect:/vacationMgtMain.do";
 	}
 	
 

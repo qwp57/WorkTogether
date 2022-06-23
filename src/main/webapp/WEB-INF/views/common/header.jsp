@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en" >
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
@@ -135,62 +136,34 @@ $(function(){
 				</div>
 
           </li>
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg"><i class="far fa-bell"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
-              <div class="dropdown-header">Notifications
+              <div class="dropdown-header">알림 메시지
                 <div class="float-right">
-                  <a href="#">Mark All As Read</a>
+                  <a href="#">전체 알림 삭제</a>
                 </div>
               </div>
-              <div class="dropdown-list-content dropdown-list-icons">
-                <a href="#" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-icon bg-primary text-white">
-                    <i class="fas fa-code"></i>
-                  </div>
-                  <div class="dropdown-item-desc">
-                    Template update is available now!
-                    <div class="time text-primary">2 Min Ago</div>
-                  </div>
-                </a>
-                <a href="#" class="dropdown-item">
-                  <div class="dropdown-item-icon bg-info text-white">
-                    <i class="far fa-user"></i>
-                  </div>
-                  <div class="dropdown-item-desc">
-                    <b>You</b> and <b>Dedik Sugiharto</b> are now friends
-                    <div class="time">10 Hours Ago</div>
-                  </div>
-                </a>
-                <a href="#" class="dropdown-item">
-                  <div class="dropdown-item-icon bg-success text-white">
-                    <i class="fas fa-check"></i>
-                  </div>
-                  <div class="dropdown-item-desc">
-                    <b>Kusnaedi</b> has moved task <b>Fix bug header</b> to <b>Done</b>
-                    <div class="time">12 Hours Ago</div>
-                  </div>
-                </a>
-                <a href="#" class="dropdown-item">
-                  <div class="dropdown-item-icon bg-danger text-white">
-                    <i class="fas fa-exclamation-triangle"></i>
-                  </div>
-                  <div class="dropdown-item-desc">
-                    Low disk space. Let's clean it!
-                    <div class="time">17 Hours Ago</div>
-                  </div>
-                </a>
-                <a href="#" class="dropdown-item">
-                  <div class="dropdown-item-icon bg-info text-white">
-                    <i class="fas fa-bell"></i>
-                  </div>
-                  <div class="dropdown-item-desc">
-                    Welcome to Stisla template!
-                    <div class="time">Yesterday</div>
-                  </div>
-                </a>
+              <div class="dropdown-list-content dropdown-list-icons" id="noticeArea">
+              <c:forEach items="${noticeList}" var="n">
+               <a href="${n.url}" onclick="return deleteNotice(${n.notice_no});" id="${n.notice_no}" class="dropdown-item dropdown-item-unread">
+               	<div class="dropdown-item-desc">
+               		<div class="font-weight-bold">
+					<c:choose>
+						<c:when test="${n.type eq 'RW'}">업무요청</c:when>
+						<c:otherwise>알림메시지</c:otherwise>
+					</c:choose>
+					</div>
+					 ${n.content}
+                    <div class="text-secondary"> ${n.contentDetail}</div>
+                    <div class="time text-primary">${n.create_date}</div>
+               	</div>
+               </a>
+              
+              </c:forEach>
+               
               </div>
               <div class="dropdown-footer text-center">
-                <a href="#">View All <i class="fas fa-chevron-right"></i></a>
+                <a href="#">View All</a>
               </div>
             </div>
           </li>
@@ -243,6 +216,13 @@ function connect() {
 	ws.onmessage = function (event) {
 		console.log('Info : connection onmessage');
 		console.log(event);
+		let msg = event.data;
+		let msgArr = msg.split(",");
+		console.log(msg);
+
+		noticeSet(msgArr);
+		
+		
 	};
 	
 	ws.onclose = function (event) {
@@ -253,13 +233,58 @@ function connect() {
 		console.log('Error : ', err);
 	};
 
-$('#btnSend').click(function() {
-	socket.send("업무요청,최부장");
-	
-	socket.onclose();
-});
+
 	
 }
+
+function noticeSet(msgArr){
+
+	text = "<a href="+msgArr[4]+"onclick='return deleteNotice("+msgArr[0]+");' class='dropdown-item dropdown-item-unread'>";
+	text +="<div class='dropdown-item-desc'><div class='font-weight-bold'>";
+	if(msgArr[1] == 'RW'){
+
+		text +="업무요청</div>" 
+	}
+
+	text += msgArr[2];
+	text += "<div class='text-secondary'>"+msgArr[3]+"</div>";
+	text +="<div class='time text-primary'>"+msgArr[5]+"</div>";
+	text += "</div> </a>";
+
+	$('#noticeArea').append(text);
+
+
+}
+
+
+function deleteNotice(nno){
+	
+	console.log(nno);
+	alert(nno);
+
+	$.ajax({
+		url : "deleteNotice.do",
+		data : { notice_no : nno},
+		type: "post",
+		success : function(result){
+			if(result == '1'){
+				return true;
+				alert(result);
+				//event.preventDefault();
+			}else{
+				alert(result);
+				return false;
+			}
+		},
+		error : function(err){
+			console.log(err);
+		}
+
+	})
+
+
+};
+
 
 </script>
 	
