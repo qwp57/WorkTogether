@@ -7,8 +7,9 @@
 
 
 	<aop:aspectj-autoproxy/>
+	
+  	<bean id="loggerAspect1" class = "com.uni.wt.common.aop.LoggerAspect"/>
 
-	<bean id="loggerAspect1" class = "com.uni.wt.common.aop.LoggerAspect"/>
 	<aop:config proxy-target-class="true">
 		<aop:aspect id = "loggerAspect" ref="loggerAspect1">
 			<aop:pointcut expression="execution(* com.uni.wt..*.*(..))" id="pcForAll"/>

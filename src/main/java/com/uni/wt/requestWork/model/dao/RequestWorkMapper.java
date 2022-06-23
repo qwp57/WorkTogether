@@ -1,8 +1,10 @@
 package com.uni.wt.requestWork.model.dao;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.model.dto.Project;
@@ -22,5 +24,13 @@ public interface RequestWorkMapper {
 	public int getRWSeq()throws Exception;
 
 	public RequestWork selectRWDetail(int seqNo)throws Exception;
+
+	public Map<String, Object> selectCountRw(int emp_no)throws Exception;
+
+	public int getListCount(Map<String, Object> paramMap)throws Exception;
+
+	public ArrayList<RequestWork> selectRQList(int emp_no, RowBounds rwB)throws Exception;
+
+	public ArrayList<RequestWork> selectRSList(int emp_no, RowBounds rwB)throws Exception;
 
 }
