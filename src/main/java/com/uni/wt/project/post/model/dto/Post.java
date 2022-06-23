@@ -12,4 +12,9 @@ public class Post {
     private String post_content;
 
     private String post_for;
+
+    private String name;
+
+    private String create_date;
+
 }

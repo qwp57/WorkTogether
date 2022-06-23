@@ -8,10 +8,22 @@
 		<result property="post_title" column="POST_TITLE"/>
 		<result property="post_content" column="POST_CONTENT"/>
 		<result property="post_for" column="POST_FOR"/>
+		<result property="name" column="NAME"/>
+		<result property="create_date" column="CREATE_DATE"/>
 	</resultMap>
 
 	<insert id="insertPost" parameterType="Post">
 		INSERT INTO BOARD_POST
 		VALUES (#{board_no}, #{post_title}, #{post_content}, #{post_for})
 	</insert>
+	<select id="detailView" parameterType="int" resultMap="postSet">
+		SELECT TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE, A.*, C.NAME
+		FROM BOARD_POST A
+				 JOIN PJ_BOARD B
+					  ON A.BOARD_NO = B.BOARD_NO
+				 JOIN EMPLOYEE C
+					  ON B.WRITER = C.EMP_NO
+		WHERE B.BOARD_NO = #{board_no}
+	</select>
+
 </mapper>

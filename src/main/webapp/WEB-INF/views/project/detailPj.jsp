@@ -910,7 +910,7 @@
                                 <br><br>
 
                                 <div class="col-12">
-                                    <h3 id="postTitle">글 제목</h3>
+                                        <h3 id="postTitle">글 제목</h3>
                                     <hr>
                                 </div>
 
@@ -1155,6 +1155,13 @@
 <jsp:include page="colorTagModal.jsp"/>
 <jsp:include page="pjForm.jsp"/>
 <script>
+    $(document).on('change', '.todoDue', function () {
+        console.log($(this).val())
+        if ($(this).val() != "") {
+            $(this).css("display", "block")
+            $(this).next().css("display", "none")
+        }
+    })
     $(function () {
         datepickerLoad()
         loadBoards()
@@ -1196,7 +1203,6 @@
             })
             loadTag()
         }
-
 
 
         $(document).on("click", ".favoBtn", function (e) {
@@ -1304,11 +1310,6 @@
 
         })
 
-        $(document).on('click', '.boardTable tbody tr', function () {
-            $("#boardView").modal("show")
-
-        })
-
 
         $(".fa-plus").click(function () {
             $(".todos").append(
@@ -1335,13 +1336,7 @@
             )
 
 
-            $(document).on('change', '.todoDue', function () {
-                console.log($(this).val())
-                if ($(this).val() != "") {
-                    $(this).css("display", "block")
-                    $(this).next().css("display", "none")
-                }
-            })
+
 
             $('.todoInput').datepicker().on("clearDate", function (e) {
                 console.log(e.currentTarget)
@@ -1391,13 +1386,6 @@
         })
 
 
-        $(document).on('change', '.todoDue', function () {
-            console.log($(this).val())
-            if ($(this).val() != "") {
-                $(this).css("display", "block")
-                $(this).next().css("display", "none")
-            }
-        })
 
 
         $('.todoInput').datepicker().on("clearDate", function (e) {
@@ -1436,14 +1424,6 @@
         })
 
 
-        $(".todoDue").change(function () {
-            console.log($(this).val())
-            if ($(this).val() != "") {
-                $(this).css("display", "block")
-                $(this).next().css("display", "none")
-
-            }
-        })
         $('.todoInput').datepicker().on("clearDate", function (e) {
             console.log(e.currentTarget)
             var $test = e.currentTarget;
@@ -1519,6 +1499,7 @@
             }
         })
     }
+
     function saveTag() {
         if ($("input:checkbox[name='tagInput']:checked").length <= 0) {
             alert("태그를 선택해주세요.")
@@ -1535,6 +1516,7 @@
         setTag(selectedProjects, selectedTags)
 
     }
+
     function setTag(selectedProjects, selectedTags) {
         $.ajax({
             url: '/project/setProjectTag.do',
@@ -1632,12 +1614,55 @@
                 pj_no: ${pj.pj_no}
             },
             success: function (data) {
+                console.log(data)
+                $(".boardTable").html('')
+                $.each(data, function (i, obj) {
+                    if (obj.board_type == 'post') {
+                        $(".boardTable").append(
+                            '<tr>' +
+                            '<td style="width: 7%; text-align: right; color: #f3a435 ;">' +
+                            '<span class="bi bi-file-text"></span>' +
+                            '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">'+
+                            '</td>' +
+                            '<td style="width: 8%; text-align: left;">글</td>' +
+                            '<th style="width: 40%;">' + obj.post_title + '</th>' +
+                            '<td style="width: 12%;">' + obj.name + '</td>' +
+                            '<td style="width: 22%;">' + obj.create_date + '</td>' +
+                            '<td>' +
+                            '</td>' +
+                            '</tr>'
+                        )
+                    }
+                })
 
 
             }
 
         });
     }
+
+    $(document).on('click', '.boardTable tr', function () {
+        console.log($(this).find(".board_no").val())
+        $board_no =  $(this).find(".board_no").val()
+        $.ajax({
+            url: '/post/detailView.do',
+            data:{
+                "board_no": $board_no
+            },
+            success: function (list) {
+                console.log(list)
+                $("#postWriter").html()
+                $("#postTitle").html(list.post_title)
+                $("#postContent").html(list.post_content)
+                $("#postWriter").html(list.name)
+                $("#postUploadDate").html(list.create_date)
+
+
+            }
+        })
+        $("#boardView").modal("show")
+
+    })
 </script>
 <script type="text/javascript">
     var sum = Number("{{sum}}");
@@ -1705,7 +1730,6 @@
             ]
         });
     })
-
 
 
 </script>

@@ -1,5 +1,6 @@
 package com.uni.wt.project.post.controller;
 
+import com.google.gson.GsonBuilder;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.post.model.dto.Post;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -46,5 +49,14 @@ public class PostController {
         redirect.addFlashAttribute("msg", msgMap);
 
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/detailView.do",produces="application/json; charset=utf-8")
+    public String detailView (@RequestParam("board_no") int board_no) throws Exception {
+        Post post = postService.detailView(board_no);
+        log.info("포스트 조회 : " + post);
+
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(post);
     }
 }
