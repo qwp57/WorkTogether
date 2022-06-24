@@ -9,4 +9,6 @@ public interface PostMapper {
     public int insertPost(Post post);
 
     Post detailView(int board_no);
+
+    int increaseCount(int board_no);
 }

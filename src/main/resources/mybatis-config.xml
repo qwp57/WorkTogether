@@ -18,9 +18,11 @@
 		<typeAlias type="com.uni.wt.project.projectMember.model.dto.ProjectMember" alias="ProjectMember"/>
 		<typeAlias type="com.uni.wt.project.projectMember.model.dto.ProjectTag" alias="ProjectTag"/>
 		<typeAlias type="com.uni.wt.project.boardAll.model.dto.BoardAll" alias="BoardAll"/>
+		<typeAlias type="com.uni.wt.project.boardAll.model.dto.Reply" alias="Reply"/>
 		<typeAlias type="com.uni.wt.project.post.model.dto.Post" alias="Post"/>
 		<typeAlias type="com.uni.wt.admin.model.dto.Department" alias="Department"/>
 		<typeAlias type="com.uni.wt.common.dto.FileDto" alias="FileDto"/>
+		<typeAlias type="com.uni.wt.project.model.dto.ProjectFile" alias="ProjectFile"/>
 		<typeAlias type="com.uni.wt.workState.model.dto.Vacation" alias="Vacation"/>
 		<typeAlias type="com.uni.wt.requestWork.model.dto.RequestWork" alias="RequestWork"/>
 		<typeAlias type="com.uni.wt.admin.model.dto.EmployeeSearchCondition" alias="EmployeeSearchCondition"/>
@@ -36,6 +38,7 @@
 		<mapper resource="/mappers/post-mapper.xml"/>
 		<mapper resource="/mappers/admin-mapper.xml"/>
 		<mapper resource="/mappers/file-mapper.xml"/>
+		<mapper resource="/mappers/projectFile-mapper.xml"/>
 		<mapper resource="/mappers/requestWork-mapper.xml"/>
 		<mapper resource="/mappers/notice-mapper.xml"/>
 		<mapper resource="/mappers/approval-mapper.xml"/>
