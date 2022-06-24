@@ -23,14 +23,22 @@ public interface RequestWorkMapper {
 
 	public int getRWSeq()throws Exception;
 
-	public RequestWork selectRWDetail(int seqNo)throws Exception;
+	//public RequestWork selectRWDetail(int seqNo)throws Exception;
 
 	public Map<String, Object> selectCountRw(int emp_no)throws Exception;
 
 	public int getListCount(Map<String, Object> paramMap)throws Exception;
 
-	public ArrayList<RequestWork> selectRQList(int emp_no, RowBounds rwB)throws Exception;
+	public ArrayList<RequestWork> selectRQList(Map<String, Object> paramMap, RowBounds rwB)throws Exception;
 
-	public ArrayList<RequestWork> selectRSList(int emp_no, RowBounds rwB)throws Exception;
+	public ArrayList<RequestWork> selectRSList(Map<String, Object> paramMap, RowBounds rwB)throws Exception;
+
+	public RequestWork selectRWDetail(String rw_no)throws Exception;
+
+	public int cancleRW(RequestWork rw)throws Exception;
+
+	public int updateRW(RequestWork rw)throws Exception;
+
+	public int deleteRW(int rw_no)throws Exception;
 
 }
