@@ -82,7 +82,7 @@
               </li>
               <hr>
               <li class="nav-item ">
-                <a href="/requestWork/requestWorkMain.do" class="nav-link "><i class="fas fa-exclamation"></i> <span>업무요청</span></a>
+                <a href="/requestWorkMain.do" class="nav-link "><i class="fas fa-exclamation"></i> <span>업무요청</span></a>
               </li>
             </ul>
 

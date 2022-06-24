@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import lombok.Data;
 
+
 @Data
 public class RequestWork {
 	
@@ -13,7 +14,7 @@ public class RequestWork {
 	private String title;
 	private String content;
 	private String pj_no;
-	private Date term;
+	private String term;
 	private String important;
 	private String status;
 	private String status_message;
@@ -25,5 +26,10 @@ public class RequestWork {
 	////////////////////////////
 	private String pj_title;
 	private String termYN;
+	////////////////////////////
+	private String req_file_change;
+	private String res_file_change;
+	private String req_file_origin;
+	private String res_file_origin;
 
 }

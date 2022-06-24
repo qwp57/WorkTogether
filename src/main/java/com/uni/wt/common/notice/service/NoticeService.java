@@ -86,12 +86,12 @@ public class NoticeService {
 	private Notice insertRWNotice(Employee emp, int seqNo, String type, int nno)throws Exception {
 		
 		//글번호로 업무요청 글을 조회해온다. 
-		RequestWork rw= rwMapper.selectRWDetail(seqNo);
+		RequestWork rw= rwMapper.selectRWDetail(String.valueOf(seqNo));
 		
 		int emp_no = Integer.parseInt(rw.getRes_member());//수신인
 		String content = emp.getName()+"님이 업무를 요청했습니다";//알림메시지
 		String contentDetail = rw.getTitle();
-		String url = "/requestWork/selectDetail?rno="+seqNo;//URL
+		String url = "/selectDetail?rno="+seqNo;//URL
 		
 		return new Notice(nno, emp_no, type, content, contentDetail,url);
 		

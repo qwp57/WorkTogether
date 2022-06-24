@@ -25,6 +25,10 @@
 	<result property="modified_date" column="MODIFIED_DATE"/>
 	<result property="req_file" column="REQ_FILE"/>
 	<result property="res_file" column="RES_FILE"/>
+	<result property="req_file_origin" column="REQ_FILE_ORIGIN"/>
+	<result property="res_file_origin" column="RES_FILE_ORIGIN"/>
+	<result property="req_file_change" column="REQ_FILE_CHANGE"/>
+	<result property="res_file_change" column="RES_FILE_CHANGE"/>
 </resultMap>
  
  <select id="selectDeptList" resultType="map">
@@ -66,13 +70,13 @@ AND STATUS != 'N'
  VALUES(#{rw_no}, #{req_member}, #{res_member}, #{title}, #{content}, #{pj_no}, #{term}, #{important}, DEFAULT, NULL, SYSDATE, NULL, #{req_file}, NULL)
  </insert>
  
- <select id="selectRWDetail" parameterType="_int" resultMap="requestWorkSet">
+ <!--  <select id="selectRWDetail" parameterType="_int" resultMap="requestWorkSet">
  	SELECT
  		*
  	FROM RW
  	WHERE RW_NO = #{seqNo}
  
- </select>
+ </select>-->
  
  <select id="selectCountRw" parameterType="_int" resultType="map">
  SELECT 
@@ -118,11 +122,21 @@ FROM RW
     IMPORTANT,
     TITLE,
     A.STATUS,
-    TERM
+    TO_CHAR(TERM,'YYYY-MM-DD') AS TERM
 FROM RW A
 JOIN EMPLOYEE B ON A.RES_MEMBER = B.EMP_NO 
 WHERE REQ_MEMBER = #{emp_no}
 AND A.STATUS != 'CM'
+<choose>
+	<when test="sortVal.equals('important')">
+	ORDER BY IMPORTANT
+	</when>
+	<when test="sortVal.equals('term')">
+	ORDER BY TERM DESC NULLS LAST
+	</when>
+	<otherwise>
+	</otherwise>
+</choose>
  
  </select>
  
@@ -133,13 +147,70 @@ AND A.STATUS != 'CM'
     IMPORTANT,
     TITLE,
     A.STATUS,
-    TERM
+    TO_CHAR(TERM,'YYYY-MM-DD') AS TERM
 FROM RW A
 JOIN EMPLOYEE B ON A.REQ_MEMBER = B.EMP_NO 
 WHERE RES_MEMBER = #{emp_no}
 AND A.STATUS != 'CM'
+<choose>
+	<when test="sortVal.equals('important')">
+	ORDER BY IMPORTANT
+	</when>
+	<when test="sortVal.equals('term')">
+	ORDER BY TERM DESC NULLS LAST
+	</when>
+	<otherwise>
+	</otherwise>
+</choose>
  
  </select>
+ 
+ <select id="selectRWDetail" parameterType="string" resultMap="requestWorkSet">
+ SELECT
+    RW_NO,
+   C.DEPT_NAME||' '||B.NAME||' '||D.JOB_NAME AS REQ_MEMBER,
+    F.DEPT_NAME||' '||E.NAME||' '||G.JOB_NAME AS RES_MEMBER,
+    TITLE,
+    CONTENT,
+    H.PJ_TITLE AS PJ_NO,
+    TO_CHAR(TERM, 'YYYY-MM-DD') AS TERM,
+    IMPORTANT,
+    A.STATUS,
+    STATUS_MESSAGE,
+    A.CREATE_DATE,
+    A.MODIFIED_DATE,
+    A.REQ_FILE,
+    A.RES_FILE,
+    I.CHANGE_NAME AS REQ_FILE_CHANGE,
+    I.ORIGINAL_NAME AS REQ_FILE_ORIGIN,
+    J.CHANGE_NAME AS RES_FILE_CHANGE,
+    J.ORIGINAL_NAME AS RES_FILE_ORIGIN
+FROM RW A
+JOIN EMPLOYEE B ON A.REQ_MEMBER = B.EMP_NO
+JOIN DEPARTMENT C ON B.DEPT_CODE = C.DEPT_CODE
+JOIN JOB D ON B.JOB_CODE = D.JOB_CODE
+JOIN EMPLOYEE E ON A.RES_MEMBER = E.EMP_NO
+JOIN DEPARTMENT F ON E.DEPT_CODE = F.DEPT_CODE
+JOIN JOB G ON E.JOB_CODE = G.JOB_CODE
+LEFT JOIN PROJECT H ON A.PJ_NO = H.PJ_NO
+LEFT JOIN ATTACHMENT I ON A.REQ_FILE = I.FILE_NO
+LEFT JOIN ATTACHMENT J ON A.RES_FILE = J.FILE_NO
+WHERE RW_NO = #{rw_no}
+ </select>
+  
+ <update id="updateRW" parameterType="RequestWork">
+  UPDATE RW
+ SET STATUS = #{status}
+ <if test="!status_message.equals('')">
+ , STATUS_MESSAGE = #{status_message}
+ , RES_FILE = #{res_file} 
+ </if>
+ WHERE RW_NO = #{rw_no}
+ </update>
+ 
+ <delete id="deleteRW" parameterType="_int">
+ DELETE FROM RW WHERE RW_NO = #{rw_no}
+ </delete>
  
  
 </mapper>

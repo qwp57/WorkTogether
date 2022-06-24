@@ -105,4 +105,18 @@ public class FileService {
 		
 	}
 
+	public void deleteFile(String res_file) throws Exception {
+		FileDto file = fileMapper.selectFile(Integer.parseInt(res_file));
+		deleteFile(file);
+		
+		int result = fileMapper.deleteFile(Integer.parseInt(res_file));
+		
+		if(result <=0) {
+			throw new Exception("파일 수정에 실패했습니다");
+		}
+		
+		
+		
+	}
+
 }

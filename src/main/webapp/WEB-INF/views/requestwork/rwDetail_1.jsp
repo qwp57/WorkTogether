@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,52 +8,20 @@
 <title>Insert title here</title>
 </head>
 <style>
-*{
-font-family: 'Nanum Gothic', sans-serif;
-
-}
-.th{
-background-color: #EAEAEA;
-text-align: center;
-}
-.td{
-min-width: 300px;
-}
-.termlabel{
-margin-right: 15px;
-font-size: 15px;
-font-weight: bold;
-}
-.rw-textarea{
- width: 100%;
-  line-height: 1.6;
+.rD-2-textarea{
+  width: 60%;
   border: 1px solid lightgray;
   border-radius: 3px;
   overflow: auto;
   resize: none;
 }
-.rw-textarea:focus {
-	outline: none;
-	border: 1px solid #489CFF;
-}
- .btns{
- width: 20%;
- }
-.modal-footer{
-display: flex;
-justify-content: center;}
+.sorttmenu-rD2{
 
-.responsheader{
-font-family: 'Nanum Gothic', sans-serif;
-font-size: 18px;
-margin-top: 15px;
-margin-bottom: 5px;
-font-weight: bold;
-}
-.rwD_1btns{
-width: 70%;
-}
+width : 200px;
+height: 48px;
+margin: 0;
 
+}
 </style>
 <body>
   <div class="modal fade" role="rw-Application" id="rwDetail_1">
@@ -71,63 +39,83 @@ width: 70%;
        				<tbody class="tbody">
        					<tr>
        						<th class="th">제목</th>
-       						<td class="td">2021년 상반기 정산 내역 요청합니다. </td>
+       						<td class="td"></td>
        						<th class="th">프로젝트</th>
-       						<td class="td">프로젝트 명 1</td>
+       						<td class="td"></td>
        					</tr>
        					<tr>
-       						<th class="th">소속부서</th>
-       						<td class="td">영업부</td>
-       						<th class="th">담당자</th>
-       						<td class="td">남궁성</td>
-     						</tr>
-     						<tr>
-       						<th class="th">상태</th>
-       						<td class="td"><button class="btn btn-primary rwD_1btns">진행 중</button></td>
+							<th class="th">보내는 이</th>
+       						<td class="td" ></td>
        						<th class="th">기한</th>
-       						<td class="td">2022-06-07</td>
-     						</tr>
-     						<tr>
+       						<td class="td" ></td>
+       						
+       						
+    					</tr>
+     					<tr>
        						<th class="th">중요도</th>
        						<td class="td"><button class="btn btn-danger rwD_1btns">중요</button></td>
        						<th class="th">첨부파일</th>
-       						<td class="td">첨부파일 없음</td>
-     						</tr>
-     						<tr>
+       						<td class="td"></td>
+     					</tr>
+     					<tr>
        						<th class="th">내용</th>
-       						<td colspan="3" style="text-align: left;">2021년 상반기 정산 내역 부탁드립니다.<br>빨리 주세요</td>
+       						<td class="td" colspan="3" style="text-align: left;"></td>
        					</tr>
        				</tbody>
        			</table>
        			<div class="responsheader">응답</div>
        			<table class="table table-bordered">
+					<form id="updateStatus" action="updateRW.do" method="post" enctype="multipart/form-data" >
        				<tbody class="tbody">
        					<tr>
        						<th class="th">상태 메시지</th>
-       						<td class="td" style="text-align: left;">조금만 기다려 주세요 </td>
+       						<td class="td">
+       							<div class="input-group rsupdate">
+       								<input type="text" name="status_message" class="form-control" placeholder="상태메시지를 작성해주세요">
+       								<div class="input-group-append">
+       								<select class=" form-control sorttmenu sorttmenu-rD2" name="status" id="stSelect" >
+										<option value="RQ">진행전</option>
+									    <option value="P">진행중</option>	
+									    <option value="S">보류됨</option>
+									    <option value="CC">취소됨</option>
+									    <option value="RF">거절됨</option>
+								  	</select>
+       								</div>
+       								<div class="input-group-append">
+       								 <button class="btn btn-outline-secondary" type="submit" onclick="return updateRWState()">작성 완료</button>
+       								</div>
+       							</div>
+								<input type="hidden" name="rw_no" class="rs_rwno" value="">
+       						</td>
        					</tr>
        					<tr>
        						<th class="th">요청파일</th>
-       						<td class="td" style="text-align: left;">첨부파일 없음</td>
+       						<td class="td" id="leftalign">
+							<div class="input-group rsupdate">
+								 <input type="text" id='resFile' class="form-control" placeholder="첨부파일 없음" >
+								 <div class="input-group-append">
+								   <button class="btn btn-outline-secondary" type="button" id="res_file">파일 첨부</button>
+								 </div>
+								 <input type="file" name="upload_file" id="uploadfile" hidden>
+								 <input type="text" name="res_file" hidden>
+							</div>
+							</td>
      					</tr>
        				</tbody>
+					</form>
        			</table>
          	</div>
-         	<div class="modal-footer">
-				<button type="button" class="btn btn-secondary btns" data-dismiss="modal">요청 취소</button>
+			 <form id="reject" method="get" action="/cancleRW.do">
+			<input type="hidden" name="rw_no" class="rs_rwno" value="">
+			<input type="hidden" name="status" value="RF">
+         	<div class="modal-footer" id="modalFooter1">
+				<button type="submit" class="btn btn-secondary btns" onclick="return reject();">거절</button>
+				<button type="button" class="btn btn-primary btns" data-dismiss="modal">확인</button>
 			</div>
+			</form>
 		</div>
 	</div>
 </div>
 
-<script type="text/javascript">
-	$(function(){
-		$(".rq").children().click(function(){
-			$('#rwDetail_1').modal("show");
-		})
-		
-	})
-	
-</script>
 </body>
 </html>

@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.uni.wt.common.Pagination;
 import com.uni.wt.common.commonFile.FileService;
@@ -30,7 +31,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-@RequestMapping("/requestWork")
 public class RequestWorkController {
 	
 	@Autowired
@@ -77,9 +77,9 @@ public class RequestWorkController {
 		}
 		
 		///요청한 업무 목록 
-		Map<String, Object> reqmap = requestList(emp.getEmp_no(), 1);
+		Map<String, Object> reqmap = requestList(emp.getEmp_no(), 1, "");
 		//요청받은 업무 목록 
-		Map<String, Object> resmap = responsList(emp.getEmp_no(), 1);
+		Map<String, Object> resmap = responsList(emp.getEmp_no(), 1, "");
 		
 		//요청한
 		m.addAttribute("reqList", reqmap.get("list"));
@@ -97,15 +97,43 @@ public class RequestWorkController {
 		return "requestwork/rwMain";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="selectRQList.do" , produces = "application/text; charset=UTF-8")
+	public String selectRQList(String sortVal, int currentPage, HttpServletRequest request) throws Exception{
+		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+		log.info("정렬 : " +sortVal);
+		log.info("현재 페이지 : "+currentPage+"");
+		log.info(emp.toString());
+		
+		Map<String, Object> map = requestList(emp.getEmp_no(), currentPage, sortVal);
+		
+		
+		return new Gson().toJson(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="selectRSList.do" , produces = "application/text; charset=UTF-8")
+	public String selectRSList(String sortVal, int currentPage, HttpServletRequest request) throws Exception{
+		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+		log.info("정렬 : " +sortVal);
+		log.info("현재 페이지 : "+currentPage+"");
+		log.info(emp.toString());
+		
+		Map<String, Object> map = responsList(emp.getEmp_no(), currentPage, sortVal);
+		
+		
+		return new Gson().toJson(map);
+	}
+	
 	//메인 요청된 업무 리스트
-	private Map<String, Object> responsList(int emp_no, int currentPage) throws Exception {
+	private Map<String, Object> responsList(int emp_no, int currentPage, String sortVal) throws Exception {
 		//요청된 업무 리스트 전체 개수
 		int listCount = rwService.getListCount(emp_no, "RS");
 		log.info("[요청받은업무 리스트 개수] : {}", listCount);
 		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 5);
 		
-		ArrayList<RequestWork> list = rwService.selectRSList(emp_no, pi);
+		ArrayList<RequestWork> list = rwService.selectRSList(emp_no, pi, sortVal);
 		log.info("[요청받은업무 리스트] : {}", list);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -116,14 +144,14 @@ public class RequestWorkController {
 		return map;
 	}
 	//메인 요청한 업무 리스트 
-	private Map<String, Object> requestList(int emp_no, int currentPage) throws Exception {
+	private Map<String, Object> requestList(int emp_no, int currentPage, String sortVal) throws Exception {
 		//업무요청한 리스트 전체 개수
 		int listCount = rwService.getListCount(emp_no, "RQ");
 		log.info("[업무요청한 리스트 개수] : {}", listCount);
 		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 5);
 		
-		ArrayList<RequestWork> list = rwService.selectRQList(emp_no, pi);
+		ArrayList<RequestWork> list = rwService.selectRQList(emp_no, pi, sortVal);
 		log.info("[요청한 업무 리스트] : {}", list);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -186,10 +214,67 @@ public class RequestWorkController {
 		
 		
 		
-		return "redirect:/requestWork/requestWorkMain.do";
+		return "redirect:/requestWorkMain.do";
 	}
 	
 
+	@ResponseBody
+	@RequestMapping(value="selectRWDetail.do", produces="application/text; charset=UTF-8")
+	public String selectRWDetail(String rw_no) throws Exception {
+		
+		RequestWork detail = rwService.selectRWDetail(rw_no);
+		
+		return new Gson().toJson(detail);
+		
+	}
+	
+	@RequestMapping("cancleRW.do")//취소랑 거절이랑 공유함
+	public String cancleRW(RequestWork rw) throws Exception {
+		log.info(rw.toString());
+		
+		rwService.cancleRW(rw);
+		
+		return "redirect:/requestWorkMain.do";
+	}
+	
+	@RequestMapping("updateRW.do")
+	public String updateRW(RequestWork rw, @RequestParam(name="upload_file", required=false) MultipartFile file,
+							HttpServletRequest request) throws Exception{
+		log.info(rw.toString());
+		
+		
+		if(!rw.getRes_file().equals("") && !file.getOriginalFilename().equals("")) {//파일을 덮어씌울려면
+			
+			fileService.deleteFile(rw.getRes_file());
+
+			}
+		
+		if(!file.getOriginalFilename().equals("")) {//새로 입력한 파일이 있으면
+			String fileSeq = String.valueOf(fileService.uploadFile(file, request, "RW"));
+			
+			rw.setRes_file(fileSeq);
+		}else if(rw.getRes_file().equals("")) {//새로 입력한 파일이 없는데 이전 파일도 없으면 
+			rw.setRes_file(null);
+		}//이전 파일 그대로 하려면 그냥 jsp에서 가져온 파일 번호 그대로 수정한다. 
+		
+		
+		
+		rwService.updateRW(rw);
+		
+		return "redirect:/requestWorkMain.do";
+	}
+	
+	@RequestMapping("deleteRW.do")
+	public String deleteRW(String rw_no) throws Exception {
+		
+		rwService.deleteRW(Integer.parseInt(rw_no));
+		
+		return"redirect:/requestWorkMain.do"; 
+	}
+	
+	
+	
+	
 	@RequestMapping("/completedRequest.do")
 	public String completedRequest() {
 		
