@@ -358,7 +358,7 @@
 				var empName1 = $("input[name='empName1']:checked").val();
 				var jobName1 = $("#jobName1").val();
 				var empNo1 = $("#empNo1").val();
-				
+
 				document.getElementById("job1").innerHTML() = jobName1;
 				document.getElementById("name1").innerHTML() = empName1
 				$("input[name='FIRST_APPROVER_NO']").attr('value', empNo1);

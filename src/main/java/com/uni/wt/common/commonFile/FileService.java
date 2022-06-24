@@ -37,6 +37,7 @@ public class FileService {
 		 String ext = originName.substring(originName.lastIndexOf("."));
 		 String changeName = currentTime+ext;
 		log.info("[file changeName] :{} ",changeName);
+
 		 
 		 try {
 			file.transferTo(new File(savePath+changeName));//업로드된 파일을 transfetTo() 메서드를 이용해서 바꾼 이름과 경로로 파일을 실제 업로드한다. 
@@ -80,6 +81,7 @@ public class FileService {
 			
 		
 	}
+
 
 	private void deleteFile(FileDto uploadedFile) {
 		
