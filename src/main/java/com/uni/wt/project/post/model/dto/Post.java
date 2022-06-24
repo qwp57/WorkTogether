@@ -17,4 +17,6 @@ public class Post {
 
     private String create_date;
 
+    private int count;
+
 }

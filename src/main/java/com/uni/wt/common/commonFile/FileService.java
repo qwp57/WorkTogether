@@ -37,6 +37,7 @@ public class FileService {
 		 String ext = originName.substring(originName.lastIndexOf("."));
 		 String changeName = currentTime+ext;
 		log.info("[file changeName] :{} ",changeName);
+
 		 
 		 try {
 			file.transferTo(new File(savePath+changeName));//업로드된 파일을 transfetTo() 메서드를 이용해서 바꾼 이름과 경로로 파일을 실제 업로드한다. 
@@ -81,6 +82,7 @@ public class FileService {
 		
 	}
 
+
 	private void deleteFile(FileDto uploadedFile) {
 		
 		File file = new File(uploadedFile.getPath()+uploadedFile.getChange_name());
@@ -102,6 +104,20 @@ public class FileService {
 			int result = fileMapper.deleteFile(fileSeq);
 			log.info("파일을 성공적으로 삭제했습니다 {}", result);
 		}
+		
+	}
+
+	public void deleteFile(String res_file) throws Exception {
+		FileDto file = fileMapper.selectFile(Integer.parseInt(res_file));
+		deleteFile(file);
+		
+		int result = fileMapper.deleteFile(Integer.parseInt(res_file));
+		
+		if(result <=0) {
+			throw new Exception("파일 수정에 실패했습니다");
+		}
+		
+		
 		
 	}
 

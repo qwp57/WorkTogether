@@ -299,16 +299,17 @@
             $.ajax({
                 url: '/project/loadTag.do',
                 success: function (list) {
+                    list = $.parseJSON(list)
                     console.log(list)
                     console.log(list.length)
                     $("#tagTable").html('')
-                    if (list.length == 2) {
+                    if (list.length == 0) {
                         $("#tagNullInfo").css("display", "block")
                         $("#tagTable").css("display", "none")
                     } else {
                         $("#tagNullInfo").css("display", "none")
                         $("#tagTable").css("display", "block")
-                        $.each($.parseJSON(list), function (i, obj) {
+                        $.each(list, function (i, obj) {
                             $("#tagTable").append(
                                 '<tr style="width: 100%">' +
                                 '<td class="moveTrigger"><i class="fa fa-tag fa-lg"><input type="text" value="' + obj.tag_no + '" style="display: none;" class="tag_no"></i>' +

@@ -83,21 +83,71 @@ public class RequestWorkServiceImpl implements RequestService{
 	}
 
 	@Override
-	public ArrayList<RequestWork> selectRQList(int emp_no, PageInfo pi) throws Exception {
+	public ArrayList<RequestWork> selectRQList(int emp_no, PageInfo pi, String sortVal) throws Exception {
 		
 		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
+		paramMap.put("sortVal", sortVal);
+		paramMap.put("emp_no", emp_no);
+		ArrayList<RequestWork> list = rwMapper.selectRQList(paramMap, rwB);
+		paramMap.clear();
 		
-		
-		return rwMapper.selectRQList(emp_no, rwB);
+		return list;
 	}
 
 	@Override
-	public ArrayList<RequestWork> selectRSList(int emp_no, PageInfo pi) throws Exception {
+	public ArrayList<RequestWork> selectRSList(int emp_no, PageInfo pi, String sortVal) throws Exception {
 		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
 		RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
+		paramMap.put("sortVal", sortVal);
+		paramMap.put("emp_no", emp_no);
+		ArrayList<RequestWork> list = rwMapper.selectRSList(paramMap, rwB);
+		paramMap.clear();
 		
-		return  rwMapper.selectRSList(emp_no, rwB);
+		return  list;
+	}
+
+	@Override
+	public RequestWork selectRWDetail(String rw_no) throws Exception {
+		
+		RequestWork detail = rwMapper.selectRWDetail(rw_no);
+		
+		if(detail == null) {
+			throw new Exception("업무요청 상세조회에 실패했습니다");
+		}
+		
+		return detail;
+	}
+
+	@Override
+	public void cancleRW(RequestWork rw) throws Exception {
+		
+		int result = rwMapper.updateRW(rw);
+		if(result <= 0) {
+			throw new Exception("업무 요청 취소/거절에 실패했습니다.");
+		}
+		
+		
+	}
+
+	@Override
+	public void updateRW(RequestWork rw) throws Exception {
+		
+		int result = rwMapper.updateRW(rw);
+		if(result <= 0) {
+			throw new Exception("요청된 업무의 상태 변경에 실패했습니다.");
+		}
+		
+	}
+
+	@Override
+	public void deleteRW(int rw_no) throws Exception {
+		int result = rwMapper.deleteRW(rw_no);
+		if(result <= 0) {
+			throw new Exception("업무 요청의 삭제를 실패했습니다.");
+		}
+		
+		
 	}
 
 }

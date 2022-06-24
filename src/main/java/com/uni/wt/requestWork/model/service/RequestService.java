@@ -22,8 +22,16 @@ public interface RequestService {
 
 	int getListCount(int emp_no, String string)throws Exception;
 
-	ArrayList<RequestWork> selectRQList(int emp_no, PageInfo pi)throws Exception;
+	ArrayList<RequestWork> selectRQList(int emp_no, PageInfo pi, String sortVal)throws Exception;
 
-	ArrayList<RequestWork> selectRSList(int emp_no, PageInfo pi)throws Exception;;
+	ArrayList<RequestWork> selectRSList(int emp_no, PageInfo pi, String sortVal)throws Exception;
+
+	RequestWork selectRWDetail(String rw_no)throws Exception;
+
+	void cancleRW(RequestWork rw)throws Exception;
+
+	void updateRW(RequestWork rw)throws Exception;
+
+	void deleteRW(int rw_no)throws Exception;
 
 }

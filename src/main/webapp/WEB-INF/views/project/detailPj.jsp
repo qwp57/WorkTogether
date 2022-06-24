@@ -19,6 +19,12 @@
             rel="stylesheet">
     <script
             src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"
+            integrity="sha512-x/vqovXY/Q4b+rNjgiheBsA/vbWA3IVvsS8lkQSX1gQ4ggSJx38oI2vREZXpTzhAv6tNUaX81E7QBBzkpDQayA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"
+            integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
             integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
@@ -294,7 +300,9 @@
         color: white;
     }
 
-    #caSetting:hover, .favoBtn:hover, .fa-ellipsis-v:hover, .navMenu:hover, .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch, .switchTodo, disconnectingTagBtn:hover {
+    #caSetting, .favoBtn, .navMenu, .fa-plus, .todoCalendar, .todoPerson,
+    .switchPost, .switchSch, .switchTodo, disconnectingTagBtn, .fileUploadBtn, .postFor, .removeTodo, .boardDeleteBtn, #postEditBtn
+    ,.editReplyBtn ,.deleteReplyBtn{
         cursor: pointer;
     }
 
@@ -671,7 +679,8 @@
             <!-- modal body : 내용 -->
 
             <div id="postForm" style="display: block;">
-                <form class="form" id="enrollPost" action="/post/insertPost.do" method="post">
+                <form class="form" id="enrollPost" action="/post/insertPost.do" method="post"
+                      enctype="multipart/form-data">
                     <div class="modal-body">
                         <table class="boardEnrollBtn" style="width: 100%; height: 100%; text-align: center;">
                             <tr>
@@ -704,11 +713,14 @@
 
                         <div class="modal-footer">
                             <div class="col-lg-2"></div>
-                            <div class="col-lg-4 text-left">
-                                <span class="bi bi-paperclip fa-2x"></span> <i
-                                    class="bi bi-person fa-2x postFor"></i>
+                            <div class="col-lg-5 text-left">
+                                <input type="text" class="form-control" id="file-label"
+                                       style="display: none; border: 0px white;">
+                                <span class="bi bi-paperclip fa-2x fileUploadBtn"></span>
+                                <input type="file" name="upload_file" id="upload-file" hidden>
+                                <i class="bi bi-person fa-2x postFor"></i>
                             </div>
-                            <div class="col-lg-5 text-right">
+                            <div class="col-lg-4 text-right">
                                 <button type="submit" class="btn btn-primary btn-lg mr-4">올리기</button>
                             </div>
                             <div class="col-lg-1"></div>
@@ -897,62 +909,48 @@
                 <form class="form">
                     <div class="modal-body">
                         <div class="form-group">
-                            <div class="row ml-5 mr-5">
+                            <div class="row ml-5 mr-5 boardBody">
                                 <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg' id="postWriter">홍길동</span>
-                                    <span style="color: gray" id="postUploadDate"> 2022-06-10 09:15</span>
+                                    <span class='bi bi-person-circle fa-lg' id="postWriter"></span>
+                                    <span style="color: gray" id="postUploadDate"></span>
                                 </div>
                                 <div class="col-lg-2 text-right">
-                                    <a>수정 </a>
-                                    <a> 삭제</a>
+                                    <input class="detailViewBoard_no" type="text" hidden>
+                                    <a id="postEditBtn">수정&nbsp;</a>
+                                    <a class="boardDeleteBtn">&nbsp;삭제</a>
                                 </div>
 
                                 <br><br>
 
                                 <div class="col-12">
-                                        <h3 id="postTitle">글 제목</h3>
+                                    <h3 id="postTitle"></h3>
                                     <hr>
                                 </div>
 
                                 <div class="col-lg-12 ml-3 mr-3" id="postContent">
-                                    <p>글 내용</p>
-                                    <p>글 내용</p>
-                                    <p>글 내용</p>
                                 </div>
                                 <div class="col-lg-12 text-right">
-                                    <a>댓글 2 </a>
-                                    <a> 조회 3</a>
+                                    <a class="replyCount"></a>
+                                    <a class="viewCount"></a>
                                     <hr>
                                 </div>
-                                <c:forEach begin="1" end="3">
-                                    <div class="col-lg-10">
-                                        <span class='bi bi-person-circle fa-lg'> 홍길동</span>
-                                        <span style="color: gray"> 2022-06-10 09:15</span>
-                                    </div>
-                                    <div class="col-lg-2 text-right">
-                                        <a>수정 </a>
-                                        <a> 삭제</a>
-                                        <br> <br>
-                                    </div>
-                                    <div class="col-lg-10">
-                                        <a class="ml-4">댓글 내용</a>
-                                    </div>
-                                    <div class="col-lg-2"></div>
-                                    <div class="col-lg-12">
-                                        <hr>
-                                    </div>
+                                <div class="replyArea col-lg-12">
 
-                                </c:forEach>
+                                </div>
+                                <div class="col-lg-12 replyHrArea" style="display: none;">
+                                    <hr>
+                                </div>
+
 
                                 <label
                                         class="col-form-label col-lg-1 pt-0">
                                     <span class='bi bi-person-circle fa-2x'></span>
                                 </label>
                                 <div class="col-lg-9 text-center">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control replyContentEnroll">
                                 </div>
                                 <div class="col-lg-2 text-right">
-                                    <button type="submit" class="btn btn-primary btn-lg">등록</button>
+                                    <button type="button" class="btn btn-primary btn-lg addReplyBtn">등록</button>
                                 </div>
                             </div>
 
@@ -974,7 +972,7 @@
                                 </div>
                                 <div class="col-lg-2 text-right">
                                     <a>수정 </a>
-                                    <a> 삭제</a>
+                                    <a class="boardDeleteBtn"> 삭제</a>
                                 </div>
 
                                 <br><br>
@@ -1145,8 +1143,6 @@
                     </div>
                 </form>
             </div>
-
-
         </div>
     </div>
 </div>
@@ -1162,6 +1158,85 @@
             $(this).next().css("display", "none")
         }
     })
+
+    $(document).on('click', '.addReplyBtn', function () {
+        var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
+        var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
+        console.log(reply_content)
+        console.log(board_no)
+        $.ajax({
+            url: '/project/insertReply.do',
+            data: {
+                "reply_content": reply_content.val(),
+                "board_no": board_no.val(),
+                "pj_no": ${pj.pj_no}
+            },
+            success: function (data) {
+                //console.log(data)
+                $(".replyContentEnroll").val("")
+                loadReply(board_no.val())
+            }
+        })
+    })
+
+    $(document).on('click', '.deleteReplyBtn', function () {
+        if(confirm("댓글을 삭제하시겠습니까?")){
+            //console.log($(this).parent().find(".reply_no").val())
+            var reply_no = $(this).parent().find(".reply_no").val()
+            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
+            //console.log(board_no)
+            deleteReply(reply_no, board_no)
+        }
+    })
+
+    $(document).on('click', '.fileUploadBtn', function () {
+        $('#upload-file').click()
+    })
+    $(document).on('click', '#file-label', function () {
+        //console.log('변경')
+        $('#upload-file').val("")
+        $("#file-label").css("display", "none")
+    })
+    $(document).on('change', '#upload-file', function () {
+        if (window.FileReader) {  // modern browser
+            var filename = $(this)[0].files[0].name;
+
+        } else {  // old IE
+            var filename = $(this).val().split('/').pop().split('\\').pop();  // 파일명만 추출
+        }
+
+        // 추출한 파일명 삽입
+        $("#file-label").val(filename);
+        $("#file-label").css("display", "block")
+    });
+
+    $(document).on('click', '.boardDeleteBtn', function () {
+
+        if (confirm("삭제하시겠습니까?")) {
+            var form = document.createElement('form'); // 폼객체 생성
+            var obj1;
+            var obj2;
+            obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+            obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+            obj1.setAttribute('name', 'board_no'); // 객체이름
+            obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
+            form.appendChild(obj1);
+            obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+            obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+            obj2.setAttribute('name', 'pj_no'); // 객체이름
+            obj2.setAttribute('value', ${pj.pj_no}); //객체값
+            form.appendChild(obj2);
+
+            form.setAttribute('method', 'post'); //get,post 가능
+            form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
+            document.body.appendChild(form);
+            form.submit();
+
+        }
+
+    })
+
+
     $(function () {
         datepickerLoad()
         loadBoards()
@@ -1315,7 +1390,7 @@
             $(".todos").append(
                 '<div class="form-group row">' +
                 '<div class="col-lg-1 pr-0 text-right">' +
-                '<i class="bi bi-x fa-2x" style="color: red; padding-right: 0px;"></i>' +
+                '<i class="bi bi-x fa-2x removeTodo" style="color: red; padding-right: 0px;"></i>' +
                 '</div>' +
                 '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
                 '<input type="text" class="form-control"' +
@@ -1334,8 +1409,6 @@
                 '</div>' +
                 '</div>'
             )
-
-
 
 
             $('.todoInput').datepicker().on("clearDate", function (e) {
@@ -1384,8 +1457,6 @@
             language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
 
         })
-
-
 
 
         $('.todoInput').datepicker().on("clearDate", function (e) {
@@ -1556,7 +1627,18 @@
             }
         });
     }
-
+    function deleteReply(reply_no, board_no){
+        $.ajax({
+            url: '/project/deleteReply.do',
+            data: {
+                "reply_no": reply_no
+            },
+            success: function (data) {
+                console.log(data)
+                loadReply(board_no)
+            }
+        })
+    }
     function loadTag() {
         $.ajax({
             url: '/project/loadTag.do',
@@ -1607,6 +1689,66 @@
         });
     }
 
+    function loadReply(board_no) {
+        $.ajax({
+            url: '/project/selectReply.do',
+            data: {
+                board_no: board_no
+            },
+            success: function (list) {
+                list = $.parseJSON(list)
+                console.log(list)
+                $(".replyArea").html('')
+                $(".replyCount").text("댓글 " + list.length)
+                if(list.length == 0){
+                    $(".replyHrArea").css("display", "none")
+                    console.log('확인')
+                }else{
+                    $(".replyHrArea").css("display", "block")
+                    $.each(list, function (i, obj) {
+                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
+                            $(".replyArea").append(
+                                '<div class="col-lg-10" style="display: inline-block">' +
+                                '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>' +
+                                '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>' +
+                                '</div>' +
+                                '<div class="col-lg-2 text-right" style="display: inline-block">' +
+                                '<a class="editReplyBtn">수정&nbsp </a>' +
+                                '<a class="deleteReplyBtn">&nbsp 삭제</a>' +
+                                '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>' +
+                                '</div>' +
+                                '<br> <br>' +
+                                '<div class="col-lg-10">' +
+                                '<a class="ml-4 replyContent">' + obj.reply_content + '</a>' +
+                                '</div>' +
+                                '<br> <br>'
+                            )
+
+                        }else {
+                            $(".replyArea").append(
+                                '<div class="col-lg-10" style="display: inline-block">' +
+                                '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>' +
+                                '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>' +
+                                '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>' +
+                                '</div>' +
+                                '<br> <br>' +
+                                '<div class="col-lg-10">' +
+                                '<a class="ml-4 replyContent">' + obj.reply_content + '</a>' +
+                                '</div>' +
+                                '<br> <br>'
+                            )
+                        }
+
+
+                    })
+                }
+
+
+            }
+
+        });
+    }
+
     function loadBoards() {
         $.ajax({
             url: '/project/selectAllBoard.do',
@@ -1622,7 +1764,7 @@
                             '<tr>' +
                             '<td style="width: 7%; text-align: right; color: #f3a435 ;">' +
                             '<span class="bi bi-file-text"></span>' +
-                            '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">'+
+                            '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
                             '</td>' +
                             '<td style="width: 8%; text-align: left;">글</td>' +
                             '<th style="width: 40%;">' + obj.post_title + '</th>' +
@@ -1630,6 +1772,34 @@
                             '<td style="width: 22%;">' + obj.create_date + '</td>' +
                             '<td>' +
                             '</td>' +
+                            '</tr>'
+                        )
+                    } else if (obj.board_type == 'schedule') {
+                        $(".boardTable").append(
+                            '<tr>' +
+                            '<td style="width: 7%; text-align: right; color: #35f364">' +
+                            '<span class="bi bi-calendar"></span>' +
+                            '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
+                            '</td>' +
+                            '<td style="width: 8%; text-align: left;">일정</td>' +
+                            '<th style="width: 40%;">' + obj.sch_title + '</th>' +
+                            '<td style="width: 12%;">' + obj.name + '</td>' +
+                            '<td style="width: 22%;">' + obj.create_date + '</td>' +
+                            '<td><b>' + moment(obj.sch_start).format('MM/DD') + '</b><br><a style="font-size: smaller">' + moment(obj.sch_start).format('HH:mm') + '</a></td>' +
+                            '</tr>'
+                        )
+                    } else if (obj.board_type == 'todo') {
+                        $(".boardTable").append(
+                            '<tr>' +
+                            '<td style="width: 7%; text-align: right; color: #3591f3 ">' +
+                            '<span class="bi bi-check2-square"></span>' +
+                            '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
+                            '</td>' +
+                            '<td style="width: 8%; text-align: left;">할 일</td>' +
+                            '<th style="width: 40%;">' + obj.todo_title + '</th>' +
+                            '<td style="width: 12%;">' + obj.name + '</td>' +
+                            '<td style="width: 22%;">' + obj.create_date + '</td>' +
+                            '<td><span class="badge" style="background-color: #3591f3 ; height: 100%; font-size: 18px; color: white;">20%</span></td>' +
                             '</tr>'
                         )
                     }
@@ -1643,21 +1813,33 @@
 
     $(document).on('click', '.boardTable tr', function () {
         console.log($(this).find(".board_no").val())
-        $board_no =  $(this).find(".board_no").val()
+        $board_no = $(this).find(".board_no").val()
         $.ajax({
             url: '/post/detailView.do',
-            data:{
+            data: {
                 "board_no": $board_no
             },
             success: function (list) {
+                //list = $.parseJSON(list)
                 console.log(list)
-                $("#postWriter").html()
+
+                $("#postView").css("display", "block")
+                $("#schView").css("display", "none")
+                $("#todoView").css("display", "none")
                 $("#postTitle").html(list.post_title)
                 $("#postContent").html(list.post_content)
                 $("#postWriter").html(list.name)
                 $("#postUploadDate").html(list.create_date)
-
-
+                $(".detailViewBoard_no").val(list.board_no)
+                //console.log(list.count)
+                $(".viewCount").text("조회 " + list.count)
+                if ("${sessionScope.loginEmp.name}" == list.name) {
+                    // console.log('확인')
+                    $(".postEdit").css("display", "block")
+                } else {
+                    $(".postEdit").css("display", "none")
+                }
+                loadReply($board_no)
             }
         })
         $("#boardView").modal("show")
@@ -1726,7 +1908,7 @@
                 ['color', ['color']],
                 ['ul', 'ol', 'paragraph'],
                 ['table', ['table']],
-                ['insert', ['link', 'picture', 'video']],
+                ['insert', ['link', 'video']],
             ]
         });
     })

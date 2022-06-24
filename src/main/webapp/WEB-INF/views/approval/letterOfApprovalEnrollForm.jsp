@@ -339,6 +339,7 @@
 			
 			//결재선 등록 버튼 누르면 결재자 칸에 값이 들어간다.
 			$("#saveBtn1").click(function(){
+
 				var empNo1 = $("input[name='empNo1']:checked").val(); //value에 담겨있는 사번
 				var empName1 = $("input[name='empNo1']:checked").next().text(); //label에 있는 이름
 				var jobName1 = $("input[name='empNo1']:checked").next().next().text(); //직급
@@ -376,7 +377,7 @@
 					alert("등록이 완료 되었습니다.");
 					$("#approvalLineModal2").modal("hide");
 				}
-								
+
 			});
 			
 			//기안 날짜에 들어갈 오늘 날짜 구하기

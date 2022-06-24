@@ -10,6 +10,7 @@
 		<result property="post_for" column="POST_FOR"/>
 		<result property="name" column="NAME"/>
 		<result property="create_date" column="CREATE_DATE"/>
+		<result property="count" column="COUNT"/>
 	</resultMap>
 
 	<insert id="insertPost" parameterType="Post">
@@ -17,7 +18,7 @@
 		VALUES (#{board_no}, #{post_title}, #{post_content}, #{post_for})
 	</insert>
 	<select id="detailView" parameterType="int" resultMap="postSet">
-		SELECT TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE, A.*, C.NAME
+		SELECT TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE, B.COUNT, A.*, C.NAME
 		FROM BOARD_POST A
 				 JOIN PJ_BOARD B
 					  ON A.BOARD_NO = B.BOARD_NO
