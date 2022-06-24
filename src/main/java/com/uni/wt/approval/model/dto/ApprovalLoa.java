@@ -1,21 +1,12 @@
 package com.uni.wt.approval.model.dto;
 
-import java.sql.Date;
+import lombok.Data;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
-
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
+@Data
 public class ApprovalLoa {
 	
-	private String approvalNo;
+	private int approvalNo;
+	private int lineNo;
 	private String content;
 	
 }

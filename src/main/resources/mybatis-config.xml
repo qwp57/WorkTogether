@@ -25,6 +25,9 @@
 		<typeAlias type="com.uni.wt.requestWork.model.dto.RequestWork" alias="RequestWork"/>
 		<typeAlias type="com.uni.wt.admin.model.dto.EmployeeSearchCondition" alias="EmployeeSearchCondition"/>
 		<typeAlias type="com.uni.wt.common.notice.dto.Notice" alias="Notice"/>
+		<typeAlias type="com.uni.wt.approval.model.dto.Approval" alias="Approval"/>
+		<typeAlias type="com.uni.wt.approval.model.dto.ApprovalLine" alias="ApprovalLine"/>
+		<typeAlias type="com.uni.wt.approval.model.dto.ApprovalLoa" alias="ApprovalLoa"/>
 	</typeAliases>
 	
 	<mappers>
