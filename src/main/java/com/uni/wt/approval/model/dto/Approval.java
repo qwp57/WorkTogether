@@ -15,9 +15,9 @@ import lombok.ToString;
 @ToString
 public class Approval {
 	
-	private String approvalNo;  //결재 문서 번호
+	private int approvalNo;  //결재 문서 번호
 	private int docNo; 		    //기안서 양식 번호
-	private int lineNo;		    //결재선 번호
+	private String docName;		//기안 양식 이름
 	private int writer;		    //기안자
 	private String deptName;    //부서 이름
 	private int retentionPeriod;//보존 년한
@@ -26,7 +26,6 @@ public class Approval {
 	private Date approvalDate;	//결재완료일
 	private String emergency;	//긴급
 	private String progress;	//결재 진행 상태
-	private String rejectionReason; //반려 사유
 	private int fileNo;			//파일 번호
 	
 }

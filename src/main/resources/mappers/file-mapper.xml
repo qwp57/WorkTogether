@@ -12,7 +12,7 @@
 </resultMap>
 	
 <select id="getFileSeq" resultType="_int">
-SELECT FILE_SEQ.NEXTVAL FROM DUAL
+	SELECT FILE_SEQ.NEXTVAL FROM DUAL
 </select>
 
 <insert id="insertFile" parameterType="FileDto">

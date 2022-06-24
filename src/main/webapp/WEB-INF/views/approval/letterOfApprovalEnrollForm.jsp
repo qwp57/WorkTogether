@@ -69,7 +69,8 @@
 				<span><h3>일반 품의서</h3></span> 
 			</div>	
 			<section class="section-body">
-				<form id="letterOfApprovalForm" method="post" action="insertLetterOfApproval.do" enctype="multipart/form-data"><!-- 첨부파일도 함께 보낸다. -->
+				<form id="letterOfApprovalForm" method="post" action="insertApproval.do" enctype="multipart/form-data"><!-- 첨부파일도 함께 보낸다. -->
+					<input type="hidden" name="docNo" value="1"/>
 					<div id="letterOfApproval">
 						<div><h2 class="text-center pt-3">품의서</h2></div>							
 						<br><br><br>
@@ -79,14 +80,14 @@
 							</tr>
 							<tr>								
 								<th rowspan="2" style="width:10px">결재선</th>
-								<td style="height:20px">대표이사</td>
+								<td style="height:20px" id="job2"></td>
 							</tr>
 							<tr>
-								<td>김대표</td>	
-								<td class="d-none"><input type="hidden" name="LAST_APPROVER_NO" value=""></td>							
+								<td id="name2"></td>	
+								<td class="d-none"><input type="hidden" name="finalApp" value=""></td>							
 							</tr>							
 							<tr>
-								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal2">결재선 선택</button></td>
+								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal2" id="lineBtn2">결재선 선택</button></td>
 							</tr>
 
 						</table>
@@ -100,32 +101,36 @@
 							</tr>
 							<tr>
 								<td id="name1"></td>
-								<td class="d-none"><input type="hidden" name="FIRST_APPROVER_NO" value=""></td>								
+								<td class="d-none"><input type="hidden" name="firstApproverNo" value=""></td>								
 							</tr>
 							<tr>
-								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal1">결재선 선택</button></td>
+								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal1" >결재선 선택</button></td>
 							</tr>
 						</table>
 						<table class="table table-bordered mt-3">							
 							<tr>
 								<th style="width: 15%">기안부서</th>
-								<td name="appDept">인사팀</td>
+								<c:forEach items="${ empList }" var="el">
+									<c:if test="${ el.emp_no == emp.emp_no }">
+										<td id="deptName">${ el.dept_name }<input type="hidden" class="form-control" name="deptName" value="${ el.dept_name }"/></td>
+									</c:if>
+								</c:forEach>
 								<th style="width: 15%">기안일</th>
-								<td name="appCreateDate">2022-06-13</td>
+								<td id="createDate"><input type="hidden" name="createDate" value=""/></td>
 								<th style="width: 15%">문서번호</th>
 								<td></td>
 							</tr>
 							<tr>
 								<th>기안자</th>
-								<td name="appEmployee">홍사원</td>
+								<td name="writer">${ emp.name }<input type="hidden" class="form-control" name="writer" value="${ emp.emp_no}"/></td>
 								<th>보존년한</th>
 								<td>
 									<div class="input-group mt-3 mb-3">
 					    				<div class="input-group-prepend">
 					    					<select class="form-control rounded-1" id="retentionPeriod" name="retentionPeriod">
-												<option ${(param.retentionPeriod == "") ? "selected" : "" } value="">5년</option>
-												<option ${(param.retentionPeriod == "") ? "selected" : "" } value="">10년</option>	
-												<option ${(param.retentionPeriod == "") ? "selected" : "" } value="">15년</option>										
+												<option value="5">5년</option>
+												<option value="10">10년</option>	
+												<option value="15">15년</option>										
 											</select>
 					    				</div>
 					    			</div>
@@ -134,7 +139,7 @@
 								<td>
 									<div class="form-check mt-3 mb-3">
 										<label class="form-check-label">
-											 <input type="checkbox" class="form-check-input" value="">긴급
+											 <input type="checkbox" class="form-check-input" id="emergency" value="Y">긴급
 										</label>
 					    			</div>
 								</td>									
@@ -145,23 +150,26 @@
 								<td colspan="5" name="referee">
 									<button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#refModal">수신참조자 선택</button>
 								</td>
-							</tr>
-							 -->
+							</tr>		
+							 -->				
 							<tr>
 								<th>제목</th>
 								<td colspan="5">
-									<input type="text" class="form-control" id="appTitle" name="appTitle">
+									<input type="text" class="form-control" id="title" name="title">
 								</td>
 							</tr>							
 						</table>		
 										
-						<div class="" id="summernote" name="loaContent"></div>	
+						<textarea id="summernote" name="content"></textarea>	
 						
-						<div class="" >
+						<div>
 							<div class="mt-5" style="font-size:15px"><strong>첨부파일</strong></div>
-							<div id="fileUpload" class="text-center mt-2 pt-5">클릭하여 파일을 추가하세요.</div>
+							<div id="fileUpload" class="mt-2 pt-5">
+								<span id="file_text" class="ml-2">클릭하여 파일을 추가하세요.</span>
+								<span id="file_name" class="ml-2"></span>
+							</div>
 							<div id="fileArea">
-								<input type="file" class="" id="upfile" name="upfile" style="display:none"/>									
+								<input type="file" class="" id="upfile" name="upfile" style="display:none"/>								
 							</div>
 						</div>									
 					</div>
@@ -212,17 +220,14 @@
 													</c:if>
 													<c:if test="${ dl.deptLevel == 2 }">																														
 														<a href="#deptEmp1${dl.deptCode}" data-toggle="collapse" class="ml-3" id="dept_collapse1">
-															<!-- <i class="bi bi-plus" id="plusIcon${ dl.deptCode }"></i>
-															<i class="bi bi-dash" id="minusIcon${ dl.deptCode }" style="display:none"></i> -->
 															${ dl.deptName }
 														</a>														
 													</c:if>
 													<c:forEach items="${ empList }" var="el">
 														<c:if test="${ dl.deptCode == el.dept_code }">
 															<div id="deptEmp1${dl.deptCode}" class="mx-5 my-2 deptUpper collapse">
-																<input type="radio" class="form-check-input" name="empName1" id="empName1" value="${ el.name }">${ el.name } ${el.job_name}
-																<input type="hidden" value="${ el.job_name }" id="jobName1">
-																<input type="hidden" value="${ el.emp_no }" id="empNo1">
+																<input type="radio" class="form-check-input" name="empNo1" id="empNo1" value="${ el.emp_no }"><label for="empNo1">${ el.name }</label>
+																<span>${el.job_name}</span>														
 															</div>
 														</c:if>
 													</c:forEach>
@@ -280,19 +285,17 @@
 												</c:if>
 												<c:if test="${ dl.deptLevel == 2 }">																														
 													<a href="#deptEmp2${dl.deptCode}" data-toggle="collapse" class="ml-3" id="dept_collapse2">
-														<!-- <i class="bi bi-plus" id="plusIcon${ dl.deptCode }"></i>
-														<i class="bi bi-dash" id="minusIcon${ dl.deptCode }" style="display:none"></i> -->
 														${ dl.deptName }
 													</a>														
 												</c:if>
 												<c:forEach items="${ empList }" var="el">
-													<c:if test="${ dl.deptCode == el.dept_code }">
-														<div id="deptEmp2${dl.deptCode}" class="mx-5 my-2 deptUpper collapse">
-															<input type="radio" class="form-check-input" name="name" value="${ el.name }">${ el.name } ${el.job_name}
-															<input type="hidden" value="${ el.job_name }" name="job_code">
-														</div>
-													</c:if>
-												</c:forEach>
+														<c:if test="${ dl.deptCode == el.dept_code }">
+															<div id="deptEmp2${dl.deptCode}" class="mx-5 my-2 deptUpper collapse">
+																<input type="radio" class="form-check-input" name="empNo2" id="empNo2" value="${ el.emp_no }"><label for="empNo2">${ el.name }</label>
+																<span>${el.job_name}</span>														
+															</div>
+														</c:if>
+													</c:forEach>
 											</div>
 										</c:forEach>
 									</div>
@@ -302,7 +305,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" class="btn btn-primary float-right" id="saveBtn2">등록</button>
+					<button type="button" class="btn btn-primary float-right" id="saveBtn2">등록</button>
 				</div>
 				</form>			
 			</div>
@@ -328,42 +331,77 @@
 	            ]
 	        });
 	    });
-		
-		$(function(){	        
-	        $("#fileUpload").click(function(){
-	        	$("#upfile").click();
-	        });	
-	        /*
-	        $("#saveBtn1").click(function(){
-	        	var empName1 = $("input[name='empName1']:checked").val();
-				var jobCode1 = $("#jobCode1").val();
-				var empNo1 = $("#empNo1").val();
-				
-				$.ajax({
-					type: "post",
-					url: "letterOfApprovalEnrollForm.jsp",
-					data: {
-						empName1 : empName1,
-						jobCode1 : jobCode1,
-						empNo1: empNo1
-					},
-					success: 
-				});
-	        }*/
-		});
-		
+
 		$(function(){
+			 $("#fileUpload").click(function(){
+		        	$("#upfile").click();
+		        });	
+			
 			//결재선 등록 버튼 누르면 결재자 칸에 값이 들어간다.
 			$("#saveBtn1").click(function(){
-				var empName1 = $("input[name='empName1']:checked").val();
-				var jobName1 = $("#jobName1").val();
-				var empNo1 = $("#empNo1").val();
 
-				document.getElementById("job1").innerHTML() = jobName1;
-				document.getElementById("name1").innerHTML() = empName1
-				$("input[name='FIRST_APPROVER_NO']").attr('value', empNo1);
+				var empNo1 = $("input[name='empNo1']:checked").val(); //value에 담겨있는 사번
+				var empName1 = $("input[name='empNo1']:checked").next().text(); //label에 있는 이름
+				var jobName1 = $("input[name='empNo1']:checked").next().next().text(); //직급
+							
+				console.log("empNo1 : " + empNo1);
+				console.log("empName1 : " + empName1);
+				console.log("jobName1 : " + jobName1);			
+				
+				$("#job1").text(jobName1);
+				$('#name1').text(empName1);
+				$("input[name='firstApproverNo']").attr('value', empNo1);
+				
+				alert("등록이 완료 되었습니다.");
+				$("#approvalLineModal1").modal("hide");
 			});
+			
+			$("#saveBtn2").click(function(){
+				var empNo2 = $("input[name='empNo2']:checked").val(); //value에 담겨있는 사번
+				var empName2 = $("input[name='empNo2']:checked").next().text(); //label에 있는 이름
+				var jobName2 = $("input[name='empNo2']:checked").next().next().text(); //직급
+				//최초 결재자로 선택된 사람이 또 최종 결재자로 들어가면 안되기 때문에 if문으로 걸러준다.
+				var empNo1 = $("input[name='firstApproverNo']").val(); //이미 선택된 사원의 사번을 가지고 온다.
+							
+				console.log("empNo2 : " + empNo2);
+				console.log("empName2 : " + empName2);
+				console.log("jobName2 : " + jobName2);			
+				
+				if(empNo1 == empNo2){ //최종 결재자와 최초 결재자 사번을 비교한다.
+					alert("이미 선택된 결재자 입니다.");
+				}else {
+					$("#job2").text(jobName2);
+					$('#name2').text(empName2);
+					$("input[name='finalApproverNo']").attr('value', empNo2);
+
+					alert("등록이 완료 되었습니다.");
+					$("#approvalLineModal2").modal("hide");
+				}
+
+			});
+			
+			//기안 날짜에 들어갈 오늘 날짜 구하기
+			var today = new Date();
+			var year = today.getFullYear();
+			var month = ('0' + (today.getMonth() + 1)).slice(-2);
+			var day = ('0' + today.getDate()).slice(-2);
+			
+			var date = year + '-' + month + '-' + day;
+			
+			console.log(date);
+			
+			$("#createDate").text(date);
+			$('input[name="createDate"]').attr('value', date);
+			
+			//파일 업로드
+			$("#upfile").on('change', function(){
+				var fileName = $("#upfile").val(); //파일 이름 가지고 온다.
+				console.log(fileName);
+				$("#file_name").text(fileName);
+				$("#file_text").attr('class', 'd-none');
+			})
 		});
+				
 	</script>
 	<jsp:include page="../common/footer.jsp"/>
 </body>

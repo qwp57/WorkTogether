@@ -23,6 +23,40 @@
 		<result property="upperDeptCode" column="UPPER_DEPT_CODE"/>
 	</resultMap>
 	
+	<resultMap type="Approval" id="approvalResultSet">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="docNo" column="DOC_NO"/>
+		<result property="docName" column="DOC_NAME"/>
+		<result property="writer" column="WRITER"/>
+		<result property="deptName" column="DEPT_NAME"/>
+		<result property="retentionPeriod" column="RETENTION_PERIOD"/>
+		<result property="title" column="TITLE"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="approvalDate" column="APPROVAL_DATE"/>
+		<result property="emergency" column="EMERGENCY"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="fileNo" column="FILE_NO"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalLine" id="approvalLineResultSet">
+		<id property="lineNo" column="LINE_NO"/>
+		<result property="approvalNo" column="APPROVAL_NO"/>
+		<result property="lineLevel" column="LINE_LEVEL"/>
+		<result property="firstApproverNo" column="FIRST_APPROVER_NO"/>
+		<result property="finalApproverNo" column="FINAL_APPROVER_NO"/>
+		<result property="refereeNo" column="REFEREE_NO"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="firstApprovalDate" column="FIRST_APPROVAL_DATE"/>
+		<result property="lastApprovalDate" column="FINAL_APPROVAL_DATE"/>
+		<result property="rejectionReason" column="REJECTION_REASON"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalLoa" id="approvalLoaResultSet">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="lineNo" column="LINE_NO"/>
+		<result property="content" column="CONTENT"/>
+	</resultMap>
+	
 	<!-- 부서 조회 -->
 	<select id="selectDeptList" resultMap="departmenteResultSet">
 		SELECT *
@@ -42,4 +76,46 @@
 		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
 		WHERE STATUS='I'
 	</select>
+	
+	<!-- 공통 문서 insert -->
+	<insert id="insertApproval" parameterType="Approval" useGeneratedKeys="true" keyColumn="APPROVAL_NO" keyProperty="approvalNo">
+		INSERT INTO APPROVAL
+		VALUES(APPN_SEQ.NEXTVAL, #{docNo}, #{docName}, #{writer}, #{deptName}, #{retentionPeriod}, #{title}, SYSDATE, NULL, #{emergency}, DEFAULT, 
+		<choose>
+			<when test="fileNo == 0">
+				NULL)
+			</when>
+			<otherwise>
+				#{fileNo})
+			</otherwise>
+		</choose>		
+		<selectKey keyProperty="approvalNo" resultType="int" order="AFTER">
+			SELECT APPN_SEQ.CURRVAL AS APPROVAL_NO DUAL
+		</selectKey>
+	</insert>
+	
+	<!-- 결재선 등록 -->
+	<!-- 최초 결재자만 있는 경우 등록 -->
+	<insert id="insertApprovalLine1" parameterType="ApprovalLine" useGeneratedKeys="true" keyColumn="LINE_NO" keyProperty="lineNo">
+		INSERT INTO APPLOVAL_LINE
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, null, null, #{progress}, #{firstApprovalDate}, #{lastApprovalDate}, #{rejectionReason})
+		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
+			SELECT APPL_SEQ.CURRVAL AS LINE_NO DUAL
+		</selectKey>
+	</insert>
+	
+	<!-- 최종 결재자만 있는 경우 등록 -->
+	<insert id="insertApprovalLine2" parameterType="ApprovalLine" useGeneratedKeys="true" keyColumn="LINE_NO" keyProperty="lineNo">
+		INSERT INTO APPLOVAL_LINE
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, #{finalApproverNo}, null, #{progress}, #{firstApprovalDate}, #{lastApprovalDate}, #{rejectionReason})
+		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
+			SELECT APPL_SEQ.CURRVAL AS LINE_NO DUAL
+		</selectKey>
+	</insert>
+	
+	<!-- 일반 품의서 등록  -->
+	<insert id="insertLoa" parameterType="ApprovalLoa">
+		INSERT INTO DOC_LOA
+		VALUES(#{approvalNo}, #{lineNo}, #{content})
+	</insert>
 </mapper>
