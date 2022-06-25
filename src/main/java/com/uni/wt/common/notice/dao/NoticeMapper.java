@@ -18,6 +18,8 @@ public interface NoticeMapper {
 
 	Notice selectNotice(int nno)throws Exception;
 
+	int deleteNotice(int notice_no)throws Exception;
+
 	
 
 }

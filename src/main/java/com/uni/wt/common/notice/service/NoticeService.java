@@ -61,7 +61,7 @@ public class NoticeService {
 		Notice noticeResult = noticeMapper.selectNotice(nno);
 		
 		//세션에 새 알림 저장 
-		plusNoticelist(request, noticeResult);
+		//plusNoticelist(request, noticeResult);
 		
 		
 		////////웹소켓 전송
@@ -71,22 +71,10 @@ public class NoticeService {
 
 
 
-	private void plusNoticelist(HttpServletRequest request, Notice noticeResult) {
-		ArrayList<Notice>list = (ArrayList<Notice>) request.getSession().getAttribute("noticeList");
-		list.add(noticeResult);
-		
-		request.getSession().setAttribute("noticeList", list);
-		request.getSession().setAttribute("unreadNotice", list.size());
-		
-		
-	}
-
-
-
 	private Notice insertRWNotice(Employee emp, int seqNo, String type, int nno)throws Exception {
 		
 		//글번호로 업무요청 글을 조회해온다. 
-		RequestWork rw= rwMapper.selectRWDetail(String.valueOf(seqNo));
+		RequestWork rw= rwMapper.selectRWDetailsimple(seqNo);
 		
 		int emp_no = Integer.parseInt(rw.getRes_member());//수신인
 		String content = emp.getName()+"님이 업무를 요청했습니다";//알림메시지
@@ -108,6 +96,7 @@ public class NoticeService {
 			Employee e = (Employee)map.get("loginEmp");
 			if(receiverSession != null) {
 				if(e.getEmp_no() == notice.getEmp_no()) {
+					log.info("e.getEmp_no : "+e.getEmp_no()+"....notice.getEmp_no() : "+notice.getEmp_no());
 					TextMessage txtMsg = new TextMessage(msg);
 					receiverSession.sendMessage(txtMsg);
 				}
@@ -125,6 +114,47 @@ public class NoticeService {
 	public ArrayList<Notice> selectNoticeList(String emp_no) throws Exception {
 		
 		return noticeMapper.selectNoticeList(emp_no);
+		
+		
+	}
+
+
+
+	public String plusNoticelist(HttpServletRequest request, int notice_no)throws Exception {
+		ArrayList<Notice>list = (ArrayList<Notice>) request.getSession().getAttribute("noticeList");
+		Notice n = noticeMapper.selectNotice(notice_no);
+		list.add(n);
+		
+		request.getSession().setAttribute("noticeList", list);
+		request.getSession().setAttribute("unreadNotice", list.size());
+		
+		if(n != null) {
+			
+			return "success";
+		}else {
+			return "fail";
+		}
+		
+	}
+
+
+
+	public String deleteNotice(int notice_no, HttpServletRequest request) throws Exception {
+		
+		Notice n = noticeMapper.selectNotice(notice_no);
+		int result = noticeMapper.deleteNotice(notice_no);
+		if(result > 0) {
+		
+			ArrayList<Notice>list = (ArrayList<Notice>) request.getSession().getAttribute("noticeList");
+			list.remove(n);
+			request.getSession().setAttribute("noticeList", list);
+			request.getSession().setAttribute("unreadNotice", list.size());
+			
+			return "1";
+		
+		}else {
+			return "2";
+		}
 		
 		
 	}

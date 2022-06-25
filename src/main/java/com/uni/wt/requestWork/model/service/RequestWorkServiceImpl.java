@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.uni.wt.common.commonFile.SearchDto;
 import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.model.dto.Project;
@@ -35,9 +36,13 @@ public class RequestWorkServiceImpl implements RequestService{
 	}
 
 	@Override
-	public ArrayList<Employee> getDeptMember(int dept_code) throws Exception {
+	public ArrayList<Employee> getDeptMember(int dept_code, int emp_no) throws Exception {
+		paramMap.put("dept_code", dept_code);
+		paramMap.put("emp_no", emp_no);
 		
-		return rwMapper.getDeptMember(dept_code);
+		ArrayList<Employee> list = rwMapper.getDeptMember(paramMap);
+		paramMap.clear();
+		return list;
 	}
 
 	@Override
@@ -148,6 +153,32 @@ public class RequestWorkServiceImpl implements RequestService{
 		}
 		
 		
+	}
+
+	@Override
+	public int getCompleteListCount(int emp_no, String type, SearchDto sd) throws Exception {
+		paramMap.put("emp_no", emp_no);
+		paramMap.put("type", type);
+		paramMap.put("sd", sd);
+		int result = rwMapper.getCompleteListCount(paramMap);
+		paramMap.clear();
+		
+		return result;
+	}
+
+	@Override
+	public ArrayList<RequestWork> completeRequest(int emp_no, String type, SearchDto sd, PageInfo pi, String sort) throws Exception {
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
+		
+		paramMap.put("emp_no", emp_no);
+		paramMap.put("type", type);
+		paramMap.put("sd", sd);
+		paramMap.put("sort", sort);
+		ArrayList<RequestWork> list = rwMapper.completeRequest(paramMap, rwB);
+		paramMap.clear();
+		
+		return list;
 	}
 
 }

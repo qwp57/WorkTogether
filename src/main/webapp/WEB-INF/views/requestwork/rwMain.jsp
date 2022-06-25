@@ -305,7 +305,7 @@ transform: scale(1.02);
 								<td><button class="btn btn-secondary" onclick="deleteRW(${r.rw_no})">삭제버튼</button></td>
 							</tr>
 						</c:forEach>
-						<c:if test="${empty reqList}"><tr><td>조회된 내역이 없습니다.</td></tr></c:if>
+						<c:if test="${empty reqList}"><tr><td colspan="7">조회된 내역이 없습니다.</td></tr></c:if>
 						</tbody>	
 					</table>
 				 <ul class="pagination rqPi">

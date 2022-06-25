@@ -238,6 +238,18 @@ function connect() {
 }
 
 function noticeSet(msgArr){
+	
+	$.ajax({
+		url : "plusNoticeList.do",
+		data : {notice_no : msgArr[0]}, 
+		method : "get",
+		success : function (result) {
+			console.log(result);
+			
+		}
+	})
+	
+	
 
 	text = "<a href="+msgArr[4]+"onclick='return deleteNotice("+msgArr[0]+");' class='dropdown-item dropdown-item-unread'>";
 	text +="<div class='dropdown-item-desc'><div class='font-weight-bold'>";
@@ -260,7 +272,7 @@ function noticeSet(msgArr){
 function deleteNotice(nno){
 	
 	console.log(nno);
-	alert(nno);
+	
 
 	$.ajax({
 		url : "deleteNotice.do",
@@ -269,7 +281,6 @@ function deleteNotice(nno){
 		success : function(result){
 			if(result == '1'){
 				return true;
-				alert(result);
 				//event.preventDefault();
 			}else{
 				alert(result);

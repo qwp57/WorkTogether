@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.uni.wt.common.Pagination;
 import com.uni.wt.common.commonFile.FileService;
+import com.uni.wt.common.commonFile.SearchDto;
 import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
@@ -45,17 +46,19 @@ public class RequestWorkController {
 	@Autowired
 	private NoticeService noticeService;
 	
+	private Map<String, Object> param = new HashMap<String, Object>(); 
+	
 	
 	@RequestMapping("/requestWorkMain.do")
 	public String requestWorkMain(HttpServletRequest request, Model m) throws Exception {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		
 		if(flashMap != null) {
-			Map<String, String> params = (Map<String, String>) flashMap.get("msg");
+			RequestWork r = (RequestWork)flashMap.get("r");
 			
-			String msg = params.get("msg");
 			
-			m.addAttribute("msg", msg);
+			
+			m.addAttribute("r", r);
 		}
 		
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
@@ -96,6 +99,18 @@ public class RequestWorkController {
 		
 		return "requestwork/rwMain";
 	}
+	
+	@RequestMapping("selectRWDetail_Notice.do")
+	public String selectRWDetail_Notice(String rno,  RedirectAttributes redirect)throws Exception {
+		log.info("알림 삭제 후 경로 이동");
+		RequestWork r = rwService.selectRWDetail(rno);
+	
+		redirect.addFlashAttribute("r", r);
+		
+		
+		return "redirect:/requestWorkMain.do";
+	}
+	
 	
 	@ResponseBody
 	@RequestMapping(value="selectRQList.do" , produces = "application/text; charset=UTF-8")
@@ -164,10 +179,11 @@ public class RequestWorkController {
 
 	@ResponseBody
 	@RequestMapping(value = "/getDeptMember.do", produces = "application/text; charset=UTF-8")
-	public String getDeptMember(String dept_code)throws Exception{
+	public String getDeptMember(String dept_code, HttpServletRequest request)throws Exception{
 		log.info("부서 번호 : {}", dept_code);
+		int emp_no = ((Employee)request.getSession().getAttribute("loginEmp")).getEmp_no();
 		
-		ArrayList<Employee> memberList = rwService.getDeptMember(Integer.parseInt(dept_code));
+		ArrayList<Employee> memberList = rwService.getDeptMember(Integer.parseInt(dept_code), emp_no);
 		
 		log.info(dept_code+"부서의 인원 : "+memberList.toString());
 		
@@ -276,7 +292,31 @@ public class RequestWorkController {
 	
 	
 	@RequestMapping("/completedRequest.do")
-	public String completedRequest() {
+	public String completedRequest(Model m, HttpServletRequest request, @RequestParam(value = "currentPage", required = false, defaultValue = "1") int currentPage,
+			 String type, SearchDto sd, String sort) throws Exception {
+		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+		log.info("[로그인한 유저] : {}", emp.toString());
+		log.info("[currentPage ] : {}", currentPage);
+		log.info("[type ] : {}", type);
+		log.info("[SearchDto ] : {}", sd.toString());
+		log.info("sort : {}", sort);
+	
+		
+	
+		int listCount = rwService.getCompleteListCount(emp.getEmp_no(), type, sd);
+		
+		log.info("[listcount] : {}", listCount);
+
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<RequestWork> list = rwService.completeRequest(emp.getEmp_no(), type, sd, pi, sort);
+		log.info(list.toString());
+		
+		m.addAttribute("sd", sd);
+		m.addAttribute("type", type);
+		m.addAttribute("sort", sort);
+		m.addAttribute("pi", pi);
+		m.addAttribute("list", list);
 		
 		return "requestwork/rwCompleted";
 	}

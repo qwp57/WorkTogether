@@ -15,7 +15,7 @@ public interface RequestWorkMapper {
 
 	public ArrayList<Object> selectDeptList()throws Exception;
 
-	public ArrayList<Employee> getDeptMember(int dept_code)throws Exception;
+	public ArrayList<Employee> getDeptMember(Map<String, Object> paramMap)throws Exception;
 
 	public ArrayList<Project> selectProjectList(int emp_no)throws Exception;
 
@@ -23,7 +23,7 @@ public interface RequestWorkMapper {
 
 	public int getRWSeq()throws Exception;
 
-	//public RequestWork selectRWDetail(int seqNo)throws Exception;
+	public RequestWork selectRWDetailsimple(int seqNo)throws Exception;
 
 	public Map<String, Object> selectCountRw(int emp_no)throws Exception;
 
@@ -40,5 +40,11 @@ public interface RequestWorkMapper {
 	public int updateRW(RequestWork rw)throws Exception;
 
 	public int deleteRW(int rw_no)throws Exception;
+
+	public int getCompleteListCount(Map<String, Object> paramMap)throws Exception;
+
+	public ArrayList<RequestWork> completeRequest(Map<String, Object> paramMap, RowBounds rwB)throws Exception;
+
+
 
 }
