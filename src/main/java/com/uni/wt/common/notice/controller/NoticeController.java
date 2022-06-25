@@ -1,7 +1,13 @@
 package com.uni.wt.common.notice.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.uni.wt.common.notice.service.NoticeService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,12 +15,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NoticeController {
 	
+	@Autowired
+	private NoticeService noticeService;
+	
+	@ResponseBody
 	@RequestMapping("deleteNotice.do")
-	public String deleteNotice(String notice_no) {
+	public String deleteNotice(int notice_no, HttpServletRequest request) throws Exception {
 		log.info("삭제할 알림 번호 : {}", notice_no);
 		
+		String result  = noticeService.deleteNotice(notice_no, request);
 		
-		return "1";
+		
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("plusNoticeList.do")
+	public String plusNoticeList(HttpServletRequest request, int notice_no) throws Exception {
+		
+		String result = noticeService.plusNoticelist(request, notice_no);
+		
+		return result;
 	}
 
 }

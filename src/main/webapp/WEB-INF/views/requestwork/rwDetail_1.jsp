@@ -39,15 +39,15 @@ margin: 0;
        				<tbody class="tbody">
        					<tr>
        						<th class="th">제목</th>
-       						<td class="td"></td>
+       						<td class="td">${r.title}</td>
        						<th class="th">프로젝트</th>
-       						<td class="td"></td>
+       						<td class="td">${r.pj_no}</td>
        					</tr>
        					<tr>
 							<th class="th">보내는 이</th>
-       						<td class="td" ></td>
+       						<td class="td" >${r.req_member}</td>
        						<th class="th">기한</th>
-       						<td class="td" ></td>
+       						<td class="td" >${r.term}</td>
        						
        						
     					</tr>
@@ -59,7 +59,7 @@ margin: 0;
      					</tr>
      					<tr>
        						<th class="th">내용</th>
-       						<td class="td" colspan="3" style="text-align: left;"></td>
+       						<td class="td" colspan="3" style="text-align: left;">${r.content}</td>
        					</tr>
        				</tbody>
        			</table>
@@ -77,8 +77,7 @@ margin: 0;
 										<option value="RQ">진행전</option>
 									    <option value="P">진행중</option>	
 									    <option value="S">보류됨</option>
-									    <option value="CC">취소됨</option>
-									    <option value="RF">거절됨</option>
+									    <option value="CM">완료됨</option>
 								  	</select>
        								</div>
        								<div class="input-group-append">
@@ -116,6 +115,16 @@ margin: 0;
 		</div>
 	</div>
 </div>
+<script>
+	$(function(){
+		let r = '${r.title}';
+
+		if(r != ''){
+			$('#rwDetail_1').modal('show');
+		}
+
+	})
+</script>
 
 </body>
 </html>

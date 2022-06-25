@@ -3,8 +3,10 @@ package com.uni.wt.common.commonFile;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
+@Setter
 @Getter
 @RequiredArgsConstructor()
 @ToString(includeFieldNames = true)

@@ -3,6 +3,7 @@ package com.uni.wt.requestWork.model.service;
 import java.util.ArrayList;
 import java.util.Map;
 
+import com.uni.wt.common.commonFile.SearchDto;
 import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.model.dto.Project;
@@ -12,7 +13,7 @@ public interface RequestService {
 
 	ArrayList<Object> selectDeptList() throws Exception;
 
-	ArrayList<Employee> getDeptMember(int dept_code)throws Exception;
+	ArrayList<Employee> getDeptMember(int dept_code, int emp_no)throws Exception;
 
 	ArrayList<Project> selectProjectList(int emp_no)throws Exception;
 
@@ -33,5 +34,10 @@ public interface RequestService {
 	void updateRW(RequestWork rw)throws Exception;
 
 	void deleteRW(int rw_no)throws Exception;
+
+	int getCompleteListCount(int emp_no, String type, SearchDto sd)throws Exception;
+
+	ArrayList<RequestWork> completeRequest(int emp_no, String type, SearchDto sd, PageInfo pi, String sort)throws Exception;
+
 
 }

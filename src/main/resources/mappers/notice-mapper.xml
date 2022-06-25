@@ -45,5 +45,9 @@ SELECT
 FROM NOTICE
 WHERE NOTICE_NO = #{nno}
 </select>
+
+<delete id="deleteNotice" parameterType="_int">
+DELETE FROM NOTICE WHERE NOTICE_NO = #{notice_no}
+</delete>
   
 </mapper>
