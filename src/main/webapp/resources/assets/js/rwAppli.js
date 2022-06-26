@@ -63,3 +63,4 @@ $('.termRadio').click(function(){
         $('#termId').attr('name', '');
     }
 })
+

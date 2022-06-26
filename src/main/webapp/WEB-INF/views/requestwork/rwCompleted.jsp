@@ -108,6 +108,10 @@ width: 15%;
 font-size: 17px;
 font-family: 'Nanum Gothic', sans-serif;
 }
+.complete > tr:hover {
+	background-color: rgb(243, 240, 240);
+	cursor: pointer;
+}
 
 </style>
 <body>
@@ -149,7 +153,7 @@ font-family: 'Nanum Gothic', sans-serif;
 							<th style="width: 200px; ">삭제</th>
 						</tr>
 					</thead>
-					<tbody class="tbody rs">
+					<tbody class="tbody complete">
 					<c:forEach items="${list}" var="i">
 					<tr>
 						<td>${i.rw_no}</td>
@@ -163,9 +167,14 @@ font-family: 'Nanum Gothic', sans-serif;
 						</c:choose>
 						</td>
 						<td>${i.title }</td>
-						<td>${i.term}</td>
+						<td>
+						<c:choose>
+							<c:when test="${empty i.term}">기한 없음</c:when>
+							<c:otherwise>${i.term }</c:otherwise>
+						</c:choose>
+						</td>
 						<td>${i.modified_date}</td>
-						<td><button class="btn btn-secondary">삭제</button></td>
+						<td><button type="button" class="btn btn-secondary" onclick="deleteComplete(${i.rw_no});">삭제</button></td>
 					</tr>
 					</c:forEach>
 					</tbody>
@@ -202,7 +211,7 @@ font-family: 'Nanum Gothic', sans-serif;
 						</c:otherwise>
 					</c:choose>
 				</ul>
-				<input type="text" id="crnPage" name="currentPage" value="${pi.currentPage}">
+				<input type="hidden" id="crnPage" name="currentPage" value="${pi.currentPage}">
 				<input type="hidden" id="typeid" name="type" value="${type}">
 				<div id="searchwrap">
 		            <div id="search">
@@ -220,6 +229,7 @@ font-family: 'Nanum Gothic', sans-serif;
 	</div>
   </div>
 </div>
+<jsp:include page="../requestwork/rwDetail_3.jsp"></jsp:include>
 <script>
 $(function(){
 let type = '${type}';
@@ -247,6 +257,6 @@ if(searchTarget != ''){
 
 
 </script>
-<script src="/resources/assets/js/rwComplete.js?ver=2"></script>
+<script src="/resources/assets/js/rwComplete.js?ver=3"></script>
 </body>
 </html>

@@ -181,4 +181,32 @@ public class RequestWorkServiceImpl implements RequestService{
 		return list;
 	}
 
+	@Override
+	public int getAllListCount(int emp_no, RequestWork rw, SearchDto sd) throws Exception {
+		paramMap.put("rw", rw);
+		paramMap.put("emp_no", emp_no);
+		paramMap.put("sd", sd);
+		log.info(sd.toString());
+		
+		int result = rwMapper.getAllListCount(paramMap);
+		paramMap.clear();
+		
+		
+		return result;
+	}
+	
+	@Override
+	public ArrayList<RequestWork> selectAllList(int emp_no, RequestWork rw, SearchDto sd, String sort, PageInfo pi) throws Exception {
+		paramMap.put("emp_no", emp_no);
+		paramMap.put("sd", sd);
+		paramMap.put("sort", sort);
+		paramMap.put("rw", rw);
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<RequestWork> list = rwMapper.selectAllList(paramMap, rwB);
+		paramMap.clear();
+		return list;
+	}
+
 }

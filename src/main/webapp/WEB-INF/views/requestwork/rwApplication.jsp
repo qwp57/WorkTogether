@@ -106,11 +106,11 @@ justify-content: center;}
        						<tr>
          						<th class="th">중요도</th>
          						<td class="td">
-         						  <input  type="radio" name="important" id="inlineRadio1" value="1">
+         						  <input  type="radio" name="important" id="inlineRadio1" value="1" required>
 								  <label  for="inlineRadio1" class="termlabel">상</label>
-								  <input  type="radio" name="important" id="inlineRadio2" value="2">
+								  <input  type="radio" name="important" id="inlineRadio2" value="2" required>
 								  <label  for="inlineRadio2" class="termlabel">중</label>
-								  <input  type="radio" name="important" id="inlineRadio3" value="3">
+								  <input  type="radio" name="important" id="inlineRadio3" value="3" required>
 								  <label  for="inlineRadio3" class="termlabel">하</label>
          						</td>
          						<th class="th">첨부파일</th>
@@ -127,7 +127,7 @@ justify-content: center;}
        						<tr>
          						<th class="th">내용</th>
          						<td colspan="3">
-         						<textarea class="rw-textarea" name="content" placeholder="요청할 업무 내용을 작성해 주세요" rows="10"></textarea>
+         						<textarea class="rw-textarea" name="content" placeholder="요청할 업무 내용을 작성해 주세요" rows="10" required></textarea>
          						</td>
          					</tr>
          				</tbody>

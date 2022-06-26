@@ -21,7 +21,7 @@ public interface RequestService {
 
 	Map<String, Object> selectCountRw(int emp_no)throws Exception;
 
-	int getListCount(int emp_no, String string)throws Exception;
+	int getListCount(int emp_no, String boardType)throws Exception;
 
 	ArrayList<RequestWork> selectRQList(int emp_no, PageInfo pi, String sortVal)throws Exception;
 
@@ -38,6 +38,10 @@ public interface RequestService {
 	int getCompleteListCount(int emp_no, String type, SearchDto sd)throws Exception;
 
 	ArrayList<RequestWork> completeRequest(int emp_no, String type, SearchDto sd, PageInfo pi, String sort)throws Exception;
+
+	int getAllListCount(int emp_no, RequestWork rw, SearchDto sd)throws Exception;
+	
+	ArrayList<RequestWork> selectAllList(int emp_no, RequestWork rw, SearchDto sd, String sort, PageInfo pi)throws Exception;
 
 
 }

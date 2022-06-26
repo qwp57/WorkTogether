@@ -18,14 +18,15 @@ public class RequestWork {
 	private String important;
 	private String status;
 	private String status_message;
-	private Date create_date;
-	private Date modified_date;
+	private String create_date;
+	private String modified_date;
 	private String req_file;
 	private String res_file;
 	
 	////////////////////////////
 	private String pj_title;
-	private String termYN;
+	//private String termYN;
+	private String type;
 	////////////////////////////
 	private String req_file_change;
 	private String res_file_change;

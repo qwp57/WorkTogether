@@ -103,19 +103,24 @@ FULL OUTER JOIN (SELECT
  <select id="getListCount" parameterType="map" resultType="_int">
  SELECT
     COUNT(*)
-FROM RW
+FROM RW A
+JOIN EMPLOYEE B ON A.RES_MEMBER = B.EMP_NO 
 <choose>
 	<when test='boardType.equals("RQ")'>
 	 WHERE REQ_MEMBER = #{emp_no}
+	 AND A.STATUS != 'CC'
 	</when>
 	<when test='boardType.equals("RS")'>
 	 WHERE RES_MEMBER = #{emp_no}
+	 AND A.STATUS != 'RF'
 	</when>
 	<otherwise>
 	</otherwise>
 </choose>
-AND STATUS != 'CM'
+AND A.STATUS != 'CM'
  </select>
+ 
+ 
  
  <select id="selectRQList" parameterType="_int" resultMap="requestWorkSet">
  SELECT
@@ -128,7 +133,7 @@ AND STATUS != 'CM'
 FROM RW A
 JOIN EMPLOYEE B ON A.RES_MEMBER = B.EMP_NO 
 WHERE REQ_MEMBER = #{emp_no}
-AND A.STATUS != 'CM'
+AND A.STATUS NOT IN ('CM', 'CC')
 <choose>
 	<when test="sortVal.equals('important')">
 	ORDER BY IMPORTANT
@@ -137,7 +142,6 @@ AND A.STATUS != 'CM'
 	ORDER BY TERM DESC NULLS LAST
 	</when>
 </choose>
-AND A.STATUS != 'CM'
  
  </select>
  
@@ -152,7 +156,7 @@ AND A.STATUS != 'CM'
 FROM RW A
 JOIN EMPLOYEE B ON A.REQ_MEMBER = B.EMP_NO 
 WHERE RES_MEMBER = #{emp_no}
-AND A.STATUS != 'CM'
+AND A.STATUS NOT IN ('CM', 'RF')
 <choose>
 	<when test="sortVal.equals('important')">
 	ORDER BY IMPORTANT
@@ -228,8 +232,11 @@ A.STATUS = 'CM'
  	<when test="type == 'RQ'">
  	AND REQ_MEMBER = #{emp_no}
  	</when>
+ 	<otherwise>
+ 	AND (RES_MEMBER = #{emp_no} OR REQ_MEMBER = #{emp_no})
+ 	</otherwise>
  </choose>
- <if test="sd.searchKeyword != null">
+ <if test="sd.searchKeyword != null &amp;&amp; sd.searchKeyword != ''">
 <bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
 <bind name="target" value="sd.searchTarget"/>
 <choose>
@@ -256,7 +263,7 @@ A.STATUS = 'CM'
     A.IMPORTANT,
     A.TITLE,
     TO_CHAR(A.TERM, 'YYYY-MM-DD') AS TERM,
-    A.MODIFIED_DATE
+    TO_CHAR(A.MODIFIED_DATE, 'YYYY-MM-DD') AS MODIFIED_DATE
 FROM RW A
 JOIN EMPLOYEE B ON A.REQ_MEMBER = B.EMP_NO
 JOIN EMPLOYEE C ON A.RES_MEMBER = C.EMP_NO
@@ -268,6 +275,9 @@ WHERE A.STATUS = 'CM'
 	<when test="type == 'RQ'">
 	AND REQ_MEMBER = #{emp_no}
 	</when>
+	<otherwise>
+ 	AND (RES_MEMBER = #{emp_no} OR REQ_MEMBER = #{emp_no})
+ 	</otherwise>
 </choose>
  <if test="sd.searchKeyword != null &amp;&amp; sd.searchKeyword != ''">
 <bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
@@ -286,8 +296,106 @@ WHERE A.STATUS = 'CM'
 </if>
 <if test="sort != null &amp;&amp; sort != '' ">
 ORDER BY ${sort}<if test="sort != 'important'">DESC NULLS LAST</if>
-
-
+</if>
+ </select>
+ 
+ 
+ 
+ 
+<select id="getAllListCount" parameterType="map" resultType="_int">
+	 SELECT
+	    COUNT(*)
+	FROM RW A
+	JOIN EMPLOYEE B ON A.RES_MEMBER = B.EMP_NO 
+	<if test="rw.type != null &amp;&amp; rw.type != ''">
+	<choose>
+		<when test='rw.type.equals("RQ")'>
+		 WHERE REQ_MEMBER = #{emp_no}
+		</when>
+		<when test='rw.type.equals("RS")'>
+		 WHERE RES_MEMBER = #{emp_no}
+		</when>
+		<otherwise>
+		 WHERE (REQ_MEMBER = #{emp_no}
+		 OR RES_MEMBER = #{emp_no})
+		</otherwise>
+	</choose>
+	</if>
+	<if test="rw.important != null &amp;&amp; rw.important != ''">
+	AND IMPORTANT = #{rw.important}
+	</if>
+	<if test="rw.status != null &amp;&amp; rw.status !=''">
+	AND A.STATUS = #{rw.status}
+	</if>
+	<if test="sd.searchKeyword != null &amp;&amp; sd.searchKeyword != ''">
+	<bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
+	<bind name="target" value="sd.searchTarget"/>
+	<choose>
+		<when test="target == 'name'">
+		AND C.NAME LIKE #{keyword}
+		</when>
+		<when test="target == 'title'">
+		AND TITLE LIKE #{keyword}
+		</when>
+		<when test="target == 'content'">
+		AND CONTENT LIKE #{keyword}
+		</when>
+	</choose>
+	</if>
+	AND A.STATUS != 'CM'
+</select>
+ 
+ <select id="selectAllList" parameterType="map" resultMap="requestWorkSet">
+  SELECT
+    RW_NO,
+    B.NAME AS REQ_MEMBER,
+    C.NAME AS RES_MEMBER,
+    A.IMPORTANT,
+    A.STATUS,
+    A.TITLE,
+    TO_CHAR(A.TERM, 'YYYY-MM-DD') AS TERM,
+    TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+FROM RW A
+JOIN EMPLOYEE B ON A.REQ_MEMBER = B.EMP_NO
+JOIN EMPLOYEE C ON A.RES_MEMBER = C.EMP_NO
+WHERE A.STATUS != 'CM'
+<if test="rw.type != null &amp;&amp; rw.type != ''">
+<choose>
+	<when test='rw.type.equals("RQ")'>
+	 AND REQ_MEMBER = #{emp_no}
+	</when>
+	<when test='rw.type.equals("RS")'>
+	 AND RES_MEMBER = #{emp_no}
+	</when>
+	<otherwise>
+	 AND (REQ_MEMBER = #{emp_no}
+	 OR RES_MEMBER = #{emp_no})
+	</otherwise>
+</choose>
+</if>
+<if test="rw.important != null &amp;&amp; rw.important != ''">
+AND IMPORTANT = #{rw.important}
+</if>
+<if test="rw.status != null &amp;&amp; rw.status !=''">
+AND A.STATUS = #{rw.status}
+</if>
+<if test="sd.searchKeyword != null &amp;&amp; sd.searchKeyword != ''">
+<bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
+<bind name="target" value="sd.searchTarget"/>
+<choose>
+	<when test="target == 'name'">
+	AND C.NAME LIKE #{keyword}
+	</when>
+	<when test="target == 'title'">
+	AND TITLE LIKE #{keyword}
+	</when>
+	<when test="target == 'content'">
+	AND CONTENT LIKE #{keyword}
+	</when>
+</choose>
+</if>
+<if test = "sort != null &amp;&amp; sort != ''">
+ORDER BY ${sort} DESC NULLS LAST
 </if>
  </select>
  
