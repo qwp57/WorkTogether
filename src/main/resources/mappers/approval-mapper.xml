@@ -57,6 +57,30 @@
 		<result property="content" column="CONTENT"/>
 	</resultMap>
 	
+	<resultMap type="ApprovalExpenditure" id="approvalExpenditureResultSet">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="lineNo" column="LINE_NO"/>
+		<result property="exDivision" column="EX_DIVISION"/>
+		<result property="accountingMonth" column="ACCOUNTING_MONTH"/>
+		<result property="spender" column="SPENDER"/>
+		<result property="account" column="ACCOUNT"/>
+		<result property="exContent" column="EX_CONTENT"/>
+		<result property="exDate" column="EX_DATE"/>
+		<result property="exClassification" column="EX_CLASSIFICATION"/>
+		<result property="amount" column="AMOUNT"/>
+		<result property="exHistory" column="EX_HISTORY"/>
+		<result property="note" column="NOTE"/>
+	</resultMap>
+
+	<resultMap type="ApprovalMMinutes" id="approvalMMinutesResultSet">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="lineNo" column="LINE_NO"/>
+		<result property="attendees" column="ATTENDEES"/>
+		<result property="meetingPurpose" column="MEETING_PURPOSE"/>
+		<result property="meetingDate" column="MEETING_DATE"/>
+		<result property="meetingContent" column="MEETING_CONTENT"/>
+	</resultMap>
+
 	<!-- 부서 조회 -->
 	<select id="selectDeptList" resultMap="departmenteResultSet">
 		SELECT *
@@ -78,7 +102,7 @@
 	</select>
 	
 	<!-- 공통 문서 insert -->
-	<insert id="insertApproval" parameterType="Approval" useGeneratedKeys="true" keyColumn="APPROVAL_NO" keyProperty="approvalNo">
+	<insert id="insertApproval" parameterType="Approval">
 		INSERT INTO APPROVAL
 		VALUES(APPN_SEQ.NEXTVAL, #{docNo}, #{docName}, #{writer}, #{deptName}, #{retentionPeriod}, #{title}, SYSDATE, NULL, #{emergency}, DEFAULT, 
 		<choose>
@@ -90,26 +114,26 @@
 			</otherwise>
 		</choose>		
 		<selectKey keyProperty="approvalNo" resultType="int" order="AFTER">
-			SELECT APPN_SEQ.CURRVAL AS APPROVAL_NO DUAL
+			SELECT APPN_SEQ.CURRVAL AS APPROVAL_NO FROM DUAL
 		</selectKey>
 	</insert>
 	
 	<!-- 결재선 등록 -->
 	<!-- 최초 결재자만 있는 경우 등록 -->
-	<insert id="insertApprovalLine1" parameterType="ApprovalLine" useGeneratedKeys="true" keyColumn="LINE_NO" keyProperty="lineNo">
-		INSERT INTO APPLOVAL_LINE
-		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, null, null, #{progress}, #{firstApprovalDate}, #{lastApprovalDate}, #{rejectionReason})
+	<insert id="insertApprovalLine1" parameterType="ApprovalLine">
+		INSERT INTO APPROVAL_LINE
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, NULL, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL)
 		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
-			SELECT APPL_SEQ.CURRVAL AS LINE_NO DUAL
+			SELECT APPL_SEQ.CURRVAL AS LINE_NO FROM DUAL
 		</selectKey>
 	</insert>
 	
-	<!-- 최종 결재자만 있는 경우 등록 -->
-	<insert id="insertApprovalLine2" parameterType="ApprovalLine" useGeneratedKeys="true" keyColumn="LINE_NO" keyProperty="lineNo">
-		INSERT INTO APPLOVAL_LINE
-		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, #{finalApproverNo}, null, #{progress}, #{firstApprovalDate}, #{lastApprovalDate}, #{rejectionReason})
+	<!-- 최종 결재자도 있는 경우 등록 -->
+	<insert id="insertApprovalLine2" parameterType="ApprovalLine">
+		INSERT INTO APPROVAL_LINE
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, #{finalApproverNo}, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL)
 		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
-			SELECT APPL_SEQ.CURRVAL AS LINE_NO DUAL
+			SELECT APPL_SEQ.CURRVAL AS LINE_NO FROM DUAL
 		</selectKey>
 	</insert>
 	
@@ -117,5 +141,17 @@
 	<insert id="insertLoa" parameterType="ApprovalLoa">
 		INSERT INTO DOC_LOA
 		VALUES(#{approvalNo}, #{lineNo}, #{content})
+	</insert>
+	
+	<!-- 지출 결의서 등록 -->
+	<insert id="insertExpenditure" parameterType="ApprovalExpenditure">
+		INSERT INTO DOC_EXPENDITURE
+		VALUES(#{approvalNo}, #{lineNo}, #{exDivision}, #{accountingMonth}, #{spender}, #{account}, #{exContent}, #{exDate}, #{exClassification}, #{amount}, #{exHistory}, #{note})
+	</insert>
+	
+	<!-- 회의록 등록 -->
+	<insert id="insertMminutes" parameterType="ApprovalMMinutes">
+		INSERT INTO DOC_M_MINUTES
+		VALUES(#{approvalNo}, #{lineNo}, #{attendees}, #{meetingPurpose}, #{meetingDate}, #{meetingContent})
 	</insert>
 </mapper>

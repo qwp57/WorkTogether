@@ -1,6 +1,7 @@
 package com.uni.wt.approval.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,8 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.uni.wt.admin.model.dto.Department;
 import com.uni.wt.approval.model.dto.Approval;
+import com.uni.wt.approval.model.dto.ApprovalExpenditure;
 import com.uni.wt.approval.model.dto.ApprovalLine;
 import com.uni.wt.approval.model.dto.ApprovalLoa;
+import com.uni.wt.approval.model.dto.ApprovalMMinutes;
 import com.uni.wt.approval.model.service.ApprovalService;
 import com.uni.wt.common.commonFile.FileService;
 import com.uni.wt.employee.model.dto.Employee;
@@ -50,7 +53,7 @@ public class ApprovalController {
 		return "approval/approvalDocumentListView";
 	}
 	
-	//일반 품의서 작성으로 이동
+	//일반 품의서 작성폼으로 이동
 	@RequestMapping("letterOfApprovalEnrollForm.do")
 	public String letterOfApprovalEnrollForm(HttpServletRequest request, Model model) throws Exception {		
 		//부서 조회
@@ -73,9 +76,18 @@ public class ApprovalController {
 	
 	//공통 문서 저장
 	@RequestMapping("insertApproval.do")
-	public void insertApproval(Approval app, @RequestParam(name="content") String content, @RequestParam(value="firstApproverNo") int firstApproverNo, @RequestParam(value="finalApp", required = false) String finalApp,
-								@RequestParam(name="upfile", required = false) MultipartFile file, HttpServletRequest request) throws Exception {
+	public String insertApproval(Approval app, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, @RequestParam(value="firstApproverNo") int firstApproverNo, @RequestParam(name="finalApp", required = false) String finalApp,
+								@RequestParam(name="upfile", required = false) MultipartFile file, HttpServletRequest request, @RequestParam(value="exDateList", required = false)List<String> exDateList, 
+								@RequestParam(value="exClassificationList", required = false)List<String> exClassificationList, @RequestParam(value="amountList", required = false) List<String> amountList, 
+								@RequestParam(value="exHistoryList", required = false)List<String> exHistoryList, @RequestParam(value="noteList", required = false)List<String> noteList) throws Exception {
 		log.info("공통 문서 정보 Approval : " + app);
+		log.info("최종결재자 : " + finalApp);
+		log.info("지출결의서 : " + appEx);
+		log.info("exDateList : " + exDateList);
+		log.info("exClassificationList : " + exClassificationList);
+		log.info("amountList : " + amountList);
+		log.info("exHistoryList : " + exHistoryList);
+		log.info("noteList : " + noteList);
 		
 		//첨부파일 등록
 		//originalFileName이 전달되는 값이 없으면 빈문자열로 넘어온다.
@@ -98,10 +110,10 @@ public class ApprovalController {
 		}
 		
 		//긴급 여부
-		if(app.getEmergency() == null) { //비어있으면 체크하지 않은 것 -> 빈 값이 넘어온다.
+		if(app.getEmergency().equals(null)) { //비어있으면 체크하지 않은 것 -> 빈 값이 넘어온다.
 			app.setEmergency("N");
 		}
-		log.info("공통 양식 insert 전 : " + app);
+		log.info("app.getEmergency: " + app.getEmergency());
 		
 		//공통 양식 insert
 		approvalService.insertApproval(app);
@@ -115,31 +127,31 @@ public class ApprovalController {
 		if(!finalApp.equals("")) { //비어있지 않으면 최종 결재자가 존재하는 것이다.
 			finalApproverNo = Integer.parseInt(finalApp);
 		}
-		
+		log.info("최종결재자 사번 넣은 후 finalApproverNo : " + finalApproverNo);
+				
 		//기안서 양식에 맞워서 등록
 		if(app.getDocNo() == 1) { //일반품의서인 경우
-			insertLetterOfApproval(content, app.getApprovalNo(), firstApproverNo, finalApproverNo);
+			insertLetterOfApproval(loa, app.getApprovalNo(), firstApproverNo, finalApproverNo);
 		}else if(app.getDocNo() == 2) { //지출 결의서인 경우
-			
+			insertExpenditure(appEx, exDateList, exClassificationList, amountList, exHistoryList, noteList, app.getApprovalNo(), firstApproverNo, finalApproverNo);
 		}else { //회의록인 경우
-			
+			insertMminutes(appMm, app.getApprovalNo(), firstApproverNo, finalApproverNo);
 		}
 		
+		return "redirect:/draftDocument.do";
 	}
-	
+
 	//일반 품의서 insert
-	private String insertLetterOfApproval(String content, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {		
+	private void insertLetterOfApproval(ApprovalLoa loa, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {		
 		//결재선 insert
 		int lineNo = insertApprovalLine(approvalNo, firstApproverNo, finalApproverNo);
-			
-		//일반 품의서 insert
-		ApprovalLoa loa = new ApprovalLoa();
-		loa.setApprovalNo(approvalNo);
-		loa.setContent(content);
-		loa.setLineNo(lineNo);
-		approvalService.insertLoa(loa);
 		
-		return "redirect:draftDocument.do";
+		//일반 품의서 insert
+		loa.setApprovalNo(approvalNo);
+		loa.setLineNo(lineNo);
+		loa.setContent(loa.getContent().replace("\r\n", "<br>")); //개행
+		approvalService.insertLoa(loa);
+	
 	}
 
 	//결재선 등록 메소드
@@ -147,7 +159,7 @@ public class ApprovalController {
 		ApprovalLine appL = new ApprovalLine();
 		appL.setApprovalNo(approvalNo);
 		appL.setFirstApproverNo(firstApproverNo);
-		
+		log.info("최종결재자 사번  finalApproverNo : " + finalApproverNo);
 		if(finalApproverNo == 0) {
 			appL.setLineLevel(1);			
 			approvalService.insertApprovalLine1(appL);
@@ -157,20 +169,95 @@ public class ApprovalController {
 			approvalService.insertApprovalLine2(appL);
 		}
 		
-		int lineNo = appL.getApprovalNo();
+		int lineNo = appL.getLineNo();
 		return lineNo;
 	}
 
-	//지출 결의서로 이동
+	//지출 결의서 작성 폼으로 이동
 	@RequestMapping("expenditureEnrollForm.do")
-	public String expenditureEnrollForm() {		
+	public String expenditureEnrollForm(HttpServletRequest request, Model model) throws Exception {		
+		//부서 조회
+		ArrayList<Department> deptList = approvalService.selectDeptList();		
+		//사원 조회
+		ArrayList<Employee> empList= approvalService.selectEmpList();
+		//세션에 로그인한 유저 정보
+		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+		
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("empList", empList);
+		model.addAttribute("emp", emp);
+		
+		log.info("deptList : " + deptList);
+		log.info("empList : " + empList);
+		log.info("emp: " + emp.toString());
+		
 		return "approval/expenditureEnrollForm";
+	}
+	
+	//지출결의서 작성
+	private void insertExpenditure(ApprovalExpenditure appEx, List<String> exDateList,
+			List<String> exClassificationList, List<String> amountList, List<String> exHistoryList,
+			List<String> noteList, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {
+		
+		//결재선 insert
+		int lineNo = insertApprovalLine(approvalNo, firstApproverNo, finalApproverNo);
+		
+		//지출결의서에 insert
+		appEx.setApprovalNo(approvalNo);
+		appEx.setLineNo(lineNo);
+		appEx.setExContent(appEx.getExContent().replace("\r\n", "<br>")); //개행
+		
+		String exDate = String.join(",", exDateList);
+		appEx.setExDate(exDate);
+		
+		String exClassification = String.join(",", exClassificationList);
+		appEx.setExClassification(exClassification);
+		
+		String amount = String.join(",", amountList);
+		appEx.setAmount(amount); 
+		
+		String exHistory = String.join(",", exHistoryList);
+		appEx.setExHistory(exHistory);
+		
+		String note = String.join(",", noteList);
+		appEx.setNote(note);
+		
+		approvalService.insertExpenditure(appEx);
+		
 	}
 	
 	//회의록으로 이동
 	@RequestMapping("theMinutesOfAMeetingEnrollForm.do")
-	public String theMinutesOfAMeetingForm() {
+	public String theMinutesOfAMeetingForm(HttpServletRequest request, Model model) throws Exception {
+		//부서 조회
+		ArrayList<Department> deptList = approvalService.selectDeptList();		
+		//사원 조회
+		ArrayList<Employee> empList= approvalService.selectEmpList();
+		//세션에 로그인한 유저 정보
+		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+		
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("empList", empList);
+		model.addAttribute("emp", emp);
+		
+		log.info("deptList : " + deptList);
+		log.info("empList : " + empList);
+		log.info("emp: " + emp.toString());
+		
 		return "approval/theMinutesOfAMeetingEnrollForm";
+	}
+	
+	//회의록 insert
+	private void insertMminutes(ApprovalMMinutes appMm, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {
+		//결재선 insert
+		int lineNo = insertApprovalLine(approvalNo, firstApproverNo, finalApproverNo);
+		
+		//회의록에 insert
+		appMm.setApprovalNo(approvalNo);
+		appMm.setLineNo(lineNo);
+		appMm.setMeetingPurpose(appMm.getMeetingPurpose().replace("\r\n", "<br>"));
+		appMm.setMeetingContent(appMm.getMeetingContent().replace("\r\n", "<br>"));
+		approvalService.insertMminutes(appMm);
 	}
 	
 	//일반 품의서 디테일로 이동

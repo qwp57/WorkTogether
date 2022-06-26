@@ -12,8 +12,10 @@ import com.uni.wt.admin.model.dto.Department;
 import com.uni.wt.admin.model.service.AdminServiceImpl;
 import com.uni.wt.approval.model.dao.ApprovalMapper;
 import com.uni.wt.approval.model.dto.Approval;
+import com.uni.wt.approval.model.dto.ApprovalExpenditure;
 import com.uni.wt.approval.model.dto.ApprovalLine;
 import com.uni.wt.approval.model.dto.ApprovalLoa;
+import com.uni.wt.approval.model.dto.ApprovalMMinutes;
 import com.uni.wt.employee.model.dto.Employee;
 
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +72,6 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 	}
 	
-
 	@Override
 	public void insertLoa(ApprovalLoa loa) throws Exception {
 		
@@ -78,6 +79,27 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		if(result < 0) {
 			throw new Exception("품의서 등록 실패");
+		}
+		
+	}
+
+	@Override
+	public void insertExpenditure(ApprovalExpenditure appEx) throws Exception {
+		
+		int result = approvalMapper.insertExpenditure(appEx);
+		
+		if(result < 0) {
+			throw new Exception("지출결의서 등록 실패");
+		}
+	}
+
+	@Override
+	public void insertMminutes(ApprovalMMinutes appMm) throws Exception {
+		
+		int result = approvalMapper.insertMminutes(appMm);
+		
+		if(result < 0) {
+			throw new Exception("회의록 등록 실패");
 		}
 		
 	}

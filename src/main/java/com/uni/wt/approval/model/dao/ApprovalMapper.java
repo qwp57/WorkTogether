@@ -7,8 +7,10 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.uni.wt.admin.model.dto.Department;
 import com.uni.wt.approval.model.dto.Approval;
+import com.uni.wt.approval.model.dto.ApprovalExpenditure;
 import com.uni.wt.approval.model.dto.ApprovalLine;
 import com.uni.wt.approval.model.dto.ApprovalLoa;
+import com.uni.wt.approval.model.dto.ApprovalMMinutes;
 import com.uni.wt.employee.model.dto.Employee;
 
 @Mapper
@@ -25,4 +27,8 @@ public interface ApprovalMapper {
 	int insertApprovalLine2(ApprovalLine appL);
 
 	int insertLoa(ApprovalLoa loa);
+
+	int insertExpenditure(ApprovalExpenditure appEx);
+
+	int insertMminutes(ApprovalMMinutes appMm);
 }
