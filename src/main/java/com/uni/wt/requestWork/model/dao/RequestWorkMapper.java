@@ -45,6 +45,10 @@ public interface RequestWorkMapper {
 
 	public ArrayList<RequestWork> completeRequest(Map<String, Object> paramMap, RowBounds rwB)throws Exception;
 
+	public ArrayList<RequestWork> selectAllList(Map<String, Object> paramMap, RowBounds rwB)throws Exception;
+
+	public int getAllListCount(Map<String, Object> paramMap)throws Exception;
+	
 
 
 }

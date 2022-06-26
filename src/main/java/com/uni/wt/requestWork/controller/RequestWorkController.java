@@ -55,8 +55,8 @@ public class RequestWorkController {
 		
 		if(flashMap != null) {
 			RequestWork r = (RequestWork)flashMap.get("r");
-			
-			
+			Map<String, String> msgMap = (Map<String, String>) flashMap.get("msg");
+			m.addAttribute("msg", msgMap.get("msg"));
 			
 			m.addAttribute("r", r);
 		}
@@ -321,10 +321,72 @@ public class RequestWorkController {
 		return "requestwork/rwCompleted";
 	}
 	
+	@ResponseBody
+	@RequestMapping("deleteAjax.do")
+	public String deleteAjax(int rw_no) throws Exception {
+		
+		rwService.deleteRW(rw_no);
+		
+		return "success";
+	}
+	
+	
 	@RequestMapping("/allRequest.do")
-	public String allRequest() {
+	public String allRequest(HttpServletRequest request,Model m, SearchDto sd ) throws Exception {
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		log.info("검색할 내용 : {}", sd.toString());
+		
+		int listCount = rwService.getAllListCount(emp.getEmp_no(), new RequestWork(), sd);
+		log.info("전체 업무요청 개수 : {}", listCount);
+		PageInfo pi = Pagination.getPageInfo(listCount, 1, 5, 10);
+		
+		ArrayList<RequestWork> list = rwService.selectAllList(emp.getEmp_no(), new RequestWork(), sd, "", pi);
+		log.info("[전체 업무 리스트] : {}", list.toString());
+		
+		m.addAttribute("list", list);
+		m.addAttribute("pi", pi);
+		m.addAttribute("sd", sd);
+		
 		
 		return "requestwork/rwAllList";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "searchOptionAllList.do", produces = "application/text; charset=UTF-8")
+	public String searchOptionAllList(HttpServletRequest request, RequestWork rw, SearchDto sd, String sort, int currentPage) throws Exception {
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		log.info("검색할 내용 : {}", sd.toString());
+		
+		log.info("rw[type : "+rw.getType()+ "\n important : "+rw.getImportant()+"\n status : "+ rw.getStatus());
+		log.info("SearchDto : {}", sd.toString());
+		log.info("sort : {}", sort);
+		
+		int listCount = rwService.getAllListCount(emp.getEmp_no(), rw, sd);
+		log.info("전체 업무요청 개수 : {}", listCount);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+		
+		ArrayList<RequestWork> list = rwService.selectAllList(emp.getEmp_no(), rw, sd, sort, pi);
+		log.info("[전체 업무 리스트] : {}", list.toString());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list", list);
+		map.put("pi", pi);
+		map.put("sd", sd);
+		map.put("sort", sort);
+		map.put("rw", rw);
+		
+		
+		
+		return new Gson().toJson(map);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

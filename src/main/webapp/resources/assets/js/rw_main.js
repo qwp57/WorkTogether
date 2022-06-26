@@ -123,11 +123,11 @@ if(tag == 'rq'){
    
    
    if(item.important == '1'){
-       text+="<td><button class='btn btn-sm btn-danger' style='width: 100px;'>상</button></td>";
+       text+="<td><button class='btn btn-sm btn-danger' style='width: 100px;'>중요</button></td>";
    }else if(item.important == '2'){
-       text += "<td><button class='btn btn-sm btn-primary' style='width: 100px;'>중</button></td>";
+       text += "<td><button class='btn btn-sm btn-primary' style='width: 100px;'>보통</button></td>";
    }else if(item.important == '3'){
-    text += "<td><button class='btn btn-sm btn-secondary' style='width: 100px;'>하</button></td>";
+    text += "<td><button class='btn btn-sm btn-secondary' style='width: 100px;'>낮음</button></td>";
    }
 
    text += "<td>"+item.title+"</td>";

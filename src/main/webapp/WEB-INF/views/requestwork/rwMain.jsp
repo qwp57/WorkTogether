@@ -191,9 +191,9 @@ transform: scale(1.02);
 								<td>${r.req_member}</td>
 								<td>
 								<c:choose>
-									<c:when test="${r.important eq '1'}"><button class="btn btn-sm btn-danger" style="width: 100px;">상</button></c:when>
-									<c:when test="${r.important eq '2'}"><button class="btn btn-sm btn-primary" style="width: 100px;">중</button></c:when>
-									<c:otherwise><button class="btn btn-sm btn-secondary" style="width: 100px;">하</button></c:otherwise>
+									<c:when test="${r.important eq '1'}"><button class="btn btn-sm btn-danger" style="width: 100px;">중요</button></c:when>
+									<c:when test="${r.important eq '2'}"><button class="btn btn-sm btn-primary" style="width: 100px;">보통</button></c:when>
+									<c:otherwise><button class="btn btn-sm btn-secondary" style="width: 100px;">낮음</button></c:otherwise>
 								</c:choose>
 								</td>
 								<td>${r.title}</td>
@@ -281,9 +281,9 @@ transform: scale(1.02);
 								<td>${r.res_member}</td>
 								<td>
 								<c:choose>
-									<c:when test="${r.important eq '1'}"><button class="btn btn-sm btn-danger" style="width: 100px;">상</button></c:when>
-									<c:when test="${r.important eq '2'}"><button class="btn btn-sm btn-primary" style="width: 100px;">중</button></c:when>
-									<c:otherwise><button class="btn btn-sm btn-secondary" style="width: 100px;">하</button></c:otherwise>
+									<c:when test="${r.important eq '1'}"><button class="btn btn-sm btn-danger" style="width: 100px;">중요</button></c:when>
+									<c:when test="${r.important eq '2'}"><button class="btn btn-sm btn-primary" style="width: 100px;">보통</button></c:when>
+									<c:otherwise><button class="btn btn-sm btn-secondary" style="width: 100px;">낮음</button></c:otherwise>
 								</c:choose>
 								</td>
 								<td>${r.title}</td>
