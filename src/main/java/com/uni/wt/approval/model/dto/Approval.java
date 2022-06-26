@@ -2,17 +2,9 @@ package com.uni.wt.approval.model.dto;
 
 import java.sql.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
+@Data
 public class Approval {
 	
 	private int approvalNo;  //결재 문서 번호

@@ -369,10 +369,12 @@
 				
 				if(empNo1 == empNo2){ //최종 결재자와 최초 결재자 사번을 비교한다.
 					alert("이미 선택된 결재자 입니다.");
+				}else if(empNo1 == 0){ //최초 결재자를 선택하지 않고 최종 결재자를 선택할 경우
+					alert("최초 결재자를 먼저 선택해주세요.");
 				}else {
 					$("#job2").text(jobName2);
 					$('#name2').text(empName2);
-					$("input[name='finalApproverNo']").attr('value', empNo2);
+					$("input[name='finalApp']").attr('value', empNo2);
 
 					alert("등록이 완료 되었습니다.");
 					$("#approvalLineModal2").modal("hide");

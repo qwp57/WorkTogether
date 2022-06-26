@@ -30,6 +30,8 @@
 		<typeAlias type="com.uni.wt.approval.model.dto.Approval" alias="Approval"/>
 		<typeAlias type="com.uni.wt.approval.model.dto.ApprovalLine" alias="ApprovalLine"/>
 		<typeAlias type="com.uni.wt.approval.model.dto.ApprovalLoa" alias="ApprovalLoa"/>
+		<typeAlias type="com.uni.wt.approval.model.dto.ApprovalExpenditure" alias="ApprovalExpenditure"/>
+		<typeAlias type="com.uni.wt.approval.model.dto.ApprovalMMinutes" alias="ApprovalMMinutes"/>
 	</typeAliases>
 	
 	<mappers>

@@ -351,7 +351,7 @@
 						<div class="inputRequired mt-3 ml-4 mr-4 row">
 							<div class="col-lg-6 form-group">
 								<label>입사일*</label>
-								 <input id="join_date" type="date" class="form-control" name="join_date" tabindex="8">
+								<input id="join_date" type="date" class="form-control" name="join_date" tabindex="8">
 							</div>
 						</div>
 						<div class="requiredTitle mt-3 ml-4 mr-4 row">
