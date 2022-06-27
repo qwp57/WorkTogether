@@ -154,4 +154,56 @@
 		INSERT INTO DOC_M_MINUTES
 		VALUES(#{approvalNo}, #{lineNo}, #{attendees}, #{meetingPurpose}, #{meetingDate}, #{meetingContent})
 	</insert>
+	
+	<!-- 기안 문서함 listcount -->
+	<select id="draftListCount" parameterType="_int" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL
+		WHERE WRITER=#{emp_no}
+	</select>
+	
+	<!-- 기안 문서함 list -->
+	<select id="selectDraftList" parameterType="_int" resultMap="approvalResultSet">
+		SELECT *
+		FROM APPROVAL
+		WHERE WRITER=#{emp_no}
+		ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<!-- 기안 문서함 검색  listCount -->
+	<select id="searchListCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test='asc.title != null'>
+			AND TITLE LIKE '%'||#{asc.title}||'%'
+			</if>
+			<if test='asc.docName != null'>
+			AND DOC_NAME LIKE '%'||#{asc.docName}||'%'
+			</if>
+			<if test='asc.approvalNo != 0'>
+			AND APPROVAL_NO LIKE '%'||#{asc.approvalNo}||'%'
+			</if>	
+		</trim>
+		AND WRITER=#{emp_no}	
+	</select>
+	
+	<!-- 기안 문서함 검색 list -->
+	<select id="searchDraftList" parameterType="Map" resultMap="approvalResultSet">
+		SELECT *
+		FROM APPROVAL	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test='asc.title != null'>
+			AND TITLE LIKE '%'||#{asc.title}||'%'
+			</if>
+			<if test='asc.docName != null'>
+			AND DOC_NAME LIKE '%'||#{asc.docName}||'%'
+			</if>
+			<if test='asc.approvalNo != 0'>
+			AND APPROVAL_NO LIKE '%'||#{asc.approvalNo}||'%'
+			</if>	
+		</trim>
+		AND WRITER=#{emp_no}
+		ORDER BY CREATE_DATE DESC		
+	</select>
 </mapper>

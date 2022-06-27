@@ -68,175 +68,149 @@
 							<th style="width:7%">긴급</th>
 							<th style="width:26%">제목</th>
 							<th style="width:7%">첨부</th>
-							<th style="width:12%">문서번호</th>
-							<th style="width:10%">결재상태</th>
+							<th style="width:10%">문서번호</th>
+							<th style="width:13%">결재상태</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr id="test">
-							<td>2022-05-28</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00020</td>
-							<td><span class="status">결재 대기</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-28</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00019</td>
-							<td><span class="status">결재 대기</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-25</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00018</td>
-							<td><span class="status">진행중</span></td>
-						</tr>
-						
-						<tr id="test2">
-							<td>2022-05-22</td>
-							<td>2022-05-24</td>
-							<td>지출 결의서</td>
-							<!-- if를 사용해서 만약 긴급 상태이면 긴급이라는 글자가 빨간색으로 나오도록 아니면 '-'이 나오도록 하낟. -->
-							<td style="color:red">긴급</td>
-							<td>2022-05-20 법인카드 사용</td>
-							<!-- 첨부 파일이 있으면 클립 아이콘과 함께 첨부파일 개수가 나온다.(if 사용) -->
-							<td>
-								<i class="bi bi-paperclip"></i>1
-							</td>
-							<td>2022_00017</td>
-							<td><span class="status">완료</span></td>
-						</tr>
-						
-						<tr id="test3">
-							<td>2022-05-18</td>
-							<td>2022-05-20</td>
-							<td>회의록</td>
-							<td>-</td>
-							<td>2022-05-01 회의록</td>
-							<td>-</td>
-							<td>2022_00006</td>
-							<td><span class="status">완료</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-25</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00005</td>
-							<td><span class="status">진행중</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-25</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00004</td>
-							<td><span class="status">진행중</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-25</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00003</td>
-							<td><span class="status">진행중</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-07</td>
-							<td>2022-05-09</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00002</td>
-							<td><span class="status">완료</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-01</td>
-							<td>2022-05-02</td>
-							<td>회의록</td>
-							<td>-</td>
-							<td>2022-05-01 회의록</td>
-							<td>-</td>
-							<td>2022_00001</td>
-							<td><span class="status">완료</span></td>
-						</tr>
+						<c:forEach items="${ draftList }" var="dl">
+							<tr>
+								<td class="d-none"><input type="hidden" name="approvalNo" value="${ dl. approvalNo }"/></td>
+								<td>${ dl.createDate }</td>
+								<c:choose>
+									<c:when test="${ dl.approvalDate eq null }">
+										<td>-</td>
+									</c:when>
+									<c:otherwise>
+										<td>${ dl.approvalDate }</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${ dl.docName }</td>
+								<c:choose>
+									<c:when test="${ dl.emergency eq 'N' }">
+										<td>-</td>
+									</c:when>
+									<c:otherwise>
+										<td style="color: red">긴급</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${ dl.title }</td>
+								<c:choose>
+									<c:when test="${ dl.fileNo eq null }">
+										<td>-</td>
+									</c:when>
+									<c:otherwise>
+										<td><i class="bi bi-paperclip"></i>1</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${ dl.approvalNo }</td>
+								<c:choose>
+									<c:when test="${ dl.progress eq 'W' }">
+										<td><span class="p-2" style="color: white; background-color: skyblue; border-radius: 5px;">대기</span></td>
+									</c:when>
+									<c:when test="${ dl.progress eq 'P' }">
+										<td><span class="p-2" style="color: white; background-color: green; border-radius: 5px;">진행중</span></td>
+									</c:when>
+									<c:when test="${ dl.progress eq 'C' }">
+										<td><span class="p-2" style="color: white; background-color: darkgray; border-radius: 5px;">완료</span></td>
+									</c:when>
+									<c:when test="${ dl.progress eq 'R' }">
+										<td><span class="p-2" style="color: white; background-color: Firebrick; border-radius: 5px;">반려</span></td>
+									</c:when>
+								</c:choose>
+							</tr>	
+						</c:forEach>					
 					</tbody>
 				</table>
 			</div>
 			
 			<!-- 페이징 처리 -->
-			<div id="pagingArea">
-	          	<ul class="pagination">
-		          	<c:choose>
-		          		<c:when test="${ pi.currentPage ne 1 }">
-		          			<li class="page-item"><a class="page-link" href="listBoard.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
-		          		</c:when>
-		          		<c:otherwise>
-		          			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
-		          		</c:otherwise>
-		          	</c:choose>
+			 <div id="pagingArea">
+	          <ul class="pagination">
+	          <!-- 이전 -->
+	          	<c:choose>
+	          		<c:when test="${ pi.currentPage ne 1 }">
+	          			<!-- 검색하지 않는 경우 -->
+	          			<c:if test="${ empty keyword }">
+	          				<li class="page-item"><a class="page-link" href="draftDocument.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+	          			</c:if>
+	          			<!-- 검색하는 경우 -->
+	          			<c:if test="${ !empty keyword }">
+	          				<c:url var="searchUrl" value="searchDraft.do">
+							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
+							<c:param name="condition" value="${ condition }"/>
+							<c:param name="keyword" value="${ keyword }"/>							
+							</c:url>
+							<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
+	          			</c:if>
+	          		</c:when>
+	          		<c:otherwise>
+	          			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
+	          		</c:otherwise>
+	          	</c:choose>
 	          	
-		              <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
-		              	<c:choose>
-			           		<c:when test="${ pi.currentPage ne p }">
-			              			<li class="page-item"><a class="page-link" href="listBoard.do?currentPage=${ p }">${ p }</a></li>
-			           		</c:when>
-			           		<c:otherwise>
-			           			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
-			           		</c:otherwise>
-		           		</c:choose>
-		              </c:forEach>
-		              
-	              
-		              <c:choose>
-		          		<c:when test="${ pi.currentPage ne pi.maxPage }">
-		          			<li class="page-item"><a class="page-link" href="listBoard.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
-		          		</c:when>
-		          		<c:otherwise>
-		          			<li class="page-item disabled"><a class="page-link" href="listBoard.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
-		          		</c:otherwise>
-		          	</c:choose>
-	          	</ul>
+	          	<!-- 숫자 -->
+	            <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
+	             	<c:choose>
+		           		<c:when test="${ pi.currentPage ne p }">
+		           			<%-- keyword가 empty -> 검색하지 않는 경우 --%>
+							<c:if test="${ empty keyword }">
+								<li class="page-item"><a class="page-link" href="draftDocument.do?currentPage=${ p }">${ p }</a></li>
+							</c:if>
+		              		<%-- keyword가 empty아님 -> 검색하는 경우 --%>
+							<c:if test="${ !empty keyword }">
+								<c:url var="searchUrl" value="searchDraft.do">
+									<c:param name="currentPage" value="${ p }"/>
+									<c:param name="condition" value="${ condition }"/>
+									<c:param name="keyword" value="${ keyword }"/>							
+								</c:url>
+								<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
+							</c:if>
+		           		</c:when>
+		           		<c:otherwise>
+		           			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
+		           		</c:otherwise>
+	           		</c:choose>
+	           </c:forEach>
+	           	       
+	              <!-- 다음 페이지 -->	       
+	              <c:choose>
+	          		<c:when test="${ pi.currentPage ne pi.maxPage }">
+	          			<!-- 검색하지 않는 경우 -->
+	          			<c:if test="${ empty keyword }">
+	          				<li class="page-item"><a class="page-link" href="draftDocument.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          			</c:if>
+	          			<!-- 검색 하는 경우 -->
+	          			<c:if test="${ !empty keyword }">
+	          				<c:if test="${ !empty keyword }">
+								<c:url var="searchUrl" value="searchDraft.do">
+									<c:param name="currentPage" value="${pi.currentPage+1  }"/>
+									<c:param name="condition" value="${ condition }"/>
+									<c:param name="keyword" value="${ keyword }"/>
+								</c:url>
+								<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>
+							</c:if>
+	          			</c:if>
+	          		</c:when>
+	          		<c:otherwise>
+	          			<li class="page-item disabled"><a class="page-link" href="draftDocument.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          		</c:otherwise>
+	          	</c:choose>
+	          </ul>
 	    	</div>
 	    	
 	    	<div id="search">
-	    		<form method="get">
+	    		<form method="get" action="searchDraft.do">
 	    			<div class="input-group mt-3 mb-3">
 	    				<div class="input-group-prepend">
-	    					<select class="form-control rounded-1" id="searchSelect" name="keyword">
-								<option ${(param.keyword == "") ? "selected" : "" } value="">제목</option>
-								<option ${(param.keyword == "") ? "selected" : "" } value="">결재양식</option>	
-								<option ${(param.keyword == "") ? "selected" : "" } value="">문서번호</option>										
+	    					<select class="form-control rounded-1" name="condition">
+								<option ${(param.condition == "title") ? "selected" : "" } value="title">제목</option>
+								<option ${(param.condition == "docName") ? "selected" : "" } value="docName">결재양식</option>	
+								<option ${(param.condition == "approvalNo") ? "selected" : "" } value="approvalNo">문서번호</option>										
 							</select>
 	    				</div>
 	    				<!-- 검색어 입력 -->		
-						<input type="text" class="form-control" id="searchKey" name="searchKey" placeholder="검색어를 입력하세요." value="${param.searchKey }">	
+						<input type="text" class="form-control" id="keyword" name="keyword" placeholder="검색어를 입력하세요." value="${ param.keyword }">	
 						<!-- 검색 버튼 --> 
 						<input type="submit" class="btn btn-primary" id="searchBtn" value="검색">	
 	    			</div>
@@ -244,6 +218,7 @@
 	    	</div>
 		</div>
 	</div>
+	
 	<script>
 		$(function(){
 			$("#draftList tbody #test").click(function(){

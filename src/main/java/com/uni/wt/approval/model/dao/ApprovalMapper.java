@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
 import com.uni.wt.admin.model.dto.Department;
 import com.uni.wt.approval.model.dto.Approval;
@@ -31,4 +32,13 @@ public interface ApprovalMapper {
 	int insertExpenditure(ApprovalExpenditure appEx);
 
 	int insertMminutes(ApprovalMMinutes appMm);
+
+	int draftListCount(int emp_no);
+
+	ArrayList<Approval> selectDraftList(int emp_no, RowBounds rowBounds);
+
+	int searchListCount(Map<String, Object> map);
+
+	ArrayList<Approval> searchDraftList(Map<String, Object> map, RowBounds rowBounds);
+
 }

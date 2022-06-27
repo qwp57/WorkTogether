@@ -1,7 +1,9 @@
 package com.uni.wt.approval.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,8 +22,11 @@ import com.uni.wt.approval.model.dto.ApprovalExpenditure;
 import com.uni.wt.approval.model.dto.ApprovalLine;
 import com.uni.wt.approval.model.dto.ApprovalLoa;
 import com.uni.wt.approval.model.dto.ApprovalMMinutes;
+import com.uni.wt.approval.model.dto.ApprovalSearchCondition;
 import com.uni.wt.approval.model.service.ApprovalService;
+import com.uni.wt.common.Pagination;
 import com.uni.wt.common.commonFile.FileService;
+import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 
 @Controller
@@ -43,13 +48,74 @@ public class ApprovalController {
 	
 	//기안 문서함으로 이동
 	@RequestMapping("draftDocument.do")
-	public String draftDocumentBoxPage() {
+	public String draftDocumentBoxPage(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model) throws Exception {
+		//로그인한 사람의 emp 정보를 가지고 온다.
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		
+		int listCount = approvalService.draftListCount(emp.getEmp_no());
+		log.info("글 개수 : " + listCount);
+		
+		//페이지 정보를 가지고 있는 객체 생성
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		log.info("페이지 정보 : " + pi);
+		
+		//list 조회해오기
+		ArrayList<Approval> draftList = approvalService.selectDraftList(emp.getEmp_no(), pi);
+		
+		model.addAttribute("draftList", draftList);
+		model.addAttribute("pi", pi);
+		
+		return "approval/draftDocumentListView";
+	}
+	
+	//기안 문서함 검색
+	@RequestMapping("searchDraft.do")
+	public String draftSearchList(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model, 
+								  String condition, String keyword, ApprovalSearchCondition asc) throws Exception {
+		log.info("condition : " + condition);
+		log.info("keyword : " + keyword);
+		
+		//로그인한 사람의 emp 정보를 가지고 온다.
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		
+		//받아온 condition이 무엇이냐에 따라 set해준다.
+		switch(condition) {
+		case "title" :
+			asc.setTitle(keyword);
+			break;
+		case "docName" :
+			asc.setTitle(keyword);
+			break;
+		case "approvalNo" :
+			asc.setTitle(keyword);
+			break;
+		}
+		log.info("asc에 담겨있는 condition : " + asc);
+		
+		//검색을 위한 페이징 처리
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("asc", asc);
+		map.put("emp_no", emp.getEmp_no());
+		
+		int listCount = approvalService.searchListCount(map);
+		log.info("검색 페이지 글 수 : " + listCount);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		
+		ArrayList<Approval> draftList = approvalService.searchDraftList(map, pi);
+		
+		model.addAttribute("draftList", draftList);
+		model.addAttribute("pi", pi);
+		
 		return "approval/draftDocumentListView";
 	}
 	
 	//결재 문서함으로 이동
 	@RequestMapping("approvalDocument.do")
-	public String approvalDocumentBoxPage() {
+	public String approvalDocumentBoxPage(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model) {
+		
+		
+		
 		return "approval/approvalDocumentListView";
 	}
 	
@@ -76,10 +142,11 @@ public class ApprovalController {
 	
 	//공통 문서 저장
 	@RequestMapping("insertApproval.do")
-	public String insertApproval(Approval app, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, @RequestParam(value="firstApproverNo") int firstApproverNo, @RequestParam(name="finalApp", required = false) String finalApp,
-								@RequestParam(name="upfile", required = false) MultipartFile file, HttpServletRequest request, @RequestParam(value="exDateList", required = false)List<String> exDateList, 
-								@RequestParam(value="exClassificationList", required = false)List<String> exClassificationList, @RequestParam(value="amountList", required = false) List<String> amountList, 
-								@RequestParam(value="exHistoryList", required = false)List<String> exHistoryList, @RequestParam(value="noteList", required = false)List<String> noteList) throws Exception {
+	public String insertApproval(Approval app, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, @RequestParam(value="firstApproverNo") int firstApproverNo,
+								@RequestParam(name="finalApp", required = false) String finalApp, @RequestParam(name="upfile", required = false) MultipartFile file, HttpServletRequest request, 
+								@RequestParam(value="exDateList", required = false)List<String> exDateList, @RequestParam(value="exClassificationList", required = false)List<String> exClassificationList, 
+								@RequestParam(value="amountList", required = false) List<String> amountList, @RequestParam(value="exHistoryList", required = false)List<String> exHistoryList, 
+								@RequestParam(value="noteList", required = false)List<String> noteList) throws Exception {
 		log.info("공통 문서 정보 Approval : " + app);
 		log.info("최종결재자 : " + finalApp);
 		log.info("지출결의서 : " + appEx);
@@ -110,9 +177,17 @@ public class ApprovalController {
 		}
 		
 		//긴급 여부
-		if(app.getEmergency().equals(null)) { //비어있으면 체크하지 않은 것 -> 빈 값이 넘어온다.
+		if(app.getEmergency() == null) { //비어있으면 체크하지 않은 것 -> 빈 값이 넘어온다.
 			app.setEmergency("N");
+		} else {
+			app.setEmergency("Y");
 		}
+		
+		//if(app.getEmergency().equals("Y") { //비어있으면 체크하지 않은 것 -> 빈 값이 넘어온다.
+		//	app.setEmergency("Y");
+		//} else {
+		//	app.setEmergency("N");
+		//}
 		log.info("app.getEmergency: " + app.getEmergency());
 		
 		//공통 양식 insert

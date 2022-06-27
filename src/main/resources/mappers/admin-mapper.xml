@@ -217,7 +217,7 @@
 		</trim> 	
 	</select>
 	 -->
-	 <select id="searchListCount" parameterType="EmployeeSearchCondition" resultType="_int">
+	 <select id="searchListCount" parameterType="EmployeeSearchCondition" resultType="int">
 	 	SELECT COUNT(*)
 		FROM EMPLOYEE
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -233,10 +233,10 @@
 			<if test="job_name != null">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status.equals('I') &amp;&amp; status != null">
+			<if test="status == 'I' &amp;&amp; status != null">
 			AND STATUS=#{status}
 			</if>
-			<if test="status.equals('Q') &amp;&amp; status != null">
+			<if test="status == 'Q' &amp;&amp; status != null">
 			AND STATUS=#{status}
 			</if>
 		</trim>
@@ -307,13 +307,14 @@
 			<if test="job_name != null">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status.equals('I') &amp;&amp; status != null">
+			<if test="status == 'I' &amp;&amp; status != null">
 			AND STATUS='I'
 			</if>
-			<if test="status.equals('Q') &amp;&amp; status != null">
+			<if test="status == 'Q' &amp;&amp; status != null">
 			AND STATUS='Q'
 			</if>
 		</trim>
+		ORDER BY JOIN_DATE DESC
 	</select>	
 </mapper>
         
