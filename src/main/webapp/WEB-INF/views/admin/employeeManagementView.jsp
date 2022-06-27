@@ -238,7 +238,7 @@
 	          				<c:url var="searchUrl" value="searchEmp.do">
 							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
 							<c:param name="condition" value="${ condition }"/>
-							<c:param name="search" value="${ search }"/>							
+							<c:param name="keyword" value="${ keyword }"/>							
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
 	          			</c:if>
@@ -261,7 +261,7 @@
 								<c:url var="searchUrl" value="searchEmp.do">
 									<c:param name="currentPage" value="${ p }"/>
 									<c:param name="condition" value="${ condition }"/>
-									<c:param name="search" value="${ search }"/>							
+									<c:param name="keyword" value="${ keyword }"/>							
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
 							</c:if>
@@ -285,7 +285,7 @@
 								<c:url var="searchUrl" value="searchEmp.do">
 									<c:param name="currentPage" value="${pi.currentPage+1  }"/>
 									<c:param name="condition" value="${ condition }"/>
-									<c:param name="search" value="${ search }"/>
+									<c:param name="keyword" value="${ keyword }"/>
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>
 							</c:if>

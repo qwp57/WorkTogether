@@ -144,7 +144,7 @@
 								<td>
 									<div class="form-check mt-3 mb-3">
 										<label class="form-check-label">
-											 <input type="checkbox" class="form-check-input" name="emergency" value="Y">긴급
+											 <input type="checkbox" class="form-check-input" id="emergency" name="emergency">긴급
 										</label>
 					    			</div>
 								</td>									
@@ -425,6 +425,14 @@
 				$("#file_name").text(fileName);
 				$("#file_text").attr('class', 'd-none');
 			})
+			
+			//emergency
+			if($('input:checkbox[name="emergency"]').prop('checked')){
+				$(this).val('Y');
+			}else {
+				$(this).val('N');
+			}
+			
 		});
 	</script>
 
