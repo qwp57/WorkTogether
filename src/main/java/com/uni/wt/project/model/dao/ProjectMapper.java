@@ -1,5 +1,7 @@
 package com.uni.wt.project.model.dao;
 
+import com.uni.wt.employee.model.dto.Employee;
+import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import org.apache.ibatis.annotations.Mapper;
 import com.uni.wt.project.model.dto.Project;
@@ -30,4 +32,7 @@ public interface ProjectMapper {
 
     ArrayList<Project> selectMyProjectByTag(ProjectTag tag_no);
 
+    ArrayList<Employee> selectEmpListByPj(int pj_no);
+
+    int editReply(Reply reply);
 }

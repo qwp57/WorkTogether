@@ -1,5 +1,7 @@
 package com.uni.wt.project.model.service;
 
+import com.uni.wt.employee.model.dto.Employee;
+import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 
@@ -30,4 +32,8 @@ public interface ProjectService {
     ArrayList<Project> selectMyBookmarkProjectByTag(ProjectTag projectTag) throws Exception;
 
     ArrayList<Project> selectMyProjectByTag(ProjectTag projectTag) throws Exception;
+
+    ArrayList<Employee> selectEmpListByPj(int pj_no) throws Exception;
+
+    void editReply(Reply reply) throws Exception;
 }
