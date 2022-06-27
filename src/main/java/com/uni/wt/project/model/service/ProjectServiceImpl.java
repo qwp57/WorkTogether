@@ -1,5 +1,7 @@
 package com.uni.wt.project.model.service;
 
+import com.uni.wt.employee.model.dto.Employee;
+import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.model.dao.ProjectMapper;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
@@ -79,6 +81,18 @@ public class ProjectServiceImpl implements ProjectService {
         return projectMapper.selectMyProjectByTag(projectTag);
     }
 
+    @Override
+    public  ArrayList<Employee> selectEmpListByPj(int pj_no) throws Exception {
+        return projectMapper.selectEmpListByPj(pj_no);
+    }
+
+    @Override
+    public void editReply(Reply reply) throws Exception {
+        int result =  projectMapper.editReply(reply);
+        if(result < 0) {
+            throw new Exception("댓글 수정에 실패하였습니다.");
+        }
+    }
 
 
     @Override

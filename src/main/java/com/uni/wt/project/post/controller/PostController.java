@@ -68,8 +68,25 @@ public class PostController {
 
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
+    @RequestMapping("/editPost.do")
+    public String editPost(Post post, @RequestParam("pj_no") int pj_no, HttpSession session,
+                             @RequestParam(name = "upload_file", required = false) MultipartFile file, RedirectAttributes redirect, HttpServletRequest request) throws Exception {
+        log.info("글 : " + post);
 
 
+        postService.editPost(post);
+
+        if(!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
+
+            projectFileService.uploadFile(file, request, post.getBoard_no());
+        }
+
+
+        msgMap.put("msg", "게시물 수정 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
+
+        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+    }
     @ResponseBody
     @RequestMapping(value = "/detailView.do", produces = "application/json; charset=utf-8")
     public String detailView(@RequestParam("board_no") int board_no, HttpServletResponse response, HttpServletRequest request) throws Exception {

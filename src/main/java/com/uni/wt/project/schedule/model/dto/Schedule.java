@@ -25,4 +25,6 @@ public class Schedule {
 
     private String create_date;
 
+    private int count;
+
 }

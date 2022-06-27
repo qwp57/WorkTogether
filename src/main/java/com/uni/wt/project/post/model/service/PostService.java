@@ -9,4 +9,6 @@ public interface PostService {
     int insertPost(Post post, BoardAll boardAll) throws Exception;
 
     Post detailView(int board_no) throws Exception;
+
+    void editPost(Post post) throws Exception;
 }

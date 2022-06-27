@@ -13,6 +13,13 @@
 		<result property="file_power" column="FILE_POWER"/>
 		<result property="status" column="STATUS"/>
 	</resultMap>
+	<resultMap type="Employee" id="employeeSet">
+		<id property="emp_no" column="EMP_NO"/>
+		<result property="dept_code" column="DEPT_CODE"/>
+		<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+		<result property="job_name" column="JOB_NAME"/>
+		<result property="name" column="NAME"/>
+	</resultMap>
 	<select id="nextPjNo" resultType="int">
 		SELECT PJ_SEQ.NEXTVAL FROM DUAL
 	</select>
@@ -82,4 +89,18 @@
 		DELETE FROM MB_PJ_TAG
 		WHERE TAG_NO = #{tag_no}
 	</delete>
+	<select id="selectEmpListByPj" parameterType="int" resultMap="employeeSet">
+		SELECT B.EMP_NO, B.NAME, C.JOB_NAME
+		FROM PROJECT_MEMBER A
+				 JOIN EMPLOYEE B
+					  ON A.EMP_NO = B.EMP_NO
+				 LEFT JOIN JOB C
+						   ON B. JOB_CODE = C.JOB_CODE
+		WHERE A.PJ_NO = #{pj_no}
+	</select>
+	<update id="editReply" parameterType="Reply">
+		UPDATE BOARD_REPLY
+		SET REPLY_CONTENT = #{reply_content}
+		WHERE REPLY_NO = #{reply_no}
+	</update>
 </mapper>

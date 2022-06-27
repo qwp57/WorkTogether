@@ -51,4 +51,12 @@ public class PostServiceImpl implements PostService {
         return postMapper.detailView(board_no);
 
     }
+
+    @Override
+    public void editPost(Post post) throws Exception {
+        int result = postMapper.editPost(post);
+        if (result < 0) {
+            throw new Exception("게시물 수정 실패");
+        }
+    }
 }

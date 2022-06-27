@@ -301,8 +301,7 @@
     }
 
     #caSetting, .favoBtn, .navMenu, .fa-plus, .todoCalendar, .todoPerson,
-    .switchPost, .switchSch, .switchTodo, disconnectingTagBtn, .fileUploadBtn, .postFor, .removeTodo, .boardDeleteBtn, #postEditBtn
-    ,.editReplyBtn ,.deleteReplyBtn{
+    .switchPost, .switchSch, .switchTodo, disconnectingTagBtn, .fileUploadBtn, .postFor, .removeTodo, .boardDeleteBtn, #postEditBtn, .editReplyBtn, .deleteReplyBtn {
         cursor: pointer;
     }
 
@@ -416,8 +415,6 @@
                                     <tr>
                                         <td id="postBtn"><b><span
                                                 class='bi bi-file-text fa-2x'> &nbsp;&nbsp;글</span></b></td>
-                                        <td id="taskBtn"><b><span
-                                                class='bi bi-list-task fa-2x'>  업무</span></b></td>
                                         <td id="schBtn"><b><span
                                                 class='bi bi-calendar fa-2x'> &nbsp;&nbsp;일정</span></b></td>
                                         <td id="todoBtn"><b><span
@@ -444,7 +441,6 @@
                             <a class="dropdown-item" href="#">전체</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="#">글</a>
-                            <a class="dropdown-item" href="#">업무</a>
                             <a class="dropdown-item" href="#">일정</a>
                             <a class="dropdown-item" href="#">할 일</a>
                         </div>
@@ -568,7 +564,7 @@
 
 <!-- 글 멘션, 일정 참석자 추가 모달창 -->
 <div class="modal fade" id="mentionForModal" data-backdrop="static"
-     data-keyboard="false" style="z-index: 3000;">
+     data-keyboard="false" style="z-index: 13000;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content row">
             <!-- modal header : 제목 -->
@@ -582,25 +578,7 @@
                 <div class="modal-body">
                     <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
                     <table class="inviteTable">
-                        <c:forEach var="index" begin="1" end="5">
-                            <tr>
-                                <td rowspan="2"><span class='bi bi-person-circle fa-2x'></span>
 
-                                </td>
-                                <th style="width: 50%">테스트</th>
-                                <td rowspan="2" style="width: 20%; text-align: right;">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input"
-                                               id="schInvite${index }"> <label
-                                            class="custom-control-label" for="schInvite${index }"></label>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>부장</td>
-                            </tr>
-
-                        </c:forEach>
                     </table>
                     <br>
                 </div>
@@ -671,7 +649,7 @@
         <div class="modal-content row">
             <!-- modal header : 제목 -->
             <div class="modal-header">
-					<span><h3 class="modal-title text-left" style="color: gray;">게시물
+					<span><h3 class="modal-title text-left boardNoti" style="color: gray;">게시물
 							작성</h3></span> <span><input type="image" data-dismiss="modal" id="close"
                                                         src="/resources/assets/img/close.png/"
                                                         style="width: 20px;"></span>
@@ -679,15 +657,13 @@
             <!-- modal body : 내용 -->
 
             <div id="postForm" style="display: block;">
-                <form class="form" id="enrollPost" action="/post/insertPost.do" method="post"
+                <form class="form boardUploadForm" id="enrollPost" action="/post/insertPost.do" method="post"
                       enctype="multipart/form-data">
                     <div class="modal-body">
                         <table class="boardEnrollBtn" style="width: 100%; height: 100%; text-align: center;">
                             <tr>
                                 <td class="switchPost"><b><span class='bi bi-file-text fa-lg'>
 												&nbsp;&nbsp;글</span></b></td>
-                                <td><b><span class='bi bi-list-task fa-lg'>
-												 업무</span></b></td>
                                 <td class="switchSch"><b><span class='bi bi-calendar fa-lg'>
 												&nbsp;&nbsp;일정</span></b></td>
                                 <td class="switchTodo"><b><span class='bi bi-check2-square fa-lg'>
@@ -721,7 +697,7 @@
                                 <i class="bi bi-person fa-2x postFor"></i>
                             </div>
                             <div class="col-lg-4 text-right">
-                                <button type="submit" class="btn btn-primary btn-lg mr-4">올리기</button>
+                                <button type="submit" class="btn btn-primary btn-lg mr-4 boardUploadBtn">올리기</button>
                             </div>
                             <div class="col-lg-1"></div>
                         </div>
@@ -732,15 +708,13 @@
 
             <!-- 일정 작성 모달창 -->
             <div id="postSch" style="display: block;">
-                <form class="form">
+                <form class="form boardUploadForm" id="enrollSch" action="/schedule/insertSch.do" method="post">
                     <div class="modal-body">
                         <table class="boardEnrollBtn"
                                style="width: 100%; height: 100%; text-align: center;">
                             <tr>
                                 <td class="switchPost"><b><span class='bi bi-file-text fa-lg'>
 												&nbsp;&nbsp;글</span></b></td>
-                                <td><b><span class='bi bi-list-task fa-lg'>
-												 업무</span></b></td>
                                 <td class="switchSch"><b><span class='bi bi-calendar fa-lg'>
 												&nbsp;&nbsp;일정</span></b></td>
                                 <td class="switchTodo"><b><span class='bi bi-check2-square fa-lg'>
@@ -749,10 +723,11 @@
                         </table>
                         <br> <br>
                         <div class="form-group row mb-4">
+                            <input type="hidden" name="pj_no" value="${pj.pj_no}">
                             <label
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-3">제목</label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" name="sch_title">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -763,10 +738,10 @@
                             <div class="col-sm-12 col-md-7">
                                 <!-- <input type="text" id="datepicker" class="form-control"> -->
                                 <div class="input-daterange input-group" id="datepicker">
-                                    <input type="text" class="input-sm form-control" name="start"/>
+                                    <input type="text" class="input-sm form-control" name="sch_start"/>
                                     <span class="input-group-addon">&nbsp;&nbsp;부터&nbsp;&nbsp;
                                     </span>
-                                    <input type="text" class="input-sm form-control" name="end"/>
+                                    <input type="text" class="input-sm form-control" name="sch_end"/>
                                 </div>
                             </div>
                         </div>
@@ -775,7 +750,7 @@
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
                                     class="bi bi-person fa-2x"></i></label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가">
+                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가" name="sch_attendee">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -783,7 +758,7 @@
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
                                     class="bi bi-geo-alt-fill fa-2x"></i> </label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control bg-white border-0 small" placeholder="장소를 입력하세요">
+                                <input type="text" class="form-control bg-white border-0 small" name="sch_place" placeholder="장소를 입력하세요">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -792,7 +767,7 @@
                                     class="bi bi-card-text fa-2x"></i> </label>
                             <div class="col-sm-12 col-md-7">
                                 <textarea type="text" class="form-control bg-white border-0 small"
-                                          placeholder="내용을 입력하세요"></textarea>
+                                          placeholder="내용을 입력하세요" name="sch_content"></textarea>
                             </div>
                         </div>
 
@@ -800,7 +775,7 @@
 
                     <div class="modal-footer">
                         <div class="col-lg-4 text-right">
-                            <button type="submit" class="btn btn-primary btn-lg">올리기</button>
+                            <button type="submit" class="btn btn-primary btn-lg boardUploadBtn">올리기</button>
                         </div>
                         <div class="col-lg-2"></div>
                     </div>
@@ -810,15 +785,13 @@
 
             <!-- 할 일 작성 모달창 -->
             <div id="postTodo" style="display: block;">
-                <form class="form">
+                <form class="form boardUploadForm" id="enrollTodo" action="/todo/insertTodo.do" method="post">
                     <div class="modal-body">
                         <table class="boardEnrollBtn"
                                style="width: 100%; height: 100%; text-align: center;">
                             <tr>
                                 <td class="switchPost"><b><span class='bi bi-file-text fa-lg'>
 												&nbsp;&nbsp;글</span></b></td>
-                                <td><b><span class='bi bi-list-task fa-lg'>
-												 업무</span></b></td>
                                 <td class="switchSch"><b><span class='bi bi-calendar fa-lg'>
 												&nbsp;&nbsp;일정</span></b></td>
                                 <td class="switchTodo"><b><span class='bi bi-check2-square fa-lg'>
@@ -827,10 +800,11 @@
                         </table>
                         <br> <br>
                         <div class="form-group row">
+                            <input type="hidden" name="pj_no" value="${pj.pj_no}">
                             <label
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-1">제목</label>
                             <div class="col-sm-12 col-md-7 col-lg-11">
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" name="todo_title">
                             </div>
                             <div class="col-lg-3"></div>
                         </div>
@@ -841,13 +815,13 @@
 
                                 </div>
                                 <div class="text-md-right col-10 col-md-7 col-lg-9">
-                                    <input type="text" class="form-control"
+                                    <input type="text" class="form-control" name="todo_content"
                                            placeholder="할 일 추가 / 최대 50자">
                                 </div>
                                 <div class="col-sm-12 col-md-3 col-lg-1">
                                     <div class="input-group todoInput date" style="width: 100px;">
                                         <input type="text" style="display: none; width:25px;"
-                                               class="form-control bg-white border-0 small todoDue">
+                                               class="form-control bg-white border-0 small todoDue" name="todo_end">
                                         <span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>
 
                                     </div>
@@ -868,7 +842,7 @@
 
                     <div class="modal-footer">
                         <div class="col-lg-4 text-right">
-                            <button type="submit" class="btn btn-primary btn-lg">올리기</button>
+                            <button type="submit" class="btn btn-primary btn-lg boardUploadBtn">올리기</button>
                         </div>
                         <div class="col-lg-2"></div>
                     </div>
@@ -965,22 +939,23 @@
                 <form class="form">
                     <div class="modal-body">
                         <div class="form-group">
-                            <div class="row ml-5 mr-5">
+                            <div class="row ml-5 mr-5 boardBody">
                                 <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg'> 홍길동</span>
-                                    <span style="color: gray"> 2022-06-10 09:15</span>
+                                    <span class='bi bi-person-circle fa-lg' id="schWriter"></span>
+                                    <span style="color: gray" id="schUploadDate"></span>
                                 </div>
                                 <div class="col-lg-2 text-right">
-                                    <a>수정 </a>
-                                    <a class="boardDeleteBtn"> 삭제</a>
+                                    <input class="detailViewBoard_no" type="text" hidden>
+                                    <a id="schEditBtn">수정&nbsp;</a>
+                                    <a class="boardDeleteBtn">&nbsp;삭제</a>
                                 </div>
 
                                 <br><br>
 
                                 <div class="col-12">
-                                    <h3>일정 제목</h3>
+                                    <h3 id="schTitle"></h3>
                                     <br>
-                                    <span class='bi bi-calendar fa-lg ml-3'> &nbsp;&nbsp;2022-06-01(일) 15:30 ~ 2022-06-02(월) 12:30</span>
+                                    <span class='bi bi-calendar fa-lg ml-3' id="schDate"> &nbsp;&nbsp;2022-06-01(일) 15:30 ~ 2022-06-02(월) 12:30</span>
                                     <hr>
                                 </div>
 
@@ -993,12 +968,12 @@
                                 </div>
                                 <div class="col-lg-12 ml-3 mr-3">
                                     <i class="bi bi-geo-alt-fill fa-lg"></i>
-                                    &nbsp;&nbsp;<span>장소명</span>
+                                    &nbsp;&nbsp;<span id="schPlace"></span>
                                     <br><br><br>
                                 </div>
                                 <div class="col-lg-12 ml-3 mr-3">
                                     <i class="bi bi-card-text fa-lg"></i>
-                                    &nbsp;&nbsp;<span> 내용</span>
+                                    &nbsp;&nbsp;<span id="schContent"></span>
                                     <br>
                                     <hr>
                                 </div>
@@ -1007,39 +982,25 @@
                                     <button type="button" class="btn btn-danger btn-lg ml-3">불참</button>
                                 </div>
                                 <div class="col-lg-12 text-right">
-                                    <a>댓글 2 </a>
-                                    <a> 조회 3</a>
+                                    <a class="replyCount"></a>
+                                    <a class="viewCount"></a>
                                     <hr>
                                 </div>
-                                <c:forEach begin="1" end="3">
-                                    <div class="col-lg-10">
-                                        <span class='bi bi-person-circle fa-lg'> 홍길동</span>
-                                        <span style="color: gray"> 2022-06-10 09:15</span>
-                                    </div>
-                                    <div class="col-lg-2 text-right">
-                                        <a>수정 </a>
-                                        <a> 삭제</a>
-                                        <br> <br>
-                                    </div>
-                                    <div class="col-lg-10">
-                                        <a class="ml-4">댓글 내용</a>
-                                    </div>
-                                    <div class="col-lg-2"></div>
-                                    <div class="col-lg-12">
-                                        <hr>
-                                    </div>
+                                <div class="replyArea col-lg-12">
 
-                                </c:forEach>
-
+                                </div>
+                                <div class="col-lg-12 replyHrArea" style="display: none;">
+                                    <hr>
+                                </div>
                                 <label
                                         class="col-form-label col-lg-1 pt-0">
                                     <span class='bi bi-person-circle fa-2x'></span>
                                 </label>
                                 <div class="col-lg-9 text-center">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control replyContentEnroll">
                                 </div>
                                 <div class="col-lg-2 text-right">
-                                    <button type="submit" class="btn btn-primary btn-lg">등록</button>
+                                    <button type="submit" class="btn btn-primary btn-lg addReplyBtn">등록</button>
                                 </div>
                             </div>
 
@@ -1180,13 +1141,40 @@
     })
 
     $(document).on('click', '.deleteReplyBtn', function () {
-        if(confirm("댓글을 삭제하시겠습니까?")){
+        if (confirm("댓글을 삭제하시겠습니까?")) {
             //console.log($(this).parent().find(".reply_no").val())
             var reply_no = $(this).parent().find(".reply_no").val()
             var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
             //console.log(board_no)
             deleteReply(reply_no, board_no)
         }
+    })
+    $(document).on('click', '.editReplyBtn', function () {
+        var reply_no = $(this).parent().find(".reply_no").val()
+        var reply_content = $(this).parents(".reply").find(".replyContent").text()
+        $(this).parents(".reply").find(".replyContent").html(
+            '<input type=text style="width: 80%;" class="replyEditContent" value="' + reply_content + '">' +
+            '<button type="button" class="replyEditSubmit btn btn-primary");">수정</button>' +
+            '<input type="hidden" value="' + reply_no + '">'
+        )
+        $(this).parent().remove()
+
+
+    })
+    $(document).on('click', '.replyEditSubmit', function () {
+        //console.log($(this).next().val())
+        $.ajax({
+            url: '/project/editReply.do',
+            data: {
+                "reply_no": $(this).next().val(),
+                "reply_content": $(this).prev().val()
+            },
+            async: false,
+            success: function (data) {
+                console.log('dd')
+            }
+        })
+        loadReply($(".detailViewBoard_no").val())
     })
 
     $(document).on('click', '.fileUploadBtn', function () {
@@ -1257,6 +1245,35 @@
             $("#tagModal").modal("show")
         })
 
+        $(document).on('click', '.boardEnrollBtn', function () {
+            $(".boardNoti").text('게시물 작성')
+            $(".boardUploadBtn").text('올리기')
+        })
+
+        $(document).on('click', '#postEditBtn', function () {
+            console.log($(this).parents(".boardBody").find("#postTitle").text())
+            console.log($(this).parents(".boardBody").find("#postContent").html())
+            console.log($(this))
+            $("#postForm").css("display", "block")
+            $("#postSch").css("display", "none")
+            $("#postTodo").css("display", "none")
+            $(".switchSch").css("color", "black")
+            $(".switchTodo").css("color", "black")
+            $(".switchPost").css("color", "#6777ef")
+            $('#summernote').summernote('insertText', $(this).parents(".boardBody").find("#postContent").text())
+            $(".boardNoti").text('게시물 수정')
+            $(".boardUploadBtn").text('수정')
+            $("#boardPost").find("input[name=post_title]").val($(this).parents(".boardBody").find("#postTitle").text())
+            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
+            $(".boardUploadForm").append(
+                '<input type="hidden" name="board_no" value="' + board_no + '">'
+            )
+            $(".boardUploadForm").attr("id", "editPost");
+            $(".boardUploadForm").attr("action", "/post/editPost.do");
+            $("#boardPost").modal("show")
+            $("#boardPost").css("z-index", "111111")
+
+        })
 
         $(document).on('click', '.disconnectingTagBtn', function () {
             console.log($(this).prev().find('input[name=tagInput]').val())
@@ -1307,7 +1324,37 @@
         })
 
         $(document).on('click', '.postFor', function () {
-            $("#mentionForModal").modal("show")
+            $.ajax({
+                url: '/project/selectEmpListByPj.do',
+                data: {
+                    "pj_no": ${pj.pj_no}
+                },
+                success: function (list) {
+                    console.log(list)
+                    $(".inviteTable").html('')
+                    $.each(list, function (i, obj) {
+                        $(".inviteTable").append(
+                            '<tr>' +
+                            '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>' +
+                            '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">' +
+                            '</td>' +
+                            '<th style="width: 50%">' + obj.name + '</th>' +
+                            '<td rowspan="2" style="width: 20%; text-align: right;">' +
+                            '<div class="custom-control custom-checkbox">' +
+                            '<input type="checkbox">' +
+                            '</div>' +
+                            '</td>' +
+                            '</tr>' +
+                            '<tr>' +
+                            '<td>' + obj.job_name + '</td>' +
+                            '</tr>'
+                        )
+                    })
+
+                    $("#mentionForModal").modal("show")
+                }
+            })
+
 
         })
 
@@ -1324,6 +1371,8 @@
             $(".switchSch").css("color", "black")
             $(".switchTodo").css("color", "black")
             $(".switchPost").css("color", "#6777ef")
+            $(".boardUploadForm").attr("id", "enrollPost");
+            $(".boardUploadForm").attr("action", "/post/insertPost.do");
             $("#boardPost").modal("show")
         })
 
@@ -1394,12 +1443,12 @@
                 '</div>' +
                 '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
                 '<input type="text" class="form-control"' +
-                'placeholder="할 일 추가 / 최대 50자">' +
+                'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
                 '</div>' +
                 '<div class="col-sm-12 col-md-3 col-lg-1">' +
                 '<div class="input-group todoInput date" style="width: 100px;">' +
                 '<input type="text" style="display: none; width:25px;"' +
-                'class="form-control bg-white border-0 small todoDue">' +
+                'class="form-control bg-white border-0 small todoDue" name="todo_end">' +
                 '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
                 '</div>' +
                 '</div>' +
@@ -1409,22 +1458,13 @@
                 '</div>' +
                 '</div>'
             )
-
-
-            $('.todoInput').datepicker().on("clearDate", function (e) {
-                console.log(e.currentTarget)
-                var $test = e.currentTarget;
-                $($test).children(".todoCalendar").css("display", "block")
-                $($test).children(".todoDue").css("display", "none")
-
-            })
-
+            datepickerLoad()
         })
 
         function datepickerLoad() {
 
             $('.todoInput').datepicker({
-                format: "mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
+                format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
                 autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
                 clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
                 daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
@@ -1469,13 +1509,14 @@
 
         $("#close").click(function () {
             console.log("진입확인")
+            $('#summernote').summernote('reset');
             $(".todos").html(
                 '<div class="form-group row">' +
                 '<div class="col-lg-1 pr-0 text-right">' +
                 '</div>' +
                 '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
                 '<input type="text" class="form-control"' +
-                'placeholder="할 일 추가 / 최대 50자">' +
+                'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
                 '</div>' +
                 '<div class="col-sm-12 col-md-3 col-lg-1">' +
                 '<div class="input-group todoInput date" style="width: 100px;">' +
@@ -1627,7 +1668,8 @@
             }
         });
     }
-    function deleteReply(reply_no, board_no){
+
+    function deleteReply(reply_no, board_no) {
         $.ajax({
             url: '/project/deleteReply.do',
             data: {
@@ -1639,6 +1681,7 @@
             }
         })
     }
+
     function loadTag() {
         $.ajax({
             url: '/project/loadTag.do',
@@ -1700,14 +1743,15 @@
                 console.log(list)
                 $(".replyArea").html('')
                 $(".replyCount").text("댓글 " + list.length)
-                if(list.length == 0){
+                if (list.length == 0) {
                     $(".replyHrArea").css("display", "none")
                     console.log('확인')
-                }else{
+                } else {
                     $(".replyHrArea").css("display", "block")
                     $.each(list, function (i, obj) {
                         if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
                             $(".replyArea").append(
+                                '<div class="reply">' +
                                 '<div class="col-lg-10" style="display: inline-block">' +
                                 '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>' +
                                 '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>' +
@@ -1721,10 +1765,11 @@
                                 '<div class="col-lg-10">' +
                                 '<a class="ml-4 replyContent">' + obj.reply_content + '</a>' +
                                 '</div>' +
-                                '<br> <br>'
+                                '<br> <br>' +
+                                '</div>'
                             )
 
-                        }else {
+                        } else {
                             $(".replyArea").append(
                                 '<div class="col-lg-10" style="display: inline-block">' +
                                 '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>' +
@@ -1765,6 +1810,7 @@
                             '<td style="width: 7%; text-align: right; color: #f3a435 ;">' +
                             '<span class="bi bi-file-text"></span>' +
                             '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
+                            '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
                             '</td>' +
                             '<td style="width: 8%; text-align: left;">글</td>' +
                             '<th style="width: 40%;">' + obj.post_title + '</th>' +
@@ -1780,6 +1826,7 @@
                             '<td style="width: 7%; text-align: right; color: #35f364">' +
                             '<span class="bi bi-calendar"></span>' +
                             '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
+                            '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
                             '</td>' +
                             '<td style="width: 8%; text-align: left;">일정</td>' +
                             '<th style="width: 40%;">' + obj.sch_title + '</th>' +
@@ -1794,6 +1841,7 @@
                             '<td style="width: 7%; text-align: right; color: #3591f3 ">' +
                             '<span class="bi bi-check2-square"></span>' +
                             '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
+                            '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
                             '</td>' +
                             '<td style="width: 8%; text-align: left;">할 일</td>' +
                             '<th style="width: 40%;">' + obj.todo_title + '</th>' +
@@ -1814,34 +1862,79 @@
     $(document).on('click', '.boardTable tr', function () {
         console.log($(this).find(".board_no").val())
         $board_no = $(this).find(".board_no").val()
-        $.ajax({
-            url: '/post/detailView.do',
-            data: {
-                "board_no": $board_no
-            },
-            success: function (list) {
-                //list = $.parseJSON(list)
-                console.log(list)
+        console.log($(this).find(".board_type").val())
+        if ($(this).find(".board_type").val() == 'post') {
+            $.ajax({
+                url: '/post/detailView.do',
+                data: {
+                    "board_no": $board_no
+                },
+                success: function (list) {
+                    //list = $.parseJSON(list)
+                    console.log(list)
 
-                $("#postView").css("display", "block")
-                $("#schView").css("display", "none")
-                $("#todoView").css("display", "none")
-                $("#postTitle").html(list.post_title)
-                $("#postContent").html(list.post_content)
-                $("#postWriter").html(list.name)
-                $("#postUploadDate").html(list.create_date)
-                $(".detailViewBoard_no").val(list.board_no)
-                //console.log(list.count)
-                $(".viewCount").text("조회 " + list.count)
-                if ("${sessionScope.loginEmp.name}" == list.name) {
-                    // console.log('확인')
-                    $(".postEdit").css("display", "block")
-                } else {
-                    $(".postEdit").css("display", "none")
+                    $("#postView").css("display", "block")
+                    $("#schView").css("display", "none")
+                    $("#todoView").css("display", "none")
+                    $("#postTitle").html(list.post_title)
+                    $("#postContent").html(list.post_content)
+                    $("#postWriter").html(list.name)
+                    $("#postUploadDate").html(list.create_date)
+                    $(".detailViewBoard_no").val(list.board_no)
+                    //console.log(list.count)
+                    $(".viewCount").text("조회 " + list.count)
+                    if ("${sessionScope.loginEmp.name}" == list.name) {
+                        // console.log('확인')
+                        $(".postEdit").css("display", "block")
+                    } else {
+                        $(".postEdit").css("display", "none")
+                    }
+
                 }
-                loadReply($board_no)
-            }
-        })
+            })
+        } else if ($(this).find(".board_type").val() == 'schedule') {
+            console.log('일정')
+            $.ajax({
+                url: '/schedule/detailView.do',
+                data: {
+                    "board_no": $board_no
+                },
+                success: function (list) {
+                    //list = $.parseJSON(list)
+                    console.log(list)
+
+                    $("#postView").css("display", "none")
+                    $("#schView").css("display", "block")
+                    $("#todoView").css("display", "none")
+                    $("#schTitle").html(list.sch_title)
+                    $("#schContent").html(list.sch_content)
+                    $("#schWriter").html(list.name)
+                    $("#schUploadDate").html(list.create_date)
+                    $(".detailViewBoard_no").val(list.board_no)
+                    if (moment(list.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        $("#schDate").html(
+                            moment(list.sch_start).format('YYYY-MM-DD (ddd)')
+                        )
+                    } else {
+                        $("#schDate").html(
+                            moment(list.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch_end).format('YYYY-MM-DD (ddd)')
+                        )
+                    }
+
+                    $("#schPlace").html(list.sch_place)
+                    //console.log(list.count)
+                    $(".viewCount").text("조회 " + list.count)
+                    if ("${sessionScope.loginEmp.name}" == list.name) {
+                        // console.log('확인')
+                        $(".postEdit").css("display", "block")
+                    } else {
+                        $(".postEdit").css("display", "none")
+                    }
+
+                }
+            })
+        }
+        loadReply($board_no)
         $("#boardView").modal("show")
 
     })

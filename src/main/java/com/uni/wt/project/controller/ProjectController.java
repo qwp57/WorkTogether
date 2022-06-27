@@ -8,6 +8,7 @@ import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.boardAll.model.service.BoardAllService;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.model.service.ProjectService;
+import com.uni.wt.project.post.model.dto.Post;
 import com.uni.wt.project.post.model.service.PostService;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -150,6 +154,23 @@ public class ProjectController {
         pjTag.setTag_name(tag_name);
         projectService.editTag(pjTag);
         return "태그 수정 성공";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/selectEmpListByPj.do", produces = "application/json; charset=utf-8")
+    public String selectEmpListByPj(@RequestParam("pj_no") int pj_no) throws Exception {
+
+        ArrayList<Employee> list =  projectService.selectEmpListByPj(pj_no);
+
+        return new GsonBuilder().create().toJson(list);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/editReply.do", produces = "application/json; charset=utf-8")
+    public String editReply(Reply reply) throws Exception {
+
+        projectService.editReply(reply);
+
+        return "댓글 수정 성공";
     }
 
     @ResponseBody

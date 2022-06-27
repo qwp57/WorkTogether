@@ -26,5 +26,11 @@
 					  ON B.WRITER = C.EMP_NO
 		WHERE B.BOARD_NO = #{board_no}
 	</select>
+	<update id="editPost" parameterType="Post">
+		UPDATE BOARD_POST
+		SET POST_TITLE = #{post_title},
+			POST_CONTENT = #{post_content}
+		WHERE BOARD_NO = #{board_no}
+	</update>
 
 </mapper>
