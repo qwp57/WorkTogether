@@ -206,4 +206,60 @@
 		AND WRITER=#{emp_no}
 		ORDER BY CREATE_DATE DESC		
 	</select>
+	
+	<!-- 공통문서 디테일 조회 -->
+	<select id="selectApproval" parameterType="_int" resultMap="approvalResultSet">
+		SELECT A.*,
+			   NAME
+		FROM APPROVAL A
+		JOIN EMPLOYEE B ON (A.WRITER = B.EMP_NO)
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
+	
+	<!-- 결재선 조회 -->
+	<select id="selectApprovalLine" parameterType="_int" resultMap="approvalLineResultSet">
+		SELECT 
+	        A.*,
+	        (SELECT A.NAME
+	         FROM EMPLOYEE A
+	         JOIN APPROVAL_LINE B ON A.EMP_NO = B.FIRST_APPROVER_NO
+	         WHERE APPROVAL_NO=#{approvalNo}) firstApproverName,
+	         (SELECT C.JOB_NAME
+	         FROM EMPLOYEE A
+	         JOIN APPROVAL_LINE B ON A.EMP_NO = B.FIRST_APPROVER_NO
+	         JOIN JOB C ON A.JOB_CODE = C.JOB_CODE
+	         WHERE APPROVAL_NO=#{approvalNo}) firstApproverJob,
+	        (SELECT A.NAME
+	         FROM EMPLOYEE A
+	         RIGHT JOIN APPROVAL_LINE B ON A.EMP_NO = B.FINAL_APPROVER_NO
+	         WHERE APPROVAL_NO=#{approvalNo}) finalApproverName,
+	         (SELECT C.JOB_NAME
+	         FROM EMPLOYEE A
+	         RIGHT JOIN APPROVAL_LINE B ON A.EMP_NO = B.FINAL_APPROVER_NO
+	         RIGHT JOIN JOB C ON A.JOB_CODE = C.JOB_CODE
+	         WHERE APPROVAL_NO=#{approvalNo}) finalApproverJob
+		FROM APPROVAL_LINE A
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
+	
+	<!-- 품의서  조회 -->
+	<select id="selectApprovalLoa" parameterType="_int" resultMap="approvalLoaResultSet">
+		SELECT *
+		FROM DOC_LOA
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
+	
+	<!-- 지출 결의서 조회  -->
+	<select id="selectApprovalExpenditure" parameterType="_int" resultMap="approvalExpenditureResultSet">
+		SELECT *
+		FROM DOC_EXPENDITURE
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
+	
+	<!-- 회의록 조회 -->
+	<select id="selectApprovaltheMinutesOfAMeeting" parameterType="_int" resultMap="approvalMMinutesResultSet">
+		SELECT *
+		FROM DOC_M_MINUTES
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
 </mapper>

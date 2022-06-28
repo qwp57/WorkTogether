@@ -38,5 +38,15 @@ public interface ApprovalService {
 
 	ArrayList<Approval> searchDraftList(Map<String, Object> map, PageInfo pi) throws Exception;
 
+	Approval selectApproval(int approvalNo) throws Exception;
+
+	ApprovalLine selectApprovalLine(int approvalNo) throws Exception;
+
+	ApprovalLoa selectApprovalLoa(int approvalNo) throws Exception;
+
+	ApprovalExpenditure selectApprovalExpenditure(int approvalNo) throws Exception;
+
+	ApprovalMMinutes selectApprovaltheMinutesOfAMeeting(int approvalNo) throws Exception;
+
 
 }

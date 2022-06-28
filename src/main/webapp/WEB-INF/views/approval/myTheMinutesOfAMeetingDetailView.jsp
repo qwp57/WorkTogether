@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <jsp:include page="../common/header.jsp"/>
@@ -48,75 +49,92 @@
 				<span><h3>회의록</h3></span> 
 			</div>
 			<div class="float-right">
-				<!-- <button type="button" class="btn btn-primary" onclick="location.href='/updateFormQna.do?qno=<=q.getQnaNo()%>'">수정</button> -->
-				<button type="button" class="btn btn-primary" onclick="location.href='updateMyTheMinutesOfAMeeting.do'">수정</button>
-				<button type="button" class="btn btn-danger" onclick="location.href='deleteMyTheMinutesOfAMeeting.do'">삭제</button>
+				<c:choose>
+				<c:when test="${ map['app'].progress eq 'W' || map['app'].progress eq 'R' }"> <!-- 결재 상태가 대기이거나 반려일 때만 수정 가능 -->
+					<button type="button" class="btn btn-primary" onclick="location.href='updateMyLetterOfApproval.do'">수정</button>
+					<button type="button" class="btn btn-danger" onclick="location.href='deleteMyLetterOfApproval.do'">삭제</button>
+				</c:when>
+				<c:otherwise>
+					<button type="button" class="btn btn-primary" disabled>수정</button>
+					<button type="button" class="btn btn-danger" disabled>삭제</button>
+				</c:otherwise>
+				</c:choose>
 			</div>	
 			<section class="section-body mt-5">
 				<div id="theMinutesOfAMeeting">
 					<div><h2 class="text-center pt-3">회의록</h2></div>													
+					<c:if test="${ map['appL'].lineLevel eq 2 }">						
+						<table class="table table-bordered float-right" id="approvalLine2">
+							<tr>
+								<th rowspan="2" style="width:10px">결재선</th>
+								<td style="height:15px">${ map['appL'].finalApproverJob }</td>
+							</tr>
+							<tr>
+								<td>${ map['appL'].finalApproverName }</td>								
+							</tr>
+						</table>
+					</c:if>
 					<table class="table table-bordered float-right" id="approvalLine1">
 						<tr>
-							<th rowspan="2" style="width:10px">결재선</th>
-							<td style="height:15px">대표이사</td>
-						</tr>
-						<tr>
-							<td>김대표</td>								
-						</tr>
-					</table>
-					<table class="table table-bordered float-right" id="approvalLine2">
-						<tr>
 							<th rowspan="2" style="width:10%">결재선</th>
-							<td style="height:15px">대표이사</td>
+							<td style="height:15px">${ map['appL'].firstApproverJob }</td>
 						</tr>
 						<tr>
-							<td>김대표</td>								
+							<td>${ map['appL'].firstApproverName }</td>								
 						</tr>
 					</table>
 					<table class="table table-bordered mt-3">							
 						<tr>
 							<th style="width: 15%">기안부서</th>
-							<td>인사팀</td>
+							<td>${map['app'].deptName}</td>
 							<th style="width: 15%">기안일</th>
-							<td>2022-06-13</td>
+							<td>${map['app'].createDate}</td>
 							<th style="width: 15%">문서번호</th>
-							<td></td>
+							<td>${map['app'].approvalNo}</td>
 						</tr>
 						<tr>
 							<th>기안자</th>
-							<td>홍사원</td>
+							<td>${map['app'].name}</td>
 							<th>보존년한</th>
-							<td>15년</td>
+							<td>${map['app'].retentionPeriod}년</td>
 							<th>긴급여부</th>
-							<td>긴급</tr>
+							<c:if test="${map['app'].emergency eq 'Y'}">
+								<td>긴급</td>									
+							</c:if>
+							<c:if test="${map['app'].emergency eq 'N'}">
+								<td>-</td>									
+							</c:if>
+						</tr>
+						<!-- 
 						<tr>
 							<th>수신참조</th>
 							<td colspan="5">김대리</td>
-						</tr>										
+						</tr>	
+						 -->									
 					</table>
 					
 					<table class="table table-bordered mt-3">
 						<tr>
 							<th style="width: 15%">참석자</th>
-							<td>김대표, 최부사장, 이차장</td>
+							<td>${ map['appMm'].attendees }</td>
 						</tr>
 						<tr>
 							<th>회의 목적</th>
-							<td>프로젝트 일정 조회</td>
+							<td>${ map['appMm'].meetingPurpose }</td>
 						</tr>
 						<tr>
 							<th>회의 일자</th>
-							<td>2022-05-01</td>
+							<td>${ map['appMm'].meetingDate }</td>
 						</tr>
 					</table>
 					
 					<table class="table table-bordered">
 						<tr>
 							<th style="width:15%">제목</th>
-							<td>2022-05-01 회의록</td>
+							<td>${ map['app'].title }</td>
 						</tr>
 						<tr>
-							<td colspan="2" style="height: 500px">사업 목적 : 그룹웨어를 구매함으로써 불필요한 이동을 줄이고 업무 효율성을 높인다.</td>
+							<td colspan="2">${ map['appMm'].meetingContent }</td>
 						</tr>
 					</table>	
 				</div>
@@ -125,9 +143,15 @@
 						<i class="bi bi-paperclip"></i>
 						<strong>첨부파일</strong>
 					</div>
-					<div class="mt-3 ml-4" id="fileArea">
-						<div>project.jpg</div>									
-					</div>
+					<c:if test="${ map['app'].fileNo ne 0 }">
+						<div class="mt-3 ml-4" id="fileArea">
+							<div>project.jpg</div>									
+						</div>
+					</c:if>
+					<c:if test="${ map['app'].fileNo eq 0 }">
+						<div class="mt-3 ml-4" id="fileArea">								
+						</div>
+					</c:if>
 				</div>					
 				<div class="float-right mt-3">						
 					<button type="button" class="btn btn-primary" onclick="location.href='draftDocument.do'">목록</button>
