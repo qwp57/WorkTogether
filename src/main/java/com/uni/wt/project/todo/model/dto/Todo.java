@@ -7,6 +7,8 @@ import java.sql.Date;
 @Data
 public class Todo {
 
+    private int todo_no;
+
     private int board_no;
 
     private String todo_title;
