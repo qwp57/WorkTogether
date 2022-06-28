@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <jsp:include page="../common/header.jsp"/>
@@ -47,88 +48,93 @@
 				<span><h3>지출 결의서</h3></span> 
 			</div>
 			<div class="float-right">
-				<!-- <button type="button" class="btn btn-primary" onclick="location.href='/updateFormQna.do?qno=<=q.getQnaNo()%>'">수정</button> -->
-				<button type="button" class="btn btn-primary" onclick="location.href='updateMyExpenditure.do'">수정</button>
-				<button type="button" class="btn btn-danger" onclick="location.href='deleteMyExpenditure.do'">삭제</button>
+				<c:choose>
+				<c:when test="${ map['app'].progress eq 'W' || map['app'].progress eq 'R' }"> <!-- 결재 상태가 대기이거나 반려일 때만 수정 가능 -->
+					<button type="button" class="btn btn-primary" onclick="location.href='updateMyLetterOfApproval.do'">수정</button>
+					<button type="button" class="btn btn-danger" onclick="location.href='deleteMyLetterOfApproval.do'">삭제</button>
+				</c:when>
+				<c:otherwise>
+					<button type="button" class="btn btn-primary" disabled>수정</button>
+					<button type="button" class="btn btn-danger" disabled>삭제</button>
+				</c:otherwise>
+				</c:choose>
 			</div>	
 			<section class="section-body mt-5">
 				<div id="expenditure">
 					<div><h2 class="text-center pt-3">지출 결의서</h2></div>							
+					<c:if test="${ map['appL'].lineLevel eq 2 }">						
+						<table class="table table-bordered float-right" id="approvalLine2">
+							<tr>
+								<th rowspan="2" style="width:10px">결재선</th>
+								<td style="height:15px">${ map['appL'].finalApproverJob }</td>
+							</tr>
+							<tr>
+								<td>${ map['appL'].finalApproverName }</td>								
+							</tr>
+						</table>
+					</c:if>
 					<table class="table table-bordered float-right" id="approvalLine1">
 						<tr>
-							<th rowspan="2" style="width:10px">결재선</th>
-							<td style="height:15px">대표이사</td>
-						</tr>
-						<tr>
-							<td>김대표</td>								
-						</tr>
-					</table>
-					<table class="table table-bordered float-right" id="approvalLine2">
-						<tr>
 							<th rowspan="2" style="width:10%">결재선</th>
-							<td style="height:15px">대표이사</td>
+							<td style="height:15px">${ map['appL'].firstApproverJob }</td>
 						</tr>
 						<tr>
-							<td>김대표</td>								
+							<td>${ map['appL'].firstApproverName }</td>								
 						</tr>
 					</table>
 					<table class="table table-bordered mt-3">							
 						<tr>
 							<th style="width: 15%">기안부서</th>
-							<td>인사팀</td>
+							<td>${map['app'].deptName}</td>
 							<th style="width: 15%">기안일</th>
-							<td>2022-06-13</td>
+							<td>${map['app'].createDate}</td>
 							<th style="width: 15%">문서번호</th>
-							<td></td>
+							<td>${map['app'].approvalNo}</td>
 						</tr>
 						<tr>
 							<th>기안자</th>
-							<td>홍사원</td>
+							<td>${map['app'].name}</td>
 							<th>보존년한</th>
-							<td>10년</td>
+							<td>${map['app'].retentionPeriod}년</td>
 							<th>긴급여부</th>
-							<td>긴급하지 않음</td>									
+							<c:if test="${map['app'].emergency eq 'Y'}">
+								<td>긴급</td>									
+							</c:if>
+							<c:if test="${map['app'].emergency eq 'N'}">
+								<td>-</td>									
+							</c:if>
 						</tr>
+						<!-- 
 						<tr>
 							<th>수신참조</th>
-							<td colspan="5" name="referee">김대리</td>
-						</tr>
-						<tr>
-							<th>제목</th>
-							<td colspan="5">2022-05-20 법인카드 사용</td>
-						</tr>							
-					</table>	
+							<td colspan="5">김대리</td>
+						</tr>	
+						 -->						
+					</table>		
 					<table class="table table-bordered mt-3">
 						<tr>
+							<th style="width:15%">제목</th>
+							<td>${map['app'].title}</td>
+						</tr>
+						<tr>
 							<th style="width: 15%">구분</th>
-							<td>
-								<div class="form-check-inline">
-									<label class="form-check-label">
-										<input type="radio" class="form-check-input" name="divison">개인
-									</label>
-								</div>
-								<div class="form-check-inline">
-									<label class="form-check-label">
-										<input type="radio" class="form-check-input" name="divison">법인
-									</label>
-								</div>
-							</td>
+							<td>${ map['appEx'].exDivision }</td>
 						</tr>
 						<tr>
 							<th>회계 기준월</th>
-							<td>2022-06-01</td>
+							<td>${ map['appEx'].accountingMonth }</td>
 						</tr>
 						<tr>
 							<th>지출자</th>
-							<td>배대리</td>
+							<td>${ map['appEx'].spender }</td>
 						</tr>
 						<tr>
 							<th>계좌 정보</th>
-							<td>우리은행 1002-111-2222</td>
+							<td>${ map['appEx'].account }</td>
 						</tr>
 						<tr>
 							<th>지출 사유</th>
-							<td>회의</td>
+							<td>${ map['appEx'].exContent }</td>
 						</tr>
 					</table>	
 					
@@ -143,7 +149,7 @@
 								<th style="width:20%">비고</th>
 							</tr>
 						</thead>
-						<tbody>
+						<tbody id="exTableTbody">
 							<tr>
 								<td>2022-05-03</td>
 								<td>물품구입비</td>
@@ -152,13 +158,15 @@
 								<td></td>
 							</tr>
 						</tbody>
+						<!--  
 						<tfoot>
 							<tr>
 								<td colspan="5">합계 : 
-									<span name="sum">10000원</span>
+									<span id="sum">10000원</span>
 								</td>									
 							</tr>
 						</tfoot>
+						-->
 					</table>								
 				</div>													
 				<div>
@@ -166,9 +174,15 @@
 						<i class="bi bi-paperclip"></i>
 						<strong>첨부파일</strong>
 					</div>
-					<div class="mt-3 ml-4" id="fileArea">
-						<div>project.jpg</div>									
-					</div>
+					<c:if test="${ map['app'].fileNo ne 0 }">
+						<div class="mt-3 ml-4" id="fileArea">
+							<div>project.jpg</div>									
+						</div>
+					</c:if>
+					<c:if test="${ map['app'].fileNo eq 0 }">
+						<div class="mt-3 ml-4" id="fileArea">								
+						</div>
+					</c:if>
 				</div>					
 				<div class="float-right mt-3">						
 					<button type="button" class="btn btn-primary" onclick="location.href='draftDocument.do'">목록</button>
@@ -177,7 +191,18 @@
 		</div>
 	</div>
 	
-	
+	<script>
+		$(function(){
+			var exDate = "${map['appEx'].exDate}".split(",");
+			var exClassification = "${map['appEx'].exClassification}".split(",");
+			var exClassification = "${map['appEx'].amount}".split(",");
+			var exHistory = "${map['appEx'].exHistory}".split(",");
+			var note = "${map['appEx'].note}".split(",");
+			
+			
+		
+		});
+	</script>
 <jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

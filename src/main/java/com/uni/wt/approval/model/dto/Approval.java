@@ -11,6 +11,7 @@ public class Approval {
 	private int docNo; 		    //기안서 양식 번호
 	private String docName;		//기안 양식 이름
 	private int writer;		    //기안자
+	private String name;			//기안자 이름
 	private String deptName;    //부서 이름
 	private int retentionPeriod;//보존 년한
 	private String title;		//제목
