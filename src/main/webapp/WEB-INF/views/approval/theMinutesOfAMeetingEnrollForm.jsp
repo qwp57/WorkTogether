@@ -427,12 +427,14 @@
 			})
 			
 			//emergency
-			if($('input:checkbox[name="emergency"]').prop('checked')){
-				$(this).val('Y');
-			}else {
-				$(this).val('N');
-			}
-			
+			$('input:checkbox[name="emergency"]').on('change', function(){
+				if($('input:checkbox[name="emergency"]').prop('checked')){
+					$(this).val('Y');
+				}else {
+					$(this).val('N');
+				}
+			})
+
 		});
 	</script>
 

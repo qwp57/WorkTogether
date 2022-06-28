@@ -9,7 +9,6 @@ public class Reply {
     int board_no;
     int writer;
     String name;
-    int pj_no;
     String reply_content;
     String create_date;
 }

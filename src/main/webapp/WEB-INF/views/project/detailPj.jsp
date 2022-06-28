@@ -750,7 +750,8 @@
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
                                     class="bi bi-person fa-2x"></i></label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가" name="sch_attendee">
+                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가"
+                                       name="sch_attendee">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -758,7 +759,8 @@
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
                                     class="bi bi-geo-alt-fill fa-2x"></i> </label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control bg-white border-0 small" name="sch_place" placeholder="장소를 입력하세요">
+                                <input type="text" class="form-control bg-white border-0 small" name="sch_place"
+                                       placeholder="장소를 입력하세요">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -955,7 +957,7 @@
                                 <div class="col-12">
                                     <h3 id="schTitle"></h3>
                                     <br>
-                                    <span class='bi bi-calendar fa-lg ml-3' id="schDate"> &nbsp;&nbsp;2022-06-01(일) 15:30 ~ 2022-06-02(월) 12:30</span>
+                                    <span class='bi bi-calendar fa-lg ml-3' id="schDate"></span>
                                     <hr>
                                 </div>
 
@@ -1000,7 +1002,7 @@
                                     <input type="text" class="form-control replyContentEnroll">
                                 </div>
                                 <div class="col-lg-2 text-right">
-                                    <button type="submit" class="btn btn-primary btn-lg addReplyBtn">등록</button>
+                                    <button type="button" class="btn btn-primary btn-lg addReplyBtn">등록</button>
                                 </div>
                             </div>
 
@@ -1015,91 +1017,69 @@
                 <form class="form" id="">
                     <div class="modal-body">
                         <div class="form-group">
-                            <div class="row ml-5 mr-5">
+                            <div class="row ml-5 mr-5 boardBody">
                                 <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg'> 홍길동</span>
-                                    <span style="color: gray"> 2022-06-10 09:15</span>
+                                    <span class='bi bi-person-circle fa-lg' id="todoWriter"></span>
+                                    <span style="color: gray" id="todoUploadDate"></span>
                                 </div>
                                 <div class="col-lg-2 text-right">
-                                    <a>수정 </a>
-                                    <a> 삭제</a>
+                                    <input class="detailViewBoard_no" type="text" hidden>
+                                    <a id="todoEditBtn">수정&nbsp;</a>
+                                    <a class="boardDeleteBtn">&nbsp;삭제</a>
                                 </div>
 
                                 <br><br>
 
                                 <div class="col-12">
-                                    <h3>할 일 제목</h3>
+                                    <h3 id="todoTitle"></h3>
                                     <hr>
                                 </div>
 
                                 <div class="col-lg-12">
                                     <div class="row">
-                                        <div class="col-lg-6"><h5 style="display: inline-block">1 &nbsp; </h5><h5
-                                                style="display: inline-block; color: gray"> / 2</h5></div>
-                                        <div class="col-lg-6 text-right"><h5 style="color: #5cb85c">50%</h5></div>
+                                        <div class="col-lg-6"><h5 style="display: inline-block" id="todoCompleteCount">1
+                                            &nbsp; </h5><h5
+                                                style="display: inline-block; color: gray" id="todoTotalCount"></h5>
+                                        </div>
+                                        <div class="col-lg-6 text-right"><h5 style="color: #5cb85c"
+                                                                             id="todoCompletePercent"></h5></div>
                                     </div>
                                     <div class="progress mb-3" data-height="25">
-                                        <div class="progress-bar bg-success" role="progressbar" data-width="25%"
+                                        <div class="progress-bar bg-success" role="progressbar" id="todoBar"
                                              aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <br><br>
-                                    <c:forEach var="index" begin="1" end="5">
-                                        <div class="row">
-                                            <div class="col-1">
-                                                <input type="checkbox" class="ckedInput"
-                                                       style="margin-left: 10px; width: 20px; height: 20px;">
-                                            </div>
-                                            <div class="col-9 text-center">
-                                                <b class="ckedTodo">할 일 1</b>
-                                            </div>
-                                            <div class="col-2">
-                                                <span>담당자 1</span>
-                                            </div>
-                                        </div>
-                                        <hr>
-                                    </c:forEach>
+                                    <div id="todos">
+
+                                    </div>
+                                    <hr>
                                     <br><br>
                                 </div>
                                 <div class="col-lg-12 text-right">
-                                    <a>댓글 2 </a>
-                                    <a> 조회 3</a>
+                                    <a class="replyCount"></a>
+                                    <a class="viewCount"></a>
                                     <hr>
                                 </div>
-                                <c:forEach begin="1" end="3">
-                                    <div class="col-lg-10">
-                                        <span class='bi bi-person-circle fa-lg'> 홍길동</span>
-                                        <span style="color: gray"> 2022-06-10 09:15</span>
-                                    </div>
-                                    <div class="col-lg-2 text-right">
-                                        <a>수정 </a>
-                                        <a> 삭제</a>
-                                        <br> <br>
-                                    </div>
-                                    <div class="col-lg-10">
-                                        <a class="ml-4">댓글 내용</a>
-                                    </div>
-                                    <div class="col-lg-2"></div>
-                                    <div class="col-lg-12">
-                                        <hr>
-                                    </div>
+                                <div class="replyArea col-lg-12">
 
-                                </c:forEach>
+                                </div>
+                                <div class="col-lg-12 replyHrArea" style="display: none;">
+                                    <hr>
+                                </div>
 
                                 <label
                                         class="col-form-label col-lg-1 pt-0">
                                     <span class='bi bi-person-circle fa-2x'></span>
                                 </label>
                                 <div class="col-lg-9 text-center">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control replyContentEnroll">
                                 </div>
                                 <div class="col-lg-2 text-right">
-                                    <button type="submit" class="btn btn-primary btn-lg">등록</button>
+                                    <button type="button" class="btn btn-primary btn-lg addReplyBtn">등록</button>
                                 </div>
                             </div>
-
-
                         </div>
                     </div>
                 </form>
@@ -1124,13 +1104,12 @@
         var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
         var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
         console.log(reply_content)
-        console.log(board_no)
+        console.log(board_no.val())
         $.ajax({
             url: '/project/insertReply.do',
             data: {
                 "reply_content": reply_content.val(),
-                "board_no": board_no.val(),
-                "pj_no": ${pj.pj_no}
+                "board_no": board_no.val()
             },
             success: function (data) {
                 //console.log(data)
@@ -1383,6 +1362,8 @@
             $(".switchSch").css("color", "#6777ef")
             $(".switchTodo").css("color", "black")
             $(".switchPost").css("color", "black")
+            $(".boardUploadForm").attr("id", "enrollSch");
+            $(".boardUploadForm").attr("action", "/schedule/insertSch.do");
             $("#boardPost").modal("show")
         })
 
@@ -1394,13 +1375,35 @@
             $(".switchSch").css("color", "black")
             $(".switchTodo").css("color", "#6777ef")
             $(".switchPost").css("color", "black")
+            $(".boardUploadForm").attr("id", "enrollTodo");
+            $(".boardUploadForm").attr("action", "/todo/insertTodo.do");
             $("#boardPost").modal("show")
         })
 
         $(document).on('click', '.ckedInput', function () {
             if ($(this).is(":checked")) {
+                $.ajax({
+                    url: '/todo/completeTodo.do',
+                    data: {
+                        "todo_no": $(this).val()
+                    },
+                    success: function (data) {
+                        console.log(data)
+
+                    }
+                })
                 $(this).parent().next().children(".ckedTodo").addClass("underline")
             } else {
+                $.ajax({
+                    url: '/todo/uncompleteTodo.do',
+                    data: {
+                        "todo_no": $(this).val()
+                    },
+                    success: function (data) {
+                        console.log(data)
+
+                    }
+                })
                 $(this).parent().next().children(".ckedTodo").removeClass("underline")
             }
         })
@@ -1412,7 +1415,8 @@
             $("#postForm").css("display", "block")
             $("#postSch").css("display", "none")
             $("#postTodo").css("display", "none")
-
+            $(".boardUploadForm").attr("id", "enrollPost");
+            $(".boardUploadForm").attr("action", "/post/insertPost.do");
         })
 
         $(document).on('click', '.switchSch', function () {
@@ -1422,6 +1426,8 @@
             $("#postForm").css("display", "none")
             $("#postSch").css("display", "block")
             $("#postTodo").css("display", "none")
+            $(".boardUploadForm").attr("id", "enrollSch");
+            $(".boardUploadForm").attr("action", "/schedule/insertSch.do");
         })
 
         $(document).on('click', '.switchTodo', function () {
@@ -1431,6 +1437,8 @@
             $("#postForm").css("display", "none")
             $("#postSch").css("display", "none")
             $("#postTodo").css("display", "block")
+            $(".boardUploadForm").attr("id", "enrollTodo");
+            $(".boardUploadForm").attr("action", "/todo/insertTodo.do");
 
         })
 
@@ -1464,7 +1472,7 @@
         function datepickerLoad() {
 
             $('.todoInput').datepicker({
-                format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
+                format: "mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
                 autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
                 clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
                 daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
@@ -1733,6 +1741,7 @@
     }
 
     function loadReply(board_no) {
+        console.log(board_no)
         $.ajax({
             url: '/project/selectReply.do',
             data: {
@@ -1860,84 +1869,151 @@
     }
 
     $(document).on('click', '.boardTable tr', function () {
-        console.log($(this).find(".board_no").val())
-        $board_no = $(this).find(".board_no").val()
-        console.log($(this).find(".board_type").val())
-        if ($(this).find(".board_type").val() == 'post') {
-            $.ajax({
-                url: '/post/detailView.do',
-                data: {
-                    "board_no": $board_no
-                },
-                success: function (list) {
-                    //list = $.parseJSON(list)
-                    console.log(list)
+            console.log($(this).find(".board_no").val())
+            $board_no = $(this).find(".board_no").val()
+            console.log($(this).find(".board_type").val())
+            if ($(this).find(".board_type").val() == 'post') {
+                $.ajax({
+                    url: '/post/detailView.do',
+                    data: {
+                        "board_no": $board_no
+                    },
+                    success: function (list) {
+                        //list = $.parseJSON(list)
+                        console.log(list)
 
-                    $("#postView").css("display", "block")
-                    $("#schView").css("display", "none")
-                    $("#todoView").css("display", "none")
-                    $("#postTitle").html(list.post_title)
-                    $("#postContent").html(list.post_content)
-                    $("#postWriter").html(list.name)
-                    $("#postUploadDate").html(list.create_date)
-                    $(".detailViewBoard_no").val(list.board_no)
-                    //console.log(list.count)
-                    $(".viewCount").text("조회 " + list.count)
-                    if ("${sessionScope.loginEmp.name}" == list.name) {
-                        // console.log('확인')
-                        $(".postEdit").css("display", "block")
-                    } else {
-                        $(".postEdit").css("display", "none")
+                        $("#postView").css("display", "block")
+                        $("#schView").css("display", "none")
+                        $("#todoView").css("display", "none")
+                        $("#postTitle").html(list.post_title)
+                        $("#postContent").html(list.post_content)
+                        $("#postWriter").html(list.name)
+                        $("#postUploadDate").html(list.create_date)
+                        $(".detailViewBoard_no").val(list.board_no)
+                        //console.log(list.count)
+                        $(".viewCount").text("조회 " + list.count)
+                        if ("${sessionScope.loginEmp.name}" == list.name) {
+                            // console.log('확인')
+                            $(".postEdit").css("display", "block")
+                        } else {
+                            $(".postEdit").css("display", "none")
+                        }
+
                     }
+                })
+            } else if ($(this).find(".board_type").val() == 'schedule') {
+                console.log('일정')
+                $.ajax({
+                    url: '/schedule/detailView.do',
+                    data: {
+                        "board_no": $board_no
+                    },
+                    success: function (list) {
+                        //list = $.parseJSON(list)
+                        console.log(list)
 
-                }
-            })
-        } else if ($(this).find(".board_type").val() == 'schedule') {
-            console.log('일정')
-            $.ajax({
-                url: '/schedule/detailView.do',
-                data: {
-                    "board_no": $board_no
-                },
-                success: function (list) {
-                    //list = $.parseJSON(list)
-                    console.log(list)
+                        $("#postView").css("display", "none")
+                        $("#schView").css("display", "block")
+                        $("#todoView").css("display", "none")
+                        $("#schTitle").html(list.sch_title)
+                        $("#schContent").html(list.sch_content)
+                        $("#schWriter").html(list.name)
+                        $("#schUploadDate").html(list.create_date)
+                        $(".detailViewBoard_no").val(list.board_no)
+                        if (moment(list.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch_end).format('YYYY-MM-DD (ddd)')) {
+                            $("#schDate").html(
+                                moment(list.sch_start).format('YYYY-MM-DD (ddd)')
+                            )
+                        } else {
+                            $("#schDate").html(
+                                moment(list.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch_end).format('YYYY-MM-DD (ddd)')
+                            )
+                        }
 
-                    $("#postView").css("display", "none")
-                    $("#schView").css("display", "block")
-                    $("#todoView").css("display", "none")
-                    $("#schTitle").html(list.sch_title)
-                    $("#schContent").html(list.sch_content)
-                    $("#schWriter").html(list.name)
-                    $("#schUploadDate").html(list.create_date)
-                    $(".detailViewBoard_no").val(list.board_no)
-                    if (moment(list.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch_end).format('YYYY-MM-DD (ddd)')) {
-                        $("#schDate").html(
-                            moment(list.sch_start).format('YYYY-MM-DD (ddd)')
+                        $("#schPlace").html(list.sch_place)
+                        //console.log(list.count)
+                        $(".viewCount").text("조회 " + list.count)
+                        if ("${sessionScope.loginEmp.name}" == list.name) {
+                            // console.log('확인')
+                            $(".postEdit").css("display", "block")
+                        } else {
+                            $(".postEdit").css("display", "none")
+                        }
+
+                    }
+                })
+            } else if ($(this).find(".board_type").val() == 'todo') {
+                $.ajax({
+                    url: '/todo/detailView.do',
+                    data: {
+                        "board_no": $board_no
+                    },
+                    success: function (list) {
+                        //list = $.parseJSON(list)
+                        console.log(list)
+
+                        $("#postView").css("display", "none")
+                        $("#schView").css("display", "none")
+                        $("#todoView").css("display", "block")
+                        $("#todoTitle").html(list[0].todo_title)
+                        $("#todoWriter").html(list[0].name)
+                        $("#todoUploadDate").html(list[0].create_date)
+                        $("#todoTotalCount").html('/ ' + list.length)
+                        $(".detailViewBoard_no").val(list[0].board_no)
+                        //console.log(list.count)
+                        $(".viewCount").text("조회 " + list[0].count)
+                        if ("${sessionScope.loginEmp.name}" == list[0].name) {
+                            // console.log('확인')
+                            $(".postEdit").css("display", "block")
+                        } else {
+                            $(".postEdit").css("display", "none")
+                        }
+                        var completeCount = 0;
+                        $("#todos").html('')
+
+
+                        $.each(list, function (i, obj) {
+                                var content = '<div class="row">'
+                                content += '<div class="col-1">'
+                                content += '<input type="checkbox" class="ckedInput todo_no"'
+                                if(obj.status =='Y') {
+                                    content +=  'checked="true"'
+                                    completeCount++
+                                }
+                                content += 'style="margin-left: 10px; width: 20px; height: 20px;" value="' + obj.todo_no + '">'
+                                content += '</div>'
+                                content += '<div class="col-8 text-center">'
+                                if(obj.status == 'Y') {
+                                    content += '<b class="ckedTodo underline">' + obj.todo_content + '</b>'
+                                }else{
+                                    content += '<b class="ckedTodo">' + obj.todo_content + '</b>'
+                                }
+
+                                content += '</div>'
+                                content += '<div class="col-3">'
+                                if (obj.todo_end != undefined) {
+                                    content += '<span>' + moment(obj.todo_end).format('MM-DD') + '</span>'
+                                }
+                                if (obj.todo_for != undefined) {
+                                    content += '<span>' + obj.todo_for + '</span>'
+                                }
+                                content += '</div>'
+                                content += '</div>'
+                                $("#todos").append(content)
+                            }
                         )
-                    } else {
-                        $("#schDate").html(
-                            moment(list.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch_end).format('YYYY-MM-DD (ddd)')
-                        )
+                        $("#todoCompleteCount").html(completeCount + "&nbsp;")
+                        $("#todoCompletePercent").html(completeCount / list.length * 100 + "%")
+                        $("#todoBar").attr("data-width", $("#todoCompletePercent").text())
+                        $("#todoBar").attr("style", 'width:+' + $("#todoCompletePercent").text() + ';')
                     }
+                })
+            }
+            loadReply($board_no)
+            $("#boardView").modal("show")
 
-                    $("#schPlace").html(list.sch_place)
-                    //console.log(list.count)
-                    $(".viewCount").text("조회 " + list.count)
-                    if ("${sessionScope.loginEmp.name}" == list.name) {
-                        // console.log('확인')
-                        $(".postEdit").css("display", "block")
-                    } else {
-                        $(".postEdit").css("display", "none")
-                    }
-
-                }
-            })
         }
-        loadReply($board_no)
-        $("#boardView").modal("show")
-
-    })
+    )
 </script>
 <script type="text/javascript">
     var sum = Number("{{sum}}");
