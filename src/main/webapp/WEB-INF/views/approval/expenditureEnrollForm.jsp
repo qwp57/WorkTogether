@@ -88,7 +88,7 @@
 							</tr>
 							<tr>
 								<td id="name2"></td>	
-								<td class="d-none"><input type="hidden" name="finalApp" value=""></td>							
+								<td class="d-none"><input type="hidden" name="finalApp"></td>							
 							</tr>
 							<tr>
 								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal2" id="lineBtn2">결재선 선택</button></td>
@@ -104,7 +104,7 @@
 							</tr>
 							<tr>
 								<td id="name1"></td>
-								<td class="d-none"><input type="hidden" name="firstApproverNo" value=""></td>								
+								<td class="d-none"><input type="hidden" name="firstApproverNo"></td>								
 							</tr>
 							<tr>
 								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal1" >결재선 선택</button></td>
@@ -142,7 +142,7 @@
 								<td>
 									<div class="form-check mt-3 mb-3">
 										<label class="form-check-label">
-											 <input type="checkbox" class="form-check-input" name="emergency" value="Y">긴급
+											 <input type="checkbox" class="form-check-input" id="emergency" name="emergency">긴급
 										</label>
 					    			</div>
 								</td>									
@@ -243,7 +243,7 @@
 									</td>
 									<td><input type="text" class="form-control" name="amountList" required/></td>
 									<td><input type="text" class="form-control" name="exHistoryList" required/></td>
-									<td><input type="text" class="form-control" name="noteList" required/></td>
+									<td><input type="text" class="form-control" name="noteList"/></td>
 								</tr>
 							</tbody>
 							<!-- 
@@ -457,6 +457,16 @@
 	
 			});
 			
+			//결재선 설정하지 않고 기안버튼 누를 경우
+			$("#subBtn").click(function(){
+				var empNo1 = $("input[name='firstApproverNo']").val(); //최초 결재자의 사번을 가지고 온다.
+				
+				if(empNo1 == 0){
+					alert("결재선이 비어있습니다. 결재자를 선택해주세요.");
+					return false;
+				}
+			});
+			
 			//기안 날짜에 들어갈 오늘 날짜 구하기
 			var today = new Date();
 			var year = today.getFullYear();
@@ -476,7 +486,7 @@
 				console.log(fileName);
 				$("#file_name").text(fileName);
 				$("#file_text").attr('class', 'd-none');
-			})
+			});
 			
 			$("#addExBtn").click(function(){
 				var insertTr = "";
@@ -492,7 +502,7 @@
 				insertTr += "</tr>";
 				
 				$("#exTableTbody").append(insertTr);
-			})
+			});
 			
 			$("#delExBtn").click(function(){				
 				var tableData = document.getElementById("exTable");
@@ -502,7 +512,7 @@
 				}else {
 					tableData.deleteRow(tableData.rows.length-2); //맨 아래 행은 합계, 맨 아래에서 두번째 행 삭제
 				}
-			})
+			});
 			
 			$("input[name='exDivision']").click(function(){
 				var accountInfo = $("input[name='exDivision']:checked").val();
@@ -515,20 +525,16 @@
 					$("#corAccount").attr("style", "display:none");
 					$("#indAccount").removeAttr("style", "display:none");
 				}
-			})
-			/*
-			$("input[name='amount']").on("change", function(){
-				var amount = [];
-				amount = $(this).val();
-				
-				var result = "";
-				for(let i = 0; i < amount.length; i++){
-					result += amount[i];
-				}
-				
-				$("#sum").text(result);
-			})*/
+			});			
 			
+			//emergency
+	    	$('input:checkbox[name="emergency"]').on('change', function(){
+              if($('input:checkbox[name="emergency"]').prop('checked')){
+                 $(this).val('Y');
+              }else {
+                 $(this).val('N');
+              }
+          	});
 		});
 		
 	</script>

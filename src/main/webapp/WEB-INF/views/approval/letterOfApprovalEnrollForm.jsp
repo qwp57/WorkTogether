@@ -84,7 +84,7 @@
 							</tr>
 							<tr>
 								<td id="name2"></td>	
-								<td class="d-none"><input type="hidden" name="finalApp" value=""></td>							
+								<td class="d-none"><input type="hidden" name="finalApp"></td>							
 							</tr>							
 							<tr>
 								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal2" id="lineBtn2">결재선 선택</button></td>
@@ -101,7 +101,7 @@
 							</tr>
 							<tr>
 								<td id="name1"></td>
-								<td class="d-none"><input type="hidden" name="firstApproverNo" value=""></td>								
+								<td class="d-none"><input type="hidden" name="firstApproverNo"></td>								
 							</tr>
 							<tr>
 								<td colspan="2"><button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#approvalLineModal1" >결재선 선택</button></td>
@@ -139,7 +139,7 @@
 								<td>
 									<div class="form-check mt-3 mb-3">
 										<label class="form-check-label">
-											 <input type="checkbox" class="form-check-input" id="emergency" value="Y">긴급
+											 <input type="checkbox" class="form-check-input" id="emergency" name="emergency">긴급
 										</label>
 					    			</div>
 								</td>									
@@ -174,7 +174,7 @@
 						</div>									
 					</div>
 					<div class="float-right mt-3">
-						<button type="submit" class="btn btn-primary">기안하기</button>
+						<button type="submit" class="btn btn-primary" id="subBtn">기안하기</button>
 						<button type="button" class="btn btn-primary" onclick="location.href='approvalMain.do'">취소하기</button>
 					</div>
 				</form>	
@@ -339,7 +339,6 @@
 			
 			//결재선 등록 버튼 누르면 결재자 칸에 값이 들어간다.
 			$("#saveBtn1").click(function(){
-
 				var empNo1 = $("input[name='empNo1']:checked").val(); //value에 담겨있는 사번
 				var empName1 = $("input[name='empNo1']:checked").next().text(); //label에 있는 이름
 				var jobName1 = $("input[name='empNo1']:checked").next().next().text(); //직급
@@ -382,6 +381,16 @@
 
 			});
 			
+			//결재선 설정하지 않고 기안버튼 누를 경우
+			$("#subBtn").click(function(){
+				var empNo1 = $("input[name='firstApproverNo']").val(); //최초 결재자의 사번을 가지고 온다.
+				
+				if(empNo1 == 0){
+					alert("결재선이 비어있습니다. 결재자를 선택해주세요.");
+					return false;
+				}
+			});
+			
 			//기안 날짜에 들어갈 오늘 날짜 구하기
 			var today = new Date();
 			var year = today.getFullYear();
@@ -402,6 +411,15 @@
 				$("#file_name").text(fileName);
 				$("#file_text").attr('class', 'd-none');
 			})
+			
+			//emergency
+	    	$('input:checkbox[name="emergency"]').on('change', function(){
+              if($('input:checkbox[name="emergency"]').prop('checked')){
+                 $(this).val('Y');
+              }else {
+                 $(this).val('N');
+              }
+          	});
 		});
 				
 	</script>

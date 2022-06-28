@@ -75,7 +75,8 @@
 					<tbody>
 						<c:forEach items="${ draftList }" var="dl">
 							<tr>
-								<td class="d-none"><input type="hidden" name="approvalNo" value="${ dl. approvalNo }"/></td>
+								<td class="d-none">${ dl.approvalNo }</td>
+								<td class="d-none">${ dl.docNo }</td>
 								<td>${ dl.createDate }</td>
 								<c:choose>
 									<c:when test="${ dl.approvalDate eq null }">
@@ -96,7 +97,7 @@
 								</c:choose>
 								<td>${ dl.title }</td>
 								<c:choose>
-									<c:when test="${ dl.fileNo eq null }">
+									<c:when test="${ dl.fileNo eq 0 }">
 										<td>-</td>
 									</c:when>
 									<c:otherwise>
@@ -221,20 +222,17 @@
 	
 	<script>
 		$(function(){
-			$("#draftList tbody #test").click(function(){
+			$("#draftList tbody tr").click(function(){
+				var approvalNo = $(this).children().eq(0).text();
+				var docNo = $(this).children().eq(1).text();
+				
+				console.log(approvalNo);
+				console.log(docNo);
+				
 				//결재 양식 번호와 문서 번호를 가지고 간다.
-				location.href="myDetailLetterOfApproval.do";
+				location.href="detailApproval.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
 			});
 			
-			$("#draftList tbody #test2").click(function(){
-				//결재 양식 번호와 문서 번호를 가지고 간다.
-				location.href="myDetailExpenditure.do";
-			});
-			
-			$("#draftList tbody #test3").click(function(){
-				//결재 양식 번호와 문서 번호를 가지고 간다.
-				location.href="myDetailtheMinutesOfAMeeting.do";
-			});
 		});
 	</script>
 	<jsp:include page="../common/footer.jsp"/>
