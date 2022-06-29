@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uni.wt.employee.model.dao.EmployeeMapper">
+
+
+	<resultMap type="Employee" id="employeeSet">
+		<id property="emp_no" column="EMP_NO"/>
+		<result property="dept_code" column="DEPT_CODE"/>
+		<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+		<result property="job_code" column="JOB_CODE"/>
+		<result property="join_date" column="JOIN_DATE"/>
+		<result property="resignation_date" column="RESIGNATION_DATE"/>
+		<result property="file_no" column="FILE_NO"/>
+		<result property="create_date" column="CREATE_DATE"/>
+		<result property="reject_reason" column="REJECT_REASON"/>
+		<result property="dept_name" column="DEPT_NAME"/>
+		<result property="job_name" column="JOB_NAME"/>
+		<result property="change_name" column="CHANGE_NAME"/>
+	</resultMap>
+	
+	<select id="idCheck" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM EMPLOYEE
+		WHERE ID = #{userId} AND STATUS != 'Q'
+	</select>
+
+	<insert id="insertEmp" parameterType="Employee">
+		INSERT INTO EMPLOYEE
+		VALUES(EMP_SEQ.NEXTVAL, #{name}, #{id}, #{password}, #{email}, #{phone}, #{birth}, NULL, NULL, NULL, #{join_date}, NULL, DEFAULT, DEFAULT, NULL, SYSDATE, NULL )
+	</insert>
+
+	<select id="loginEmp"  parameterType="Employee" resultMap="employeeSet">
+		SELECT 
+			 A.*,
+			 B.DEPT_NAME,
+			 C.JOB_NAME,
+			 D.CHANGE_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON A.DEPT_CODE = B.DEPT_CODE
+		LEFT JOIN JOB C ON A.JOB_CODE = C.JOB_CODE
+		LEFT JOIN ATTACHMENT D ON A.FILE_NO = D.FILE_NO
+		WHERE A.ID = #{id} AND A.STATUS != 'Q'
+	</select>
+	
+	<select id="selectSupvEmpList" parameterType="Employee" resultMap="employeeSet">
+		SELECT 
+		    EMP_NO,
+		    NAME,
+		    JOB_NAME AS JOB_CODE
+		FROM EMPLOYEE A 
+		JOIN JOB B ON A.JOB_CODE = B.JOB_CODE
+<![CDATA[WHERE A.JOB_CODE < #{job_code}
+		AND DEPT_CODE = #{dept_code} ]]>
+	</select>
+
+</mapper>

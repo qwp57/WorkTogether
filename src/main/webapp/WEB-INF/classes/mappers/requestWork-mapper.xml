@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uni.wt.requestWork.model.dao.RequestWorkMapper">
+ 
+<resultMap type="Employee" id="employeeSet">
+	<id property="emp_no" column="EMP_NO"/>
+	<result property="dept_code" column="DEPT_CODE"/>
+	<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+	<result property="job_code" column="JOB_CODE"/>
+	<result property="file_no" column="FILE_NO"/>
+</resultMap>
+
+<resultMap type="Project" id="projectSet">
+	<id property="pj_no" column="PJ_NO"/>
+	<result property="pj_title" column="PJ_TITLE"/>
+</resultMap>
+
+<resultMap type="RequestWork" id="requestWorkSet">
+	<id property="rw_no" column="RW_NO"/>
+	<result property="req_member" column="REQ_MEMBER"/>
+	<result property="res_member" column="RES_MEMBER"/>
+	<result property="pj_no" column="PJ_NO"/>
+	<result property="status_message" column="STATUS_MESSAGE"/>
+	<result property="create_date" column="CREATE_DATE"/>
+	<result property="modified_date" column="MODIFIED_DATE"/>
+	<result property="req_file" column="REQ_FILE"/>
+	<result property="res_file" column="RES_FILE"/>
+	<result property="req_file_origin" column="REQ_FILE_ORIGIN"/>
+	<result property="res_file_origin" column="RES_FILE_ORIGIN"/>
+	<result property="req_file_change" column="REQ_FILE_CHANGE"/>
+	<result property="res_file_change" column="RES_FILE_CHANGE"/>
+</resultMap>
+ 
+ <select id="selectDeptList" resultType="map">
+ SELECT
+ 	DEPT_CODE,
+    DEPT_NAME
+FROM DEPARTMENT
+WHERE DEPT_LEVEL = 2
+ 
+ </select>
+ 
+ <select id="getDeptMember" parameterType="map" resultMap="employeeSet">
+ SELECT
+    EMP_NO, 
+    NAME
+FROM EMPLOYEE
+WHERE DEPT_CODE = #{dept_code}
+AND EMP_NO != #{emp_no}
+ </select>
+ 
+ <select id="selectProjectList" parameterType="_int" resultMap="projectSet">
+ SELECT
+    A.PJ_NO,
+    B.PJ_TITLE
+FROM PROJECT_MEMBER A
+JOIN PROJECT B ON A.PJ_NO = B.PJ_NO
+WHERE EMP_NO =#{emp_no}
+AND STATUS != 'N'
+ </select>
+ 
+ <select id="getRWSeq" resultType="_int">
+ 	SELECT
+ 		RW_SEQ.NEXTVAL
+ 	FROM DUAL
+ </select>
+ 
+ 
+ <insert id="insertRequestWork" parameterType="RequestWork">
+ INSERT INTO RW
+ VALUES(#{rw_no}, #{req_member}, #{res_member}, #{title}, #{content}, #{pj_no}, #{term}, #{important}, DEFAULT, NULL, SYSDATE, NULL, #{req_file}, NULL)
+ </insert>
+ 
+ <select id="selectRWDetailsimple" parameterType="_int" resultMap="requestWorkSet">
+	SELECT
+		*
+	FROM RW
+	WHERE RW_NO = #{seqNo}
+
+ </select>
+ 
+ <select id="selectCountRw" parameterType="_int" resultType="map">
+ SELECT 
+    A.RES_MEMBER AS EMP,
+    NVL(RQ, '0') AS RQ,
+    NVL(P, '0') AS P
+FROM (SELECT
+        RES_MEMBER,
+        COUNT(*) AS RQ
+    FROM RW
+    WHERE RES_MEMBER = #{emp_no}
+    AND STATUS = 'RQ'
+    GROUP BY RES_MEMBER) A
+FULL OUTER JOIN (SELECT 
+        RES_MEMBER,
+        COUNT(*) AS P
+    FROM RW
+    WHERE RES_MEMBER = #{emp_no}
+    AND STATUS = 'P'
+    GROUP BY RES_MEMBER) B ON A.RES_MEMBER = B.RES_MEMBER
+ </select>
+ 
+ <select id="getListCount" parameterType="map" resultType="_int">
+ SELECT
+    COUNT(*)
+FROM RW A
+JOIN EMPLOYEE B ON A.RES_MEMBER = B.EMP_NO 
+<choose>
+	<when test='boardType.equals("RQ")'>
+	 WHERE REQ_MEMBER = #{emp_no}
+	 AND A.STATUS != 'CC'
+	</when>
+	<when test='boardType.equals("RS")'>
+	 WHERE RES_MEMBER = #{emp_no}
+	 AND A.STATUS != 'RF'
+	</when>
+	<otherwise>
+	</otherwise>
+</choose>
+AND A.STATUS != 'CM'
+ </select>
+ 
+ 
+ 
+ <select id="selectRQList" parameterType="_int" resultMap="requestWorkSet">
+ SELECT
+    RW_NO,
+    B.NAME AS RES_MEMBER,
+    IMPORTANT,
+    TITLE,
+    A.STATUS,
+    TO_CHAR(TERM,'YYYY-MM-DD') AS TERM
+FROM RW A
+JOIN EMPLOYEE B ON A.RES_MEMBER = B.EMP_NO 
+WHERE REQ_MEMBER = #{emp_no}
+AND A.STATUS NOT IN ('CM', 'CC')
+<choose>
+	<when test="sortVal.equals('important')">
+	ORDER BY IMPORTANT
+	</when>
+	<when test="sortVal.equals('term')">
+	ORDER BY TERM DESC NULLS LAST
+	</when>
+</choose>
+ 
+ </select>
+ 
+  <select id="selectRSList" parameterType="_int" resultMap="requestWorkSet">
+ SELECT
+    RW_NO,
+    B.NAME AS REQ_MEMBER,
+    IMPORTANT,
+    TITLE,
+    A.STATUS,
+    TO_CHAR(TERM,'YYYY-MM-DD') AS TERM
+FROM RW A
+JOIN EMPLOYEE B ON A.REQ_MEMBER = B.EMP_NO 
+WHERE RES_MEMBER = #{emp_no}
+AND A.STATUS NOT IN ('CM', 'RF')
+<choose>
+	<when test="sortVal.equals('important')">
+	ORDER BY IMPORTANT
+	</when>
+	<when test="sortVal.equals('term')">
+	ORDER BY TERM DESC NULLS LAST
+	</when>
+	<otherwise>
+	</otherwise>
+</choose>
+ 
+ </select>
+ 
+ <select id="selectRWDetail" parameterType="string" resultMap="requestWorkSet">
+ SELECT
+    RW_NO,
+   C.DEPT_NAME||' '||B.NAME||' '||D.JOB_NAME AS REQ_MEMBER,
+    F.DEPT_NAME||' '||E.NAME||' '||G.JOB_NAME AS RES_MEMBER,
+    TITLE,
+    CONTENT,
+    H.PJ_TITLE AS PJ_NO,
+    TO_CHAR(TERM, 'YYYY-MM-DD') AS TERM,
+    IMPORTANT,
+    A.STATUS,
+    STATUS_MESSAGE,
+    A.CREATE_DATE,
+    A.MODIFIED_DATE,
+    A.REQ_FILE,
+    A.RES_FILE,
+    I.CHANGE_NAME AS REQ_FILE_CHANGE,
+    I.ORIGINAL_NAME AS REQ_FILE_ORIGIN,
+    J.CHANGE_NAME AS RES_FILE_CHANGE,
+    J.ORIGINAL_NAME AS RES_FILE_ORIGIN
+FROM RW A
+JOIN EMPLOYEE B ON A.REQ_MEMBER = B.EMP_NO
+JOIN DEPARTMENT C ON B.DEPT_CODE = C.DEPT_CODE
+JOIN JOB D ON B.JOB_CODE = D.JOB_CODE
+JOIN EMPLOYEE E ON A.RES_MEMBER = E.EMP_NO
+JOIN DEPARTMENT F ON E.DEPT_CODE = F.DEPT_CODE
+JOIN JOB G ON E.JOB_CODE = G.JOB_CODE
+LEFT JOIN PROJECT H ON A.PJ_NO = H.PJ_NO
+LEFT JOIN ATTACHMENT I ON A.REQ_FILE = I.FILE_NO
+LEFT JOIN ATTACHMENT J ON A.RES_FILE = J.FILE_NO
+WHERE RW_NO = #{rw_no}
+ </select>
+  
+ <update id="updateRW" parameterType="RequestWork">
+  UPDATE RW
+ SET STATUS = #{status},
+ 	MODIFIED_DATE = SYSDATE
+ , STATUS_MESSAGE = #{status_message}
+ , RES_FILE = #{res_file} 
+ WHERE RW_NO = #{rw_no}
+ </update>
+ 
+ <delete id="deleteRW" parameterType="_int">
+ DELETE FROM RW WHERE RW_NO = #{rw_no}
+ </delete> 
+ 
+ <select id="getCompleteListCount" parameterType="map" resultType="_int">
+ SELECT
+ 	COUNT(*)
+ FROM RW A
+  JOIN EMPLOYEE B ON A.RES_MEMBER = B.EMP_NO 
+<trim prefix="WHERE" prefixOverrides="AND|OR">
+A.STATUS = 'CM'
+ <choose>
+ 	<when test="type =='RS'">
+ 	AND RES_MEMBER = #{emp_no}
+ 	</when>
+ 	<when test="type == 'RQ'">
+ 	AND REQ_MEMBER = #{emp_no}
+ 	</when>
+ 	<otherwise>
+ 	AND (RES_MEMBER = #{emp_no} OR REQ_MEMBER = #{emp_no})
+ 	</otherwise>
+ </choose>
+ <if test="sd.searchKeyword != null &amp;&amp; sd.searchKeyword != ''">
+<bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
+<bind name="target" value="sd.searchTarget"/>
+<choose>
+	<when test="target == 'name'">
+	AND B.NAME LIKE #{keyword}
+	</when>
+	<when test="target == 'title'">
+	AND TITLE LIKE #{keyword}
+	</when>
+	<when test="target == 'content'">
+	AND CONTENT LIKE #{keyword}
+	</when>
+</choose>
+</if>
+ </trim>
+ </select>
+ 
+ 
+ <select id="completeRequest" parameterType="map" resultMap="requestWorkSet">
+ SELECT
+    RW_NO,
+    B.NAME AS REQ_MEMBER,
+    C.NAME AS RES_MEMBER,
+    A.IMPORTANT,
+    A.TITLE,
+    TO_CHAR(A.TERM, 'YYYY-MM-DD') AS TERM,
+    TO_CHAR(A.MODIFIED_DATE, 'YYYY-MM-DD') AS MODIFIED_DATE
+FROM RW A
+JOIN EMPLOYEE B ON A.REQ_MEMBER = B.EMP_NO
+JOIN EMPLOYEE C ON A.RES_MEMBER = C.EMP_NO
+WHERE A.STATUS = 'CM'
+<choose>
+	<when test="type =='RS'">
+	AND RES_MEMBER = #{emp_no}
+	</when>
+	<when test="type == 'RQ'">
+	AND REQ_MEMBER = #{emp_no}
+	</when>
+	<otherwise>
+ 	AND (RES_MEMBER = #{emp_no} OR REQ_MEMBER = #{emp_no})
+ 	</otherwise>
+</choose>
+ <if test="sd.searchKeyword != null &amp;&amp; sd.searchKeyword != ''">
+<bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
+<bind name="target" value="sd.searchTarget"/>
+<choose>
+	<when test="target == 'name'">
+	AND B.NAME LIKE #{keyword}
+	</when>
+	<when test="target == 'title'">
+	AND TITLE LIKE #{keyword}
+	</when>
+	<when test="target == 'content'">
+	AND CONTENT LIKE #{keyword}
+	</when>
+</choose>
+</if>
+<if test="sort != null &amp;&amp; sort != '' ">
+ORDER BY ${sort}<if test="sort != 'important'">DESC NULLS LAST</if>
+</if>
+ </select>
+ 
+ 
+ 
+ 
+<select id="getAllListCount" parameterType="map" resultType="_int">
+	 SELECT
+	    COUNT(*)
+	FROM RW A
+	JOIN EMPLOYEE B ON A.RES_MEMBER = B.EMP_NO 
+	<if test="rw.type != null &amp;&amp; rw.type != ''">
+	<choose>
+		<when test='rw.type.equals("RQ")'>
+		 WHERE REQ_MEMBER = #{emp_no}
+		</when>
+		<when test='rw.type.equals("RS")'>
+		 WHERE RES_MEMBER = #{emp_no}
+		</when>
+		<otherwise>
+		 WHERE (REQ_MEMBER = #{emp_no}
+		 OR RES_MEMBER = #{emp_no})
+		</otherwise>
+	</choose>
+	</if>
+	<if test="rw.important != null &amp;&amp; rw.important != ''">
+	AND IMPORTANT = #{rw.important}
+	</if>
+	<if test="rw.status != null &amp;&amp; rw.status !=''">
+	AND A.STATUS = #{rw.status}
+	</if>
+	<if test="sd.searchKeyword != null &amp;&amp; sd.searchKeyword != ''">
+	<bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
+	<bind name="target" value="sd.searchTarget"/>
+	<choose>
+		<when test="target == 'name'">
+		AND B.NAME LIKE #{keyword}
+		</when>
+		<when test="target == 'title'">
+		AND TITLE LIKE #{keyword}
+		</when>
+		<when test="target == 'content'">
+		AND CONTENT LIKE #{keyword}
+		</when>
+	</choose>
+	</if>
+	AND A.STATUS != 'CM'
+</select>
+ 
+ <select id="selectAllList" parameterType="map" resultMap="requestWorkSet">
+  SELECT
+    RW_NO,
+    B.NAME AS REQ_MEMBER,
+    C.NAME AS RES_MEMBER,
+    A.IMPORTANT,
+    A.STATUS,
+    A.TITLE,
+    TO_CHAR(A.TERM, 'YYYY-MM-DD') AS TERM,
+    TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE
+FROM RW A
+JOIN EMPLOYEE B ON A.REQ_MEMBER = B.EMP_NO
+JOIN EMPLOYEE C ON A.RES_MEMBER = C.EMP_NO
+WHERE A.STATUS != 'CM'
+<if test="rw.type != null &amp;&amp; rw.type != ''">
+<choose>
+	<when test='rw.type.equals("RQ")'>
+	 AND REQ_MEMBER = #{emp_no}
+	</when>
+	<when test='rw.type.equals("RS")'>
+	 AND RES_MEMBER = #{emp_no}
+	</when>
+	<otherwise>
+	 AND (REQ_MEMBER = #{emp_no}
+	 OR RES_MEMBER = #{emp_no})
+	</otherwise>
+</choose>
+</if>
+<if test="rw.important != null &amp;&amp; rw.important != ''">
+AND IMPORTANT = #{rw.important}
+</if>
+<if test="rw.status != null &amp;&amp; rw.status !=''">
+AND A.STATUS = #{rw.status}
+</if>
+<if test="sd.searchKeyword != null &amp;&amp; sd.searchKeyword != ''">
+<bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
+<bind name="target" value="sd.searchTarget"/>
+<choose>
+	<when test="target == 'name'">
+	AND C.NAME LIKE #{keyword}
+	</when>
+	<when test="target == 'title'">
+	AND TITLE LIKE #{keyword}
+	</when>
+	<when test="target == 'content'">
+	AND CONTENT LIKE #{keyword}
+	</when>
+</choose>
+</if>
+<if test = "sort != null &amp;&amp; sort != ''">
+ORDER BY ${sort} <if test="sort != 'IMPORTANT'">DESC NULLS LAST</if>
+</if>
+ </select>
+
+
+	<select id="loadRw" parameterType="int" resultMap="requestWorkSet">
+		SELECT *
+		FROM RW
+		WHERE PJ_NO = #{pj_no}
+	</select>
+ 
+</mapper>

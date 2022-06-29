@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.uni.wt.project.todo.model.dao.TodoMapper">
+    <resultMap type="Todo" id="todoSet">
+        <id property="todo_no" column="TODO_NO"/>
+        <result property="board_no" column="BOARD_NO"/>
+        <result property="todo_title" column="TODO_TITLE"/>
+        <result property="todo_content" column="TODO_CONTENT"/>
+        <result property="todo_for" column="TODO_FOR"/>
+        <result property="todo_end" column="TODO_END"/>
+        <result property="status" column="STATUS"/>
+        <result property="name" column="NAME"/>
+        <result property="create_date" column="CREATE_DATE"/>
+        <result property="count" column="COUNT"/>
+    </resultMap>
+
+    <insert id="insertTodo" parameterType="Todo">
+        INSERT INTO BOARD_TODO
+        VALUES (TODO_SEQ.NEXTVAL, #{todo_title}, #{todo_content}, #{todo_for}, TO_DATE(#{todo_end}, 'MM-DD'),
+        <if test="status != null">
+            #{status}
+        </if>
+        <if test="status == null">
+            DEFAULT
+        </if>
+        , #{board_no})
+    </insert>
+    <select id="detailView" parameterType="int" resultMap="todoSet">
+        SELECT TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE, B.COUNT, A.*, C.NAME
+        FROM BOARD_TODO A
+                 JOIN PJ_BOARD B
+                      ON A.BOARD_NO = B.BOARD_NO
+                 JOIN EMPLOYEE C
+                      ON B.WRITER = C.EMP_NO
+        WHERE B.BOARD_NO = #{board_no}
+    </select>
+    <update id="completeTodo" parameterType="int">
+        UPDATE BOARD_TODO
+        SET STATUS = 'Y'
+        WHERE TODO_NO = #{todo_no}
+    </update>
+    <update id="uncompleteTodo" parameterType="int">
+        UPDATE BOARD_TODO
+        SET STATUS = 'N'
+        WHERE TODO_NO = #{todo_no}
+    </update>
+    <select id="getTodoTotalCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD_TODO
+        WHERE BOARD_NO = #{board_no}
+    </select>
+    <select id="getTodoCompleteCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM BOARD_TODO
+        WHERE BOARD_NO = #{board_no}
+          AND STATUS = 'Y'
+    </select>
+    <delete id="deleteTodo" parameterType="Todo">
+        DELETE
+        FROM BOARD_TODO
+        WHERE BOARD_NO = #{board_no}
+    </delete>
+</mapper>

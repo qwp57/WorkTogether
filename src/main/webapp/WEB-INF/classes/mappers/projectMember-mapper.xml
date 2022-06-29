@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.uni.wt.project.projectMember.model.dao.ProjectMemberMapper">
+    <resultMap type="ProjectMember" id="projectMemberSet">
+        <id property="pj_no" column="PJ_NO"/>
+        <result property="emp_no" column="EMP_NO"/>
+        <result property="pj_color" column="PJ_COLOR"/>
+        <result property="admin" column="ADMIN"/>
+    </resultMap>
+    <resultMap id="ProjectTagSet" type="ProjectTag">
+        <id property="tag_no" column="TAG_NO"/>
+        <result property="tag_name" column="TAG_NAME"/>
+        <result property="emp_no" column="EMP_NO"/>
+        <result property="pj_no" column="PJ_NO"/>
+    </resultMap>
+    <resultMap type="Employee" id="employeeSet">
+        <id property="emp_no" column="EMP_NO"/>
+        <result property="dept_code" column="DEPT_CODE"/>
+        <result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+        <result property="job_name" column="JOB_NAME"/>
+        <result property="name" column="NAME"/>
+    </resultMap>
+
+    <insert id="insertProjectMember" parameterType="ProjectMember">
+        INSERT INTO PROJECT_MEMBER
+        VALUES (#{pj_no}, #{emp_no}, DEFAULT, #{admin})
+    </insert>
+    <insert id="insertBookmark" parameterType="ProjectMember">
+        INSERT INTO PJ_BOOKMARK
+        VALUES (#{pj_no}, #{emp_no})
+    </insert>
+    <delete id="removeBookmark" parameterType="ProjectMember">
+        DELETE
+        FROM PJ_BOOKMARK
+        WHERE PJ_NO = #{pj_no}
+          AND EMP_NO = #{emp_no}
+    </delete>
+    <select id="selectProjectColorByEmpNo" resultMap="projectMemberSet" parameterType="int">
+        SELECT * FROM PROJECT_MEMBER
+        WHERE EMP_NO = ${loginEmp}
+    </select>
+    <select id="selectProjectColor" resultMap="projectMemberSet" parameterType="ProjectTag">
+        SELECT *
+        FROM PROJECT_MEMBER
+        WHERE EMP_NO = #{emp_no}
+        AND PJ_NO = #{pj_no}
+
+    </select>
+    <update id="setProjectColor" parameterType="ProjectMember">
+        UPDATE PROJECT_MEMBER
+        SET PJ_COLOR = #{pj_color}
+        WHERE PJ_NO = #{pj_no}
+          AND EMP_NO = #{emp_no}
+    </update>
+    <insert id="setProjectTag" parameterType="ProjectTag">
+        INSERT INTO PROJECT_TAG
+        VALUES (#{tag_no}, #{pj_no})
+    </insert>
+    <select id="loadTag" parameterType="int" resultMap="ProjectTagSet">
+        SELECT *
+        FROM MB_PJ_TAG
+        WHERE EMP_NO = #{loginEmp}
+        ORDER BY TAG_NO
+    </select>
+    <select id="loadTagByPj" parameterType="ProjectTag" resultMap="ProjectTagSet">
+        SELECT *
+        FROM MB_PJ_TAG
+                 JOIN PROJECT_TAG USING (TAG_NO)
+        WHERE EMP_NO = #{emp_no}
+          AND PJ_NO = #{pj_no}
+    </select>
+    <select id="checkProjectByTag" parameterType="ProjectTag" resultType="int">
+        SELECT COUNT(*)
+        FROM PROJECT_TAG
+        WHERE TAG_NO = #{tag_no}
+          AND PJ_NO = #{pj_no}
+    </select>
+
+    <select id="checkBookmark" parameterType="ProjectTag" resultType="int">
+        SELECT COUNT(*)
+        FROM PJ_BOOKMARK
+        WHERE EMP_NO = #{emp_no}
+          AND PJ_NO = #{pj_no}
+    </select>
+    <delete id="removeTagByPjNo" parameterType="ProjectTag">
+        DELETE
+        FROM PROJECT_TAG
+        WHERE PJ_NO = #{pj_no}
+          AND TAG_NO = #{tag_no}
+    </delete>
+    <delete id="quitProject" parameterType="ProjectMember">
+        DELETE FROM PROJECT_MEMBER
+        WHERE PJ_NO = #{pj_no}
+        AND EMP_NO = #{emp_no}
+    </delete>
+    <select id="selectEmpByEmpNo" parameterType="int" resultMap="employeeSet">
+        SELECT *
+        FROM EMPLOYEE
+        WHERE EMP_NO = #{emp_no}
+    </select>
+</mapper>
