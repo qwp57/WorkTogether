@@ -13,6 +13,7 @@ import com.uni.wt.project.post.model.service.PostService;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.project.projectMember.model.service.ProjectMemberService;
+import com.uni.wt.project.todo.model.service.TodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ public class ProjectController {
     private ProjectMemberService projectMemberService;
     @Autowired
     PostService postService;
+    @Autowired
+    TodoService todoService;
     @Autowired
     private BoardAllService boardAllService;
     private Map<String, String> msgMap = new HashMap<String, String>();
@@ -79,7 +82,11 @@ public class ProjectController {
     public String selectAllBoard(@RequestParam("pj_no") int pj_no) throws Exception {
 
         ArrayList<BoardAll> allBoards = boardAllService.selectAllBoard(pj_no);
-
+        for (BoardAll b : allBoards) {
+            if(b.getBoard_type().equals("todo")){
+                b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
+            }
+        }
         //log.info("게시물 전체 조회 : " + new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoards));
         return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoards);
     }
@@ -90,6 +97,16 @@ public class ProjectController {
         int loginEmp = ((Employee) session.getAttribute("loginEmp")).getEmp_no();
         ArrayList<ProjectMember> list = projectMemberService.selectProjectColorByEmpNo(loginEmp);
         return new GsonBuilder().create().toJson(list);
+    }
+
+    @RequestMapping(value = "/quitProject.do")
+    public String quitProject(HttpSession session, @RequestParam("pj_no")int pj_no) throws Exception {
+        int loginEmp = ((Employee) session.getAttribute("loginEmp")).getEmp_no();
+        ProjectMember pjMember = new ProjectMember();
+        pjMember.setPj_no(pj_no);
+        pjMember.setEmp_no(loginEmp);
+        projectMemberService.quitProject(pjMember);
+        return "redirect:/project";
     }
 
     @ResponseBody
@@ -158,12 +175,17 @@ public class ProjectController {
 
     @ResponseBody
     @RequestMapping(value = "/selectEmpListByPj.do", produces = "application/json; charset=utf-8")
-    public String selectEmpListByPj(@RequestParam("pj_no") int pj_no) throws Exception {
-
-        ArrayList<Employee> list =  projectService.selectEmpListByPj(pj_no);
-
+    public String selectEmpListByPj(@RequestParam("pj_no") int pj_no, @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
+        ArrayList<Employee> list = new ArrayList<>();
+        if (keyword != null) {
+            list = projectService.selectEmpListByPj(pj_no);
+        }else {
+            list = projectService.selectEmpInviteList(pj_no);
+        }
         return new GsonBuilder().create().toJson(list);
+
     }
+
     @ResponseBody
     @RequestMapping(value = "/editReply.do", produces = "application/json; charset=utf-8")
     public String editReply(Reply reply) throws Exception {
@@ -213,6 +235,7 @@ public class ProjectController {
 
         return "즐겨찾기 제거";
     }
+
     @ResponseBody
     @RequestMapping(value = "/selectReply.do", produces = "application/text;charset=utf8")
     public String selectReply(@RequestParam("board_no") int board_no) throws Exception {
@@ -220,8 +243,9 @@ public class ProjectController {
         ArrayList<Reply> reply = boardAllService.selectReply(board_no);
         log.info("댓글 조회 : " + reply);
 
-        return  new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(reply);
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(reply);
     }
+
     @ResponseBody
     @RequestMapping(value = "/deleteReply.do", produces = "application/text;charset=utf8")
     public String deleteReply(@RequestParam("reply_no") int reply_no) throws Exception {
@@ -279,7 +303,7 @@ public class ProjectController {
     @RequestMapping("/deleteBoard.do")
     public String deleteBoard(@RequestParam("board_no") int board_no, @RequestParam("pj_no") int pj_no) throws Exception {
         log.info("board_no : " + board_no);
-		boardAllService.deleteBoard(board_no);
+        boardAllService.deleteBoard(board_no);
         log.info("테스트");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
@@ -389,6 +413,7 @@ public class ProjectController {
 
         return "redirect:/project";
     }
+
     @ResponseBody
     @RequestMapping("/insertReply.do")
     public String insertReply(Reply reply, HttpSession session) throws Exception {

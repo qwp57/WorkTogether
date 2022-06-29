@@ -14,4 +14,8 @@ public interface TodoMapper {
     int completeTodo(int todo_no);
 
     int uncompleteTodo(int todo_no);
+
+    int getTodoCompleteCount(int board_no);
+
+    int getTodoTotalCount(int board_no);
 }

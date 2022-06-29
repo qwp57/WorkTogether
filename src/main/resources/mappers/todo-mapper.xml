@@ -38,4 +38,15 @@
 		SET STATUS = 'N'
 		WHERE TODO_NO = #{todo_no}
 	</update>
+	<select id="getTodoTotalCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD_TODO
+		WHERE BOARD_NO = #{board_no}
+	</select>
+	<select id="getTodoCompleteCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM BOARD_TODO
+		WHERE BOARD_NO = #{board_no}
+		AND STATUS = 'Y'
+	</select>
 </mapper>

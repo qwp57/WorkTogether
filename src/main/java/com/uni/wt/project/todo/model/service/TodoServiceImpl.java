@@ -62,4 +62,22 @@ public class TodoServiceImpl implements TodoService {
             throw new Exception("할일 미완료 실패");
         }
     }
+
+    @Override
+    public int getTodoPercent(int board_no) throws Exception {
+        int totalCount = todoMapper.getTodoTotalCount(board_no);
+        int completeCount = todoMapper.getTodoCompleteCount(board_no);
+
+
+        if (totalCount < 0 || completeCount < 0) {
+            throw new Exception("할일 완료율 로드 실패");
+        }else {
+            log.info("totalCount : " + totalCount);
+            log.info("completeCount : " + completeCount);
+            double result = (double)completeCount/totalCount * 100;
+            log.info("할일 완료율 : " +  result);
+            return (int)result;
+        }
+
+    }
 }

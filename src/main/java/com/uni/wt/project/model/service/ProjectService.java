@@ -36,4 +36,6 @@ public interface ProjectService {
     ArrayList<Employee> selectEmpListByPj(int pj_no) throws Exception;
 
     void editReply(Reply reply) throws Exception;
+
+    ArrayList<Employee> selectEmpInviteList(int pj_no) throws Exception;
 }

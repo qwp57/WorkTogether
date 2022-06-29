@@ -94,6 +94,11 @@ public class ProjectServiceImpl implements ProjectService {
         }
     }
 
+    @Override
+    public ArrayList<Employee> selectEmpInviteList(int pj_no) throws Exception {
+        return projectMapper.selectEmpInviteList(pj_no);
+    }
+
 
     @Override
     public Project selectOneProject(int pj_no) throws Exception {

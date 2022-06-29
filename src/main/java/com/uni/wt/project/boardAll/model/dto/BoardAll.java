@@ -25,6 +25,8 @@ public class BoardAll {
 
     private String todo_title;
 
+    private int todo_percent;
+
     private String sch_start;
 
     private int count;

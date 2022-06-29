@@ -13,4 +13,6 @@ public interface TodoService {
     void completeTodo(int todo_no) throws Exception;
 
     void uncompleteTodo(int todo_no) throws Exception;
+
+    int getTodoPercent(int board_no) throws Exception;
 }

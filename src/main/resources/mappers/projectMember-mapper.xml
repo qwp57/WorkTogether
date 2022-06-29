@@ -83,4 +83,10 @@
         WHERE PJ_NO = #{pj_no}
           AND TAG_NO = #{tag_no}
     </delete>
+    <delete id="quitProject" parameterType="ProjectMember">
+        DELETE FROM PROJECT_MEMBER
+        WHERE PJ_NO = #{pj_no}
+        AND EMP_NO = #{emp_no}
+    </delete>
+
 </mapper>

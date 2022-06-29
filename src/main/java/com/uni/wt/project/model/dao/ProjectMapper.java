@@ -35,4 +35,6 @@ public interface ProjectMapper {
     ArrayList<Employee> selectEmpListByPj(int pj_no);
 
     int editReply(Reply reply);
+
+    ArrayList<Employee> selectEmpInviteList(int pj_no);
 }

@@ -347,10 +347,10 @@
                                         <div class="dropdown-menu dropright">
                                             <a class="dropdown-item" href="#" id="setColor">색상 설정</a> <a
                                                 class="dropdown-item" href="#" id="tagSettingBtn">태그 설정</a> <a
-                                                class="dropdown-item" href="#">참여자 조회</a> <a
+                                                class="dropdown-item" href="#" id="viewEmpInPj">참여자 조회</a> <a
                                                 class="dropdown-item" href="#" id="setPj">프로젝트 설정</a>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">프젝트 나가기</a>
+                                            <a class="dropdown-item" href="#" id="quitProject">프로젝트 나가기</a>
                                         </div>
                                     </div>
                                     <p id="pjDetail">${pj.pj_content}</p>
@@ -569,7 +569,7 @@
         <div class="modal-content row">
             <!-- modal header : 제목 -->
             <div class="modal-header">
-                <span><h3 class="modal-title text-left">참석자 추가</h3></span> <span><input
+                <span><h3 class="modal-title text-left">사원 추가</h3></span> <span><input
                     type="image" data-dismiss="modal"
                     src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
@@ -578,7 +578,6 @@
                 <div class="modal-body">
                     <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
                     <table class="inviteTable">
-
                     </table>
                     <br>
                 </div>
@@ -632,6 +631,32 @@
                                 </tr>
 
                             </c:forEach>
+                        </table>
+                        <br>
+                    </form>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 참여자 조회 모달창 -->
+<div class="modal fade" id="empListModal" data-backdrop="static"
+     data-keyboard="false" style="z-index: 3000;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content row">
+            <!-- modal header : 제목 -->
+            <div class="modal-header">
+                <span><h3 class="modal-title text-left">참여자 조회</h3></span> <span><input
+                    type="image" data-dismiss="modal"
+                    src="/resources/assets/img/close.png/" style="width: 20px;"></span>
+            </div>
+            <!-- modal body : 내용 -->
+            <form class="form">
+                <div class="modal-body">
+                    <form>
+                        <input type="text" class="form-control memberSearching" placeholder="사원명으로 검색">
+                        <table class="inviteTable">
                         </table>
                         <br>
                     </form>
@@ -1159,11 +1184,13 @@
     $(document).on('click', '.fileUploadBtn', function () {
         $('#upload-file').click()
     })
+
     $(document).on('click', '#file-label', function () {
         //console.log('변경')
         $('#upload-file').val("")
         $("#file-label").css("display", "none")
     })
+
     $(document).on('change', '#upload-file', function () {
         if (window.FileReader) {  // modern browser
             var filename = $(this)[0].files[0].name;
@@ -1176,6 +1203,43 @@
         $("#file-label").val(filename);
         $("#file-label").css("display", "block")
     });
+
+    $(document).on('click', '#quitProject', function () {
+        if (confirm("프로젝트를 나가시겠습니까?")) {
+            location.href = "/project/quitProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+    $(document).on('click', '#viewEmpInPj', function () {
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'all'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    $(".inviteTable").append(
+                        '<tr>' +
+                        '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>' +
+                        '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">' +
+                        '</td>' +
+                        '<th style="width: 50%; text-align: center">' + obj.name + '</th>' +
+                        '<td rowspan="2" style="width: 20%; text-align: right;">' +
+                        '</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                        '<td style="text-align: center;">' + obj.job_name + '</td>' +
+                        '</tr>'
+                    )
+                })
+
+                $("#empListModal").modal("show")
+            }
+        })
+    })
 
     $(document).on('click', '.boardDeleteBtn', function () {
 
@@ -1251,8 +1315,8 @@
             $(".boardUploadForm").attr("action", "/post/editPost.do");
             $("#boardPost").modal("show")
             $("#boardPost").css("z-index", "111111")
-
         })
+
 
         $(document).on('click', '.disconnectingTagBtn', function () {
             console.log($(this).prev().find('input[name=tagInput]').val())
@@ -1298,11 +1362,6 @@
 
 
         $(document).on('click', '#inviteBtn', function () {
-            $("#inviteModal").modal("show")
-
-        })
-
-        $(document).on('click', '.postFor', function () {
             $.ajax({
                 url: '/project/selectEmpListByPj.do',
                 data: {
@@ -1330,11 +1389,42 @@
                         )
                     })
 
+                    $("#inviteModal").modal("show")
+                }
+            })
+        })
+
+        $(document).on('click', '.postFor', function () {
+            $.ajax({
+                url: '/project/selectEmpListByPj.do',
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "keyword": 'mention'
+                },
+                success: function (list) {
+                    console.log(list)
+                    $(".inviteTable").html('')
+                    $.each(list, function (i, obj) {
+                        $(".inviteTable").append(
+                            '<tr>' +
+                            '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>' +
+                            '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">' +
+                            '</td>' +
+                            '<th style="width: 50%">' + obj.name + '</th>' +
+                            '<td rowspan="2" style="width: 20%; text-align: right;">' +
+                            '<div class="custom-control custom-checkbox">' +
+                            '<input type="checkbox">' +
+                            '</div>' +
+                            '</td>' +
+                            '</tr>' +
+                            '<tr>' +
+                            '<td>' + obj.job_name + '</td>' +
+                            '</tr>'
+                        )
+                    })
                     $("#mentionForModal").modal("show")
                 }
             })
-
-
         })
 
         $('#boardPost').on('hidden.bs.modal', function (e) {
@@ -1516,7 +1606,7 @@
         })
 
         $("#close").click(function () {
-            console.log("진입확인")
+            //console.log("진입확인")
             $('#summernote').summernote('reset');
             $(".todos").html(
                 '<div class="form-group row">' +
@@ -1542,7 +1632,9 @@
             datepickerLoad()
 
         })
-
+        $("input[type=image]").click(function () {
+            loadBoards()
+        })
 
         $('.todoInput').datepicker().on("clearDate", function (e) {
             console.log(e.currentTarget)
@@ -1563,10 +1655,12 @@
     })
 
     $(document).on('click', '.calendar', function () {
-        location.href = "/project/detailCalendar.do"
+        location.href = "/project/detailCalendar.do?pj_no=" +
+        ${pj.pj_no}
     })
     $(document).on('click', '.drive', function () {
-        location.href = "/project/drivePj.do"
+        location.href = "/project/drivePj.do?pj_no=" +
+        ${pj.pj_no}
     })
 
     $(document).on('click', '.todoPerson', function () {
@@ -1634,7 +1728,6 @@
 
         $("#tagModal").modal("hide")
         setTag(selectedProjects, selectedTags)
-
     }
 
     function setTag(selectedProjects, selectedTags) {
@@ -1841,7 +1934,7 @@
                             '<th style="width: 40%;">' + obj.sch_title + '</th>' +
                             '<td style="width: 12%;">' + obj.name + '</td>' +
                             '<td style="width: 22%;">' + obj.create_date + '</td>' +
-                            '<td><b>' + moment(obj.sch_start).format('MM/DD') + '</b><br><a style="font-size: smaller">' + moment(obj.sch_start).format('HH:mm') + '</a></td>' +
+                            '<td><b>' + moment(obj.sch_start).format('MM/DD') + '</b></td>' +
                             '</tr>'
                         )
                     } else if (obj.board_type == 'todo') {
@@ -1856,7 +1949,7 @@
                             '<th style="width: 40%;">' + obj.todo_title + '</th>' +
                             '<td style="width: 12%;">' + obj.name + '</td>' +
                             '<td style="width: 22%;">' + obj.create_date + '</td>' +
-                            '<td><span class="badge" style="background-color: #3591f3 ; height: 100%; font-size: 18px; color: white;">20%</span></td>' +
+                            '<td><span class="badge" style="background-color: #3591f3 ; height: 100%; font-size: 18px; color: white;">' + obj.todo_percent + '%</span></td>' +
                             '</tr>'
                         )
                     }
@@ -1976,19 +2069,18 @@
                                 var content = '<div class="row">'
                                 content += '<div class="col-1">'
                                 content += '<input type="checkbox" class="ckedInput todo_no"'
-                                if(obj.status =='Y') {
-                                    content +=  'checked="true"'
+                                if (obj.status == 'Y') {
+                                    content += 'checked="true"'
                                     completeCount++
                                 }
                                 content += 'style="margin-left: 10px; width: 20px; height: 20px;" value="' + obj.todo_no + '">'
                                 content += '</div>'
                                 content += '<div class="col-8 text-center">'
-                                if(obj.status == 'Y') {
+                                if (obj.status == 'Y') {
                                     content += '<b class="ckedTodo underline">' + obj.todo_content + '</b>'
-                                }else{
+                                } else {
                                     content += '<b class="ckedTodo">' + obj.todo_content + '</b>'
                                 }
-
                                 content += '</div>'
                                 content += '<div class="col-3">'
                                 if (obj.todo_end != undefined) {
@@ -2003,7 +2095,7 @@
                             }
                         )
                         $("#todoCompleteCount").html(completeCount + "&nbsp;")
-                        $("#todoCompletePercent").html(completeCount / list.length * 100 + "%")
+                        $("#todoCompletePercent").html(Math.floor(completeCount / list.length * 100) + "%")
                         $("#todoBar").attr("data-width", $("#todoCompletePercent").text())
                         $("#todoBar").attr("style", 'width:+' + $("#todoCompletePercent").text() + ';')
                     }
