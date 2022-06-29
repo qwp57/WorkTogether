@@ -44,14 +44,13 @@ public class TodoController {
         log.info(todo.getTodo_end());
         String[] todoContents = todo.getTodo_content().split(",");
         String[] todoEnds = todo.getTodo_end().split(",");
-
         ArrayList<Todo> todos = new ArrayList<>();
         for (int i = 0; i < todoContents.length; i++){
             Todo tempTodo = new Todo();
             if(!todoContents[i].equals("")){
                 tempTodo.setTodo_content(todoContents[i]);
             }
-            if(!todoEnds[i].equals("")){
+            if(todoEnds.length > 0){
                 tempTodo.setTodo_end(todoEnds[i]);
             }
             tempTodo.setTodo_title(todo.getTodo_title());

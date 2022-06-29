@@ -100,4 +100,12 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
             throw new Exception("태그 삭제 실패");
         }
     }
+
+    @Override
+    public void quitProject(ProjectMember pjMember) throws Exception {
+        int result = projectMemberMapper.quitProject(pjMember);
+        if (result < 0) {
+            throw new Exception("프로젝트 나가기 실패");
+        }
+    }
 }

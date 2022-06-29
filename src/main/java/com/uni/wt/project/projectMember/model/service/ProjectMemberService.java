@@ -28,4 +28,6 @@ public interface ProjectMemberService {
     int checkBookmark(ProjectTag pj_no) throws Exception;
 
     void removeTagByPjNo(ProjectTag projectTag) throws Exception;
+
+    void quitProject(ProjectMember pjMember) throws Exception;
 }

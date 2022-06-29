@@ -31,25 +31,6 @@
                     <input type="text" class="form-control" id="memberSearching"
                            placeholder="사원명으로 검색">
                     <table class="inviteTable">
-                        <c:forEach var="index" begin="1" end="5">
-                            <tr>
-                                <td rowspan="2"><span class='bi bi-person-circle fa-2x'></span>
-
-                                </td>
-                                <th style="width: 50%">테스트</th>
-                                <td rowspan="2" style="width: 20%; text-align: right;">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input"
-                                               id="tag${index }"> <label
-                                            class="custom-control-label" for="tag${index }"></label>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>부장</td>
-                            </tr>
-
-                        </c:forEach>
                     </table>
                     <br>
                 </div>

@@ -30,4 +30,6 @@ public interface ProjectMemberMapper {
     int checkBookmark(ProjectTag pj_no);
 
     int removeTagByPjNo(ProjectTag projectTag);
+
+    int quitProject(ProjectMember pjMember);
 }

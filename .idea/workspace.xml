@@ -9,17 +9,27 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="일정글 작성, 조회">
+    <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="할일 글 작성, 조회">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dto/Reply.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dto/Reply.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dto/BoardAll.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dto/BoardAll.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectRestController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/dao/ProjectMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/dao/ProjectMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/dao/ProjectMemberMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/dao/ProjectMemberMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/service/ProjectMemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/service/ProjectMemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/service/ProjectMemberServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/projectMember/model/service/ProjectMemberServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/controller/TodoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/controller/TodoController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/model/dao/TodoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/model/dao/TodoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/model/dto/Todo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/model/dto/Todo.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/model/service/TodoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/model/service/TodoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/model/service/TodoServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/model/service/TodoServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/approval/theMinutesOfAMeetingEnrollForm.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/approval/theMinutesOfAMeetingEnrollForm.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/project-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mappers/project-mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/projectMember-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mappers/projectMember-mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/todo-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mappers/todo-mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailCalendar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailCalendar.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/invitePjModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/invitePjModal.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +233,7 @@
       <workItem from="1656307934042" duration="15937000" />
       <workItem from="1656344927263" duration="6000" />
       <workItem from="1656345189098" duration="3100000" />
-      <workItem from="1656402410501" duration="4000" />
+      <workItem from="1656402410501" duration="12451000" />
     </task>
     <task id="LOCAL-00001" summary="commit">
       <created>1655124496590</created>
@@ -274,7 +284,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656309858177</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="할일 글 작성, 조회">
+      <created>1656402445327</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1656402445327</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -313,6 +330,7 @@
     <MESSAGE value="상세페이지 태그" />
     <MESSAGE value="게시물 조회" />
     <MESSAGE value="일정글 작성, 조회" />
-    <option name="LAST_COMMIT_MESSAGE" value="일정글 작성, 조회" />
+    <MESSAGE value="할일 글 작성, 조회" />
+    <option name="LAST_COMMIT_MESSAGE" value="할일 글 작성, 조회" />
   </component>
 </project>
