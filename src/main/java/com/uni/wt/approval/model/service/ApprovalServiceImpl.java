@@ -141,9 +141,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public Approval selectApproval(int approvalNo) throws Exception {
+	public Approval selectDraftApproval(int approvalNo) throws Exception {
 		
-		Approval app = approvalMapper.selectApproval(approvalNo);
+		Approval app = approvalMapper.selectDraftApproval(approvalNo);
 		
 		if(app == null) {
 			new Exception("기안서 조회에 실패하였습니다.");
@@ -153,9 +153,9 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public ApprovalLine selectApprovalLine(int approvalNo) throws Exception {
+	public ApprovalLine selectDraftApprovalLine(int approvalNo) throws Exception {
 		
-		ApprovalLine appL = approvalMapper.selectApprovalLine(approvalNo);
+		ApprovalLine appL = approvalMapper.selectDraftApprovalLine(approvalNo);
 		
 		if(appL == null) {
 			new Exception("결재선 조회에 실패하였습니다.");
@@ -198,6 +198,54 @@ public class ApprovalServiceImpl implements ApprovalService {
 		}
 		
 		return appMm;
+	}
+
+	@Override
+	public int appListCount(int emp_no) throws Exception {
+
+		return approvalMapper.appListCount(emp_no);
+	}
+
+	@Override
+	public ArrayList<Approval> selectAppList(int emp_no, PageInfo pi) throws Exception {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Approval> appList = approvalMapper.selectAppList(emp_no, rowBounds);
+		
+		if(appList.isEmpty()) {
+			new Exception("결재함 조회에 실패하였습니다.");
+		}
+		
+		return appList;
+	}
+
+	@Override
+	public int searchAppListCount(Map<String, Object> map) throws Exception {
+		
+		return approvalMapper.searchAppListCount(map);
+	}
+
+	@Override
+	public ArrayList<Approval> searchAppList(Map<String, Object> map, PageInfo pi) throws Exception {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Approval> appList = approvalMapper.searchAppList(map, rowBounds);
+		
+		if(appList.isEmpty()) {
+			new Exception("검색에 실패하였습니다.");
+		}
+		
+		return appList;
+	}
+
+	@Override
+	public Approval selectApproval(int approvalNo) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

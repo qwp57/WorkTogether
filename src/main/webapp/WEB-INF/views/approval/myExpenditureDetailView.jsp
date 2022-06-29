@@ -150,13 +150,7 @@
 							</tr>
 						</thead>
 						<tbody id="exTableTbody">
-							<tr>
-								<td>2022-05-03</td>
-								<td>물품구입비</td>
-								<td>10000원</td>
-								<td>회의 자료 구입</td>
-								<td></td>
-							</tr>
+							
 						</tbody>
 						<!--  
 						<tfoot>
@@ -176,12 +170,13 @@
 					</div>
 					<c:if test="${ map['app'].fileNo ne 0 }">
 						<div class="mt-3 ml-4" id="fileArea">
-							<div>project.jpg</div>									
+							<div>
+								<a href="${ pageContext.servletContext.contextPath }/resources/upload_files/${ map['app'].change_name }" download="${ map['app'].orginal_name }">${ map['app'].orginal_name }</a>
+							</div>									
 						</div>
 					</c:if>
 					<c:if test="${ map['app'].fileNo eq 0 }">
-						<div class="mt-3 ml-4" id="fileArea">								
-						</div>
+						<div>첨부파일이 없습니다.</div>
 					</c:if>
 				</div>					
 				<div class="float-right mt-3">						
@@ -193,14 +188,40 @@
 	
 	<script>
 		$(function(){
-			var exDate = "${map['appEx'].exDate}".split(",");
-			var exClassification = "${map['appEx'].exClassification}".split(",");
-			var exClassification = "${map['appEx'].amount}".split(",");
-			var exHistory = "${map['appEx'].exHistory}".split(",");
-			var note = "${map['appEx'].note}".split(",");
+			var exDateArray = "${map['appEx'].exDate}".split(",");
+			var exClassificationArray = "${map['appEx'].exClassification}".split(",");
+			var amountArray = "${map['appEx'].amount}".split(",");
+			var exHistoryArray = "${map['appEx'].exHistory}".split(",");
+			var noteArray = "${map['appEx'].note}".split(",");
 			
+			console.log(exDateArray);
+			console.log(exClassificationArray);
+			console.log(amountArray);
+			console.log(exHistoryArray);
+			console.log(noteArray);
 			
-		
+			//배열 선언
+			var exArray = new Array();
+			for(let i = 0; i < exDateArray.length; i++){
+				exArray.push({exDate: exDateArray[i], exClassification: exClassificationArray[i], amount: amountArray[i], exHistory: exHistoryArray[i], note: noteArray[i]});
+			}
+			console.log(exArray);
+			
+			//table 변수 선언
+			var tableTr =""
+			
+			for(key in exArray){
+			
+				tableTr += '<tr>';
+				tableTr += '<td>' + exArray[key].exDate + '</td>';
+				tableTr += '<td>' + exArray[key].exClassification + '</td>';
+				tableTr += '<td>' + exArray[key].amount + '</td>';
+				tableTr += '<td>' + exArray[key].exHistory + '</td>';
+				tableTr += '<td>' + exArray[key].note + '</td>';
+				tableTr += '</tr>';
+			}
+			
+			$("#exTableTbody").append(tableTr);
 		});
 	</script>
 <jsp:include page="../common/footer.jsp"/>

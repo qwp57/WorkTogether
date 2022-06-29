@@ -130,11 +130,13 @@
 					</div>
 					<c:if test="${ map['app'].fileNo ne 0 }">
 						<div class="mt-3 ml-4" id="fileArea">
-							<div>project.jpg</div>									
+							<div>
+								<a href="${ pageContext.servletContext.contextPath }/resources/upload_files/${ map['app'].change_name }" download="${ map['app'].orginal_name }">${ map['app'].orginal_name }</a>
+							</div>									
 						</div>
 					</c:if>
 					<c:if test="${ map['app'].fileNo eq 0 }">
-						<div></div>
+						<div>첨부파일이 없습니다.</div>
 					</c:if>
 				</div>					
 				<div class="float-right mt-3">						

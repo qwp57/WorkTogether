@@ -21,4 +21,7 @@ public class Approval {
 	private String progress;	//결재 진행 상태
 	private int fileNo;			//파일 번호
 	
+	private String orginal_name;
+	private String change_name;
+	
 }
