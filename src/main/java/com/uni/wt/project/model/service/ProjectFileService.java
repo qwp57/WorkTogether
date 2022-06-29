@@ -74,7 +74,7 @@ public class ProjectFileService {
             throw new Exception("파일 업로드에 실패했습니다.");
         }
     }
-    private void deleteFile(ProjectFile projectFile) {
+    public void deleteFile(ProjectFile projectFile) throws Exception {
 
         File file = new File(projectFile.getPath()+projectFile.getChange_name());
         log.info("저장된 파일 경로 : {}", projectFile.getPath()+projectFile.getChange_name());
@@ -84,6 +84,14 @@ public class ProjectFileService {
             log.info("파일을 성공적으로 지웠습니다 : {}", d);
 
         }
+        int result = projectFileMapper.deleteFile(projectFile.getFile_no());
 
+        if(result < 0) {
+            throw new Exception("파일 수정에 실패했습니다");
+        }
+    }
+
+    public ProjectFile getFile(int board_no) {
+        return projectFileMapper.getFile(board_no);
     }
 }

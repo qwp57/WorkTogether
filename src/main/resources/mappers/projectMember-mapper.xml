@@ -15,6 +15,13 @@
         <result property="emp_no" column="EMP_NO"/>
         <result property="pj_no" column="PJ_NO"/>
     </resultMap>
+    <resultMap type="Employee" id="employeeSet">
+        <id property="emp_no" column="EMP_NO"/>
+        <result property="dept_code" column="DEPT_CODE"/>
+        <result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+        <result property="job_name" column="JOB_NAME"/>
+        <result property="name" column="NAME"/>
+    </resultMap>
 
     <insert id="insertProjectMember" parameterType="ProjectMember">
         INSERT INTO PROJECT_MEMBER
@@ -88,5 +95,9 @@
         WHERE PJ_NO = #{pj_no}
         AND EMP_NO = #{emp_no}
     </delete>
-
+    <select id="selectEmpByEmpNo" parameterType="int" resultMap="employeeSet">
+        SELECT *
+        FROM EMPLOYEE
+        WHERE EMP_NO = #{emp_no}
+    </select>
 </mapper>

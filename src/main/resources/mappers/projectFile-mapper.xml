@@ -18,6 +18,14 @@
 	INSERT INTO PJ_FILE
 	VALUES(PJFILE_SEQ.NEXTVAL ,#{board_no}, SYSDATE, #{path}, #{img_path}, #{origin_name}, #{change_name})
 </insert>
-
+<select id="getFile" parameterType="int" resultMap="projectFileSet">
+	SELECT *
+	FROM PJ_FILE
+	WHERE BOARD_NO = #{board_no}
+</select>
+	<delete id="deleteFile" parameterType="int">
+		DELETE FROM PJ_FILE
+		WHERE FILE_NO = #{file_no}
+	</delete>
   
 </mapper>

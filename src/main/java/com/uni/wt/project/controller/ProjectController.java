@@ -191,6 +191,7 @@ public class ProjectController {
     @ResponseBody
     @RequestMapping(value = "/selectEmpListByPj.do", produces = "application/json; charset=utf-8")
     public String selectEmpListByPj(@RequestParam("pj_no") int pj_no, @RequestParam(value = "keyword", required = false) String keyword) throws Exception {
+
         ArrayList<Employee> list = new ArrayList<>();
         if (keyword != null) {
             list = projectService.selectEmpListByPj(pj_no);

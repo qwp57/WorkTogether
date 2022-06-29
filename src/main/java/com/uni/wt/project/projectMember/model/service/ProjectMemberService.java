@@ -1,5 +1,6 @@
 package com.uni.wt.project.projectMember.model.service;
 
+import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 
@@ -30,4 +31,6 @@ public interface ProjectMemberService {
     void removeTagByPjNo(ProjectTag projectTag) throws Exception;
 
     void quitProject(ProjectMember pjMember) throws Exception;
+
+    Employee selectEmpByEmpNo(int parseInt) throws Exception;
 }

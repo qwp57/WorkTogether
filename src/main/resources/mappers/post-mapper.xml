@@ -29,7 +29,8 @@
 	<update id="editPost" parameterType="Post">
 		UPDATE BOARD_POST
 		SET POST_TITLE = #{post_title},
-			POST_CONTENT = #{post_content}
+			POST_CONTENT = #{post_content},
+			POST_FOR = #{post_for}
 		WHERE BOARD_NO = #{board_no}
 	</update>
 

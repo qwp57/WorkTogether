@@ -110,6 +110,7 @@
                  LEFT JOIN JOB C
                            ON B.JOB_CODE = C.JOB_CODE
         WHERE A.PJ_NO = #{pj_no}
+        AND B.STATUS != 'Q'
     </select>
     <select id="selectEmpInviteList" parameterType="int" resultMap="employeeSet">
         SELECT A.EMP_NO, A.NAME, B.JOB_NAME
@@ -117,6 +118,7 @@
                  LEFT JOIN JOB B
                            ON A. JOB_CODE = B.JOB_CODE
         WHERE A.EMP_NO NOT IN (SELECT EMP_NO FROM PROJECT_MEMBER WHERE PJ_NO = #{pj_no})
+        AND A.STATUS != 'Q'
     </select>
     <update id="editReply" parameterType="Reply">
         UPDATE BOARD_REPLY
