@@ -45,4 +45,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
     }
 
+    @Override
+    public void editSch(Schedule schedule) throws Exception {
+        int result = scheduleMapper.editSch(schedule);
+        if (result < 0) {
+            throw new Exception("게시물 수정 실패");
+        }
+    }
+
 }

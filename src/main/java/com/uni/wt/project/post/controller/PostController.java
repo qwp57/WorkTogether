@@ -69,7 +69,7 @@ public class PostController {
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
     @RequestMapping("/editPost.do")
-    public String editPost(Post post, @RequestParam("pj_no") int pj_no, HttpSession session,
+    public String editPost(Post post, @RequestParam("pj_no") int pj_no,
                              @RequestParam(name = "upload_file", required = false) MultipartFile file, RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("글 : " + post);
 

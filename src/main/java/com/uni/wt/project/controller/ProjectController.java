@@ -14,6 +14,7 @@ import com.uni.wt.project.projectMember.model.dto.ProjectMember;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.project.projectMember.model.service.ProjectMemberService;
 import com.uni.wt.project.todo.model.service.TodoService;
+import com.uni.wt.requestWork.model.dto.RequestWork;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,20 @@ public class ProjectController {
         myAllProjects.add(myProjects);
         myAllProjects.add(bookmarkProjects);
         return gson.toJson(myAllProjects);
+    }
+    @RequestMapping(value = "/invitePj.do", produces = "application/json; charset=utf-8")
+    public String invitePj(@RequestParam("inviteEmpNo") int[] emp_no, @RequestParam("pj_no") int pj_no) throws Exception {
+        for (int i:emp_no) {
+            log.info("사번 : " + i);
+            ProjectMember pjm = new ProjectMember();
+            pjm.setEmp_no(i);
+            pjm.setPj_no(pj_no);
+            pjm.setAdmin("N");
+            log.info(pjm.toString());
+            projectMemberService.insertProjectMember(pjm);
+        }
+        msgMap.put("msg", "프로젝트 초대 완료.");
+        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
 
     @ResponseBody
@@ -254,7 +269,14 @@ public class ProjectController {
 
         return "댓글 삭제 성공";
     }
+    @ResponseBody
+    @RequestMapping(value = "/loadRw.do", produces = "application/text;charset=utf8")
+    public String loadRw(@RequestParam("pj_no") int pj_no) throws Exception {
 
+        ArrayList< RequestWork > list = projectService.loadRw(pj_no);
+
+        return new GsonBuilder().create().toJson(list);
+    }
     @ResponseBody
     @RequestMapping(value = "/loadTag.do", produces = "application/text;charset=utf8")
     public String loadTag(HttpSession session, @RequestParam(value = "pj_no", required = false) String pj_noStr) throws Exception {
@@ -289,7 +311,7 @@ public class ProjectController {
         projectTag.setPj_no(pj_no);
         projectTag.setEmp_no(((Employee) session.getAttribute("loginEmp")).getEmp_no());
         ArrayList<ProjectMember> list = projectMemberService.selectProjectColor(projectTag);
-        //log.info("색상 단건조회 : " + list.toString());
+        log.info("색상 단건조회 : " + list.toString());
         Project pj = projectService.selectOneProject(pj_no);
         //log.info("프로젝트 상세보기 pj : " + pj);
         int checkBookmark = projectMemberService.checkBookmark(projectTag);
@@ -305,6 +327,26 @@ public class ProjectController {
         log.info("board_no : " + board_no);
         boardAllService.deleteBoard(board_no);
         log.info("테스트");
+        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+    }
+    @RequestMapping("/editPj.do")
+    public String editPj(Project project) throws Exception {
+        log.info("프로젝트 : " + project);
+        projectService.editPj(project);
+        return "redirect:/project/detailPj.do?pj_no=" + project.getPj_no();
+    }
+
+    @RequestMapping("/deleteProject.do")
+    public String deleteProject(@RequestParam("pj_no") int pj_no) throws Exception {
+        projectService.deleteProject(pj_no);
+        msgMap.put("msg", "프로젝트 삭제 완료.");
+        return "redirect:/project";
+    }
+
+    @RequestMapping("/keepProject.do")
+    public String keepProject(@RequestParam("pj_no") int pj_no) throws Exception {
+        projectService.keepProject(pj_no);
+        msgMap.put("msg", "프로젝트 보관 완료.");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
 
@@ -407,6 +449,7 @@ public class ProjectController {
 
         pjm.setEmp_no(((Employee) session.getAttribute("loginEmp")).getEmp_no());
         pjm.setPj_no(pj_no);
+        pjm.setAdmin("Y");
         projectMemberService.insertProjectMember(pjm);
         msgMap.put("msg", "프로젝트 생성 완료.");
         redirect.addFlashAttribute("msg", msgMap);

@@ -8,4 +8,6 @@ public interface ScheduleMapper {
     Schedule detailView(int board_no);
 
     int insertSch(Schedule schedule);
+
+    int editSch(Schedule schedule);
 }

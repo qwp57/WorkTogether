@@ -123,4 +123,23 @@
         SET REPLY_CONTENT = #{reply_content}
         WHERE REPLY_NO = #{reply_no}
     </update>
+    <update id="editPj" parameterType="Project">
+        UPDATE PROJECT
+        SET PJ_TITLE = #{pj_title},
+            PJ_CONTENT = #{pj_content},
+            BOARD_POWER = #{board_power},
+            REPLY_POWER = #{reply_power},
+            FILE_POWER = #{file_power}
+        WHERE PJ_NO = #{pj_no}
+    </update>
+    <delete id="deleteProject" parameterType="int">
+        DELETE FROM PROJECT
+        WHERE PJ_NO = #{pj_no}
+    </delete>
+    <update id="keepProject" parameterType="int">
+        UPDATE PROJECT
+        SET STATUS = 'N'
+        WHERE PJ_NO = #{pj_no}
+    </update>
+
 </mapper>

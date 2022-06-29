@@ -5,6 +5,8 @@ import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.model.dao.ProjectMapper;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
+import com.uni.wt.requestWork.model.dao.RequestWorkMapper;
+import com.uni.wt.requestWork.model.dto.RequestWork;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -21,6 +23,8 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private ProjectMapper projectMapper;
+    @Autowired
+    private RequestWorkMapper requestWorkMapper;
 
     @Override
     public void insertProject(Project project) throws Exception{
@@ -97,6 +101,35 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ArrayList<Employee> selectEmpInviteList(int pj_no) throws Exception {
         return projectMapper.selectEmpInviteList(pj_no);
+    }
+
+    @Override
+    public void editPj(Project project) throws Exception {
+        int result =  projectMapper.editPj(project);
+        if(result < 0) {
+            throw new Exception("프로젝트 수정에 실패하였습니다.");
+        }
+    }
+
+    @Override
+    public void deleteProject(int pj_no) throws Exception {
+        int result =  projectMapper.deleteProject(pj_no);
+        if(result < 0) {
+            throw new Exception("프로젝트 삭제에 실패하였습니다.");
+        }
+    }
+
+    @Override
+    public void keepProject(int pj_no) throws Exception {
+        int result =  projectMapper.keepProject(pj_no);
+        if(result < 0) {
+            throw new Exception("프로젝트 보관에 실패하였습니다.");
+        }
+    }
+
+    @Override
+    public ArrayList<RequestWork> loadRw(int pj_no) throws Exception {
+        return requestWorkMapper.loadRw(pj_no);
     }
 
 

@@ -15,4 +15,6 @@ public interface TodoService {
     void uncompleteTodo(int todo_no) throws Exception;
 
     int getTodoPercent(int board_no) throws Exception;
+
+    void editTodo(ArrayList<Todo> todos) throws Exception;
 }

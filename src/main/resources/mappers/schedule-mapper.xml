@@ -28,5 +28,14 @@
 		INSERT INTO BOARD_SCHEDULE
 		VALUES (#{board_no}, #{sch_title}, #{sch_attendee}, #{sch_start}, #{sch_end}, #{sch_place}, #{sch_content})
 	</insert>
-
+	<update id="editSch" parameterType="Schedule">
+		UPDATE BOARD_SCHEDULE
+		SET SCH_TITLE = #{sch_title},
+			SCH_ATTENDEE = #{sch_attendee},
+			SCH_START = #{sch_start},
+			SCH_END = #{sch_end},
+			SCH_PLACE = #{sch_place},
+			SCH_CONTENT = #{sch_content}
+		WHERE BOARD_NO = #{board_no}
+	</update>
 </mapper>

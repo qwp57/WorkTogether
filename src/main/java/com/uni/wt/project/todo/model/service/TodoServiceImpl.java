@@ -80,4 +80,21 @@ public class TodoServiceImpl implements TodoService {
         }
 
     }
+
+    @Override
+    public void editTodo(ArrayList<Todo> todo) throws Exception {
+        int result1 = todoMapper.deleteTodo(todo.get(0).getBoard_no());
+        if (result1 < 0) {
+            throw new Exception("게시물 수정 실패");
+        } else {
+            for (int i = 0; i < todo.size(); i++) {
+                int result2 = todoMapper.insertTodo(todo.get(i));
+
+                if (result2 < 0) {
+                    throw new Exception("게시물 수정 실패");
+
+                }
+            }
+        }
+    }
 }

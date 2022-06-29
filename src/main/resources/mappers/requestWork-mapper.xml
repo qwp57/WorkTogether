@@ -396,6 +396,12 @@ AND A.STATUS = #{rw.status}
 ORDER BY ${sort} <if test="sort != 'IMPORTANT'">DESC NULLS LAST</if>
 </if>
  </select>
- 
+
+
+	<select id="loadRw" parameterType="int" resultMap="requestWorkSet">
+		SELECT *
+		FROM RW
+		WHERE PJ_NO = #{pj_no}
+	</select>
  
 </mapper>

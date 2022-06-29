@@ -513,11 +513,11 @@ public class ApprovalController {
 	//일반 품의서 결재 디테일로 이동
 	public Map<String, Object> selectAppLetterOfApproval(int approvalNo, Approval app, ApprovalLine appL, ApprovalLoa loa) {
 		//공통문서 조회
-		app = selectApproval(approvalNo, app);
-		
-		
-		
-		return map;
+		//app = selectApproval(approvalNo, app);
+
+
+
+		return null;
 	}
 	
 	//결재함 공통 결재

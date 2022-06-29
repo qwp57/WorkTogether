@@ -18,4 +18,6 @@ public interface TodoMapper {
     int getTodoCompleteCount(int board_no);
 
     int getTodoTotalCount(int board_no);
+
+    int deleteTodo(int board_no);
 }

@@ -18,7 +18,7 @@
 
     <insert id="insertProjectMember" parameterType="ProjectMember">
         INSERT INTO PROJECT_MEMBER
-        VALUES (#{pj_no}, #{emp_no}, DEFAULT, 'Y')
+        VALUES (#{pj_no}, #{emp_no}, DEFAULT, #{admin})
     </insert>
     <insert id="insertBookmark" parameterType="ProjectMember">
         INSERT INTO PJ_BOOKMARK

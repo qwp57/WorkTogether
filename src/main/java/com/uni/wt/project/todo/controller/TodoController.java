@@ -5,6 +5,7 @@ import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.service.BoardAllService;
 import com.uni.wt.project.post.model.dto.Post;
+import com.uni.wt.project.schedule.model.dto.Schedule;
 import com.uni.wt.project.todo.model.dto.Todo;
 import com.uni.wt.project.todo.model.service.TodoService;
 import org.slf4j.Logger;
@@ -108,6 +109,48 @@ public class TodoController {
 
 
         return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(todos);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/selectTodo.do", produces = "application/json; charset=utf-8")
+    public String selectTodo(@RequestParam("board_no") int board_no) throws Exception {
+
+
+        ArrayList<Todo> todos = todoService.detailView(board_no);
+        log.info("할일 조회 : " + todos);
+
+        return new GsonBuilder().setDateFormat("MM-dd").create().toJson(todos);
+    }
+    @RequestMapping("/editTodo.do")
+    public String editTodo(Todo todo, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
+        log.info("할일 : " + todo.getStatus());
+        log.info("할일 : " + todo);
+        String[] todoContents = todo.getTodo_content().split(",");
+        String[] todoEnds = todo.getTodo_end().split(",");
+        String[] todoStatus = todo.getStatus().split(",");
+        log.info("할일 상태 길이 : " + todoStatus.length);
+        ArrayList<Todo> todos = new ArrayList<>();
+        for (int i = 0; i < todoContents.length; i++){
+            Todo tempTodo = new Todo();
+            if(!todoContents[i].equals("")){
+                tempTodo.setTodo_content(todoContents[i]);
+            }
+            if(todoEnds.length > 0){
+                tempTodo.setTodo_end(todoEnds[i]);
+            }
+            if(todoStatus.length > 0){
+                tempTodo.setStatus(todoStatus[i]);
+            }
+            tempTodo.setBoard_no(todo.getBoard_no());
+            tempTodo.setTodo_title(todo.getTodo_title());
+            todos.add(tempTodo);
+        }
+        todoService.editTodo(todos);
+
+        msgMap.put("msg", "게시물 수정 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
+
+        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
     @ResponseBody
     @RequestMapping(value = "/completeTodo.do", produces = "application/json; charset=utf-8")
