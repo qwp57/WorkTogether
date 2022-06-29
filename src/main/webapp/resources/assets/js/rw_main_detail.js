@@ -16,7 +16,17 @@ $("#resFile").val(filename);
 
 
 
-$(".rs").children('tr').click(function(){
+/*$(".rs").children('tr').click(function(){
+	let rw_no = $(this).children('td:nth-child(1)').text();
+	console.log(rw_no);
+
+	selectDetail(rw_no,'rs')
+
+	$('#rwDetail_1').modal("show");
+
+})*/
+
+$(document).on("click",'.rs tr',function(){
 	let rw_no = $(this).children('td:nth-child(1)').text();
 	console.log(rw_no);
 
@@ -27,8 +37,7 @@ $(".rs").children('tr').click(function(){
 })
 
 
-
-$(".rq").children('tr').click(function(){
+$(document).on("click",'.rq tr',function(){
 	let rw_no = $(this).children('td:nth-child(1)').text();
 	console.log(rw_no);
 
@@ -36,6 +45,15 @@ $(".rq").children('tr').click(function(){
 	$('#rwDetail_2').modal("show");
 
 })
+
+/*$(".rq").children('tr').on('click', function(){
+	let rw_no = $(this).children('td:nth-child(1)').text();
+	console.log(rw_no);
+
+	selectDetail(rw_no,'rq')
+	$('#rwDetail_2').modal("show");
+
+})*/
 	
 
 function selectDetail(rw_no, tag){

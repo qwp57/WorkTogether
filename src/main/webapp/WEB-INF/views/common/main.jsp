@@ -185,12 +185,20 @@ td:last-child {
                                 <div class="owl-carousel owl-theme" id="users-carousel">
                                     <div>
                                         <div class="user-item">
-                                            <img style="height: 100px" alt="image"
-                                                 src="resources/assets/img/avatar/avatar-1.png"
-                                                 id="profileImg" class="img-fluid">
-                                            <div class="user-details">
-                                                <div class="user-name"><p>${sessionScope.loginEmp.name}</p></div>
-                                                <div class="text-job text-muted"><p>${sessionScope.loginEmp.job_code}</p></div>
+                                            <c:choose>
+                                                <c:when test="${empty loginEmp.change_name}">
+                                                    <img style="height: 100px" alt="image" src="resources/assets/img/avatar/avatar-1.png"
+                                                    id="profileImg" class="img-fluid">
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img style="height: 100px" alt="image" src="resources/assets/img/profile/${loginEmp.change_name }"
+                                                    id="profileImg" class="img-fluid">
+                                                </c:otherwise>
+                                            </c:choose>
+                                            
+                                            <div class="user-details" style="margin-top:40px;">
+                                                <div class="user-name"><h3>${sessionScope.loginEmp.name}</h3></div>
+                                                <div class="text-job text-muted"><h4>${sessionScope.loginEmp.dept_name}소속 ${sessionScope.loginEmp.job_name}</h4></div>
                                                 <input type="text" id="empno" value="${sessionScope.loginEmp.emp_no}" hidden>
                                                 <div class="user-cta">
                                                     <button class="btn btn-primary follow-btn"

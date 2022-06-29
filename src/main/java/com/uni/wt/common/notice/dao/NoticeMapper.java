@@ -20,6 +20,8 @@ public interface NoticeMapper {
 
 	int deleteNotice(int notice_no)throws Exception;
 
+	int deleteAllNotice(int emp_no)throws Exception;
+
 	
 
 }

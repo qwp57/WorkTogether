@@ -4,6 +4,7 @@
 
 <mapper namespace="com.uni.wt.employee.model.dao.EmployeeMapper">
 
+
 	<resultMap type="Employee" id="employeeSet">
 		<id property="emp_no" column="EMP_NO"/>
 		<result property="dept_code" column="DEPT_CODE"/>
@@ -14,8 +15,11 @@
 		<result property="file_no" column="FILE_NO"/>
 		<result property="create_date" column="CREATE_DATE"/>
 		<result property="reject_reason" column="REJECT_REASON"/>
+		<result property="dept_name" column="DEPT_NAME"/>
+		<result property="job_name" column="JOB_NAME"/>
+		<result property="change_name" column="CHANGE_NAME"/>
 	</resultMap>
-
+	
 	<select id="idCheck" parameterType="string" resultType="_int">
 		SELECT COUNT(*) FROM EMPLOYEE
 		WHERE ID = #{userId} AND STATUS != 'Q'
@@ -27,8 +31,16 @@
 	</insert>
 
 	<select id="loginEmp"  parameterType="Employee" resultMap="employeeSet">
-		SELECT * FROM EMPLOYEE
-		WHERE ID = #{id} AND STATUS != 'Q'
+		SELECT 
+			 A.*,
+			 B.DEPT_NAME,
+			 C.JOB_NAME,
+			 D.CHANGE_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON A.DEPT_CODE = B.DEPT_CODE
+		LEFT JOIN JOB C ON A.JOB_CODE = C.JOB_CODE
+		LEFT JOIN ATTACHMENT D ON A.FILE_NO = D.FILE_NO
+		WHERE A.ID = #{id} AND A.STATUS != 'Q'
 	</select>
 	
 	<select id="selectSupvEmpList" parameterType="Employee" resultMap="employeeSet">
