@@ -41,4 +41,22 @@ public interface ApprovalMapper {
 
 	ArrayList<Approval> searchDraftList(Map<String, Object> map, RowBounds rowBounds);
 
+	Approval selectDraftApproval(int approvalNo);
+
+	ApprovalLine selectDraftApprovalLine(int approvalNo);
+
+	ApprovalLoa selectApprovalLoa(int approvalNo);
+
+	ApprovalExpenditure selectApprovalExpenditure(int approvalNo);
+
+	ApprovalMMinutes selectApprovaltheMinutesOfAMeeting(int approvalNo);
+
+	int appListCount(int emp_no);
+
+	ArrayList<Approval> selectAppList(int emp_no, RowBounds rowBounds);
+
+	int searchAppListCount(Map<String, Object> map);
+
+	ArrayList<Approval> searchAppList(Map<String, Object> map, RowBounds rowBounds);
+
 }

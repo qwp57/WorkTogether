@@ -51,6 +51,8 @@ public interface WorkStateService {
 
 	String getName(int vac_no)throws Exception;
 
+	void deleteVacationLog(int vac_no)throws Exception;
+
 
 
 

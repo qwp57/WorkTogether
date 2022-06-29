@@ -305,6 +305,18 @@ public class WorkStateServiceImpl implements WorkStateService{
 	}
 
 
+	@Override
+	public void deleteVacationLog(int vac_no) throws Exception {
+		
+		int result = wsMapper.deleteVacationLog(vac_no);
+		
+		if(result <=0) {
+			throw new Exception("휴가내역 삭제에 실패했습니다.");
+		}
+		
+	}
+
+
 	
 
 

@@ -226,7 +226,7 @@ FROM VACATION_LOG
 JOIN EMPLOYEE USING(EMP_NO)
 WHERE START_DATE BETWEEN TO_DATE('${year}0101', 'YYYYMMDD') AND TO_DATE('${year}1231', 'YYYYMMDD')
 AND APPROVAL_NO = #{emp.emp_no}
-<if test="sd != null">
+<if test="sd != nul &amp;&amp; sd.searchKeyword != null">
 <bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
 	<choose>
 		<when test="sd.searchTarget == 'author'">
@@ -266,7 +266,7 @@ JOIN VACATION D ON A.VCATEGORY_NO = D.VCATEGORY_NO
 LEFT JOIN ATTACHMENT E ON A.FILE_NO = E.FILE_NO
 WHERE A.START_DATE BETWEEN TO_DATE('${year}0101', 'YYYYMMDD') AND TO_DATE('${year}1231', 'YYYYMMDD')
 AND A.APPROVAL_NO = #{emp.emp_no}
-<if test="sd != null">
+<if test="sd != null &amp;&amp; sd.searchKeyword != null">
 <bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
 	<choose>
 		<when test="sd.searchTarget == 'author'">
@@ -294,5 +294,11 @@ FROM VACATION_LOG
 JOIN EMPLOYEE USING(EMP_NO)
 WHERE VAC_NO = #{vac_no}
 </select>
+
+<delete id="deleteVacationLog" parameterType="_int">
+DELETE FROM VACATION_LOG
+WHERE VAC_NO = #{vac_no}
+</delete>
+
 
 </mapper>

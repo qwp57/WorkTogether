@@ -75,6 +75,28 @@
 	  border: 0;
 	}
 
+
+	.nav-counter {
+ position:absolute;
+ top: 3px;
+ right: 5px;
+ min-width: 8px;
+ height: 20px;
+ line-height: 20px;
+ margin-top: -11px;
+ padding: 0 6px;
+ font-weight: normal;
+ font-size: small;
+ color: white;
+ text-align: center;
+ text-shadow: 0 1px rgba(0, 0, 0, 0.2);
+ background: #e23442;
+ border: 1px solid #911f28;
+ border-radius: 11px;
+ 
+}
+
+
   </style>
 </head>
 <body>
@@ -100,7 +122,7 @@ $(function(){
           </ul>
         </form>
         <ul class="navbar-nav navbar-right">
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope" ></i></a>
           	<div class="dropdown-menu dropdown-list dropdown-menu-right chat-tab-wrap"  style="display: none;">
 					<div class="dropdown-header">
 						<a id="chatNav">채팅</a>
@@ -136,11 +158,16 @@ $(function(){
 				</div>
 
           </li>
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg"><i class="far fa-bell"></i></a>
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg"  style="width:50px; position:relative;"><i class="far fa-bell"></i>
+			<c:choose>
+				<c:when test="${unreadNotice > 0}"><span class="nav-counter" id="noticecnt">${unreadNotice}</span></c:when>
+				<c:otherwise><span class="nav-counter" id="noticecnt" style="display: none;">${unreadNotice}</span></c:otherwise>
+			</c:choose>
+			</a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
               <div class="dropdown-header">알림 메시지
                 <div class="float-right">
-                  <a href="#">전체 알림 삭제</a>
+                  <a onclick="deleteAllNotice()">전체 알림 삭제</a>
                 </div>
               </div>
               <div class="dropdown-list-content dropdown-list-icons" id="noticeArea">
@@ -162,13 +189,15 @@ $(function(){
               </c:forEach>
                
               </div>
-              <div class="dropdown-footer text-center">
-                <a href="#">View All</a>
-              </div>
+              
             </div>
           </li>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-            <img alt="image" src="/resources/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+			<c:choose>
+				<c:when test="${empty sessionScope.loginEmp.change_name}"><img alt="image" src="/resources/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1"></c:when>
+				<c:otherwise><img alt="image" src="/resources/assets/img/profile/${loginEmp.change_name }" class="rounded-circle mr-1"></c:otherwise>
+			</c:choose>
+           
             <div class="d-sm-none d-lg-inline-block">Hi, ${sessionScope.loginEmp.name}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-title">Logged in 5 min ago</div>
@@ -251,7 +280,7 @@ function noticeSet(msgArr){
 	
 	
 
-	text = "<a href="+msgArr[4]+"onclick='return deleteNotice("+msgArr[0]+");' class='dropdown-item dropdown-item-unread'>";
+	text = "<a href='"+msgArr[4]+"' onclick='return deleteNotice("+msgArr[0]+");' class='dropdown-item dropdown-item-unread'>";
 	text +="<div class='dropdown-item-desc'><div class='font-weight-bold'>";
 	if(msgArr[1] == 'RW'){
 
@@ -264,6 +293,9 @@ function noticeSet(msgArr){
 	text += "</div> </a>";
 
 	$('#noticeArea').append(text);
+
+	$('#noticecnt').text(Number($('#noticecnt').text())+1);
+	$('#noticecnt').css('display', 'inline');
 
 
 }
@@ -280,10 +312,12 @@ function deleteNotice(nno){
 		type: "post",
 		success : function(result){
 			if(result == '1'){
+				
 				return true;
 				//event.preventDefault();
 			}else{
-				alert(result);
+				
+				
 				return false;
 			}
 		},
@@ -295,6 +329,22 @@ function deleteNotice(nno){
 
 
 };
+
+function deleteAllNotice(){
+
+	$.ajax({
+		url : "deleteAllNotice.do",
+		success : function(result){
+			if(result == 'success'){
+				$('#noticeArea').empty();
+				$('#noticecnt').css('display', 'none'); 
+				alert("모든 알림을 삭제했습니다.");
+			}
+		}
+	})
+
+
+}
 
 
 </script>

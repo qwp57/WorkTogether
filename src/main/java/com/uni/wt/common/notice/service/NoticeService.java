@@ -79,7 +79,7 @@ public class NoticeService {
 		int emp_no = Integer.parseInt(rw.getRes_member());//수신인
 		String content = emp.getName()+"님이 업무를 요청했습니다";//알림메시지
 		String contentDetail = rw.getTitle();
-		String url = "/selectDetail?rno="+seqNo;//URL
+		String url = "/selectRWDetail_Notice.do?rno="+seqNo;//URL
 		
 		return new Notice(nno, emp_no, type, content, contentDetail,url);
 		
@@ -146,7 +146,15 @@ public class NoticeService {
 		if(result > 0) {
 		
 			ArrayList<Notice>list = (ArrayList<Notice>) request.getSession().getAttribute("noticeList");
-			list.remove(n);
+			if(list.size() == 1) {
+				list.clear();
+			}else {
+				
+				boolean b = list.remove(n);
+				log.info("알림 리스트 삭제 결과 : {}", b);
+			}
+			
+			log.info(list.toString());
 			request.getSession().setAttribute("noticeList", list);
 			request.getSession().setAttribute("unreadNotice", list.size());
 			
@@ -157,6 +165,18 @@ public class NoticeService {
 		}
 		
 		
+	}
+
+
+
+	public String deleteAllNotice(int emp_no) throws Exception {
+		int result = noticeMapper.deleteAllNotice(emp_no);
+		
+		if(result > 0) {
+			return "success";
+		}
+		
+		return "fail";
 	}
 
 }

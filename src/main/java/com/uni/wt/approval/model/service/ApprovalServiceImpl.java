@@ -53,7 +53,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.insertApproval(app);
 		
 		if(result < 0) {
-			throw new Exception("기안서 등록 실패");
+			throw new Exception("기안서 등록에 실패하였습니다.");
 		}
 	}
 
@@ -63,7 +63,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.insertApprovalLine1(appL);
 		
 		if(result < 0) {
-			throw new Exception("결재선 등록 실패");
+			throw new Exception("결재선 등록에 실패하였습니다.");
 		}
 	}
 
@@ -73,7 +73,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.insertApprovalLine2(appL);
 		
 		if(result < 0) {
-			throw new Exception("결재선 등록 실패");
+			throw new Exception("결재선 등록에 실패하였습니다.");
 		}
 		
 	}
@@ -84,7 +84,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.insertLoa(loa);
 		
 		if(result < 0) {
-			throw new Exception("품의서 등록 실패");
+			throw new Exception("품의서 등록에 실패하였습니다.");
 		}
 		
 	}
@@ -95,7 +95,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.insertExpenditure(appEx);
 		
 		if(result < 0) {
-			throw new Exception("지출결의서 등록 실패");
+			throw new Exception("지출결의서 등록에 실패하였습니다.");
 		}
 	}
 
@@ -105,7 +105,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.insertMminutes(appMm);
 		
 		if(result < 0) {
-			throw new Exception("회의록 등록 실패");
+			throw new Exception("회의록 등록에  실패하였습니다.");
 		}
 		
 	}
@@ -138,6 +138,114 @@ public class ApprovalServiceImpl implements ApprovalService {
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
 		
 		return approvalMapper.searchDraftList(map, rowBounds);
+	}
+
+	@Override
+	public Approval selectDraftApproval(int approvalNo) throws Exception {
+		
+		Approval app = approvalMapper.selectDraftApproval(approvalNo);
+		
+		if(app == null) {
+			new Exception("기안서 조회에 실패하였습니다.");
+		}
+		
+		return app;
+	}
+
+	@Override
+	public ApprovalLine selectDraftApprovalLine(int approvalNo) throws Exception {
+		
+		ApprovalLine appL = approvalMapper.selectDraftApprovalLine(approvalNo);
+		
+		if(appL == null) {
+			new Exception("결재선 조회에 실패하였습니다.");
+		}
+				
+		return appL;
+	}
+
+	@Override
+	public ApprovalLoa selectApprovalLoa(int approvalNo) throws Exception {
+		
+		ApprovalLoa loa = approvalMapper.selectApprovalLoa(approvalNo);
+		
+		if(loa == null) {
+			new Exception("일반 품의서 조회에 실패하였습니다.");
+		}
+		
+		return loa;
+	}
+
+	@Override
+	public ApprovalExpenditure selectApprovalExpenditure(int approvalNo) throws Exception {
+		
+		ApprovalExpenditure appEx = approvalMapper.selectApprovalExpenditure(approvalNo);
+		
+		if(appEx == null) {
+			new Exception("지출 결의서 조회에 실패하였습니다.");
+		}
+		
+		return appEx;
+	}
+
+	@Override
+	public ApprovalMMinutes selectApprovaltheMinutesOfAMeeting(int approvalNo) throws Exception {
+		
+		ApprovalMMinutes appMm = approvalMapper.selectApprovaltheMinutesOfAMeeting(approvalNo);
+		
+		if(appMm == null) {
+			new Exception("회의록 조회에 실패하였습니다.");
+		}
+		
+		return appMm;
+	}
+
+	@Override
+	public int appListCount(int emp_no) throws Exception {
+
+		return approvalMapper.appListCount(emp_no);
+	}
+
+	@Override
+	public ArrayList<Approval> selectAppList(int emp_no, PageInfo pi) throws Exception {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Approval> appList = approvalMapper.selectAppList(emp_no, rowBounds);
+		
+		if(appList.isEmpty()) {
+			new Exception("결재함 조회에 실패하였습니다.");
+		}
+		
+		return appList;
+	}
+
+	@Override
+	public int searchAppListCount(Map<String, Object> map) throws Exception {
+		
+		return approvalMapper.searchAppListCount(map);
+	}
+
+	@Override
+	public ArrayList<Approval> searchAppList(Map<String, Object> map, PageInfo pi) throws Exception {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Approval> appList = approvalMapper.searchAppList(map, rowBounds);
+		
+		if(appList.isEmpty()) {
+			new Exception("검색에 실패하였습니다.");
+		}
+		
+		return appList;
+	}
+
+	@Override
+	public Approval selectApproval(int approvalNo) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

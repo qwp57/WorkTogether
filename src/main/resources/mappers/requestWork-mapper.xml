@@ -207,10 +207,8 @@ WHERE RW_NO = #{rw_no}
   UPDATE RW
  SET STATUS = #{status},
  	MODIFIED_DATE = SYSDATE
- <if test="!status_message.equals('')">
  , STATUS_MESSAGE = #{status_message}
  , RES_FILE = #{res_file} 
- </if>
  WHERE RW_NO = #{rw_no}
  </update>
  
@@ -332,7 +330,7 @@ ORDER BY ${sort}<if test="sort != 'important'">DESC NULLS LAST</if>
 	<bind name="target" value="sd.searchTarget"/>
 	<choose>
 		<when test="target == 'name'">
-		AND C.NAME LIKE #{keyword}
+		AND B.NAME LIKE #{keyword}
 		</when>
 		<when test="target == 'title'">
 		AND TITLE LIKE #{keyword}
@@ -395,7 +393,7 @@ AND A.STATUS = #{rw.status}
 </choose>
 </if>
 <if test = "sort != null &amp;&amp; sort != ''">
-ORDER BY ${sort} DESC NULLS LAST
+ORDER BY ${sort} <if test="sort != 'IMPORTANT'">DESC NULLS LAST</if>
 </if>
  </select>
  

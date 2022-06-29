@@ -56,7 +56,11 @@ public class RequestWorkController {
 		if(flashMap != null) {
 			RequestWork r = (RequestWork)flashMap.get("r");
 			Map<String, String> msgMap = (Map<String, String>) flashMap.get("msg");
-			m.addAttribute("msg", msgMap.get("msg"));
+			
+			if(msgMap != null) {
+				m.addAttribute("msg", msgMap.get("msg"));
+				
+			}
 			
 			m.addAttribute("r", r);
 		}

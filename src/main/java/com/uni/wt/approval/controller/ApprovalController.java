@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.uni.wt.admin.model.dto.Department;
 import com.uni.wt.approval.model.dto.Approval;
@@ -84,10 +85,10 @@ public class ApprovalController {
 			asc.setTitle(keyword);
 			break;
 		case "docName" :
-			asc.setTitle(keyword);
+			asc.setDocName(keyword);
 			break;
 		case "approvalNo" :
-			asc.setTitle(keyword);
+			asc.setApprovalNo(keyword);
 			break;
 		}
 		log.info("asc에 담겨있는 condition : " + asc);
@@ -103,6 +104,7 @@ public class ApprovalController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
 		
 		ArrayList<Approval> draftList = approvalService.searchDraftList(map, pi);
+		log.info("draftList : " + draftList);
 		
 		model.addAttribute("draftList", draftList);
 		model.addAttribute("pi", pi);
@@ -112,9 +114,61 @@ public class ApprovalController {
 	
 	//결재 문서함으로 이동
 	@RequestMapping("approvalDocument.do")
-	public String approvalDocumentBoxPage(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model) {
+	public String approvalDocumentBoxPage(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model) throws Exception {
+		//로그인한 사람 정보 가지고 온다.
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
 		
+		//글 개수
+		int listCount = approvalService.appListCount(emp.getEmp_no());
 		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		
+		//list 조회
+		ArrayList<Approval> appList = approvalService.selectAppList(emp.getEmp_no(), pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("appList", appList);
+		
+		return "approval/approvalDocumentListView";
+	}
+	
+	//결재 문서함 검색
+	@RequestMapping("searchApp.do")
+	public String appSearchList(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model, 
+								String condition, String keyword, ApprovalSearchCondition asc) throws Exception {
+		//로그인한 사람 정보 가지고 온다.
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		
+		//받아온 condition이 무엇이냐에 따라 set해준다.
+		switch(condition) {
+		case "title" :
+			asc.setTitle(keyword);
+			break;
+		case "docName" :
+			asc.setDocName(keyword);
+			break;
+		case "approvalNo" :
+			asc.setApprovalNo(keyword);
+			break;
+		case "appName" :
+			asc.setAppName(keyword);
+			break;
+		}
+		
+		//검색을 위한 페이징 처리
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("asc", asc);
+		map.put("emp_no", emp.getEmp_no());
+		
+		int listCount = approvalService.searchAppListCount(map);
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		
+		//list 조회
+		ArrayList<Approval> appList = approvalService.searchAppList(map, pi);
+		
+		model.addAttribute("pi", pi);
+		model.addAttribute("appList", appList);
 		
 		return "approval/approvalDocumentListView";
 	}
@@ -162,7 +216,7 @@ public class ApprovalController {
 		if(!file.getOriginalFilename().equals("")) {
 			//따로 만들어져 있는 fileService에 정보를 보내서 폴더 경로를 가져와서 어디에 저장할지 savePath지정, 파일 명도 새로 지정
 			//-> 다른 문서 양식에서도 사용할 것임
-			fileNo = String.valueOf(fileService.uploadFile(file, request, "APP"));
+			fileNo = String.valueOf(fileService.uploadFile(file, request, "AP"));
 			
 			app.setFileNo(Integer.parseInt(fileNo));
 		}
@@ -177,18 +231,9 @@ public class ApprovalController {
 		}
 		
 		//긴급 여부
-		if(app.getEmergency() == null) { //비어있으면 체크하지 않은 것 -> 빈 값이 넘어온다.
+		if(app.getEmergency() == null) {
 			app.setEmergency("N");
-		} else {
-			app.setEmergency("Y");
 		}
-		
-		//if(app.getEmergency().equals("Y") { //비어있으면 체크하지 않은 것 -> 빈 값이 넘어온다.
-		//	app.setEmergency("Y");
-		//} else {
-		//	app.setEmergency("N");
-		//}
-		log.info("app.getEmergency: " + app.getEmergency());
 		
 		//공통 양식 insert
 		approvalService.insertApproval(app);
@@ -335,22 +380,98 @@ public class ApprovalController {
 		approvalService.insertMminutes(appMm);
 	}
 	
-	//일반 품의서 디테일로 이동
-	@RequestMapping("myDetailLetterOfApproval.do")
-	public String selectMyLetterOfApproval() {
-		return "approval/myLetterOfApprovalDetailView";
+	//내 기안서 디테일로 이동
+	@RequestMapping("detailDraftDocument.do")
+	public ModelAndView detailDraftDocument(String approvalNo, String docNo, Approval app, ApprovalLine appL, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, ModelAndView mv) throws Exception {
+		//형 변환
+		int doc_no = Integer.parseInt(docNo);
+		
+		//문서 번호에 따라 디테일 메소드 이동
+		if(doc_no == 1) { //일반 품의서인 경우
+			Map<String, Object> map = selectMyLetterOfApproval(Integer.parseInt(approvalNo), app, appL, loa);
+			mv.addObject("map", map).setViewName("approval/myLetterOfApprovalDetailView");
+		}else if(doc_no == 2) {
+			Map<String, Object> map = selectMyExpenditure(Integer.parseInt(approvalNo), app, appL, appEx);
+			mv.addObject("map", map).setViewName("approval/myExpenditureDetailView");
+		}else if(doc_no == 3) {
+			Map<String, Object> map = selectMytheMinutesOfAMeeting(Integer.parseInt(approvalNo), app, appL, appMm);
+			mv.addObject("map", map).setViewName("approval/myTheMinutesOfAMeetingDetailView");
+		}
+
+		return mv;
 	}
 	
+	
+	//일반 품의서 디테일로 이동
+	public Map<String, Object> selectMyLetterOfApproval(int approvalNo, Approval app, ApprovalLine appL, ApprovalLoa loa) throws Exception {
+		//공통 문서
+		app = selectDraftApproval(approvalNo, app);
+		log.info("디테일 app : " + app);
+		//결재선
+		appL = selectDraftApprovalLine(approvalNo, appL);
+		log.info("디테일 appL : " + appL);
+		//일반 품의서 내용 조회
+		loa = approvalService.selectApprovalLoa(approvalNo);
+		log.info("디테일 loa : " + loa);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("app", app);
+		map.put("appL", appL);
+		map.put("loa", loa);
+
+		return map;
+	}
+	
+	//공통 문서 조회
+	private Approval selectDraftApproval(int approvalNo, Approval app) throws Exception {
+		
+		app = approvalService.selectDraftApproval(approvalNo);
+		
+		return app;
+	}
+	
+	//결재선 조회
+	private ApprovalLine selectDraftApprovalLine(int approvalNo, ApprovalLine appL) throws Exception {
+		
+		appL = approvalService.selectDraftApprovalLine(approvalNo);
+		
+		return appL;
+	}
+
 	//지출 결의서 디테일로 이동
-	@RequestMapping("myDetailExpenditure.do")
-	public String selectMyExpenditure() {
-		return "approval/myExpenditureDetailView";
+	public Map<String, Object> selectMyExpenditure(int approvalNo, Approval app, ApprovalLine appL, ApprovalExpenditure appEx) throws Exception {
+		//공통 문서
+		app = selectDraftApproval(approvalNo, app);
+		log.info("디테일 app : " + app);
+		//결재선
+		appL = selectDraftApprovalLine(approvalNo, appL);
+		//지출 결의서 조회
+		appEx = approvalService.selectApprovalExpenditure(approvalNo);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("app", app);
+		map.put("appL", appL);
+		map.put("appEx", appEx);
+		
+		return map;
 	}
 	
 	//회의록 디테일로 이동
-	@RequestMapping("myDetailtheMinutesOfAMeeting.do")
-	public String selectMytheMinutesOfAMeeting() {
-		return "approval/myTheMinutesOfAMeetingDetailView";
+	public Map<String, Object> selectMytheMinutesOfAMeeting(int approvalNo, Approval app, ApprovalLine appL, ApprovalMMinutes appMm) throws Exception {
+		//공통 문서
+		app = selectDraftApproval(approvalNo, app);
+		log.info("디테일 app : " + app);
+		//결재선
+		appL = selectDraftApprovalLine(approvalNo, appL);
+		//회의록 조회
+		appMm = approvalService.selectApprovaltheMinutesOfAMeeting(approvalNo);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("app", app);
+		map.put("appL", appL);
+		map.put("appMm", appMm);
+		
+		return map;
 	}
 	
 	//일반 품의서 수정으로 이동
@@ -371,12 +492,42 @@ public class ApprovalController {
 		return "approval/myTheMinutesOfAMeetingUpdateForm";
 	}
 	
-	//일반 품의서 결재 디테일로 이동
-	@RequestMapping("appDetailLetterOfApproval.do")
-	public String selectAppLetterOfApproval() {
-		return "approval/appLetterOfApprovalDetailView";
+	//공통 결재 디테일 조회
+	@RequestMapping("detailApproval.do")
+	public ModelAndView detailApproval(String approvalNo, String docNo, Approval app, ApprovalLine appL, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, ModelAndView mv) {
+		//결재 
+		int doc_no = Integer.parseInt(docNo);
+		
+		if(doc_no == 1) { //일반 품의서 디테일로 이동
+			Map<String, Object> map = selectAppLetterOfApproval(Integer.parseInt(approvalNo), app, appL, loa);
+			mv.addObject("map", map).setViewName("approval/appLetterOfApprovalDetailView");
+		}else if(doc_no == 2) {
+			
+		}else if(doc_no == 3) {
+			
+		}
+		
+		return mv;
 	}
 	
+	//일반 품의서 결재 디테일로 이동
+	public Map<String, Object> selectAppLetterOfApproval(int approvalNo, Approval app, ApprovalLine appL, ApprovalLoa loa) {
+		//공통문서 조회
+		app = selectApproval(approvalNo, app);
+		
+		
+		
+		return map;
+	}
+	
+	//결재함 공통 결재
+	private Approval selectApproval(int approvalNo, Approval app) throws Exception {
+		
+		app = approvalService.selectApproval(approvalNo);
+		
+		return app;
+	}
+
 	//지출 결의서 결재 디테일로 이동
 	@RequestMapping("appDetailExpenditure.do")
 	public String selectAppExpenditure() {

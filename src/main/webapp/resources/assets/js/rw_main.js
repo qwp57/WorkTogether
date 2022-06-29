@@ -21,13 +21,13 @@ function beforafterRSPage(num){
     crnP += Number(num);
     console.log(crnP);
 
-    changeRQPage(crnP);
+    changeRSPage(crnP);
 }
 
 function changeRSPage(num){
     let sortVal = $('#selectsort_1 option:selected').val();
 
-    changeRQList(sortVal,num);
+    changeRSList(sortVal,num);
 }
 
 

@@ -346,8 +346,8 @@ transform: scale(1.02);
 	<jsp:include page="../requestwork/rwApplication.jsp"></jsp:include>
 	<jsp:include page="../requestwork/rwDetail_1.jsp"></jsp:include>
 	<jsp:include page="../requestwork/rwDetail_2.jsp"></jsp:include><!-- css rwDetail_2와 공유함 -->
-	<script src="/resources/assets/js/rw_main.js?ver=3"></script>
-	<script src="/resources/assets/js/rw_main_detail.js?ver=2"></script>
+	<script src="/resources/assets/js/rw_main.js?ver=4"></script>
+	<script src="/resources/assets/js/rw_main_detail.js?ver=1"></script>
 	
 	<script type="text/javascript">
 	

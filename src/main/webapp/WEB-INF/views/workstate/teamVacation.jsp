@@ -74,7 +74,7 @@ width: 20%;
 text-align: center;
 font-family: 'Nanum Gothic', sans-serif;
 }
-#searchText{
+#searchArea{
 width : 60%;
 font-family: 'Nanum Gothic', sans-serif;
 }
@@ -192,14 +192,14 @@ font-family: 'Nanum Gothic', sans-serif;
 					<form action="teamVacation.do" method="get" id="teamForm">
 						<input class="nonvisible" type="text" value="${year}" name="year" id="startyearId">
 						<input class="nonvisible" type="text" value="${pi.currentPage}" name="currentPage" id="currantPageId">
-						<input class="nonvisible" type="text" value="${sd.searchKeyword}" name="searchKeyword" id="searchText" >
+						<input class="nonvisible" type="text" value="${sd.searchKeyword}" name="searchKeyword" id="searchText" value = "${sd.searchKeyword}" >
 					<div id="searchwrap">	
 					<div id="search">
 				        <select class="searchForm" id="selectsearch" name="searchTarget">
 					    	<option value="author">작성자</option>
 					    	<option value="content">내용</option>
 				  		</select>
-						<input type="text" class="searchForm" id="searchText" placeholder="검색 키워드를 입력하세요!">
+						<input type="text" class="searchForm" id="searchArea" placeholder="검색 키워드를 입력하세요!" value = "${sd.searchKeyword}">
 						<button class="btn btn-primary" type="button" id="searchbtn" onclick="searchSubmit();">검색</button>
 					</div>
 					</div>

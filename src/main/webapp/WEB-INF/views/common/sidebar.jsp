@@ -10,11 +10,10 @@
  <div class="main-sidebar">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-          	<img src="/resources/assets/img/logo.png" alt="logo" style="width: 150px; display: block; margin: auto;">
-            <a href="index.html">WT</a>
-          </div>
+          	<a href="/main"><img src="/resources/assets/img/logo.png" alt="logo" style="width: 150px; display: block; margin: auto;"> &nbsp;</a>
+           </div>
           <div class="sidebar-brand sidebar-brand-sm">
-            <a href="index.html">WT</a>
+          
           </div>
           <ul class="sidebar-menu">
               
