@@ -199,6 +199,7 @@ function changePage(num){
 function deleteRW(num){
     
     console.log(num+"번 글 삭제");
+    event.stopPropagation();
 if(confirm("정말 삭제하시겠습니까? ")){
 
     $.ajax({
@@ -218,7 +219,15 @@ if(confirm("정말 삭제하시겠습니까? ")){
 }
 
 
-$(".listarea").children('tr').click(function(){
+$(document).on('click', '.listarea tr', function(){
+    let rw_no = $(this).children('td:nth-child(1)').text();
+	console.log(rw_no);
+
+	selectDetail(rw_no)
+
+	$('#rwDetail_3').modal("show");
+})
+/*$(".listarea").children('tr').click(function(){
 	let rw_no = $(this).children('td:nth-child(1)').text();
 	console.log(rw_no);
 
@@ -226,7 +235,7 @@ $(".listarea").children('tr').click(function(){
 
 	$('#rwDetail_3').modal("show");
 
-})
+})*/
 
 function selectDetail(rw_no){
 

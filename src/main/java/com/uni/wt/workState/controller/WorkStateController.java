@@ -234,7 +234,7 @@ public class WorkStateController {
 	@RequestMapping("/teamVacation.do")
 	public String teamVacation(HttpServletRequest request,Model m, @RequestParam(value = "year", required = false) String year,
 			@RequestParam(value="currentPage", required = false, defaultValue = "1") int currentPage,
-			 @RequestParam(value = "searchTarget", required = false) String searchTarget,  @RequestParam(value = "searchKeyword", required = false) String searchKeyword) throws Exception {
+			SearchDto sd) throws Exception {
 		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
 		log.info("[로그인한 유저 ] : {}", emp.toString());
 		
@@ -242,11 +242,10 @@ public class WorkStateController {
 			LocalDate today = LocalDate.now();
 			year = String.valueOf(today.getYear());
 		}
-		SearchDto sd= null;
-		if(searchKeyword != null) {
-			log.info("검색어 : {}",searchKeyword);
+		
+		if(sd != null) {
+			log.info("검색 타겟 : "+sd.getSearchTarget()+"\n검색어 : "+sd.getSearchKeyword());
 			
-			sd = new SearchDto(searchTarget, searchKeyword);
 			m.addAttribute("sd", sd);
 		}
 		
@@ -325,6 +324,15 @@ public class WorkStateController {
 		
 		log.info(name);
 		return name;
+	}
+	
+	@RequestMapping("deleteVacLog.do")
+	public String deleteVacationLog(int vac_no) throws Exception {
+	
+		wsService.deleteVacationLog(vac_no);
+		
+		
+		return "redirect:/vacationMgtMain.do";
 	}
 
 }

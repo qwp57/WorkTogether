@@ -47,6 +47,7 @@ function changeRQPage(num){
 function deleteComplete(num){
     
     console.log(num+"번째 글 삭제");
+	event.stopPropagation();
 if(confirm("정말 삭제하시겠습니까? ")){
 
     $.ajax({
@@ -119,7 +120,7 @@ function DetailView(obj){
 		case 'RQ': status = "<button class='btn btn-warning rwD_1btns'>거 절 됨</button>"; break;
 		case 'CC': status = "<button class='btn btn-danger rwD_1btns'>취 소 됨</button>"; break;
 	}
-	$('#rwDetail_3 .td').eq(4).html(status);
+	$('#rwDetail_3 .td').eq(4).html("<button class='btn btn-secondary rwD_1btns'>완 료 됨</button>");
 	$('#rwDetail_3 .td').eq(5).text(obj.term);
 
 	let important;

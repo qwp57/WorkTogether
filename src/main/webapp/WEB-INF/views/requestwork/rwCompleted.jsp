@@ -257,6 +257,6 @@ if(searchTarget != ''){
 
 
 </script>
-<script src="/resources/assets/js/rwComplete.js?ver=3"></script>
+<script src="/resources/assets/js/rwComplete.js?ver=2"></script>
 </body>
 </html>

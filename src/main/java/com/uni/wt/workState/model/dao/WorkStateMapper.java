@@ -57,6 +57,8 @@ public interface WorkStateMapper {
 
 	public String getName(int vac_no)throws Exception;
 
+	public int deleteVacationLog(int vac_no)throws Exception;
+
 	
 
 	

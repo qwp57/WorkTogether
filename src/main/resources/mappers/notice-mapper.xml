@@ -49,5 +49,9 @@ WHERE NOTICE_NO = #{nno}
 <delete id="deleteNotice" parameterType="_int">
 DELETE FROM NOTICE WHERE NOTICE_NO = #{notice_no}
 </delete>
+
+<delete id="deleteAllNotice" parameterType="_int">
+DELETE FROM NOTICE WHERE EMP_NO = #{emp_no}
+</delete>
   
 </mapper>

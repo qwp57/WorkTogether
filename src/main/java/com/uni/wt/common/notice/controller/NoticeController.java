@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.uni.wt.common.notice.service.NoticeService;
+import com.uni.wt.employee.model.dto.Employee;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +35,15 @@ public class NoticeController {
 	public String plusNoticeList(HttpServletRequest request, int notice_no) throws Exception {
 		
 		String result = noticeService.plusNoticelist(request, notice_no);
+		
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping("deleteAllNotice.do")
+	public String deleteAllNotice(HttpServletRequest request) throws Exception {
+		int emp_no = ((Employee)request.getSession().getAttribute("loginEmp")).getEmp_no();
+		String result = noticeService.deleteAllNotice(emp_no);
 		
 		return result;
 	}

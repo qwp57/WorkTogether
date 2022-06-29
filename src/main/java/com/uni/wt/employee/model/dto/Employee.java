@@ -57,4 +57,6 @@ public class Employee {
 	private String create_date;
 	
 	private String reject_reason;
+	
+	private String change_name;
 }

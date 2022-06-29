@@ -112,7 +112,9 @@ width: 100%;
 <div class="main-content">
 <div class="wrap">
 	<a href="vacationMgtMain.do"><h3 class="menuTitle">내 휴가</h3></a>
-	<a href="teamVacation.do"><h3 class="menuTitle" style="color: gray">구성원 휴가</h3></a>
+	<c:if test="${loginEmp.job_code != 'J5' && loginEmp.job_code != 'J6'}">
+		<a href="teamVacation.do"><h3 class="menuTitle" style="color: gray">구성원 휴가</h3></a>
+	</c:if>
 	<form action="vacationMgtMain.do" method="post" id="selectyearWrap">
 	<select class="form-control" id="selectyear" name="year">
 		<c:forEach items="${years}" var="y">
@@ -242,8 +244,8 @@ width: 100%;
 					<th class="vac-detail">총 ${vac.totaldays}일</th>
 					<c:choose>
   						<c:when test="${vac.status eq 'W'}"><th><span  class="statusCss" style="background-color: lightgray; padding: 10px; border-radius: 5px;">승인 대기</span></th></c:when>
-  						<c:when test="${vac.status eq 'A'}"><th><span class="statusCss" style="background-color: skyblue; padding: 10px; border-radius: 5px;">승인 완료</span></th></c:when>
-  						<c:otherwise><th><span class="statusCss" style="background-color: red; padding: 10px; border-radius: 5px;">승인 거부</span></th></c:otherwise>
+  						<c:when test="${vac.status eq 'A'}"><th><span class="statusCss" style="background-color: skyblue; padding: 10px; border-radius: 5px;color: white;">승인 완료</span></th></c:when>
+  						<c:otherwise><th><span class="statusCss" style="background-color: red; padding: 10px; border-radius: 5px;color: white;">승인 거부</span></th></c:otherwise>
   					</c:choose>
   					<th class="vmenustate"><button class="btn btn-secondary btn-lg" onclick="deleteVac('${vac.vac_no}')">삭제</button></th>
 				</tr>
@@ -289,11 +291,11 @@ width: 100%;
   					<th class="vac-detail"> ${vac.vcategory_no} | <fmt:formatDate value="${vac.start_date}" pattern="yyyy년 MM월 dd일(E)"/> ~ <fmt:formatDate value="${vac.end_date}" pattern="yyyy년 MM월 dd일(E)"/></th>
 					<th class="vac-detail">총 ${vac.totaldays}일</th>
 					<c:choose>
-  						<c:when test="${vac.status eq 'W'}"><th><span style="background-color: lightgray;">승인 대기</span></th></c:when>
-  						<c:when test="${vac.status eq 'A'}"><th><span style="background-color: skyblue;">승인 완료</span></th></c:when>
-  						<c:otherwise><th><span style="background-color: red;">승인 거부</span></th></c:otherwise>
+  						<c:when test="${vac.status eq 'W'}"><th><span style="background-color: lightgray;padding: 10px; border-radius: 5px;">승인 대기</span></th></c:when>
+  						<c:when test="${vac.status eq 'A'}"><th><span style="background-color: skyblue;padding: 10px; border-radius: 5px;color: white;">승인 완료</span></th></c:when>
+  						<c:otherwise><th><span style="background-color: red;padding: 10px; border-radius: 5px; color: white;">승인 거부</span></th></c:otherwise>
   					</c:choose>
-  					<th class="vmenustate"><button class="btn btn-secondary btn-lg" onclick="deleteVac('${vac.vac_no}')">삭제</button></th>
+  					<th class="vmenustate"><button class="btn btn-secondary btn-lg" onclick="deleteVac('${vac.vac_no}');">삭제</button></th>
 				</tr>
   			</c:forEach>
   		</table>
@@ -307,7 +309,9 @@ width: 100%;
 </div>
 </div>
 <br><br>
-
+<form action="/deleteVacLog.do" method="get" id="deleteVacForm">
+<input type="hidden" id="vacNo" name="vac_no" value="">
+</form>
 <jsp:include page="../common/footer.jsp"/>
 
 <jsp:include page="../workstate/vacApplication.jsp"/>
@@ -372,15 +376,8 @@ $('#all-List-0').click(function(){//휴가 예정
 	let test;
 	$('.vac-menu-content').eq(0).html("");
 	 newVacList.forEach((v, index, array) =>{
-	 		test = "<tr><th>";
+	 		test = "<tr>";
 	 		
-	 		if(v.status == "W"){
-	 			test +="<span style='background-color: lightgray; padding: 5px; border-radius: 5px;'>승인 대기</span></th>"
-	 		}else if(v.status == "A"){
-	 			test += "<span style='background-color: skyblue; padding: 5px; border-radius: 5px;'>승인 완료</span></th>"
-	 		}else{
-	 			test += "<th><span style='background-color: red; padding: 5px; border-radius: 5px;'>승인 거부</span></th>"	
-	 		}
 	 		
 	 		let vca = vcategoryName(v.vcategory_no);
 	 		test +=vca
@@ -388,8 +385,17 @@ $('#all-List-0').click(function(){//휴가 예정
 	 		
 	 		test +="<th class='vac-detail'> "+v.vcategory_no+" | "+term+"</th>";
 			test += "<th class='vac-detail'>총 "+v.totaldays+"일</th>";
-			test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
-					+"<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th></tr>";
+			
+	 		if(v.status == "W"){
+	 			test +="<th><span style='background-color: lightgray; padding: 10px; border-radius: 5px;'>승인 대기</span></th>"
+	 		}else if(v.status == "A"){
+	 			test += "<th><span style='background-color: skyblue; padding: 10px; border-radius: 5px;color: white;'>승인 완료</span></th>"
+	 		}else{
+	 			test += "<th><th><span style='background-color: red; padding: 10px; border-radius: 5px;color: white;'>승인 거부</span></th>"	
+	 		}
+			
+		//	test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
+			test +=	"<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th></tr>";
 
 	 $('.vac-menu-content').eq(0).append(test);
 	 
@@ -452,8 +458,15 @@ $('#all-List-1').click(function(){//휴가 사용 내역
 	 		
 	 		test +="<th class='vac-detail'> "+v.vcategory_no+" | "+term+"</th>";
 			test += "<th class='vac-detail'>총 "+v.totaldays+"일</th>";
-			test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
-					+"<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th></tr>";
+			if(v.status == "W"){
+	 			test +="<th><span style='background-color: lightgray; padding: 10px; border-radius: 5px;'>승인 대기</span></th>"
+	 		}else if(v.status == "A"){
+	 			test += "<th><span style='background-color: skyblue; padding: 10px; border-radius: 5px;color: white;'>승인 완료</span></th>"
+	 		}else{
+	 			test += "<th><th><span style='background-color: red; padding: 10px; border-radius: 5px;color: white;'>승인 거부</span></th>"	
+	 		}
+			//test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
+			test += "<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th></tr>";
 
 	 
 	 $('.vac-menu-content').eq(1).append(test);
@@ -464,6 +477,18 @@ $('#all-List-1').click(function(){//휴가 사용 내역
 	
 	
 })
+
+
+function deleteVac(num) {
+	$('#vacNo').val(num);
+	console.log($('#vacNo').val());
+	
+	alert("정말 삭제하시겠습니까?");
+	
+	$('#deleteVacForm').submit();
+	
+	
+}
 
 
 
