@@ -7,5 +7,7 @@ public class ApprovalSearchCondition {
 	
 	private String title;
 	private String docName;
-	private int approvalNo;
+	private String approvalNo;
+	private String appName;
+	
 }

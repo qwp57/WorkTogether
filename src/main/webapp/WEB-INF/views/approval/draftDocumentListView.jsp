@@ -199,7 +199,7 @@
 	          	</c:choose>
 	          </ul>
 	    	</div>
-	    	
+	    	<!-- 검색 영역 -->
 	    	<div id="search">
 	    		<form method="get" action="searchDraft.do">
 	    			<div class="input-group mt-3 mb-3">
@@ -230,7 +230,7 @@
 				console.log(docNo);
 				
 				//결재 양식 번호와 문서 번호를 가지고 간다.
-				location.href="detailApproval.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
+				location.href="detailDraftDocument.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
 			});
 			
 		});
