@@ -8,4 +8,6 @@ public interface ScheduleService {
     Schedule detailView(int board_no) throws Exception;
 
     void insertSch(Schedule schedule, BoardAll boardAll) throws Exception;
+
+    void editSch(Schedule schedule) throws Exception;
 }

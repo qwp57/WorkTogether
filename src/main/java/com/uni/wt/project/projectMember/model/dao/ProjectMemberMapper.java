@@ -1,5 +1,6 @@
 package com.uni.wt.project.projectMember.model.dao;
 
+import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import org.apache.ibatis.annotations.Mapper;
@@ -32,4 +33,6 @@ public interface ProjectMemberMapper {
     int removeTagByPjNo(ProjectTag projectTag);
 
     int quitProject(ProjectMember pjMember);
+
+    Employee selectEmpByEmpNo(int emp_no);
 }

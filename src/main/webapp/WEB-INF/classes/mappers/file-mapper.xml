@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.uni.wt.common.commonFile.FileMapper">
+
+<resultMap type="FileDto" id="fileDtoSet">
+	<result property="file_no" column="FILE_NO"/>
+	<result property="create_date" column="CREATE_DATE"/>
+	<result property="original_name" column="ORIGINAL_NAME"/>
+	<result property="change_name" column="CHANGE_NAME"/>
+	<result property="modified_date" column="MODIFIED_DATE"/>
+</resultMap>
+	
+<select id="getFileSeq" resultType="_int">
+	SELECT FILE_SEQ.NEXTVAL FROM DUAL
+</select>
+
+<insert id="insertFile" parameterType="FileDto">
+	INSERT INTO ATTACHMENT
+	VALUES(#{file_no}, SYSDATE ,#{original_name}, #{change_name}, NULL,#{type}, #{path})
+</insert>
+
+<select id="selectFile" parameterType="_int" resultMap="fileDtoSet">
+	SELECT
+		*
+	FROM ATTACHMENT
+	WHERE FILE_NO = #{fileSeq}
+</select>
+
+<delete id="deleteFile" parameterType="_int">
+	DELETE FROM ATTACHMENT
+	WHERE FILE_NO = #{fileSeq}
+</delete>
+
+  
+</mapper>

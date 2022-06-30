@@ -1,5 +1,6 @@
 package com.uni.wt.project.projectMember.model.service;
 
+import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.projectMember.model.dao.ProjectMemberMapper;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
@@ -107,5 +108,10 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         if (result < 0) {
             throw new Exception("프로젝트 나가기 실패");
         }
+    }
+
+    @Override
+    public Employee selectEmpByEmpNo(int emp_no) throws Exception {
+        return projectMemberMapper.selectEmpByEmpNo(emp_no);
     }
 }

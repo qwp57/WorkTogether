@@ -11,6 +11,7 @@ import com.uni.wt.project.model.service.ProjectFileService;
 import com.uni.wt.project.post.model.dto.Post;
 import com.uni.wt.project.post.model.service.PostService;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
+import com.uni.wt.project.projectMember.model.service.ProjectMemberService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,8 @@ public class PostController {
     @Autowired
     private ProjectFileService projectFileService;
 
+    @Autowired
+    private ProjectMemberService projectMemberService;
     private Map<String, String> msgMap = new HashMap<String, String>();
 
 
@@ -69,11 +72,13 @@ public class PostController {
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
     @RequestMapping("/editPost.do")
-    public String editPost(Post post, @RequestParam("pj_no") int pj_no, HttpSession session,
+    public String editPost(Post post, ProjectFile projectFile, @RequestParam("pj_no") int pj_no,
                              @RequestParam(name = "upload_file", required = false) MultipartFile file, RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("글 : " + post);
-
-
+        log.info("삭제할 파일 : " + projectFile);
+        if (projectFile.getFile_no() > 0) {
+            projectFileService.deleteFile(projectFile);
+        }
         postService.editPost(post);
 
         if(!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
@@ -117,12 +122,28 @@ public class PostController {
             String value = viewCookie.getValue(); // 쿠키 값 받아옴.
             log.info("cookie 값 : " + value);
         }
-
+        ProjectFile projectFile = projectFileService.getFile(board_no);
         Post post = postService.detailView(board_no);
         log.info("포스트 조회 : " + post);
+        Map<String, Object> map = new HashMap<>();
+        map.put("post", post);
+        if(post.getPost_for() != null){
+            String[] postForList = post.getPost_for().split(",");
+            if(postForList.length > 0){
+                ArrayList<Employee> list = new ArrayList<>();
+                for (String emp_no : postForList){
+                    Employee emp = projectMemberService.selectEmpByEmpNo(Integer.parseInt(emp_no));
+                    list.add(emp);
+                }
+                map.put("postForEmpList", list);
+            }
+        }
 
+        if(projectFile != null){
+            map.put("projectFile", projectFile);
+        }
 
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(post);
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(map);
     }
 
 }

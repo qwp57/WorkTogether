@@ -48,7 +48,7 @@ public interface RequestWorkMapper {
 	public ArrayList<RequestWork> selectAllList(Map<String, Object> paramMap, RowBounds rwB)throws Exception;
 
 	public int getAllListCount(Map<String, Object> paramMap)throws Exception;
-	
 
 
+    ArrayList<RequestWork> loadRw(int pj_no) throws Exception;
 }

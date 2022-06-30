@@ -526,7 +526,7 @@ public class ApprovalController {
 		//로그인한 사람
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
 		int emp_no = emp.getEmp_no();
-		
+    
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("app", app);
 		map.put("appL", appL);

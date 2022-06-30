@@ -6,5 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ProjectFileMapper {
-    public int insertFile(ProjectFile projectFile)throws Exception;
+    public int insertFile(ProjectFile projectFile) throws Exception;
+
+    ProjectFile getFile(int board_no);
+
+    int deleteFile(int file_no);
 }

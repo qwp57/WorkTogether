@@ -90,4 +90,23 @@ public class ScheduleController {
 
         return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(schedule);
     }
+    @ResponseBody
+    @RequestMapping(value = "/selectSchDate.do", produces = "application/json; charset=utf-8")
+    public String selectSchDate(@RequestParam("board_no") int board_no) throws Exception {
+
+        Schedule schedule = scheduleService.detailView(board_no);
+
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(schedule);
+    }
+    @RequestMapping("/editSch.do")
+    public String editSch(Schedule schedule, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
+        log.info("일정 : " + schedule);
+
+        scheduleService.editSch(schedule);
+
+        msgMap.put("msg", "게시물 수정 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
+
+        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+    }
 }

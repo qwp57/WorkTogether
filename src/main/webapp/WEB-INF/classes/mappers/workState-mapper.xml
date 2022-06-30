@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uni.wt.workState.model.dao.WorkStateMapper">
+ 
+ <resultMap type="WorkState" id="workStateSet">
+ 	<result property="work_no" column="WORK_NO"/>
+ 	<result property="emp_no" column="EMP_NO"/>
+ 	<result property="in_time" column="IN_TIME"/>
+ 	<result property="out_time" column="OUT_TIME"/>
+ </resultMap>
+ <resultMap type="Vacation" id="vacationSet">
+ 	<result property="vac_no" column="VAC_NO"/>
+ 	<result property="emp_no" column="EMP_NO"/>
+ 	<result property="vcategory_no" column="VCATEGORY_NO"/>
+ 	<result property="start_date" column="START_DATE"/>
+ 	<result property="end_date" column="END_DATE"/>
+ 	<result property="request_date" column="REQUEST_DATE"/>
+ 	<result property="response_date" column="RESPONSE_DATE"/>
+ 	<result property="file_no" column="FILE_NO"/>
+ 	<result property="approval_no" column="APPROVAL_NO"/>
+ </resultMap>
+ 
+ 
+ <select id="getSeq" resultType="_int">
+ SELECT WS_SEQ.NEXTVAL FROM DUAL
+ </select>
+ 
+ <select id="getWorkNO" resultType = "string">
+ 	SELECT 
+    	TO_CHAR(WORK_NO)
+	FROM WORK_TIME
+	WHERE EMP_NO = #{emp_no}
+	AND TO_CHAR(IN_TIME, 'YYYY/MM/DD') LIKE TO_CHAR(SYSDATE, 'YYYY/MM/DD')
+ </select>
+ 
+ <select id="selectTeamEmpCount" parameterType="EMPLOYEE" resultType="_int">
+	SELECT 
+		COUNT(*)
+	FROM EMPLOYEE
+	WHERE DEPT_CODE = #{dept_code}
+	AND JOB_CODE > #{job_code}
+ 
+ </select>
+ 
+ <insert id="insertInTime" parameterType="WorkState">
+ 	INSERT INTO WORK_TIME (WORK_NO, EMP_NO, IN_TIME, OUT_TIME)
+ 	VALUES(#{work_no}, #{emp_no}, SYSDATE,NULL)
+ </insert>
+ 
+ <update id="updateWorkStatus" parameterType="WorkState">
+ 	UPDATE WORK_STATUS
+ 	SET STATUS = #{status}
+ 	WHERE EMP_NO = #{emp_no}
+ </update>
+ 
+ <update id="updateOutTime" parameterType="WorkState">
+ 	UPDATE WORK_TIME
+ 	SET OUT_TIME = SYSDATE
+ 	WHERE EMP_NO = #{emp_no}
+ 	AND WORK_NO = #{work_no}
+ </update>
+ 
+ <select id="selectWorkTime" parameterType="_int" resultMap="workStateSet">
+ 	SELECT 
+		WORK_NO,
+   		EMP_NO,
+    	TO_CHAR(IN_TIME,'HH24:MI:SS') AS IN_TIME,
+    	TO_CHAR(OUT_TIME,'HH24:MI:SS') AS out_TIME
+ 	FROM WORK_TIME
+ 	WHERE WORK_NO = #{todaySeq}
+ </select>
+ <select id="selectWorkState" parameterType="string" resultType="string">
+ 	SELECT STATUS FROM WORK_STATUS
+ 	WHERE EMP_NO = #{emp_no}
+ 
+ </select>
+ 
+ <select id="selectMyWork" parameterType="map" resultType="map">
+ SELECT
+	SUM(ROUND((OUT_TIME - IN_TIME)*24)) AS TOTALTIME,
+	52-SUM(ROUND((OUT_TIME - IN_TIME)*24)) AS LEFTTIME,
+	SUM(ROUND((OUT_TIME - IN_TIME)*24))-52 AS OVERTIME,
+	(SELECT 
+		SUM(ROUND((OUT_TIME - IN_TIME)*24)) 
+	FROM WORK_TIME 
+	WHERE TO_CHAR(IN_TIME, 'YYYYMMDD') IN
+	<foreach collection="weekHoliday" item="arr" open="(" close=")" separator=",">
+	 #{arr}
+	</foreach>
+	AND EMP_NO = #{emp_no}
+	) AS HOLIDAY
+FROM WORK_TIME
+WHERE IN_TIME BETWEEN TO_DATE(#{startday}, 'YYYYMMDD') AND TO_DATE(#{startday}, 'YYYYMMDD')+7
+AND EMP_NO = #{emp_no}
+GROUP BY EMP_NO
+ 
+ </select>
+ 
+ <select id="selectWorkTimeList" parameterType="map" resultType="map">
+ SELECT
+    TO_CHAR(IN_TIME, 'FMMM.DD/HH24') AS WORKDAY,
+    ROUND((OUT_TIME-IN_TIME)*24) AS TIMESUM
+FROM WORK_TIME
+WHERE EMP_NO = #{emp_no}
+AND IN_TIME BETWEEN TO_DATE(#{startday}, 'YYYY.MM.DD') AND TO_DATE(#{startday}, 'YYYY.MM.DD')+6
+ </select>
+ 
+ <select id="selectTeamWorkList" parameterType="map" resultType="map">
+ 
+ 	SELECT 
+    	B.NAME,
+    	NVL(F.CHANGE_NAME, 'avatar-1.png') AS CHANGE_NAME,
+   		 C.JOB_NAME,
+     NVL(TOTALTIME,'0') AS TOTALTIME,
+    NVL(OVERTIME,'0') AS OVERTIME,
+    NVL(HOLIDAY,'0') AS HOLIDAY
+FROM (SELECT 
+            EMP_NO,
+           SUM(ROUND((OUT_TIME-IN_TIME)*24)) AS TOTALTIME,
+          SUM(ROUND((OUT_TIME-IN_TIME)*24))-52 AS OVERTIME
+        FROM WORK_TIME
+        WHERE IN_TIME BETWEEN TO_DATE(#{startday},'YYYYMMDD') AND TO_DATE(#{startday},'YYYYMMDD')+6
+        GROUP BY EMP_NO
+        ) A
+FULL OUTER JOIN EMPLOYEE B ON A.EMP_NO = B.EMP_NO
+JOIN JOB C ON B.JOB_CODE = C.JOB_CODE
+LEFT JOIN (SELECT 
+        EMP_NO,
+        SUM(ROUND((OUT_TIME - IN_TIME)*24)) HOLIDAY 
+    FROM WORK_TIME D
+    WHERE TO_CHAR(IN_TIME, 'YYYYMMDD') IN
+	<foreach collection="weekHoliday" item="arr" open="(" close=")" separator=",">
+	 #{arr}
+	</foreach>
+    GROUP BY EMP_NO) D ON B.EMP_NO = D.EMP_NO
+LEFT JOIN ATTACHMENT F ON B.FILE_NO = F.FILE_NO
+WHERE DEPT_CODE = #{emp.dept_code}
+AND B.JOB_CODE >#{emp.job_code}
+ORDER BY B.JOB_CODE, B.EMP_NO
+ </select>
+ 
+ <select id="selectTeamWeekList" parameterType="map" resultType="map">
+SELECT 
+    NAME,
+   <foreach item="day" index="index" collection="dayArr" separator=", " >
+	NVL(${day}, '0') AS ${day}
+	</foreach>
+FROM EMPLOYEE
+<foreach item="day" index="index" collection="dayArr" >
+LEFT JOIN (SELECT 
+        EMP_NO,
+        ROUND((OUT_TIME-IN_TIME)*24) AS ${day}
+    FROM WORK_TIME
+    WHERE TO_CHAR(IN_TIME, 'YYYYMMDD') = TO_DATE(#{startday},'YYYYMMDD')+${index}) USING(EMP_NO)
+</foreach>
+WHERE DEPT_CODE = #{emp.dept_code}
+AND JOB_CODE > #{emp.job_code}
+ORDER BY JOB_CODE, EMP_NO
+ </select>
+ 
+ <!--  vacation -->
+<select id="selectVacDays" parameterType="Employee" resultType="_int">
+	SELECT 
+	    VAC_REST 
+	FROM VACATION_DETAIL
+	JOIN VACATION USING(VCATEGORY_NO)
+	WHERE EMP_NO = #{emp_no}
+	ORDER BY VCATEGORY_NO
+</select>
+
+<insert id="insertVacation" parameterType="Vacation">
+	INSERT INTO VACATION_LOG
+	VALUES(VAC_SEQ.NEXTVAL, #{emp_no}, #{vcategory_no}, #{start_date}, #{end_date}, SYSDATE, NULL, #{content}, 
+	<choose>
+		<when test="file_no == 0">
+		NULL
+		</when>
+		<otherwise>
+		#{file_no} 
+		</otherwise>
+	</choose>
+	,DEFAULT, #{approval_no} )
+</insert>
+
+<select id="selectYears" parameterType="Employee" resultType="string">
+SELECT 
+    DISTINCT(TO_CHAR(START_DATE, 'YYYY'))
+FROM VACATION_LOG
+WHERE EMP_NO = #{emp_no}
+</select>
+
+<select id="selectVacList" parameterType="map" resultMap="vacationSet">
+SELECT
+    VAC_NO,
+    B.NAME AS EMP_NO,
+    C.VAC_NAME AS VCATEGORY_NO,
+    START_DATE,
+    END_DATE,
+    ROUND((END_DATE-START_DATE)) AS TOTALDAYS,
+    A.STATUS
+FROM VACATION_LOG A
+JOIN EMPLOYEE B ON A.EMP_NO = B.EMP_NO
+JOIN VACATION C ON A.VCATEGORY_NO = C.VCATEGORY_NO
+WHERE A.EMP_NO = #{emp.emp_no}
+<if test='tag.equals("new") and year.equals("2022")'>
+AND START_DATE > SYSDATE
+</if>
+<if test='tag.equals("new") and !year.equals("2022")'><!-- 휴가예정내역은 올해것만 조회가능하다 -->
+AND VAC_NO = '0'
+</if>
+<if test='tag.equals("old") and year.equals("2022")'>
+<![CDATA[AND START_DATE BETWEEN TO_DATE('${year}0101','YYYYMMDD') AND SYSDATE 
+AND A.STATUS = 'A']]>
+</if>
+<if test='tag.equals("old") and !year.equals("2022")'>
+<![CDATA[AND START_DATE BETWEEN TO_DATE('${year}0101','YYYYMMDD') AND TO_DATE('${year}1231','YYYYMMDD')
+AND A.STATUS = 'A']]>
+</if>
+
+</select>
+
+<select id="getTeamVacCount" parameterType="map" resultType="_int">
+SELECT
+    COUNT(*)
+FROM VACATION_LOG
+JOIN EMPLOYEE USING(EMP_NO)
+WHERE START_DATE BETWEEN TO_DATE('${year}0101', 'YYYYMMDD') AND TO_DATE('${year}1231', 'YYYYMMDD')
+AND APPROVAL_NO = #{emp.emp_no}
+<if test="sd != nul &amp;&amp; sd.searchKeyword != null">
+<bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
+	<choose>
+		<when test="sd.searchTarget == 'author'">
+			AND NAME LIKE #{keyword}
+		</when>
+		<when test="sd.searchTarget == 'content'">
+			AND CONTENT LIKE #{keyword}
+		</when>
+	</choose>
+</if>
+</select>
+
+<select id="getYearsCnt" parameterType="Employee" resultType="_int">
+SELECT
+    DISTINCT(TO_CHAR(START_DATE, 'YYYY'))
+FROM VACATION_LOG
+WHERE APPROVAL_NO = #{emp_no}
+</select>
+
+<select id="selectTeamVacList" parameterType="map" resultMap="vacationSet">
+SELECT 
+	A.VAC_NO,
+    B.NAME AS EMP_NO,
+    C.JOB_NAME AS JOB,
+    A.START_DATE,
+    A.END_DATE,
+    ROUND(A.END_DATE-A.START_DATE) AS TOTALDAYS,
+    D.VAC_NAME AS VCATEGORY_NO,
+    A.CONTENT,
+    E.CHANGE_NAME AS FILECHANGENAME,
+    E.ORIGINAL_NAME AS FILEORIGINNAME,
+    A.STATUS
+FROM VACATION_LOG A
+JOIN EMPLOYEE B ON A.EMP_NO = B.EMP_NO
+JOIN JOB C ON B.JOB_CODE = C.JOB_CODE
+JOIN VACATION D ON A.VCATEGORY_NO = D.VCATEGORY_NO
+LEFT JOIN ATTACHMENT E ON A.FILE_NO = E.FILE_NO
+WHERE A.START_DATE BETWEEN TO_DATE('${year}0101', 'YYYYMMDD') AND TO_DATE('${year}1231', 'YYYYMMDD')
+AND A.APPROVAL_NO = #{emp.emp_no}
+<if test="sd != null &amp;&amp; sd.searchKeyword != null">
+<bind name="keyword" value="'%'+sd.searchKeyword+'%'"/>
+	<choose>
+		<when test="sd.searchTarget == 'author'">
+			AND NAME LIKE #{keyword}
+		</when>
+		<when test="sd.searchTarget == 'content'">
+			AND CONTENT LIKE #{keyword}
+		</when>
+	</choose>
+</if>
+ORDER BY A.START_DATE DESC
+</select>
+
+
+<update id="updateVacStatus" parameterType="Vacation">
+UPDATE VACATION_LOG
+SET STATUS = #{status}
+WHERE VAC_NO = #{vac_no}
+</update>
+
+<select id="getName" parameterType="_int" resultType="string">
+SELECT
+    NAME
+FROM VACATION_LOG
+JOIN EMPLOYEE USING(EMP_NO)
+WHERE VAC_NO = #{vac_no}
+</select>
+
+<delete id="deleteVacationLog" parameterType="_int">
+DELETE FROM VACATION_LOG
+WHERE VAC_NO = #{vac_no}
+</delete>
+
+
+</mapper>
