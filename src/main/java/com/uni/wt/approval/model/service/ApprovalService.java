@@ -38,9 +38,9 @@ public interface ApprovalService {
 
 	ArrayList<Approval> searchDraftList(Map<String, Object> map, PageInfo pi) throws Exception;
 
-	Approval selectDraftApproval(int approvalNo) throws Exception;
+	Approval selectApproval(int approvalNo) throws Exception;
 
-	ApprovalLine selectDraftApprovalLine(int approvalNo) throws Exception;
+	ApprovalLine selectApprovalLine(int approvalNo) throws Exception;
 
 	ApprovalLoa selectApprovalLoa(int approvalNo) throws Exception;
 
@@ -56,7 +56,18 @@ public interface ApprovalService {
 
 	ArrayList<Approval> searchAppList(Map<String, Object> map, PageInfo pi) throws Exception;
 
-	Approval selectApproval(int approvalNo) throws Exception;
+	void updateAppLLevelOneFirstApprover(Map<String, Object> map) throws Exception;
+
+	void updateAppLevelOneFirstApprover(int arppvoalNo) throws Exception;
+
+	void updateAppLLevelTwoFirstApprover(Map<String, Object> map) throws Exception;
+
+	void updateAppLevelTwoFirstApprover(int arppvoalNo) throws Exception;
+
+	void updateAppLLevelTwoFinalApprover(Map<String, Object> map) throws Exception;
+
+	void updateAppLevelTwoFinalApprover(int arppvoalNo) throws Exception;
+
 
 
 }

@@ -41,9 +41,9 @@ public interface ApprovalMapper {
 
 	ArrayList<Approval> searchDraftList(Map<String, Object> map, RowBounds rowBounds);
 
-	Approval selectDraftApproval(int approvalNo);
+	Approval selectApproval(int approvalNo);
 
-	ApprovalLine selectDraftApprovalLine(int approvalNo);
+	ApprovalLine selectApprovalLine(int approvalNo);
 
 	ApprovalLoa selectApprovalLoa(int approvalNo);
 
@@ -58,5 +58,17 @@ public interface ApprovalMapper {
 	int searchAppListCount(Map<String, Object> map);
 
 	ArrayList<Approval> searchAppList(Map<String, Object> map, RowBounds rowBounds);
+
+	int updateAppLLevelOneFirstApprover(Map<String, Object> map);
+
+	int updateAppLevelOneFirstApprover(int arppvoalNo);
+
+	int updateAppLLevelTwoFirstApprover(Map<String, Object> map);
+
+	int updateAppLevelTwoFirstApprover(int arppvoalNo);
+
+	int updateAppLLevelTwoFinalApprover(Map<String, Object> map);
+
+	int updateAppLevelTwoFinalApprover(int arppvoalNo);
 
 }

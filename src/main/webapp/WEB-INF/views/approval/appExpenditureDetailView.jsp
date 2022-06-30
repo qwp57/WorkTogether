@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <jsp:include page="../common/header.jsp"/>
@@ -47,88 +48,102 @@
 				<span><h3>지출 결의서</h3></span> 
 			</div>
 			<div class="float-right">
-				<!-- <button type="button" class="btn btn-primary" onclick="location.href='/updateFormQna.do?qno=<=q.getQnaNo()%>'">수정</button> -->
-				<button type="button" class="btn btn-primary" onclick="location.href='approvalDocument.do'">승인</button>
+				
+				<button type="button" class="btn btn-primary" onclick="approveFunction()">승인</button>
 				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal">반려</button>
 			</div>	
 			<section class="section-body mt-5">
 				<div id="expenditure">
 					<div><h2 class="text-center pt-3">지출 결의서</h2></div>							
+					<c:if test="${ map['appL'].lineLevel eq 2 }">						
+						<table class="table table-bordered float-right" id="approvalLine2">
+							<tr>
+								<th rowspan="2" style="width:10px">결재선</th>
+								<td style="height:15px">${ map['appL'].finalApproverJob }</td>
+							</tr>
+							<tr>
+								<td>${ map['appL'].finalApproverName }</td>		
+								<td class="d-none" id="finalApproverNo">${ map['appL'].finalApproverNo }</td>						
+							</tr>
+							<tr>
+								<c:choose>								
+									 <c:when test="${ map['appL'].lastApprovalDate != null && map['appL'].progress == 'C'}">
+										<td colspan="2" class="text-center" style="color:blue"><strong>승인 완료</strong></td>
+									</c:when>	
+									<c:when test="${  map['appL'].lastApprovalDate != null  && map['appL'].progress == 'R' }">
+										<td colspan="2" class="text-center" style="color:red"><strong>반려</strong></td>
+									</c:when>					
+								</c:choose>
+							</tr>
+						</table>
+					</c:if>
 					<table class="table table-bordered float-right" id="approvalLine1">
 						<tr>
-							<th rowspan="2" style="width:10px">결재선</th>
-							<td style="height:15px">대표이사</td>
-						</tr>
-						<tr>
-							<td>김대표</td>								
-						</tr>
-					</table>
-					<table class="table table-bordered float-right" id="approvalLine2">
-						<tr>
 							<th rowspan="2" style="width:10%">결재선</th>
-							<td style="height:15px">대표이사</td>
+							<td style="height:15px">${ map['appL'].firstApproverJob }</td>
 						</tr>
 						<tr>
-							<td>김대표</td>								
+							<td>${ map['appL'].firstApproverName }</td>	
+							<td class="d-none" id="firstApproverNo">${ map['appL'].firstApproverNo }</td>							
+						</tr>
+						<tr>
+							<c:choose>								
+								 <c:when test="${ (map['appL'].firstApprovalDate != null && map['appL'].progress == 'P') || (map['appL'].firstApprovalDate != null && map['appL'].progress == 'C')}"><!-- 첫 번째 결재 날짜가 null이 아니고 progress가 C, 첫번째 결재 날짜가 null이 아니고 progress가 p여야 결재가 승인된 것이다. -->
+									<td colspan="2" class="text-center" style="color:blue"><strong>승인 완료</strong></td>
+								</c:when>	
+								<c:when test="${  map['appL'].firstApprovalDate != null  && map['appL'].progress == 'R' }">
+									<td colspan="2" class="text-center" style="color:red"><strong>반려</strong></td>
+								</c:when>					
+							</c:choose>
 						</tr>
 					</table>
 					<table class="table table-bordered mt-3">							
 						<tr>
 							<th style="width: 15%">기안부서</th>
-							<td>인사팀</td>
+							<td>${map['app'].deptName}</td>
 							<th style="width: 15%">기안일</th>
-							<td>2022-06-13</td>
+							<td>${map['app'].createDate}</td>
 							<th style="width: 15%">문서번호</th>
-							<td></td>
+							<td>${map['app'].approvalNo}</td>
 						</tr>
 						<tr>
 							<th>기안자</th>
-							<td>홍사원</td>
+							<td>${map['app'].name}</td>
 							<th>보존년한</th>
-							<td>10년</td>
+							<td>${map['app'].retentionPeriod}년</td>
 							<th>긴급여부</th>
-							<td>긴급하지 않음</td>									
-						</tr>
-						<tr>
-							<th>수신참조</th>
-							<td colspan="5" name="referee">김대리</td>
+							<c:if test="${map['app'].emergency eq 'Y'}">
+								<td>긴급</td>									
+							</c:if>
+							<c:if test="${map['app'].emergency eq 'N'}">
+								<td>-</td>									
+							</c:if>								
 						</tr>
 						<tr>
 							<th>제목</th>
-							<td colspan="5">2022-05-20 법인카드 사용</td>
+							<td colspan="5">${map['app'].title}</td>
 						</tr>							
 					</table>	
 					<table class="table table-bordered mt-3">
 						<tr>
 							<th style="width: 15%">구분</th>
-							<td>
-								<div class="form-check-inline">
-									<label class="form-check-label">
-										<input type="radio" class="form-check-input" name="divison">개인
-									</label>
-								</div>
-								<div class="form-check-inline">
-									<label class="form-check-label">
-										<input type="radio" class="form-check-input" name="divison">법인
-									</label>
-								</div>
-							</td>
+							<td>${ map['appEx'].exDivision }</td>
 						</tr>
 						<tr>
 							<th>회계 기준월</th>
-							<td>2022-06-01</td>
+							<td>${ map['appEx'].accountingMonth }</td>
 						</tr>
 						<tr>
 							<th>지출자</th>
-							<td>배대리</td>
+							<td>${ map['appEx'].spender }</td>
 						</tr>
 						<tr>
 							<th>계좌 정보</th>
-							<td>우리은행 1002-111-2222</td>
+							<td>${ map['appEx'].account }</td>
 						</tr>
 						<tr>
 							<th>지출 사유</th>
-							<td>회의</td>
+							<td>${ map['appEx'].exContent }</td>
 						</tr>
 					</table>	
 					
@@ -143,22 +158,18 @@
 								<th style="width:20%">비고</th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr>
-								<td>2022-05-03</td>
-								<td>물품구입비</td>
-								<td>10000원</td>
-								<td>회의 자료 구입</td>
-								<td></td>
-							</tr>
+						<tbody id="exTableTbody">
+							
 						</tbody>
+						<!--  
 						<tfoot>
 							<tr>
 								<td colspan="5">합계 : 
-									<span name="sum">10000원</span>
+									<span id="sum">10000원</span>
 								</td>									
 							</tr>
 						</tfoot>
+						-->
 					</table>								
 				</div>													
 				<div>
@@ -166,12 +177,19 @@
 						<i class="bi bi-paperclip"></i>
 						<strong>첨부파일</strong>
 					</div>
-					<div class="mt-3 ml-4" id="fileArea">
-						<div>project.jpg</div>									
-					</div>
+					<c:if test="${ map['app'].fileNo ne 0 }">
+						<div class="mt-3 ml-4" id="fileArea">
+							<div>
+								<a href="${ pageContext.servletContext.contextPath }/resources/upload_files/${ map['app'].change_name }" download="${ map['app'].orginal_name }">${ map['app'].orginal_name }</a>
+							</div>									
+						</div>
+					</c:if>
+					<c:if test="${ map['app'].fileNo eq 0 }">
+						<div>첨부파일이 없습니다.</div>
+					</c:if>
 				</div>					
 				<div class="float-right mt-3">						
-					<button type="button" class="btn btn-primary" onclick="location.href='draftDocument.do'">목록</button>
+					<button type="button" class="btn btn-primary" onclick="location.href='approvalDocument.do'">목록</button>
 				</div>				
 			</section>
 		</div>
@@ -207,6 +225,67 @@
 		</div>
 	</div>
 	
+	<script>
+		$(function(){
+			var exDateArray = "${map['appEx'].exDate}".split(",");
+			var exClassificationArray = "${map['appEx'].exClassification}".split(",");
+			var amountArray = "${map['appEx'].amount}".split(",");
+			var exHistoryArray = "${map['appEx'].exHistory}".split(",");
+			var noteArray = "${map['appEx'].note}".split(",");
+			
+			//배열 선언
+			var exArray = new Array();
+			for(let i = 0; i < exDateArray.length; i++){
+				exArray.push({exDate: exDateArray[i], exClassification: exClassificationArray[i], amount: amountArray[i], exHistory: exHistoryArray[i], note: noteArray[i]});
+			}
+			console.log(exArray);
+			
+			//table 변수 선언
+			var tableTr =""
+			
+			for(key in exArray){
+			
+				tableTr += '<tr>';
+				tableTr += '<td>' + exArray[key].exDate + '</td>';
+				tableTr += '<td>' + exArray[key].exClassification + '</td>';
+				tableTr += '<td>' + exArray[key].amount + '</td>';
+				tableTr += '<td>' + exArray[key].exHistory + '</td>';
+				tableTr += '<td>' + exArray[key].note + '</td>';
+				tableTr += '</tr>';
+			}
+			
+			$("#exTableTbody").append(tableTr);
+		});
+		
+		function approveFunction(){
+			var emp_no = "${map['emp_no']}";
+			var firstApproverNo = $("#firstApproverNo").text();
+			var finalApproverNo = $("#finalApproverNo").text();
+			var approvalNo = "${map['app'].approvalNo}";
+			var progress = "${map['appL'].progress}";
+			var lineLevel = "${map['appL'].lineLevel}";	
+			console.log(emp_no);
+			console.log(firstApproverNo);
+			console.log(finalApproverNo);
+			console.log(approvalNo);
+			console.log(progress);
+			console.log(lineLevel);
+			
+			alert("결재를 승인하시겠습니까?");
+			
+			//첫번째 결재자와 같으면 결재 순서를 확인하지 않아도 된다.
+			if(emp_no == firstApproverNo){ 
+				location.href="approvalUpdate.do?firstApproverNo=" + firstApproverNo +"&approvalNo=" +approvalNo + "&lineLevel=" + lineLevel;
+			}else if(emp_no == finalApproverNo){
+				if(progress == 'W') { //아직 첫번째 결재자가 결재하지 않은 상태
+					alert("결재 순서가 아닙니다."); return false;						
+				}else if(progress == 'P'){
+					location.href="approvalUpdate.do?finalApproverNo=" + finalApproverNo + "&approvalNo=" + approvalNo + "&lineLevel=" + lineLevel;
+				}
+			}
+ 	
+		}
+	</script>
 <jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

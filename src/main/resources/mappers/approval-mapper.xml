@@ -334,8 +334,53 @@
 			AND C.NAME LIKE '%'||#{asc.appName}||'%'
 			</if>	
 		</trim>
-		AND B.FIRST_APPROVER_NO=#{emp_no}
-		OR B.FINAL_APPROVER_NO=#{emp_no}
+		AND (B.FIRST_APPROVER_NO=#{emp_no}
+		OR B.FINAL_APPROVER_NO=#{emp_no})
 		ORDER BY A.CREATE_DATE DESC
 	</select>
+	
+	<!-- 레벨 1 최초 결재자 결재선 업데이트 -->
+	<update id="updateAppLLevelOneFirstApprover" parameterType="Map">
+		UPDATE APPROVAL_LINE
+		SET PROGRESS='C', FIRST_APPROVAL_DATE=SYSDATE
+		WHERE APPROVAL_NO=#{arppvoalNo}
+		AND FIRST_APPROVER_NO=#{firstApproverNo}
+	</update>
+	
+	<!-- 레벨 1 최초 결재자 결재 문서 업데이트 -->
+	<update id="updateAppLevelOneFirstApprover" parameterType="int">
+		UPDATE APPROVAL
+		SET PROGRESS='C', APPROVAL_DATE=SYSDATE
+		WHERE APPROVAL_NO=#{arppvoalNo}
+	</update>
+	
+	<!-- 레벨 2 최초 결재자 결재선 업데이트  -->
+	<update id="updateAppLLevelTwoFirstApprover" parameterType="Map">
+		UPDATE APPROVAL_LINE
+		SET PROGRESS='P', FIRST_APPROVAL_DATE=SYSDATE
+		WHERE APPROVAL_NO=#{arppvoalNo}
+		AND FIRST_APPROVER_NO=#{firstApproverNo}
+	</update> 
+	
+	<!-- 레벨 2 최초 결재자 결재 문서 업데이트  -->
+	<update id="updateAppLevelTwoFirstApprover" parameterType="int">
+		UPDATE APPROVAL
+		SET PROGRESS='P'
+		WHERE APPROVAL_NO=#{arppvoalNo}
+	</update>
+	
+	<!-- 레벨 2 최종 결재자 결재선 업데이트  -->
+	<update id="updateAppLLevelTwoFinalApprover" parameterType="Map">
+		UPDATE APPROVAL_LINE
+		SET PROGRESS='C', FINAL_APPROVAL_DATE=SYSDATE
+		WHERE APPROVAL_NO=#{arppvoalNo}
+		AND FINAL_APPROVER_NO=#{finalApproverNo}
+	</update>
+	
+	<!-- 레벨 2 최종 결재자 결재문서 업데이트  -->
+	<update id="updateAppLevelTwoFinalApprover" parameterType="int">
+		UPDATE APPROVAL
+		SET PROGRESS='C', APPROVAL_DATE=SYSDATE
+		WHERE APPROVAL_NO=#{arppvoalNo}
+	</update>
 </mapper>

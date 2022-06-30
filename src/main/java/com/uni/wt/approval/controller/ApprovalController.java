@@ -405,10 +405,10 @@ public class ApprovalController {
 	//일반 품의서 디테일로 이동
 	public Map<String, Object> selectMyLetterOfApproval(int approvalNo, Approval app, ApprovalLine appL, ApprovalLoa loa) throws Exception {
 		//공통 문서
-		app = selectDraftApproval(approvalNo, app);
+		app = selectApproval(approvalNo, app);
 		log.info("디테일 app : " + app);
 		//결재선
-		appL = selectDraftApprovalLine(approvalNo, appL);
+		appL = selectApprovalLine(approvalNo, appL);
 		log.info("디테일 appL : " + appL);
 		//일반 품의서 내용 조회
 		loa = approvalService.selectApprovalLoa(approvalNo);
@@ -423,17 +423,17 @@ public class ApprovalController {
 	}
 	
 	//공통 문서 조회
-	private Approval selectDraftApproval(int approvalNo, Approval app) throws Exception {
+	private Approval selectApproval(int approvalNo, Approval app) throws Exception {
 		
-		app = approvalService.selectDraftApproval(approvalNo);
+		app = approvalService.selectApproval(approvalNo);
 		
 		return app;
 	}
 	
-	//결재선 조회
-	private ApprovalLine selectDraftApprovalLine(int approvalNo, ApprovalLine appL) throws Exception {
+	//조회
+	private ApprovalLine selectApprovalLine(int approvalNo, ApprovalLine appL) throws Exception {
 		
-		appL = approvalService.selectDraftApprovalLine(approvalNo);
+		appL = approvalService.selectApprovalLine(approvalNo);
 		
 		return appL;
 	}
@@ -441,10 +441,10 @@ public class ApprovalController {
 	//지출 결의서 디테일로 이동
 	public Map<String, Object> selectMyExpenditure(int approvalNo, Approval app, ApprovalLine appL, ApprovalExpenditure appEx) throws Exception {
 		//공통 문서
-		app = selectDraftApproval(approvalNo, app);
+		app = selectApproval(approvalNo, app);
 		log.info("디테일 app : " + app);
 		//결재선
-		appL = selectDraftApprovalLine(approvalNo, appL);
+		appL = selectApprovalLine(approvalNo, appL);
 		//지출 결의서 조회
 		appEx = approvalService.selectApprovalExpenditure(approvalNo);
 		
@@ -459,10 +459,10 @@ public class ApprovalController {
 	//회의록 디테일로 이동
 	public Map<String, Object> selectMytheMinutesOfAMeeting(int approvalNo, Approval app, ApprovalLine appL, ApprovalMMinutes appMm) throws Exception {
 		//공통 문서
-		app = selectDraftApproval(approvalNo, app);
+		app = selectApproval(approvalNo, app);
 		log.info("디테일 app : " + app);
 		//결재선
-		appL = selectDraftApprovalLine(approvalNo, appL);
+		appL = selectApprovalLine(approvalNo, appL);
 		//회의록 조회
 		appMm = approvalService.selectApprovaltheMinutesOfAMeeting(approvalNo);
 		
@@ -494,49 +494,149 @@ public class ApprovalController {
 	
 	//공통 결재 디테일 조회
 	@RequestMapping("detailApproval.do")
-	public ModelAndView detailApproval(String approvalNo, String docNo, Approval app, ApprovalLine appL, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, ModelAndView mv) {
+	public ModelAndView detailApproval(String approvalNo, String docNo, Approval app, ApprovalLine appL, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, ModelAndView mv, HttpServletRequest request) throws Exception {
 		//결재 
 		int doc_no = Integer.parseInt(docNo);
 		
 		if(doc_no == 1) { //일반 품의서 디테일로 이동
-			Map<String, Object> map = selectAppLetterOfApproval(Integer.parseInt(approvalNo), app, appL, loa);
+			Map<String, Object> map = selectAppLetterOfApproval(Integer.parseInt(approvalNo), app, appL, loa, request);
 			mv.addObject("map", map).setViewName("approval/appLetterOfApprovalDetailView");
 		}else if(doc_no == 2) {
-			
+			Map<String, Object> map = selectAppExpenditure(Integer.parseInt(approvalNo), app, appL, appEx, request);
+			mv.addObject("map", map).setViewName("approval/appExpenditureDetailView");
 		}else if(doc_no == 3) {
-			
+			Map<String, Object> map = selectApptheMinutesOfAMeeting(Integer.parseInt(approvalNo), app, appL, appMm, request);
+			mv.addObject("map", map).setViewName("approval/appTheMinutesOfAMeetingDetailView");
 		}
 		
 		return mv;
 	}
 	
 	//일반 품의서 결재 디테일로 이동
-	public Map<String, Object> selectAppLetterOfApproval(int approvalNo, Approval app, ApprovalLine appL, ApprovalLoa loa) {
+	public Map<String, Object> selectAppLetterOfApproval(int approvalNo, Approval app, ApprovalLine appL, ApprovalLoa loa, HttpServletRequest request) throws Exception {
 		//공통문서 조회
-		//app = selectApproval(approvalNo, app);
-
-
-
-		return null;
-	}
-	
-	//결재함 공통 결재
-	private Approval selectApproval(int approvalNo, Approval app) throws Exception {
+		app = selectApproval(approvalNo, app);
 		
-		app = approvalService.selectApproval(approvalNo);
+		//결재선 조회
+		appL = selectApprovalLine(approvalNo, appL);
 		
-		return app;
+		//일반 품의서 결재 디테일
+		loa = approvalService.selectApprovalLoa(approvalNo);
+		
+		//로그인한 사람
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		int emp_no = emp.getEmp_no();
+    
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("app", app);
+		map.put("appL", appL);
+		map.put("loa", loa);
+		map.put("emp_no", emp_no);	
+		
+		return map;
 	}
+
 
 	//지출 결의서 결재 디테일로 이동
-	@RequestMapping("appDetailExpenditure.do")
-	public String selectAppExpenditure() {
-		return "approval/appExpenditureDetailView";
+	public Map<String, Object> selectAppExpenditure(int approvalNo, Approval app, ApprovalLine appL, ApprovalExpenditure appEx, HttpServletRequest request) throws Exception {
+		//공통문서 조회
+		app = selectApproval(approvalNo, app);
+		
+		//결재선 조회
+		appL = selectApprovalLine(approvalNo, appL);
+		
+		//지출 결의서 결재 디테일
+		appEx = approvalService.selectApprovalExpenditure(approvalNo);
+		
+		//로그인한 사람
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		int emp_no = emp.getEmp_no();
+		log.info("지출결의서 결재 emp_no : " + emp_no);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("app", app);
+		map.put("appL", appL);
+		map.put("appEx", appEx);
+		map.put("emp_no", emp_no);		
+		
+		return map;
 	}
 	
 	//회의록 결재 디테일로 이동
-	@RequestMapping("appDetailtheMinutesOfAMeeting.do")
-	public String selectApptheMinutesOfAMeeting() {
-		return "approval/appTheMinutesOfAMeetingDetailView";
+	public Map<String, Object> selectApptheMinutesOfAMeeting(int approvalNo, Approval app, ApprovalLine appL, ApprovalMMinutes appMm, HttpServletRequest request) throws Exception {
+		//공통문서 조회
+		app = selectApproval(approvalNo, app);
+		
+		//결재선 조회
+		appL = selectApprovalLine(approvalNo, appL);
+		
+		//회의록 결재 디테일
+		appMm = approvalService.selectApprovaltheMinutesOfAMeeting(approvalNo);
+		
+		//로그인한 사람
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		int emp_no = emp.getEmp_no();
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("app", app);
+		map.put("appL", appL);
+		map.put("appMm", appMm);	
+		map.put("emp_no", emp_no);		
+		
+		return map;
+	}
+	
+	//결재 상태 업데이트 -> 승인
+	@RequestMapping("approvalUpdate.do")
+	public String approvalUpdate(@RequestParam(value="firstApproverNo", required = false) String firstApproverNo, @RequestParam(value="finalApproverNo", required=false) String finalApproverNo, String approvalNo, String lineLevel) throws Exception {
+		log.info("지출결의서 결재 firstApproverNo : " + firstApproverNo);
+		log.info("지출결의서 결재 finalApproverNo : " + finalApproverNo);
+		log.info("지출결의서 결재 approvalNo : " + approvalNo);
+		log.info("지출결의서 결재 lineLevel : " + lineLevel);
+		
+		//문서번호 
+		int approval_no = Integer.parseInt(approvalNo);		
+		
+		//firstApprovalNo가 넘어왔는지 finalApprovalNo가 넘어왔는지 확인
+		if(firstApproverNo != null && finalApproverNo == null) { //최초 결재자
+			//최초 결재자
+			int firstApprover_no = Integer.parseInt(firstApproverNo);		
+			if(Integer.parseInt(lineLevel) == 1) { //최초 결재자에서 lineLevel이 1인지 2인지 확인
+				Map<String,Object> map = new HashMap<String, Object>();
+				map.put("arppvoalNo", approval_no);
+				map.put("firstApproverNo", firstApprover_no);
+				//결재선 업데이트
+				approvalService.updateAppLLevelOneFirstApprover(map);
+				//결재 업데이트
+				approvalService.updateAppLevelOneFirstApprover(approval_no);
+			}else { //lineLevel이 2인 최초 결재자 -> 결재 상태를 P(진행 중)으로 변경
+				Map<String,Object> map = new HashMap<String, Object>();
+				map.put("arppvoalNo", approval_no);
+				map.put("firstApproverNo", firstApprover_no);
+				//결재선 업데이트
+				approvalService.updateAppLLevelTwoFirstApprover(map);
+				//결재 업데이트
+				approvalService.updateAppLevelTwoFirstApprover(approval_no);
+			}			
+		}else if(finalApproverNo != null && firstApproverNo == null) { //최종 결재자 -> 최종 결재자가 있다면 무조건 level2이기 때문에 확인할 필요 없음
+			int finalApprover_no = Integer.parseInt(finalApproverNo);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("arppvoalNo", approval_no);
+			map.put("finalApproverNo", finalApprover_no);
+			//결재선 업데이트
+			approvalService.updateAppLLevelTwoFinalApprover(map);
+			//결재 업데이트
+			approvalService.updateAppLevelTwoFinalApprover(approval_no);
+		}
+		
+		return "redirect:approvalDocument.do";
+	}
+	
+	//결재 상태 업데이트 -> 반려
+	@RequestMapping("rejectionUpdate.do")
+	public String rejectionUpdate(@RequestParam(value="firstApproverNo", required = false) String firstApproverNo, @RequestParam(value="finalApproverNo", required=false) String finalApproverNo, String approvalNo, String lineLevel) {
+		
+		return "redirect:approvalDocument.do";
 	}
 }

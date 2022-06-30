@@ -104,6 +104,10 @@
 								<td>-</td>									
 							</c:if>
 						</tr>
+						<tr>
+							<th>제목</th>
+							<td colspan="5">${map['app'].title}</td>
+						</tr>
 						<!-- 
 						<tr>
 							<th>수신참조</th>
@@ -112,10 +116,6 @@
 						 -->						
 					</table>		
 					<table class="table table-bordered mt-3">
-						<tr>
-							<th style="width:15%">제목</th>
-							<td>${map['app'].title}</td>
-						</tr>
 						<tr>
 							<th style="width: 15%">구분</th>
 							<td>${ map['appEx'].exDivision }</td>
