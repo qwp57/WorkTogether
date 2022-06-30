@@ -77,8 +77,8 @@
 					<tbody>
 						<c:forEach items="${ appList }" var="al">
 							<tr>
-								<td class="d-none">${ dl.approvalNo }</td>
-								<td class="d-none">${ dl.docNo }</td>
+								<td class="d-none">${ al.approvalNo }</td>
+								<td class="d-none">${ al.docNo }</td>
 								<td>${ al.createDate }</td>
 								<c:choose>
 									<c:when test="${ al.approvalDate eq null }">
@@ -229,6 +229,10 @@
 			$("#approvalList tbody tr").click(function(){
 				var approvalNo = $(this).children().eq(0).text();
 				var docNo = $(this).children().eq(1).text();
+				
+				console.log(approvalNo);
+				console.log(docNo);
+				
 				//결재 양식 번호와 문서 번호를 가지고 간다.
 				location.href="detailApproval.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
 			});

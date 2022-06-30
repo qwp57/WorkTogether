@@ -104,13 +104,7 @@
 							<c:if test="${map['app'].emergency eq 'N'}">
 								<td>-</td>									
 							</c:if>
-						</tr>
-						<!-- 
-						<tr>
-							<th>수신참조</th>
-							<td colspan="5">김대리</td>
-						</tr>	
-						 -->									
+						</tr>															
 					</table>
 					
 					<table class="table table-bordered mt-3">
