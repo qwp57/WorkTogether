@@ -191,7 +191,7 @@ td:last-child {
                                                     id="profileImg" class="img-fluid">
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <img style="height: 100px" alt="image" src="resources/assets/img/profile/${loginEmp.change_name }"
+                                                    <img style="height: 100px" alt="image" src="resources/upload_files/${loginEmp.change_name }"
                                                     id="profileImg" class="img-fluid">
                                                 </c:otherwise>
                                             </c:choose>

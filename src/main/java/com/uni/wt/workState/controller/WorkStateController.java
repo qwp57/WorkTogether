@@ -334,5 +334,47 @@ public class WorkStateController {
 		
 		return "redirect:/vacationMgtMain.do";
 	}
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "vacationDetail.do", produces = "application/text; charset =UTF-8")
+	public String vacationDetail(int vac_no,HttpServletRequest request) throws Exception{
+		log.info("상세조회할 휴가 글 번호: {}", vac_no);
+		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+		Vacation vac = wsService.selectVacationDetail(vac_no);
+		log.info("조회한 글 정보 : {}", vac.toString());
+		
+		//ArrayList<Employee> SupvEmp = empService.selectSupvEmpList(emp);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("vac", vac);
+		//map.put("SupvEmp", SupvEmp);
+		
+		
+		return new Gson().toJson(map);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "modifiedVacation.do", produces = "application/text; charset =UTF-8")
+	public String modifiedVacation(Vacation vac, MultipartFile newFile,HttpServletRequest request) throws Exception{
+		log.info("수정할 글: {}", vac.toString());
+		
+		if(newFile.getOriginalFilename() != null && !newFile.getOriginalFilename().equals("")) {
+			fileService.deleteFile(String.valueOf(vac.getFile_no()));
+			
+			int file_no = fileService.uploadFile(newFile, request, "VA");
+			vac.setFile_no(file_no);
+			
+		}
+		
+		log.info("수정할 글 완전판 : {}", vac.toString());
+		wsService.modifiedVacation(vac);
+		
+		
+		return"success";
+	}
+	
+	
+	
 
 }

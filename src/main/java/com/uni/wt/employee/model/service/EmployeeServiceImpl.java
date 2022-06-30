@@ -1,6 +1,7 @@
 package com.uni.wt.employee.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
@@ -57,6 +58,34 @@ public class EmployeeServiceImpl implements EmployeeService {
 		log.info("[결재자 목록] : {}",result.toString());
 		
 		return result;
+	}
+
+	@Override
+	public ArrayList<Map<String, String>> getDetpList() throws Exception {
+		// TODO Auto-generated method stub
+		return empMapper.getDetpList();
+	}
+
+	@Override
+	public ArrayList<Map<String, String>> getJobList() throws Exception {
+		// TODO Auto-generated method stub
+		return empMapper.getJobList();
+	}
+
+	@Override
+	public Employee myProfileUpdate(Employee emp) throws Exception {
+		
+		int result = empMapper.myProfileUpdate(emp);
+		
+		if(result > 0) {
+			
+			return empMapper.selectUpdatedEmp(emp.getEmp_no());
+			
+		}else {
+			throw new Exception("개인정보 수정에 실패했습니다.");
+		}
+		
+		
 	}
 
 }

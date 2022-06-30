@@ -30,7 +30,7 @@ public class Employee {
 	private String phone;
 	
 	@NotNull(message = "생일이 빈 값입니다.")
-	private Date birth;
+	private String birth;
 	
 	private String dept_code;
 	
@@ -43,7 +43,7 @@ public class Employee {
 	private String job_name;
 	
 	@NotNull(message = "입사일이 빈 값입니다.")
-	private Date join_date;
+	private String join_date;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date resignation_date;

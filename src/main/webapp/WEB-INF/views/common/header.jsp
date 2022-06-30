@@ -195,7 +195,7 @@ $(function(){
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
 			<c:choose>
 				<c:when test="${empty sessionScope.loginEmp.change_name}"><img alt="image" src="/resources/assets/img/avatar/avatar-1.png" class="rounded-circle mr-1"></c:when>
-				<c:otherwise><img alt="image" src="/resources/assets/img/profile/${loginEmp.change_name }" class="rounded-circle mr-1"></c:otherwise>
+				<c:otherwise><img alt="image" src="/resources/upload_files/${loginEmp.change_name }" class="rounded-circle mr-1"></c:otherwise>
 			</c:choose>
            
             <div class="d-sm-none d-lg-inline-block">Hi, ${sessionScope.loginEmp.name}</div></a>
@@ -277,7 +277,6 @@ function noticeSet(msgArr){
 			
 		}
 	})
-	
 	
 
 	text = "<a href='"+msgArr[4]+"' onclick='return deleteNotice("+msgArr[0]+");' class='dropdown-item dropdown-item-unread'>";
@@ -367,55 +366,75 @@ function deleteAllNotice(){
       				<span><input type="image" data-dismiss="modal" src="/resources/assets/img/close.png/" style="width:20px"></span>
       			</div>
       			<!-- modal body : 내용 -->
-      			<form class="form" id="myProfileUpdate">
+      			<form class="form" id="myProfileUpdate" action="myProfileUpdate.do" enctype="multipart/form-data">
 	      			<div class="modal-body">
 	      				<table class="table-bordered" id="profileTable">
 	      					<tr>
 	      						<th style="width: 15%">&nbsp;프로필 사진</th>
 	      						<td colspan="3" style="height: 40%">
+	      						<c:choose>
+                                  <c:when test="${empty loginEmp.change_name}">
 	      							<img style="height: 100px" alt="image"
 	                                                 src="/resources/assets/img/avatar/avatar-1.png"
-	                                                 id="profileImg" class="img-fluid m-3 rounded-circle">
+	                                                 id="profileImg_header" class="img-fluid m-3 rounded-circle">
+	                              </c:when>
+                                  <c:otherwise>
+                                  <img style="height: 100px" alt="image"
+	                                   src="/resources/upload_files/${loginEmp.change_name }"
+	                                   id="profileImg_header" class="img-fluid m-3 rounded-circle">
+                                  </c:otherwise>
+                               </c:choose>
+                                            
 	                               	<span class="filebox">
-	                               		<label for="ex_file">+</label>
-	                               		<input type="file" id="ex_file">
-	                               		<label for="ex_file">-</label>
-	                               		<input type="file" id="ex_file">
+	                               		<label for="newFile">+</label>
+	                               		<input type="file" id="newFile" name="new_file" >
+	                               		<label for="ex_file" id="deletefile">-</label>
+	                               		<input type="hidden" id="exfile" name="ex_file">
 	                               	</span>
 	                            </td>
 	      					</tr>
 	      					<tr>
 	      						<th>&nbsp;이름</th>
-	      						<td><input class="form-control" type="text" value="홍길동" name="empName"></td>
+	      						<td><input class="form-control" type="text" value="${loginEmp.name}" name="name" ></td>
 	      						<th style="width: 15%">&nbsp;아이디</th>
-	      						<td><input class="form-control" type="text" value="hong" readonly></td>
+	      						<td>${loginEmp.id }<input type="hidden" name="emp_no" value="${loginEmp.emp_no }"></td>
 	      					</tr>
 	      					<tr>
 	      						<th>&nbsp;부서</th>
-	      						<td><input class="form-control" type="text" value="인사팀" name="empDept"></td>
+	      						<td><select class="form-control" name="dept_code" id="dept" >
+	      								<c:forEach items="${deptList}" var="d">
+											<option value="${d.DEPT_CODE}">${d.DEPT_NAME}</option>      						
+	      								</c:forEach>
+	      							</select>
+	      						</td>
 	      						<th>&nbsp;직위</th>
-	      						<td><input class="form-control" type="text" value="대리" name="empJob"></td>
+	      						<td><select class="form-control" name="job_code" id="job" >
+	      							<c:forEach items="${jobList}" var="j">
+	      								<option value="${j.JOB_CODE}">${j.JOB_NAME}</option>
+	      							</c:forEach>
+	      							</select>
+	      						</td>
 	      					</tr>
 	      					<tr>
 	      						<th>&nbsp;생일</th>
 	      						<td>
 		      						<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-					                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker1"  name="empBirth"/>
+					                    <input type="text" id="empbirth" class="form-control datetimepicker-input" data-target="#datetimepicker1"  name="birth" />
 					                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
 					                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
 					                    </div>
 					                </div>
 	      						</td>
 	      						<th>&nbsp;핸드폰 번호</th>
-	      						<td><input class="form-control" type="tel" value="010-1111-2222" name="empTel"></td>
+	      						<td><input class="form-control" type="tel" value="${loginEmp.phone }" name="phone" ></td>
 	      					</tr>
 	      					<tr>
 	      						<th>&nbsp;이메일</th>
-	      						<td><input class="form-control" type="email" value="HONG@WT.COM" name="empEmail"></td>
+	      						<td><input class="form-control" type="email" value="${loginEmp.email }" name="email" ></td>
 	      						<th>&nbsp;입사일</th>
 	      						<td>
 	      							<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-					                    <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker2"  name="empJoinDate"/>
+					                    <input type="text" id="empjoinDate" class="form-control datetimepicker-input" data-target="#datetimepicker2"  name="join_date" />
 					                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
 					                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
 					                    </div>
@@ -426,8 +445,9 @@ function deleteAllNotice(){
 	      			</div>
 
 	      			<div class="modal-footer">
+	      				
 	      				<div class="col-lg-12 text-center">
-	      					<button type="submit" class="btn btn-primary btn-lg mb-3">저장</button>
+	      					<button type="button" class="btn btn-lg btn-primary btn-lg mb-3" id="myProfilebtn">저장</button>
 	      				</div>
 	      			</div>
  				</form>
@@ -436,21 +456,77 @@ function deleteAllNotice(){
       </div>
 
       <script>
+      let file_no = "${loginEmp.file_no}";
+      console.log(file_no);
       	$(function(){
       		$("#profile").click(function(){
       			$("#myProfile").modal("show")
       		});
 
       		$('#datetimepicker1').datetimepicker({
-                format: 'L'
+                format: 'YY-MM-DD'
             });
 
       		$('#datetimepicker2').datetimepicker({
-                format: 'L',
+                format: 'YY-MM-DD',
                 useCurrent: false
             });
+      		
+      		let birthday = '${loginEmp.birth}';
+      		let joinDate = '${loginEmp.join_date}';
+      	
+      		document.getElementById('empbirth').value = birthday.substring(0, 11);
+      		document.getElementById('empjoinDate').value = joinDate.substring(0, 11);
+      		
+      		let job_code ='${loginEmp.job_code}';
+      		let dept_code ='${loginEmp.dept_code}';
+      		
+      		$('#dept option[value = '+dept_code+']').prop('selected', true);
+      		$('#job option[value = '+job_code+']').prop('selected', true);
+      		
+      
+      		
 
       	});
+      	
+      	$('#newFile').on('change', function() {
+			let file = $('#newFile').prop('files')[0];
+			let url = window.URL.createObjectURL(file);
+			console.log(url);
+			$('#profileImg_header').attr('src', url);
+			
+			$('#exfile').val(file_no);
+			console.log($('#exfile').val());
+		})
+		
+		$('#deletefile').click(function() {
+			$('#profileImg_header').attr('src',"/resources/assets/img/avatar/avatar-1.png");
+			$('#exfile').val(file_no);
+			console.log($('#exfile').val());
+		})
+      	
+      	
+      	$('#myProfilebtn').click(function(){
+      		
+      	/*	let formData = $('#myProfileUpdate').serialize();*/
+      	let form = $('#myProfileUpdate')[0];
+      	let formData = new FormData(form);
+      	
+      		alert(formData);
+			$.ajax({
+				url:"myProfileUpdate.do",
+				type : "post",
+				cache : false,
+				contentType : false,
+				processData : false, 
+				 enctype: 'multipart/form-data', 
+				data : formData,
+				success : function() {
+					location.reload();
+				}
+			})      		
+      		
+      	})
       </script>
 
   <!-- General JS Scripts -->

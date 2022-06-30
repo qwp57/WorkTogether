@@ -1,6 +1,7 @@
 package com.uni.wt.employee.model.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import com.uni.wt.employee.model.dto.Employee;
 
@@ -13,5 +14,11 @@ public interface EmployeeService {
 	Employee loginEmp(Employee emp) throws Exception;
 
 	ArrayList<Employee> selectSupvEmpList(Employee emp)throws Exception;
+
+	ArrayList<Map<String, String>> getDetpList()throws Exception;
+
+	ArrayList<Map<String, String>> getJobList()throws Exception;
+
+	Employee myProfileUpdate(Employee emp)throws Exception;
 
 }

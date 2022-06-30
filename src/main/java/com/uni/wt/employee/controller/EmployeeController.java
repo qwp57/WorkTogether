@@ -22,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.uni.wt.common.commonFile.FileService;
 import com.uni.wt.common.notice.dto.Notice;
 import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
@@ -52,6 +54,9 @@ public class EmployeeController {
 	
 	@Autowired
 	private NoticeService noticeService;
+	
+	@Autowired
+	private FileService fileService;
 	
 	private Map<String, String> msgMap = new HashMap<String, String>(); 
 	
@@ -96,6 +101,12 @@ public class EmployeeController {
 			
 
 		}
+		
+		//개인정보
+		ArrayList<Map<String, String>> deptList = empService.getDetpList();
+		ArrayList<Map<String, String>> jobList = empService.getJobList();
+		m.addAttribute("jobList", jobList);
+		m.addAttribute("deptList", deptList);
 		
 		return "common/main";
 	}
@@ -210,6 +221,34 @@ public class EmployeeController {
 		int count = empService.idCheck(userId);//중복된 아이디의 개수를 가져온다. 
 		log.info("중복된 아이디 개수 : "+count);
 		return String.valueOf(count);//파싱문제가 있기때문에 String으로 반환한다. 
+	}
+	
+	@ResponseBody
+	@RequestMapping("myProfileUpdate.do")
+	public String myProfileUpdate(HttpServletRequest request, Employee emp, String ex_file, MultipartFile new_file, Model m) throws Exception {
+		log.info("개인정보 수정");
+	//	Employee loginEmp = (Employee) request.getSession().getAttribute("loginEmp");
+		log.info(emp.toString());
+		log.info(ex_file);
+		log.info(new_file.getOriginalFilename());
+	if(ex_file != null && !ex_file.equals("")) {
+		fileService.deleteFile(ex_file);
+		emp.setFile_no(null);
+	}
+		
+	if(new_file.getOriginalFilename() != null && !new_file.getOriginalFilename().equals("")) {
+		log.info(new_file.getOriginalFilename());
+		
+		int file_no = fileService.uploadFile(new_file, request, "PR");
+		emp.setFile_no(String.valueOf(file_no));
+	}
+	
+	log.info("수정할 emp 정보 :{}", emp.toString());
+	Employee loginEmp = empService.myProfileUpdate(emp);
+	log.info("세션에 새로 저장 할 emp :{}", loginEmp.toString());
+	m.addAttribute("loginEmp", loginEmp);
+	//request.getSession().setAttribute("loginEmp", loginEmp);
+		return "success";
 	}
 		
 
