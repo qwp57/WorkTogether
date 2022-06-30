@@ -53,5 +53,39 @@
 <![CDATA[WHERE A.JOB_CODE < #{job_code}
 		AND DEPT_CODE = #{dept_code} ]]>
 	</select>
+	
+	<select id="getDetpList" resultType="map">
+	SELECT * FROM DEPARTMENT
+	
+	</select>
+	<select id="getJobList" resultType="map">
+	SELECT * FROM JOB
+	</select>
+	
+	<update id="myProfileUpdate" parameterType="Employee">
+	UPDATE EMPLOYEE
+	SET NAME = #{name},
+		DEPT_CODE = #{dept_code},
+		JOB_CODE = #{job_code},
+		BIRTH = #{birth},
+		PHONE = #{phone},
+		EMAIL = #{email},
+		JOIN_DATE = #{join_date},
+		FILE_NO = #{file_no}
+	WHERE EMP_NO = #{emp_no}
+	</update>
+	
+	<select id="selectUpdatedEmp"  parameterType="_int" resultMap="employeeSet">
+		SELECT 
+			 A.*,
+			 B.DEPT_NAME,
+			 C.JOB_NAME,
+			 D.CHANGE_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON A.DEPT_CODE = B.DEPT_CODE
+		LEFT JOIN JOB C ON A.JOB_CODE = C.JOB_CODE
+		LEFT JOIN ATTACHMENT D ON A.FILE_NO = D.FILE_NO
+		WHERE EMP_NO = #{emp_no}
+	</select>
 
 </mapper>

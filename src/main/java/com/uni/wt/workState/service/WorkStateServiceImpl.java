@@ -317,6 +317,23 @@ public class WorkStateServiceImpl implements WorkStateService{
 	}
 
 
+	@Override
+	public Vacation selectVacationDetail(int vac_no) throws Exception {
+		
+		return wsMapper.selectVacationDetail(vac_no);
+	}
+
+
+	@Override
+	public void modifiedVacation(Vacation vac) throws Exception {
+		int result = wsMapper.modifiedVacation(vac);
+		
+		if(result <=0) {
+			throw new Exception("휴가내역 수정에 실패했습니다. ");
+		}
+	}
+
+
 	
 
 

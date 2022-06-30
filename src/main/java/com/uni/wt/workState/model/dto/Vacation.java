@@ -25,4 +25,11 @@ public class Vacation {
 	
 	////////////////////EMPLOYEE
 	private String job;
+	private String startdate;
+	private String enddate;
+	private String responsedate;
+	private String change_name;
+	private String original_name;
+	private String approval_name;
+	private String vac_name;
 }

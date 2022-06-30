@@ -53,6 +53,10 @@ public interface WorkStateService {
 
 	void deleteVacationLog(int vac_no)throws Exception;
 
+	Vacation selectVacationDetail(int vac_no)throws Exception;
+
+	void modifiedVacation(Vacation vac)throws Exception;
+
 
 
 

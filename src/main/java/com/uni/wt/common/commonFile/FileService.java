@@ -117,7 +117,7 @@ public class FileService {
 			throw new Exception("파일 수정에 실패했습니다");
 		}
 		
-		
+		log.info("파일 삭제 성공");
 		
 	}
 

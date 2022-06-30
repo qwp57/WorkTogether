@@ -59,6 +59,10 @@ public interface WorkStateMapper {
 
 	public int deleteVacationLog(int vac_no)throws Exception;
 
+	public Vacation selectVacationDetail(int vac_no)throws Exception;
+
+	public int modifiedVacation(Vacation vac)throws Exception;
+
 	
 
 	
