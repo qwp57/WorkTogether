@@ -26,7 +26,8 @@
                     src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
-            <form class="form" id="tagSave">
+            <form class="form" id="invitePj" action="/project/invitePj.do" method="post">
+                <input type="hidden" name="pj_no">
                 <div class="modal-body">
                     <input type="text" class="form-control" id="memberSearching"
                            placeholder="사원명으로 검색">
@@ -36,7 +37,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="col-lg-12 text-center">
-                        <button type="submit" class="btn btn-primary btn-lg mb-3">초대</button>
+                        <button type="submit" id="inviteEmpBtn" class="btn btn-primary btn-lg mb-3">초대</button>
                     </div>
                 </div>
             </form>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uni.wt.common.notice.dao.NoticeMapper">
+
+<resultMap type="Notice" id="noticeSet">
+	<id property="notice_no" column="NOTICE_NO"/>
+	<result property="emp_no" column="EMP_NO"/>
+	<result property="create_date" column="CREATE_DATE"/>
+</resultMap>
+
+<select id="getNoticeSeq" resultType="_int">
+SELECT 
+	NO_SEQ.NEXTVAL
+FROM DUAL
+</select>
+
+<insert id="insertNotice" parameterType="Notice">
+INSERT INTO NOTICE
+VALUES(#{notice_no}, #{emp_no}, #{type}, #{content}, #{contentDetail},#{url}, SYSDATE, NULL)
+</insert>
+
+<select id="selectNoticeList" parameterType="string" resultMap="noticeSet">
+SELECT
+	NOTICE_NO,
+	EMP_NO,
+	TYPE,
+	CONTENT,
+	CONTENTDETAIL,
+	URL,
+	TO_CHAR(CREATE_DATE,'MM/DD  FMHH24:FMMI') AS CREATE_DATE,
+	COUNT
+FROM NOTICE
+WHERE EMP_NO = #{emp_no}
+</select>
+<select id="selectNotice" parameterType="int" resultMap="noticeSet">
+SELECT
+	NOTICE_NO,
+	EMP_NO,
+	TYPE,
+	CONTENT,
+	CONTENTDETAIL,
+	URL,
+	TO_CHAR(CREATE_DATE,'MM/DD FMHH24:FMMI') AS CREATE_DATE,
+	COUNT
+FROM NOTICE
+WHERE NOTICE_NO = #{nno}
+</select>
+
+<delete id="deleteNotice" parameterType="_int">
+DELETE FROM NOTICE WHERE NOTICE_NO = #{notice_no}
+</delete>
+
+<delete id="deleteAllNotice" parameterType="_int">
+DELETE FROM NOTICE WHERE EMP_NO = #{emp_no}
+</delete>
+  
+</mapper>

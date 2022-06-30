@@ -345,10 +345,12 @@
                                            aria-haspopup="true" aria-expanded="false"
                                            style="width: 30px;"></i>
                                         <div class="dropdown-menu dropright">
-                                            <a class="dropdown-item" href="#" id="setColor">색상 설정</a> <a
-                                                class="dropdown-item" href="#" id="tagSettingBtn">태그 설정</a> <a
-                                                class="dropdown-item" href="#" id="viewEmpInPj">참여자 조회</a> <a
-                                                class="dropdown-item" href="#" id="setPj">프로젝트 설정</a>
+                                            <a class="dropdown-item" href="#" id="setColor">색상 설정</a>
+                                            <a class="dropdown-item" href="#" id="tagSettingBtn">태그 설정</a>
+                                            <a class="dropdown-item" href="#" id="viewEmpInPj">참여자 조회</a>
+                                            <c:if test="${pjMember.admin == 'Y'}">
+                                                <a class="dropdown-item" href="#" id="setPj">프로젝트 설정</a>
+                                            </c:if>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#" id="quitProject">프로젝트 나가기</a>
                                         </div>
@@ -376,30 +378,36 @@
                         <div class="card h-100">
                             <div class="card-body  body-2">
                                 <h5 class="text-left d-inline">업무 리포트</h5>
-                                <h5 class="d-inline" style="color: gray">12</h5>
+                                <h5 id="totalRw" class="d-inline" style="color: gray"></h5>
                                 <div class="chart">
                                     <div class="taskChart">
                                         <canvas id="taskChart"></canvas>
                                     </div>
                                     <h5 class="chartDeatil">
-                                        <span class='bi bi-circle-fill' style='color: #3591f3'></span>&nbsp;&nbsp;
-                                        요청 4 <span style='color: #3591f3'>&nbsp;&nbsp; 40%</span>
+                                        <span class='bi bi-circle-fill' style='color: #4e73df'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span id="beforeRw"></span>
+                                        &nbsp;
+                                        <span id="beforeRwPercent" style='color: #4e73df'></span>
                                     </h5>
                                     <h5 class="chartDeatil">
-                                        <span class='bi bi-circle-fill' style='color: #35f364'></span>&nbsp;&nbsp;
-                                        진행 4 <span style='color: #35f364'> &nbsp;&nbsp;40%</span>
+                                        <span class='bi bi-circle-fill' style='color: #1cc88a'>&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+                                        <span id="whileRw"></span>
+                                        &nbsp;
+                                        <span id="whileRwPercent" style='color: #1cc88a'></span>
                                     </h5>
                                     <h5 class="chartDeatil">
-                                        <span class='bi bi-circle-fill' style='color: #f3a435'></span>&nbsp;&nbsp;
-                                        업무 4 <span style='color: #f3a435'> &nbsp;&nbsp;40%</span>
+                                        <span class='bi bi-circle-fill' style='color: #f3a435'>&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+                                        <span id="completeRw"></span>
+                                        &nbsp;
+                                        <span id="completeRwPercent" style='color: #f3a435'></span>
                                     </h5>
                                     <h5 class="chartDeatil">
-                                        <span class='bi bi-circle-fill' style='color: gray'></span>&nbsp;&nbsp;
-                                        할 일 4 <span style='color: gray'> &nbsp;&nbsp;40%</span>
+                                        <span class='bi bi-circle-fill' style='color: gray'>&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+                                        <span id="keepRw"></span>
+                                        &nbsp;
+                                        <span id="keepRwPercent" style='color: gray'></span>
                                     </h5>
                                 </div>
-
-
                             </div>
                         </div>
                     </div>
@@ -454,77 +462,6 @@
                         <div class="card">
                             <div class="card-body body-4">
                                 <table class="boardTable">
-                                    <c:forEach var="index" begin="1" end="3">
-                                        <tr>
-                                            <td style="width: 7%; text-align: right; color: #f3a435 ;"><span
-                                                    class='bi bi-file-text'></span></td>
-                                            <td style="width: 8%; text-align: left;">글</td>
-                                            <th style="width: 40%;">제목</th>
-                                            <td style="width: 12%;">작성자</td>
-                                            <td style="width: 22%;">2022-06-02 01:15</td>
-                                            <td>
-                                            </td>
-
-                                        </tr>
-                                    </c:forEach>
-                                    <tr>
-                                        <td style="width: 7%; text-align: right; color: #35f364"><span
-                                                class="bi bi-calendar"></span></td>
-                                        <td style="width: 8%; text-align: left;">일정</td>
-                                        <th style="width: 40%;">제목</th>
-                                        <td style="width: 12%;">작성자</td>
-                                        <td style="width: 22%;">2022-06-02 01:15</td>
-                                        <td><b>6/10</b><br><a style="font-size: smaller">오전 10:45</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 7%; text-align: right; color: #3591f3 "><span
-                                                class="bi bi-check2-square"></span></td>
-                                        <td style="width: 7%; text-align: left;">할 일</td>
-                                        <th style="width: 40%;">제목</th>
-                                        <td style="width: 12%;">작성자</td>
-                                        <td style="width: 22%;">2022-06-02 01:15</td>
-                                        <td><span class="badge"
-                                                  style="background-color: #3591f3 ; height: 100%; font-size: 18px; color: white;">20%</span>
-                                        </td>
-
-                                    </tr>
-
-                                    <c:forEach var="index" begin="1" end="3">
-                                        <tr>
-                                            <td style="width: 7%; text-align: right; color: #f3a435 ;"><span
-                                                    class='bi bi-file-text'></span></td>
-                                            <td style="width: 8%; text-align: left;">글</td>
-                                            <th style="width: 40%;">제목</th>
-                                            <td style="width: 12%;">작성자</td>
-                                            <td style="width: 22%;">2022-06-02 01:15</td>
-                                            <td>
-                                            </td>
-
-                                        </tr>
-                                    </c:forEach>
-                                    <tr>
-                                        <td style="width: 7%; text-align: right; color: #35f364"><span
-                                                class="bi bi-calendar"></span></td>
-                                        <td style="width: 8%; text-align: left;">일정</td>
-                                        <th style="width: 40%;">제목</th>
-                                        <td style="width: 12%;">작성자</td>
-                                        <td style="width: 22%;">2022-06-02 01:15</td>
-                                        <td><b>6/10</b><br><a style="font-size: smaller">오전 10:45</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width: 7%; text-align: right; color: #3591f3 "><span
-                                                class="bi bi-check2-square"></span></td>
-                                        <td style="width: 7%; text-align: left;">할 일</td>
-                                        <th style="width: 40%;">제목</th>
-                                        <td style="width: 12%;">작성자</td>
-                                        <td style="width: 22%;">2022-06-02 01:15</td>
-                                        <td><span class="badge"
-                                                  style="background-color: #3591f3 ; height: 100%; font-size: 18px; color: white;">20%</span>
-                                        </td>
-
-                                    </tr>
                                 </table>
                             </div>
                         </div>
@@ -583,7 +520,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="col-lg-12 text-center">
-                        <button type="submit" class="btn btn-primary btn-lg mb-3">초대</button>
+                        <button type="button" id="addEmpBtn" class="btn btn-primary btn-lg mb-3">추가</button>
                     </div>
                 </div>
             </form>
@@ -607,30 +544,9 @@
             <form class="form">
                 <div class="modal-body">
                     <form>
-
-
                         <input type="text" class="form-control" id="memberSearching"
                                placeholder="사원명으로 검색">
                         <table class="inviteTable">
-                            <c:forEach var="index" begin="1" end="5">
-                                <tr>
-                                    <td style="width: 20%" rowspan="2"><span class='bi bi-person-circle fa-2x'></span>
-
-                                    </td>
-                                    <th style="width: 40%">테스트</th>
-                                    <td rowspan="2" style="width: 20%; text-align: right;">
-                                        <div class="col-lg-12 text-center">
-                                            <button type="button" class="btn btn-primary btn-md sm-3 selectTodoFor">선택
-                                            </button>
-                                        </div>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td>부장</td>
-                                </tr>
-
-                            </c:forEach>
                         </table>
                         <br>
                     </form>
@@ -712,13 +628,16 @@
                             </div>
                         </div>
 
-                        <div class="modal-footer">
-                            <div class="col-lg-2"></div>
-                            <div class="col-lg-5 text-left">
+                        <div class="modal-footer row">
+                            <div class="col-lg-10 center">
+                                <div id="postForArea" style="margin-left: 60px;"></div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-5 text-left" id="fileAndMentionArea">
                                 <input type="text" class="form-control" id="file-label"
                                        style="display: none; border: 0px white;">
-                                <span class="bi bi-paperclip fa-2x fileUploadBtn"></span>
                                 <input type="file" name="upload_file" id="upload-file" hidden>
+                                <i class="bi bi-paperclip fa-2x fileUploadBtn"></i>
                                 <i class="bi bi-person fa-2x postFor"></i>
                             </div>
                             <div class="col-lg-4 text-right">
@@ -935,6 +854,10 @@
                                     <a class="viewCount"></a>
                                     <hr>
                                 </div>
+                                <div class="col-lg-12" id="postForListArea"
+                                     style="display: none; margin-bottom: 10px;"></div>
+                                <div class="col-lg-12" id="postFileArea"
+                                     style="display: none; margin-bottom: 10px;"></div>
                                 <div class="replyArea col-lg-12">
 
                                 </div>
@@ -1126,6 +1049,12 @@
     })
 
     $(document).on('click', '.addReplyBtn', function () {
+        if (${pj.reply_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
+        {
+            alert("관리자만 작성할 수 있습니다.")
+            return false
+        }
         var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
         var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
         console.log(reply_content)
@@ -1189,6 +1118,7 @@
         //console.log('변경')
         $('#upload-file').val("")
         $("#file-label").css("display", "none")
+        $(".fileUploadBtn").css("display", "inline-block")
     })
 
     $(document).on('change', '#upload-file', function () {
@@ -1202,6 +1132,7 @@
         // 추출한 파일명 삽입
         $("#file-label").val(filename);
         $("#file-label").css("display", "block")
+        $(".fileUploadBtn").css("display", "none")
     });
 
     $(document).on('click', '#quitProject', function () {
@@ -1210,6 +1141,63 @@
             ${pj.pj_no}
         }
     })
+
+    $(document).on('click', '#deletePjBtn', function () {
+        if (confirm("프로젝트를 삭제하시겠습니까?")) {
+            location.href = "/project/deleteProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#keepPjBtn', function () {
+        if (confirm("프로젝트를 보관하시겠습니까?")) {
+            location.href = "/project/keepProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '.removeEmp', function () {
+        $(this).parent().parent().remove()
+        //console.log($("#postForArea").html())
+        if ($("#postForArea").html() == '') {
+            $(".postFor").css("display", "inline-block")
+            console.log('ff')
+        }
+
+    })
+
+    $(document).on('click', '#setPj', function () {
+        $("#editPj").find("input[name=pj_title]").val("${pj.pj_title}")
+        $("#editPj").find("input[name=pj_content]").val("${pj.pj_content}")
+        $("#editPj").find("input[name=pj_content]").text("${pj.pj_content}")
+        console.log("${pj.board_power}")
+        console.log("${pj.reply_power}")
+        console.log("${pj.file_power}")
+        if ("${pj.board_power}" == 'Y') {
+            $("#editPj").find("select[name=board_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=board_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=board_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=board_power]").find(".all").attr("selected", true)
+        }
+        if ("${pj.reply_power}" == 'Y') {
+            $("#editPj").find("select[name=reply_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=reply_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=reply_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=reply_power]").find(".all").attr("selected", true)
+        }
+        if ("${pj.file_power}" == 'Y') {
+            $("#editPj").find("select[name=file_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=file_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=file_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
+        }
+        $("#editPj").find("#pj_no").val("${pj.pj_no}")
+        $("#editPjModal").modal("show")
+    })
+
     $(document).on('click', '#viewEmpInPj', function () {
         $.ajax({
             url: '/project/selectEmpListByPj.do',
@@ -1221,20 +1209,26 @@
                 console.log(list)
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
-                    $(".inviteTable").append(
-                        '<tr>' +
-                        '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>' +
-                        '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">' +
-                        '</td>' +
-                        '<th style="width: 50%; text-align: center">' + obj.name + '</th>' +
-                        '<td rowspan="2" style="width: 20%; text-align: right;">' +
-                        '</td>' +
-                        '</tr>' +
-                        '<tr>' +
-                        '<td style="text-align: center;">' + obj.job_name + '</td>' +
-                        '</tr>'
-                    )
+                    var content = '<tr>'
+                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                    content += '</td>'
+                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                    content += '</td>'
+                    content += '</tr>'
+                    content += '<tr>'
+                    if (obj.job_name != undefined) {
+                        content += '<td style="text-align: center;">' + obj.job_name + '</td>'
+                    } else {
+                        content += '<td style="text-align: center;">직급이 없습니다.</td>'
+                    }
+                    content += '</tr>'
+
+                    $(".inviteTable").append(content)
                 })
+                $(".inviteTable").append('<tr><td></td>초대할 수 있는 사원이 없습니다.</tr>')
+
 
                 $("#empListModal").modal("show")
             }
@@ -1269,6 +1263,7 @@
 
 
     $(function () {
+        loadRw()
         datepickerLoad()
         loadBoards()
         $(document).on('click', '.newPj', function () {
@@ -1289,14 +1284,19 @@
         })
 
         $(document).on('click', '.boardEnrollBtn', function () {
+
             $(".boardNoti").text('게시물 작성')
             $(".boardUploadBtn").text('올리기')
         })
 
         $(document).on('click', '#postEditBtn', function () {
-            console.log($(this).parents(".boardBody").find("#postTitle").text())
-            console.log($(this).parents(".boardBody").find("#postContent").html())
-            console.log($(this))
+            var file_no = $(this).parents(".boardBody").find("input[name=file_no]").val()
+            var change_name = $(this).parents(".boardBody").find("input[name=change_name]").val()
+            var origin_name = $(this).parents(".boardBody").find("input[name=origin_name]").val()
+            var path = $(this).parents(".boardBody").find("input[name=path]").val()
+            var test = path + origin_name
+
+            console.log(test)
             $("#postForm").css("display", "block")
             $("#postSch").css("display", "none")
             $("#postTodo").css("display", "none")
@@ -1311,8 +1311,156 @@
             $(".boardUploadForm").append(
                 '<input type="hidden" name="board_no" value="' + board_no + '">'
             )
+            if ($("#postFileArea").html() != '') {
+                $(".fileUploadBtn").css("display", "none")
+                $(".fileUploadBtn").parent().append(
+                    '<input type="text" readonly style="border: 0px;" id="postEditFormDeleteFile" value="' + origin_name + '">' +
+                    '<input type="hidden" value="' + file_no + '">' +
+                    '<input type="hidden" value="' + change_name + '">' +
+                    '<input type="hidden" value="' + path + '">'
+                )
+            }
+            console.log($("#postForListArea").html())
+            if($("#postForListArea").html() != ''){
+                $(".postFor").css("display", "none")
+               $("#postForListArea").find("b").each(function (e) {
+                    //console.log($(this).text())
+                    $("#postForArea").append('<span class="empName">' + $(this).text() + '<span><input type="hidden" name="post_for" ' +
+                        'value="' + $(this).next().val() + '">' +
+                        '<i class="bi bi-x fa-2x removeEmp" style="color: red; padding-right: 0px;"></i></span></span>')
+
+                   // $(".postFor").parent().append(content)
+                })
+
+            }
             $(".boardUploadForm").attr("id", "editPost");
             $(".boardUploadForm").attr("action", "/post/editPost.do");
+            $("#boardPost").modal("show")
+            $("#boardPost").css("z-index", "111111")
+
+        })
+        $(document).on('click', '#postEditFormDeleteFile', function () {
+            $(this).parent().append(
+                '<input type="hidden" name="change_name" value="' + $(this).val() + '">' +
+                '<input type="hidden" name="file_no" value="' + $(this).next().val() + '">' +
+                '<input type="hidden" name="origin_name" value="' + $(this).next().next().val() + '">' +
+            '<input type="hidden" name="path" value="' + $(this).next().next().next().val() + '">'
+            )
+            $(this).remove()
+            $(".fileUploadBtn").css("display", "inline-block")
+        })
+
+
+        $(document).on('click', '#schEditBtn', function () {
+            console.log($(this).parents(".boardBody").find("#schTitle").text())
+            console.log($(this).parents(".boardBody").find("#schDate").html())
+            console.log($(this))
+            $("#postForm").css("display", "none")
+            $("#postSch").css("display", "block")
+            $("#postTodo").css("display", "none")
+            $(".switchSch").css("color", "#6777ef")
+            $(".switchTodo").css("color", "black")
+            $(".switchPost").css("color", "black")
+
+            $(".boardNoti").text('게시물 수정')
+            $(".boardUploadBtn").text('수정')
+            $("#boardPost").find("input[name=sch_title]").val($(this).parents(".boardBody").find("#schTitle").text())
+            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
+            $.ajax({
+                url: '/schedule/selectSchDate.do',
+                data: {
+                    "board_no": board_no
+                },
+                async: false,
+                success: function (data) {
+                    console.log(data)
+                    $("input[name=sch_start]").val(data.sch_start)
+                    $("input[name=sch_end]").val(data.sch_end)
+                    $("input[name=sch_place]").val(data.sch_place)
+                    $("textarea[name=sch_content]").val(data.sch_content)
+                    $("textarea[name=sch_content]").text(data.sch_content)
+                    if (data.sch_attendee != undefined) {
+                        $("#addPeople").val(data.sch_attendee)
+                    }
+                }
+            })
+            $(".boardUploadForm").append(
+                '<input type="hidden" name="board_no" value="' + board_no + '">'
+            )
+            $(".boardUploadForm").attr("id", "editSch");
+            $(".boardUploadForm").attr("action", "/schedule/editSch.do");
+            $("#boardPost").modal("show")
+            $("#boardPost").css("z-index", "111111")
+        })
+
+        $(document).on('click', '#todoEditBtn', function () {
+            console.log($(this).parents(".boardBody").find("#todoTitle").text())
+            console.log($(this))
+            $("#postForm").css("display", "none")
+            $("#postSch").css("display", "none")
+            $("#postTodo").css("display", "block")
+            $(".switchSch").css("color", "black")
+            $(".switchTodo").css("color", "#6777ef")
+            $(".switchPost").css("color", "black")
+
+            $(".boardNoti").text('게시물 수정')
+            $(".boardUploadBtn").text('수정')
+            console.log($(this).parents(".boardBody").find("#todoTitle").text())
+            $("#boardPost").find("input[name=todo_title]").val($(this).parents(".boardBody").find("#todoTitle").text())
+            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
+            $.ajax({
+                url: '/todo/selectTodo.do',
+                data: {
+                    "board_no": board_no
+                },
+                async: false,
+                success: function (data) {
+                    console.log(data)
+                    $("#boardPost").find("input[name=todo_content]").parent().parent().remove()
+                    $.each(data, function (i, obj) {
+
+                            var content = '<div class="form-group row">'
+                            content += '<div class="col-lg-1 pr-0 text-right">'
+                            content += '<i class="bi bi-x fa-2x removeTodo" style="color: red; padding-right: 0px;"></i>'
+                            content += '</div>'
+                            content += '<div class="text-md-right col-10 col-md-7 col-lg-9">'
+                            content += '<input type="text" class="form-control"'
+                            content += 'value ="' + obj.todo_content
+                            content += '" placeholder="할 일 추가 / 최대 50자" name="todo_content">'
+                            content += '</div>'
+                            content += '<div class="col-sm-12 col-md-3 col-lg-1">'
+                            content += '<div class="input-group todoInput date" style="width: 100px;">'
+                            if (obj.todo_end != undefined) {
+
+                                content += '<input type="text" style="display: block; width: 25px;" class="form-control bg-white border-0 small todoDue" value="' + moment(obj.todo_end).format('MM-DD') + '" name="todo_end">'
+
+                                content += '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon" style="display: none;"></span>'
+                            } else {
+                                content += '<input type="text" style="display: none; width:25px;"'
+                                content += 'class="form-control bg-white border-0 small todoDue" name="todo_end">'
+                                content += '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>'
+                            }
+                            content += '</div>'
+                            content += '</div>'
+                            content += '<div class="col-lg-1">'
+                            content += '<i class="bi bi-person fa-2x todoPerson"></i>'
+                            content += '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'
+                            content += '</div>'
+                            content += '<input type="hidden" name="status" value="' + obj.status + '">'
+                            content += '</div>'
+
+                            $("#postTodo").find(".todos").append(content)
+
+                        }
+                    )
+                    datepickerLoad()
+                }
+            })
+            $(".boardUploadForm").append(
+                '<input type="hidden" name="board_no" value="' + board_no + '">'
+            )
+            $(".boardUploadForm").attr("id", "editTodo");
+            $(".boardUploadForm").attr("action", "/todo/editTodo.do");
             $("#boardPost").modal("show")
             $("#boardPost").css("z-index", "111111")
         })
@@ -1368,26 +1516,37 @@
                     "pj_no": ${pj.pj_no}
                 },
                 success: function (list) {
+                    //list = $.parseJSON(list)
                     console.log(list)
                     $(".inviteTable").html('')
-                    $.each(list, function (i, obj) {
-                        $(".inviteTable").append(
-                            '<tr>' +
-                            '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>' +
-                            '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">' +
-                            '</td>' +
-                            '<th style="width: 50%">' + obj.name + '</th>' +
-                            '<td rowspan="2" style="width: 20%; text-align: right;">' +
-                            '<div class="custom-control custom-checkbox">' +
-                            '<input type="checkbox">' +
-                            '</div>' +
-                            '</td>' +
-                            '</tr>' +
-                            '<tr>' +
-                            '<td>' + obj.job_name + '</td>' +
-                            '</tr>'
-                        )
-                    })
+                    $("#invitePj").find("input[name=pj_no]").val(${pj.pj_no})
+                    if (list.length > 0) {
+                        $.each(list, function (i, obj) {
+                            var content = '<tr>'
+                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            content += '</td>'
+                            content += '<th style="width: 50%">' + obj.name + '</th>'
+                            content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                            content += '<div class="custom-control custom-checkbox">'
+                            content += '<input type="checkbox" name="inviteEmpNo" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                            content += '</div>'
+                            content += '</td>'
+                            content += '</tr>'
+                            content += '<tr>'
+                            if (obj.job_name != undefined) {
+                                content += '<td>' + obj.job_name + '</td>'
+                            } else {
+                                content += '<td>직급 없음</td>'
+                            }
+                            content += '</tr>'
+                            $(".inviteTable").append(content)
+                            $("#inviteEmpBtn").css("display", "block")
+                        })
+                    } else {
+                        var content = '<tr><td>초대할 수 있는 사원이 없습니다.</td></tr>'
+                        $(".inviteTable").append(content)
+                        $("#inviteEmpBtn").css("display", "none")
+                    }
 
                     $("#inviteModal").modal("show")
                 }
@@ -1405,23 +1564,28 @@
                     console.log(list)
                     $(".inviteTable").html('')
                     $.each(list, function (i, obj) {
-                        $(".inviteTable").append(
-                            '<tr>' +
-                            '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>' +
-                            '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">' +
-                            '</td>' +
-                            '<th style="width: 50%">' + obj.name + '</th>' +
-                            '<td rowspan="2" style="width: 20%; text-align: right;">' +
-                            '<div class="custom-control custom-checkbox">' +
-                            '<input type="checkbox">' +
-                            '</div>' +
-                            '</td>' +
-                            '</tr>' +
-                            '<tr>' +
-                            '<td>' + obj.job_name + '</td>' +
-                            '</tr>'
-                        )
+                        if(obj.emp_no != ${pjMember.emp_no}){
+                            var content = '<tr>'
+                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            content += '</td>'
+                            content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
+                            content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                            content += '<div class="custom-control custom-checkbox">'
+                            content += '<input type="checkbox" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                            content += '</div>'
+                            content += '</td>'
+                            content += '</tr>'
+                            content += '<tr>'
+                            if (obj.job_name != undefined) {
+                                content += '<td>' + obj.job_name + '</td>'
+                            } else {
+                                content += '<td>직급이 없습니다.</td>'
+                            }
+                            content += '</tr>'
+                            $(".inviteTable").append(content)
+                        }
                     })
+                    $("#mentionForModal").css("z-index", "123333")
                     $("#mentionForModal").modal("show")
                 }
             })
@@ -1434,6 +1598,12 @@
         })
 
         $(document).on('click', '#postBtn', function () {
+            if (${pj.board_power == 'Y'} &&
+            ${pjMember.admin == 'N'})
+            {
+                alert("관리자만 작성할 수 있습니다.")
+                return false
+            }
             $("#postForm").css("display", "block")
             $("#postSch").css("display", "none")
             $("#postTodo").css("display", "none")
@@ -1446,6 +1616,12 @@
         })
 
         $(document).on('click', '#schBtn', function () {
+            if (${pj.board_power == 'Y'} &&
+            ${pjMember.admin == 'N'})
+            {
+                alert("관리자만 작성할 수 있습니다.")
+                return false
+            }
             $("#postForm").css("display", "none")
             $("#postSch").css("display", "block")
             $("#postTodo").css("display", "none")
@@ -1459,6 +1635,12 @@
 
 
         $(document).on('click', '#todoBtn', function () {
+            if (${pj.board_power == 'Y'} &&
+            ${pjMember.admin == 'N'})
+            {
+                alert("관리자만 작성할 수 있습니다.")
+                return false
+            }
             $("#postForm").css("display", "none")
             $("#postSch").css("display", "none")
             $("#postTodo").css("display", "block")
@@ -1533,6 +1715,23 @@
         })
 
 
+        $(document).on('click', '#addEmpBtn', function () {
+            console.log($(this).parents("#mentionForModal").find(".emp_name"))
+            console.log($(this).parents("#mentionForModal").find(".inviteEmpNo"))
+            $(this).parents("#mentionForModal").find(".inviteEmpNo:checked").each(function (e) {
+                console.log($(this).val())
+                console.log($(this).parents("tr").find(".emp_name").text())
+                var content = $(this).parents("tr").find(".emp_name").text()
+                $("#postForArea").append('<span class="empName">' + content + '<span><input type="hidden" name="post_for" ' +
+                    'value="' + $(this).val() + '">' +
+                    '<i class="bi bi-x fa-2x removeEmp" style="color: red; padding-right: 0px;"></i></span></span>')
+            })
+            if ($("#postForArea").html() != '') {
+                $(".postFor").css("display", "none")
+            }
+            $("#mentionForModal").modal("hide")
+        })
+
         $(".fa-plus").click(function () {
             $(".todos").append(
                 '<div class="form-group row">' +
@@ -1554,6 +1753,7 @@
                 '<i class="bi bi-person fa-2x todoPerson"></i>' +
                 '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>' +
                 '</div>' +
+                '<input type="hidden" name="status" value="N">' +
                 '</div>'
             )
             datepickerLoad()
@@ -1577,6 +1777,13 @@
                 language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
 
             })
+            $('.todoInput').datepicker().on("clearDate", function (e) {
+                console.log(e.currentTarget)
+                var $test = e.currentTarget;
+                $($test).children(".todoCalendar").css("display", "block")
+                $($test).children(".todoDue").css("display", "none")
+
+            })
         }
 
         $('#datepicker').datepicker({
@@ -1597,16 +1804,16 @@
         })
 
 
-        $('.todoInput').datepicker().on("clearDate", function (e) {
-            console.log(e.currentTarget)
-            var $test = e.currentTarget;
-            $($test).children(".todoCalendar").css("display", "block")
-            $($test).children(".todoDue").css("display", "none")
-
-        })
-
         $("#close").click(function () {
             //console.log("진입확인")
+            $("#fileAndMentionArea").html(
+                '<input type="text" class="form-control" id="file-label"' +
+                'style="display: none; border: 0px white;">' +
+                '<input type="file" name="upload_file" id="upload-file" hidden>' +
+                '<i class="bi bi-paperclip fa-2x fileUploadBtn"></i>' +
+                '<i class="bi bi-person fa-2x postFor"></i>'
+            )
+            $("#postForArea").html('')
             $('#summernote').summernote('reset');
             $(".todos").html(
                 '<div class="form-group row">' +
@@ -1647,7 +1854,40 @@
 
 
     $(document).on('click', '#addPeople', function () {
-        $("#mentionForModal").modal("show")
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'mention'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    if(obj.emp_no != ${pjMember.emp_no}){
+                        var content = '<tr>'
+                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                        content += '</td>'
+                        content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
+                        content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                        content += '<div class="custom-control custom-checkbox">'
+                        content += '<input type="checkbox" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                        content += '</div>'
+                        content += '</td>'
+                        content += '</tr>'
+                        content += '<tr>'
+                        if (obj.job_name != undefined) {
+                            content += '<td>' + obj.job_name + '</td>'
+                        } else {
+                            content += '<td>직급이 없습니다.</td>'
+                        }
+                        content += '</tr>'
+                        $(".inviteTable").append(content)
+                    }
+                })
+                $("#mentionForModal").modal("show")
+            }
+        })
     })
 
     $(document).on('click', '.viewAttendee', function () {
@@ -1659,6 +1899,12 @@
         ${pj.pj_no}
     })
     $(document).on('click', '.drive', function () {
+        if (${pj.file_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
+        {
+            alert("관리자만 조회할 수 있습니다.")
+            return false
+        }
         location.href = "/project/drivePj.do?pj_no=" +
         ${pj.pj_no}
     })
@@ -1681,7 +1927,7 @@
         )
     })
 
-    $(document).on('click', '.bi-x', function () {
+    $(document).on('click', '.removeTodo', function () {
         $(this).parent().parent().remove()
     })
 
@@ -1925,7 +2171,7 @@
                     } else if (obj.board_type == 'schedule') {
                         $(".boardTable").append(
                             '<tr>' +
-                            '<td style="width: 7%; text-align: right; color: #35f364">' +
+                            '<td style="width: 7%; text-align: right; color: #1cc88a">' +
                             '<span class="bi bi-calendar"></span>' +
                             '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
                             '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
@@ -1940,7 +2186,7 @@
                     } else if (obj.board_type == 'todo') {
                         $(".boardTable").append(
                             '<tr>' +
-                            '<td style="width: 7%; text-align: right; color: #3591f3 ">' +
+                            '<td style="width: 7%; text-align: right; color: #4e73df;">' +
                             '<span class="bi bi-check2-square"></span>' +
                             '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
                             '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
@@ -1961,6 +2207,59 @@
         });
     }
 
+    function loadRw() {
+        var pCount = 0;
+        var rqCount = 0;
+        var sCount = 0;
+        var cmCount = 0;
+        var array = [];
+        $.ajax({
+            url: '/project/loadRw.do',
+            data: {
+                "pj_no": ${pj.pj_no}
+            },
+            async: false,
+            success: function (list) {
+                list = $.parseJSON(list)
+                console.log(list)
+                $.each(list, function (i, obj) {
+                    if (obj.status == 'P') {
+                        pCount++
+                    } else if (obj.status == 'RQ') {
+                        rqCount++
+                    } else if (obj.status == 'S') {
+                        sCount++
+                    } else if (obj.status == 'CM') {
+                        cmCount++
+                    }
+                })
+                $("#totalRw").text(list.length)
+                $("#beforeRw").text('진행전 ' + rqCount)
+                if (rqCount > 0) {
+                    $("#beforeRwPercent").text(Math.round(rqCount / list.length * 100) + '%')
+                }
+                $("#whileRw").text('진행중 ' + pCount)
+                if (pCount > 0) {
+                    $("#whileRwPercent").text(Math.round(pCount / list.length * 100) + '%')
+                }
+                $("#completeRw").text('완료됨 ' + cmCount)
+                if (cmCount > 0) {
+                    $("#completeRwPercent").text(Math.round(cmCount / list.length * 100) + '%')
+                }
+                $("#keepRw").text('보류됨 ' + sCount)
+                if (sCount > 0) {
+                    $("#keepRwPercent").text(Math.round(sCount / list.length * 100) + '%')
+                }
+                array.push(rqCount)
+                array.push(pCount)
+                array.push(cmCount)
+                array.push(sCount)
+                array.push(list.length)
+            }
+        })
+        return array
+    }
+
     $(document).on('click', '.boardTable tr', function () {
             console.log($(this).find(".board_no").val())
             $board_no = $(this).find(".board_no").val()
@@ -1978,13 +2277,33 @@
                         $("#postView").css("display", "block")
                         $("#schView").css("display", "none")
                         $("#todoView").css("display", "none")
-                        $("#postTitle").html(list.post_title)
-                        $("#postContent").html(list.post_content)
-                        $("#postWriter").html(list.name)
-                        $("#postUploadDate").html(list.create_date)
-                        $(".detailViewBoard_no").val(list.board_no)
+                        $("#postTitle").html(list.post.post_title)
+                        $("#postContent").html(list.post.post_content)
+                        $("#postWriter").html(list.post.name)
+                        $("#postUploadDate").html(list.post.create_date)
+                        $(".detailViewBoard_no").val(list.post.board_no)
+                        if (list.projectFile != null) {
+                            $("#postFileArea").html(
+                                "<a href='/resources/upload_files/" + list.projectFile.change_name + "'download " +
+                                "type='text/example')>" + list.projectFile.origin_name + "</a>" +
+                                "<input type='hidden' name='file_no' value='" + list.projectFile.file_no + "'>" +
+                                "<input type='hidden' name='change_name' value='" + list.projectFile.change_name + "'>" +
+                                "<input type='hidden' name='origin_name' value='" + list.projectFile.origin_name + "'>" +
+                                "<input type='hidden' name='path' value='" + list.projectFile.path + "'>"
+                            );
+                            $("#postFileArea").css("display", "block")
+                        }
+                        $("#postForListArea").html('')
+                        if(list.postForEmpList != null){
+                            $.each(list.postForEmpList, function (i, obj) {
+                                var content = '<b style="color: #3C3B3D"> @'+ obj.name +'</b>'
+                                content += '<input type="hidden" value="'+ obj.emp_no +'">'
+                                $("#postForListArea").append(content)
+                                $("#postForListArea").css("display","block")
+                            })
+                        }
                         //console.log(list.count)
-                        $(".viewCount").text("조회 " + list.count)
+                        $(".viewCount").text("조회 " + list.post.count)
                         if ("${sessionScope.loginEmp.name}" == list.name) {
                             // console.log('확인')
                             $(".postEdit").css("display", "block")
@@ -2108,18 +2427,19 @@
     )
 </script>
 <script type="text/javascript">
-    var sum = Number("{{sum}}");
 
+    var sum = loadRw()
+    console.log(sum)
     // Pie Chart Example
     var ctx = document.getElementById("taskChart");
     var myPieChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ["요청", "진행", "완료", "보류"],
+            labels: ["진행전", "진행중", "완료됨", "보류됨"],
             datasets: [{
-                data: [sum, 50, 20],
-                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+                data: [sum[0], sum[1], sum[2], sum[3]],
+                backgroundColor: ['#4e73df', '#1cc88a', '#f3a435'],
+                hoverBackgroundColor: ['#2e59d9', '#17a673', '#eb8d0a'],
                 hoverBorderColor: "rgba(234, 236, 244, 1)",
             }],
         },
@@ -2150,7 +2470,7 @@
                 var fontSize = (height / 114).toFixed(2);
                 ctx.font = fontSize + "2em sans-serif";
                 ctx.textBaseline = "middle";
-                var text = "12", textX = Math.round((width - ctx
+                var text = sum[4], textX = Math.round((width - ctx
                     .measureText(text).width) / 2), textY = height / 2;
                 ctx.fillText(text, textX, textY);
                 ctx.save();
@@ -2173,7 +2493,6 @@
             ]
         });
     })
-
 
 </script>
 </body>

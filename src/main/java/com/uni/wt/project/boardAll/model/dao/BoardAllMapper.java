@@ -24,4 +24,5 @@ public interface BoardAllMapper {
     ArrayList<Reply>  selectReply(int board_no);
 
     int deleteReply(int reply_no);
+
 }

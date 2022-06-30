@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.uni.wt.approval.model.dao.ApprovalMapper">
+	<!-- employee resultMap -->
+	<resultMap type="Employee" id="employeeResultSet">
+		<id property="emp_no" column="EMP_NO"/>
+		<result property="dept_code" column="DEPT_CODE"/>
+		<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+		<result property="job_code" column="JOB_CODE"/>
+		<result property="join_date" column="JOIN_DATE"/>
+		<result property="resignation_date" column="RESIGNATION_DATE"/>
+		<result property="file_no" column="FILE_NO"/>
+		<result property="create_date" column="CREATE_DATE"/>
+		<result property="dept_name" column="DEPT_NAME"/>
+		<result property="job_name" column="JOB_NAME"/>
+	</resultMap>
+	
+	<!-- dept resultMap -->
+	<resultMap type="Department" id="departmenteResultSet">
+		<id property="deptCode" column="DEPT_CODE"/>
+		<result property="deptName" column="DEPT_NAME"/>
+		<result property="deptLevel" column="DEPT_LEVEL"/>
+		<result property="upperDeptCode" column="UPPER_DEPT_CODE"/>
+	</resultMap>
+	
+	<resultMap type="Approval" id="approvalResultSet">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="docNo" column="DOC_NO"/>
+		<result property="docName" column="DOC_NAME"/>
+		<result property="writer" column="WRITER"/>
+		<result property="deptName" column="DEPT_NAME"/>
+		<result property="retentionPeriod" column="RETENTION_PERIOD"/>
+		<result property="title" column="TITLE"/>
+		<result property="createDate" column="CREATE_DATE"/>
+		<result property="approvalDate" column="APPROVAL_DATE"/>
+		<result property="emergency" column="EMERGENCY"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="fileNo" column="FILE_NO"/>
+		<result property="orginal_name" column="ORIGINAL_NAME"/>
+		<result property="change_name" column="CHANGE_NAME"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalLine" id="approvalLineResultSet">
+		<id property="lineNo" column="LINE_NO"/>
+		<result property="approvalNo" column="APPROVAL_NO"/>
+		<result property="lineLevel" column="LINE_LEVEL"/>
+		<result property="firstApproverNo" column="FIRST_APPROVER_NO"/>
+		<result property="finalApproverNo" column="FINAL_APPROVER_NO"/>
+		<result property="refereeNo" column="REFEREE_NO"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="firstApprovalDate" column="FIRST_APPROVAL_DATE"/>
+		<result property="lastApprovalDate" column="FINAL_APPROVAL_DATE"/>
+		<result property="rejectionReason" column="REJECTION_REASON"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalLoa" id="approvalLoaResultSet">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="lineNo" column="LINE_NO"/>
+		<result property="content" column="CONTENT"/>
+	</resultMap>
+	
+	<resultMap type="ApprovalExpenditure" id="approvalExpenditureResultSet">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="lineNo" column="LINE_NO"/>
+		<result property="exDivision" column="EX_DIVISION"/>
+		<result property="accountingMonth" column="ACCOUNTING_MONTH"/>
+		<result property="spender" column="SPENDER"/>
+		<result property="account" column="ACCOUNT"/>
+		<result property="exContent" column="EX_CONTENT"/>
+		<result property="exDate" column="EX_DATE"/>
+		<result property="exClassification" column="EX_CLASSIFICATION"/>
+		<result property="amount" column="AMOUNT"/>
+		<result property="exHistory" column="EX_HISTORY"/>
+		<result property="note" column="NOTE"/>
+	</resultMap>
+
+	<resultMap type="ApprovalMMinutes" id="approvalMMinutesResultSet">
+		<id property="approvalNo" column="APPROVAL_NO"/>
+		<result property="lineNo" column="LINE_NO"/>
+		<result property="attendees" column="ATTENDEES"/>
+		<result property="meetingPurpose" column="MEETING_PURPOSE"/>
+		<result property="meetingDate" column="MEETING_DATE"/>
+		<result property="meetingContent" column="MEETING_CONTENT"/>
+	</resultMap>
+
+	<!-- 부서 조회 -->
+	<select id="selectDeptList" resultMap="departmenteResultSet">
+		SELECT *
+		FROM DEPARTMENT
+		START WITH UPPER_DEPT_CODE IS NULL
+		CONNECT BY PRIOR DEPT_CODE=UPPER_DEPT_CODE	
+	</select>
+	
+	<!-- 사원 조회 -->
+	<select id="selectEmpList" resultMap="employeeResultSet">
+		SELECT 
+			A.*,
+			DEPT_NAME,
+			JOB_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		WHERE STATUS='I'
+	</select>
+	
+	<!-- 공통 문서 insert -->
+	<insert id="insertApproval" parameterType="Approval">
+		INSERT INTO APPROVAL
+		VALUES(APPN_SEQ.NEXTVAL, #{docNo}, #{docName}, #{writer}, #{deptName}, #{retentionPeriod}, #{title}, SYSDATE, NULL, #{emergency}, DEFAULT, 
+		<choose>
+			<when test="fileNo == 0">
+				NULL)
+			</when>
+			<otherwise>
+				#{fileNo})
+			</otherwise>
+		</choose>		
+		<selectKey keyProperty="approvalNo" resultType="int" order="AFTER">
+			SELECT APPN_SEQ.CURRVAL AS APPROVAL_NO FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<!-- 결재선 등록 -->
+	<!-- 최초 결재자만 있는 경우 등록 -->
+	<insert id="insertApprovalLine1" parameterType="ApprovalLine">
+		INSERT INTO APPROVAL_LINE
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, NULL, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL)
+		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
+			SELECT APPL_SEQ.CURRVAL AS LINE_NO FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<!-- 최종 결재자도 있는 경우 등록 -->
+	<insert id="insertApprovalLine2" parameterType="ApprovalLine">
+		INSERT INTO APPROVAL_LINE
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, #{finalApproverNo}, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL)
+		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
+			SELECT APPL_SEQ.CURRVAL AS LINE_NO FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<!-- 일반 품의서 등록  -->
+	<insert id="insertLoa" parameterType="ApprovalLoa">
+		INSERT INTO DOC_LOA
+		VALUES(#{approvalNo}, #{lineNo}, #{content})
+	</insert>
+	
+	<!-- 지출 결의서 등록 -->
+	<insert id="insertExpenditure" parameterType="ApprovalExpenditure">
+		INSERT INTO DOC_EXPENDITURE
+		VALUES(#{approvalNo}, #{lineNo}, #{exDivision}, #{accountingMonth}, #{spender}, #{account}, #{exContent}, #{exDate}, #{exClassification}, #{amount}, #{exHistory}, #{note})
+	</insert>
+	
+	<!-- 회의록 등록 -->
+	<insert id="insertMminutes" parameterType="ApprovalMMinutes">
+		INSERT INTO DOC_M_MINUTES
+		VALUES(#{approvalNo}, #{lineNo}, #{attendees}, #{meetingPurpose}, #{meetingDate}, #{meetingContent})
+	</insert>
+	
+	<!-- 기안 문서함 listcount -->
+	<select id="draftListCount" parameterType="_int" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL
+		WHERE WRITER=#{emp_no}
+	</select>
+	
+	<!-- 기안 문서함 list -->
+	<select id="selectDraftList" parameterType="_int" resultMap="approvalResultSet">
+		SELECT *
+		FROM APPROVAL
+		WHERE WRITER=#{emp_no}
+		ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<!-- 기안 문서함 검색  listCount -->
+	<select id="searchListCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test='asc.title != null'>
+			AND TITLE LIKE '%'||#{asc.title}||'%'
+			</if>
+			<if test='asc.docName != null'>
+			AND DOC_NAME LIKE '%'||#{asc.docName}||'%'
+			</if>
+			<if test='asc.approvalNo != null'>
+			AND APPROVAL_NO LIKE '%'||#{asc.approvalNo}||'%'
+			</if>	
+		</trim>
+		AND WRITER=#{emp_no}	
+	</select>
+	
+	<!-- 기안 문서함 검색 list -->
+	<select id="searchDraftList" parameterType="Map" resultMap="approvalResultSet">
+		SELECT *
+		FROM APPROVAL	
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test='asc.title != null'>
+			AND TITLE LIKE '%'||#{asc.title}||'%'
+			</if>
+			<if test='asc.docName != null'>
+			AND DOC_NAME LIKE '%'||#{asc.docName}||'%'
+			</if>
+			<if test='asc.approvalNo != null'>
+			AND APPROVAL_NO LIKE '%'||#{asc.approvalNo}||'%'
+			</if>	
+		</trim>
+		AND WRITER=#{emp_no}
+		ORDER BY CREATE_DATE DESC		
+	</select>
+	
+	<!-- 공통문서 디테일 조회 -->
+	<select id="selectApproval" parameterType="_int" resultMap="approvalResultSet">
+		SELECT A.*,
+		       NAME,
+		       ORIGINAL_NAME,
+		       CHANGE_NAME
+		FROM APPROVAL A
+		JOIN EMPLOYEE B ON (A.WRITER = B.EMP_NO)
+		LEFT JOIN ATTACHMENT C on (A.FILE_NO = C.FILE_NO)
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
+	
+	<!-- 결재선 조회 -->
+	<select id="selectApprovalLine" parameterType="_int" resultMap="approvalLineResultSet">
+		SELECT 
+	        A.*,
+	        (SELECT A.NAME
+	         FROM EMPLOYEE A
+	         JOIN APPROVAL_LINE B ON A.EMP_NO = B.FIRST_APPROVER_NO
+	         WHERE APPROVAL_NO=#{approvalNo}) firstApproverName,
+	         (SELECT C.JOB_NAME
+	         FROM EMPLOYEE A
+	         JOIN APPROVAL_LINE B ON A.EMP_NO = B.FIRST_APPROVER_NO
+	         JOIN JOB C ON A.JOB_CODE = C.JOB_CODE
+	         WHERE APPROVAL_NO=#{approvalNo}) firstApproverJob,
+	        (SELECT A.NAME
+	         FROM EMPLOYEE A
+	         RIGHT JOIN APPROVAL_LINE B ON A.EMP_NO = B.FINAL_APPROVER_NO
+	         WHERE APPROVAL_NO=#{approvalNo}) finalApproverName,
+	         (SELECT C.JOB_NAME
+	         FROM EMPLOYEE A
+	         RIGHT JOIN APPROVAL_LINE B ON A.EMP_NO = B.FINAL_APPROVER_NO
+	         RIGHT JOIN JOB C ON A.JOB_CODE = C.JOB_CODE
+	         WHERE APPROVAL_NO=#{approvalNo}) finalApproverJob         
+		FROM APPROVAL_LINE A
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
+	
+	<!-- 품의서  조회 -->
+	<select id="selectApprovalLoa" parameterType="_int" resultMap="approvalLoaResultSet">
+		SELECT *
+		FROM DOC_LOA
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
+	
+	<!-- 지출 결의서 조회  -->
+	<select id="selectApprovalExpenditure" parameterType="_int" resultMap="approvalExpenditureResultSet">
+		SELECT *
+		FROM DOC_EXPENDITURE
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
+	
+	<!-- 회의록 조회 -->
+	<select id="selectApprovaltheMinutesOfAMeeting" parameterType="_int" resultMap="approvalMMinutesResultSet">
+		SELECT *
+		FROM DOC_M_MINUTES
+		WHERE APPROVAL_NO=#{approvalNo}
+	</select>
+	
+	<!-- 결재함 listCount -->
+	<select id="appListCount" parameterType="_int" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL A
+		JOIN APPROVAL_LINE B ON A.APPROVAL_NO = B.APPROVAL_NO
+		WHERE B.FIRST_APPROVER_NO=#{emp_no}
+		OR B.FINAL_APPROVER_NO=#{emp_no}
+	</select>
+	
+	<!-- 결재함 list -->
+	<select id="selectAppList" parameterType="_int" resultMap="approvalResultSet">
+		SELECT A.*,
+			   NAME
+		FROM APPROVAL A
+		JOIN APPROVAL_LINE B ON A.APPROVAL_NO = B.APPROVAL_NO
+		JOIN EMPLOYEE C ON A.WRITER = C.EMP_NO
+		WHERE B.FIRST_APPROVER_NO=#{emp_no}
+		OR B.FINAL_APPROVER_NO=#{emp_no}
+		ORDER BY A.CREATE_DATE DESC
+	</select>
+	
+	<!-- 결재함 검색 listCount -->
+	<select id="searchAppListCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL A
+		JOIN APPROVAL_LINE B ON A.APPROVAL_NO = B.APPROVAL_NO
+		JOIN EMPLOYEE C ON A.WRITER = C.EMP_NO
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test='asc.title != null'>
+			AND A.TITLE LIKE '%'||#{asc.title}||'%'
+			</if>
+			<if test='asc.docName != null'>
+			AND A.DOC_NAME LIKE '%'||#{asc.docName}||'%'
+			</if>
+			<if test='asc.approvalNo != null'>
+			AND A.APPROVAL_NO LIKE '%'||#{asc.approvalNo}||'%'
+			</if>	
+			<if test='asc.appName != null'>
+			AND C.NAME LIKE '%'||#{asc.appName}||'%'
+			</if>
+		</trim>
+		AND (B.FIRST_APPROVER_NO=#{emp_no}
+		OR B.FINAL_APPROVER_NO=#{emp_no})
+	</select>
+	
+	<!-- 결재함 검색 list -->
+	<select id="searchAppList" parameterType="Map" resultMap="approvalResultSet">
+		SELECT A.*,
+			   NAME
+		FROM APPROVAL A
+		JOIN APPROVAL_LINE B ON A.APPROVAL_NO = B.APPROVAL_NO
+		JOIN EMPLOYEE C ON A.WRITER = C.EMP_NO
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test='asc.title != null'>
+			AND A.TITLE LIKE '%'||#{asc.title}||'%'
+			</if>
+			<if test='asc.docName != null'>
+			AND A.DOC_NAME LIKE '%'||#{asc.docName}||'%'
+			</if>
+			<if test='asc.approvalNo != null'>
+			AND A.APPROVAL_NO LIKE '%'||#{asc.approvalNo}||'%'
+			</if>
+			<if test='asc.appName != null'>
+			AND C.NAME LIKE '%'||#{asc.appName}||'%'
+			</if>	
+		</trim>
+		AND B.FIRST_APPROVER_NO=#{emp_no}
+		OR B.FINAL_APPROVER_NO=#{emp_no}
+		ORDER BY A.CREATE_DATE DESC
+	</select>
+</mapper>

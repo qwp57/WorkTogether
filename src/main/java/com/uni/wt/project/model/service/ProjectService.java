@@ -4,6 +4,7 @@ import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
+import com.uni.wt.requestWork.model.dto.RequestWork;
 
 import java.util.ArrayList;
 
@@ -38,4 +39,12 @@ public interface ProjectService {
     void editReply(Reply reply) throws Exception;
 
     ArrayList<Employee> selectEmpInviteList(int pj_no) throws Exception;
+
+    void editPj(Project project) throws Exception;
+
+    void deleteProject(int pj_no) throws Exception;
+
+    void keepProject(int pj_no) throws Exception;
+
+    ArrayList<RequestWork> loadRw(int pj_no) throws Exception;
 }
