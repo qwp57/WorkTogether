@@ -40,7 +40,7 @@ public class NoticeService {
 	public void insertNotice(Employee emp, int seqNo, String type, HttpServletRequest request) throws Exception {
 		//로그인된 사원 정보, 글번호, 게시판타입
 		
-		Notice notice = null;//알림 insert해줄 Notice 객체 
+	
 		int result=0;// 등록이 됐는지 확인할 result 
 		
 		int nno = noticeMapper.getNoticeSeq();
