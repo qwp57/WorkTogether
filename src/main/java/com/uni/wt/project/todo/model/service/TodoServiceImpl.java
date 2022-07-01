@@ -97,4 +97,9 @@ public class TodoServiceImpl implements TodoService {
             }
         }
     }
+
+    @Override
+    public String getEmpNameByEmpNo(int emp_no) throws Exception {
+        return todoMapper.getEmpNameByEmpNo(emp_no);
+    }
 }

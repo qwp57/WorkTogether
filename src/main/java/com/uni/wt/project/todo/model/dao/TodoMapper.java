@@ -20,4 +20,6 @@ public interface TodoMapper {
     int getTodoTotalCount(int board_no);
 
     int deleteTodo(int board_no);
+
+    String getEmpNameByEmpNo(int emp_no);
 }

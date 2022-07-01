@@ -43,6 +43,61 @@
         WHERE PJ_NO = #{pj_no}
         ORDER BY A.BOARD_NO DESC
     </select>
+
+
+    <select id="selectPjBoardList" parameterType="map" resultMap="boardAllSet">
+        SELECT DISTINCT A.BOARD_NO, A.PJ_NO, A.BOARD_TYPE, TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE ,E.NAME , B.POST_TITLE, C.SCH_TITLE, C.SCH_START, D.TODO_TITLE
+        FROM PJ_BOARD A
+                 LEFT JOIN BOARD_POST B
+                           ON A.BOARD_NO = B.BOARD_NO
+                 LEFT JOIN BOARD_SCHEDULE C
+                           ON A.BOARD_NO = C.BOARD_NO
+                 LEFT JOIN BOARD_TODO D
+                           ON A.BOARD_NO = D.BOARD_NO
+                 JOIN EMPLOYEE E
+                      ON A.WRITER = E.EMP_NO
+        WHERE PJ_NO = #{pj_no}
+        <choose>
+            <when test='boardType.equals("all")'>
+            </when>
+            <when test='boardType.equals("post")'>
+                AND A.BOARD_TYPE = #{board_type}
+            </when>
+            <when test='boardType.equals("schedule")'>
+                AND A.BOARD_TYPE = #{board_type}
+            </when>
+            <when test='boardType.equals("todo")'>
+                AND A.BOARD_TYPE = #{board_type}
+            </when>
+        </choose>
+        ORDER BY A.BOARD_NO DESC
+</select>
+
+
+
+    <select id="getListCount" parameterType="map" resultType="_int">
+        SELECT
+        COUNT(*)
+        FROM PJ_BOARD
+        WHERE PJ_NO = #{pj_no}
+        <choose>
+            <when test='boardType.equals("all")'>
+            </when>
+            <when test='boardType.equals("post")'>
+                AND BOARD_TYPE = #{board_type}
+            </when>
+            <when test='boardType.equals("schedule")'>
+                AND BOARD_TYPE = #{board_type}
+            </when>
+            <when test='boardType.equals("todo")'>
+                AND BOARD_TYPE = #{board_type}
+            </when>
+        </choose>
+    </select>
+
+
+
+
     <delete id="deleteBoard" parameterType="int">
         DELETE FROM PJ_BOARD
         WHERE BOARD_NO = #{board_no}

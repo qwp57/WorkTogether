@@ -1,5 +1,6 @@
 package com.uni.wt.project.boardAll.model.service;
 
+import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
 
@@ -17,4 +18,8 @@ public interface BoardAllService {
     ArrayList<Reply> selectReply(int board_no) throws Exception;
 
     void deleteReply(int reply_no) throws Exception;
+
+    ArrayList<BoardAll> selectPjBoardList(int pj_no, PageInfo pi, String boardType) throws Exception;
+
+    int getListCount(int pj_no, String all) throws Exception;
 }

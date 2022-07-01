@@ -9,6 +9,8 @@ public class Todo {
 
     private int todo_no;
 
+    private int emp_no;
+
     private int board_no;
 
     private String todo_title;
@@ -16,6 +18,8 @@ public class Todo {
     private String todo_content;
 
     private String todo_for;
+
+    private String todo_for_name;
 
     private String todo_end;
 

@@ -5,6 +5,8 @@ import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.service.BoardAllService;
 import com.uni.wt.project.post.model.dto.Post;
+import com.uni.wt.project.projectMember.model.dto.ProjectTag;
+import com.uni.wt.project.projectMember.model.service.ProjectMemberService;
 import com.uni.wt.project.schedule.model.dto.Schedule;
 import com.uni.wt.project.schedule.model.service.ScheduleService;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +36,8 @@ public class ScheduleController {
     ScheduleService scheduleService;
     @Autowired
     BoardAllService boardAllService;
-
+    @Autowired
+    private ProjectMemberService projectMemberService;
     private Map<String, String> msgMap = new HashMap<String, String>();
 
     @RequestMapping("/insertSch.do")
@@ -83,12 +87,23 @@ public class ScheduleController {
             String value = viewCookie.getValue(); // 쿠키 값 받아옴.
             log.info("cookie 값 : " + value);
         }
-
+        Map<String, Object> map = new HashMap<>();
         Schedule schedule = scheduleService.detailView(board_no);
         log.info("일정 조회 : " + schedule);
+        map.put("sch", schedule);
+//        if(schedule.getSch_attendee() != null){
+//            String[] schAttendeeList = schedule.getSch_attendee().split(",");
+//            if(schAttendeeList.length > 0){
+//                ArrayList<Employee> list = new ArrayList<>();
+//                for (String emp_no : schAttendeeList){
+//                    Employee emp = projectMemberService.selectEmpByEmpNo(Integer.parseInt(emp_no));
+//                    list.add(emp);
+//                }
+//                map.put("schAttendeeList", list);
+//            }
+//        }
 
-
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(schedule);
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(map);
     }
     @ResponseBody
     @RequestMapping(value = "/selectSchDate.do", produces = "application/json; charset=utf-8")
@@ -98,6 +113,42 @@ public class ScheduleController {
 
         return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(schedule);
     }
+    @ResponseBody
+    @RequestMapping(value = "/schJoin.do", produces = "application/json; charset=utf-8")
+    public String schJoin(@RequestParam("board_no") int board_no, @RequestParam("status") String status, HttpSession session) throws Exception {
+        int loginEmp = ((Employee) session.getAttribute("loginEmp")).getEmp_no();
+        Schedule schedule = new Schedule();
+        schedule.setBoard_no(board_no);
+        schedule.setEmp_no(loginEmp);
+        schedule.setStatus(status);
+        scheduleService.schJoin(schedule);
+
+        return new GsonBuilder().create().toJson("참석 성공");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/loadSchAttendee.do", produces = "application/json; charset=utf-8")
+    public String loadSchAttendee(@RequestParam("board_no") int board_no) throws Exception {
+        Schedule y = new Schedule();
+        y.setBoard_no(board_no);
+        y.setStatus("Y");
+        Schedule n = new Schedule();
+        n.setBoard_no(board_no);
+        n.setStatus("N");
+        int yCount = scheduleService.loadSchAttendee(y);
+        int nCount = scheduleService.loadSchAttendee(n);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("yCount", yCount);
+        map.put("nCount", nCount);
+
+        return new GsonBuilder().create().toJson(map);
+    }
+    @ResponseBody
+    @RequestMapping(value = "/selectSchAttendee.do", produces = "application/json; charset=utf-8")
+    public String selectSchAttendee(@RequestParam("board_no") int board_no) throws Exception {
+        ArrayList<Employee> list = scheduleService.selectSchAttendee(board_no);
+        return new GsonBuilder().create().toJson(list);
+    }
+
     @RequestMapping("/editSch.do")
     public String editSch(Schedule schedule, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
         log.info("일정 : " + schedule);
