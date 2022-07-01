@@ -50,14 +50,14 @@
 			</div>
 			<div class="float-right">
 				<c:choose>
-				<c:when test="${ map['app'].progress eq 'W' || map['app'].progress eq 'R' }"> <!-- 결재 상태가 대기이거나 반려일 때만 수정 가능 -->
-					<button type="button" class="btn btn-primary" onclick="location.href='updateMyLetterOfApproval.do'">수정</button>
-					<button type="button" class="btn btn-danger" onclick="location.href='deleteMyLetterOfApproval.do'">삭제</button>
-				</c:when>
-				<c:otherwise>
-					<button type="button" class="btn btn-primary" disabled>수정</button>
-					<button type="button" class="btn btn-danger" disabled>삭제</button>
-				</c:otherwise>
+					<c:when test="${ map['app'].progress eq 'W' || map['app'].progress eq 'R' }"> <!-- 결재 상태가 대기이거나 반려일 때만 수정 가능 -->
+						<button type="button" class="btn btn-primary" onclick="location.href='?approvalNo=' + ${map['app'].approvalNo}">수정</button>
+						<button type="button" class="btn btn-danger" onclick="location.href='deleteMyLetterOfApproval.do'">삭제</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" class="btn btn-primary" disabled>수정</button>
+						<button type="button" class="btn btn-danger" disabled>삭제</button>
+					</c:otherwise>
 				</c:choose>
 			</div>	
 			<section class="section-body mt-5">
@@ -72,6 +72,16 @@
 							<tr>
 								<td>${ map['appL'].finalApproverName }</td>								
 							</tr>
+							<tr>
+								<c:choose>								
+									<c:when test="${ map['appL'].finalApprovalResult == 'C' }">
+										<td colspan="2" class="text-center" style="color:blue"><strong>승인 완료</strong></td>
+									</c:when>	
+									<c:when test="${  map['appL'].finalApprovalResult == 'R' }">
+										<td colspan="2" class="text-center" style="color:red"><strong>반려</strong></td>				
+									</c:when>
+								</c:choose>
+							</tr>
 						</table>
 					</c:if>
 					<table class="table table-bordered float-right" id="approvalLine1">
@@ -81,6 +91,16 @@
 						</tr>
 						<tr>
 							<td>${ map['appL'].firstApproverName }</td>								
+						</tr>
+						<tr>
+							<c:choose>								
+								<c:when test="${ map['appL'].firstApprovalResult == 'C' }">
+									<td colspan="2" class="text-center" style="color:blue"><strong>승인 완료</strong></td>
+								</c:when>	
+								<c:when test="${  map['appL'].firstApprovalResult == 'R' }">
+									<td colspan="2" class="text-center" style="color:red"><strong>반려</strong></td>				
+								</c:when>
+							</c:choose>
 						</tr>
 					</table>
 					<table class="table table-bordered mt-3">							

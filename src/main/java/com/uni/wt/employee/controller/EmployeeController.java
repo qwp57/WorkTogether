@@ -105,8 +105,8 @@ public class EmployeeController {
 		//개인정보
 		ArrayList<Map<String, String>> deptList = empService.getDetpList();
 		ArrayList<Map<String, String>> jobList = empService.getJobList();
-		m.addAttribute("jobList", jobList);
-		m.addAttribute("deptList", deptList);
+		m.addAttribute("jList", jobList);
+		m.addAttribute("dList", deptList);
 		
 		return "common/main";
 	}
