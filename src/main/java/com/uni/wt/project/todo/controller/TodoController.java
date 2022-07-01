@@ -11,6 +11,7 @@ import com.uni.wt.project.todo.model.service.TodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,26 +40,30 @@ public class TodoController {
     private Map<String, String> msgMap = new HashMap<String, String>();
 
     @RequestMapping("/insertTodo.do")
-    public String insertTodo(Todo todo,BoardAll boardAll, @RequestParam("pj_no") int pj_no, HttpSession session,
+    public String insertTodo(Todo todo, BoardAll boardAll, @RequestParam("pj_no") int pj_no, HttpSession session,
                              RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("할일 : " + todo);
         log.info(todo.getTodo_end());
-        String[] todoContents = todo.getTodo_content().split(",");
-        String[] todoEnds = todo.getTodo_end().split(",");
+        String[] todoContents = todo.getTodo_content().split(",", -1);
+        String[] todoEnds = todo.getTodo_end().split(",", -1);
+        String[] todoFor = todo.getTodo_for().split(",", -1);
         ArrayList<Todo> todos = new ArrayList<>();
-        for (int i = 0; i < todoContents.length; i++){
+        for (int i = 0; i < todoContents.length; i++) {
             Todo tempTodo = new Todo();
-            if(!todoContents[i].equals("")){
+            if (!todoContents[i].equals("")) {
                 tempTodo.setTodo_content(todoContents[i]);
             }
-            if(todoEnds.length > 0){
+            if (todoEnds.length > 0) {
                 tempTodo.setTodo_end(todoEnds[i]);
+            }
+            if (todoFor.length > 0) {
+                tempTodo.setTodo_for(todoFor[i]);
             }
             tempTodo.setTodo_title(todo.getTodo_title());
             todos.add(tempTodo);
         }
         log.info("확인 : " + todos);
-        
+
         boardAll.setBoard_type("todo");
         boardAll.setPj_no(pj_no);
 
@@ -81,10 +86,10 @@ public class TodoController {
 
 
         // 쿠키가 있을 경우
-        if(cookies != null && cookies.length > 0) {
+        if (cookies != null && cookies.length > 0) {
             for (Cookie cookie : cookies) {
                 // Cookie의 name이 cookie + boardNo와 일치하는 쿠키를 viewCookie에 넣어줌
-                if(cookie.getName().equals("cookie"+board_no)) {
+                if (cookie.getName().equals("cookie" + board_no)) {
 
                     log.info("처음 쿠키가 생성한 뒤 들어옴.");
                     viewCookie = cookie;
@@ -95,7 +100,7 @@ public class TodoController {
         // 만일 viewCookie가 null일 경우 쿠키를 생성해서 조회수 증가 로직을 처리함.
         if (viewCookie == null) {
             log.info("cookie 없음");
-            Cookie newCookie = new Cookie("cookie"+board_no, "|" + board_no + "|"); // 쿠키 생성(이름, 값)
+            Cookie newCookie = new Cookie("cookie" + board_no, "|" + board_no + "|"); // 쿠키 생성(이름, 값)
             response.addCookie(newCookie); // 쿠키 추가
             boardAllService.increaseCount(board_no); // 쿠키를 추가 시키고 조회수 증가시킴
         } else {
@@ -105,6 +110,11 @@ public class TodoController {
         }
 
         ArrayList<Todo> todos = todoService.detailView(board_no);
+        for (Todo todo : todos) {
+            if(todo.getTodo_for() != null) {
+                todo.setTodo_for_name(todoService.getEmpNameByEmpNo(Integer.parseInt(todo.getTodo_for())));
+            }
+        }
         log.info("할일 조회 : " + todos);
 
 
@@ -115,31 +125,40 @@ public class TodoController {
     @RequestMapping(value = "/selectTodo.do", produces = "application/json; charset=utf-8")
     public String selectTodo(@RequestParam("board_no") int board_no) throws Exception {
 
-
         ArrayList<Todo> todos = todoService.detailView(board_no);
+        for (Todo todo : todos) {
+            if(todo.getTodo_for() != null) {
+                todo.setTodo_for_name(todoService.getEmpNameByEmpNo(Integer.parseInt(todo.getTodo_for())));
+            }
+        }
         log.info("할일 조회 : " + todos);
 
         return new GsonBuilder().setDateFormat("MM-dd").create().toJson(todos);
     }
+
     @RequestMapping("/editTodo.do")
     public String editTodo(Todo todo, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
-        log.info("할일 : " + todo.getStatus());
-        log.info("할일 : " + todo);
-        String[] todoContents = todo.getTodo_content().split(",");
-        String[] todoEnds = todo.getTodo_end().split(",");
-        String[] todoStatus = todo.getStatus().split(",");
-        log.info("할일 상태 길이 : " + todoStatus.length);
+//        log.info("할일 : " + todo.getStatus());
+//        log.info("할일 : " + todo);
+        String[] todoContents = todo.getTodo_content().split(",", -1);
+        String[] todoEnds = todo.getTodo_end().split(",", -1);
+        String[] todoFor = todo.getTodo_for().split(",", -1);
+        String[] todoStatus = todo.getStatus().split(",", -1);
+        //log.info("할일 마감일 길이 : " + todoEnds.length);
         ArrayList<Todo> todos = new ArrayList<>();
-        for (int i = 0; i < todoContents.length; i++){
+        for (int i = 0; i < todoContents.length; i++) {
             Todo tempTodo = new Todo();
-            if(!todoContents[i].equals("")){
+            if (!todoContents[i].equals("")) {
                 tempTodo.setTodo_content(todoContents[i]);
             }
-            if(todoEnds.length > 0){
+            if (todoEnds.length > 0) {
                 tempTodo.setTodo_end(todoEnds[i]);
             }
-            if(todoStatus.length > 0){
+            if (todoStatus.length > 0) {
                 tempTodo.setStatus(todoStatus[i]);
+            }
+            if (todoFor.length > 0) {
+                tempTodo.setTodo_for(todoFor[i]);
             }
             tempTodo.setBoard_no(todo.getBoard_no());
             tempTodo.setTodo_title(todo.getTodo_title());
@@ -152,6 +171,7 @@ public class TodoController {
 
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
+
     @ResponseBody
     @RequestMapping(value = "/completeTodo.do", produces = "application/json; charset=utf-8")
     public String completeTodo(@RequestParam("todo_no") int todo_no) throws Exception {

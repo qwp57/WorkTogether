@@ -2,6 +2,8 @@ package com.uni.wt.project.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.uni.wt.common.Pagination;
+import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
@@ -91,19 +93,36 @@ public class ProjectController {
         msgMap.put("msg", "프로젝트 초대 완료.");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
+    private Map<String, Object> responsList(int pj_no, int currentPage, String boardType) throws Exception {
+        //요청된 업무 리스트 전체 개수
+        int listCount = boardAllService.getListCount(pj_no, boardType);
+        log.info("[요청받은 전체글 리스트 개수] : {}", listCount);
 
+        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+
+        ArrayList<BoardAll> list = boardAllService.selectPjBoardList(pj_no, pi, boardType);
+        log.info("[요청받은 전체글 리스트] : {}", list);
+
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        map.put("list", list);
+        map.put("pi", pi);
+
+        return map;
+    }
     @ResponseBody
     @RequestMapping(value = "/selectAllBoard.do", produces = "application/json; charset=utf-8")
     public String selectAllBoard(@RequestParam("pj_no") int pj_no) throws Exception {
 
-        ArrayList<BoardAll> allBoards = boardAllService.selectAllBoard(pj_no);
-        for (BoardAll b : allBoards) {
+        //ArrayList<BoardAll> allBoards = boardAllService.selectAllBoard(pj_no);
+        Map<String, Object>  allBoardsMap = responsList(pj_no, 1, "all");
+        for (BoardAll b : (ArrayList<BoardAll>)allBoardsMap.get("list")) {
             if(b.getBoard_type().equals("todo")){
                 b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
             }
         }
         //log.info("게시물 전체 조회 : " + new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoards));
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoards);
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoardsMap);
     }
 
     @ResponseBody
@@ -123,7 +142,6 @@ public class ProjectController {
         projectMemberService.quitProject(pjMember);
         return "redirect:/project";
     }
-
     @ResponseBody
     @RequestMapping(value = "/setProjectColor.do", produces = "application/json; charset=utf-8")
     public String setProjectColor(HttpSession session, @RequestParam("selectedProjects[]") List<String> list, @RequestParam("selectedColor") String color) throws Exception {
@@ -138,7 +156,7 @@ public class ProjectController {
             projectMemberService.setProjectColor(pjm);
         }
         log.info("색상 : " + color);
-        return "색상 설정 완료";
+        return new GsonBuilder().create().toJson(color);
     }
 
     @ResponseBody

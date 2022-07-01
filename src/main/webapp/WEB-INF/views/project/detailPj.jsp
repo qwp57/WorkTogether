@@ -300,7 +300,7 @@
         color: white;
     }
 
-    #caSetting, .favoBtn, .navMenu, .fa-plus, .todoCalendar, .todoPerson,
+    #caSetting, .favoBtn, .navMenu, .fa-plus, .todoCalendar, .todoPerson, #todoEditBtn, .todoDue, .todoFor, .selectTodoFor, #schEditBtn, .viewAttendee,
     .switchPost, .switchSch, .switchTodo, disconnectingTagBtn, .fileUploadBtn, .postFor, .removeTodo, .boardDeleteBtn, #postEditBtn, .editReplyBtn, .deleteReplyBtn {
         cursor: pointer;
     }
@@ -520,7 +520,8 @@
                 </div>
                 <div class="modal-footer">
                     <div class="col-lg-12 text-center">
-                        <button type="button" id="addEmpBtn" class="btn btn-primary btn-lg mb-3">추가</button>
+                        <button type="button" id="PostAddEmpBtn" class="btn btn-primary btn-lg mb-3">추가</button>
+                        <button type="button" id="SchAddEmpBtn" class="btn btn-primary btn-lg mb-3">추가</button>
                     </div>
                 </div>
             </form>
@@ -529,9 +530,33 @@
 </div>
 
 
+<!-- 글 멘션, 일정 참석자 추가 모달창 -->
+<div class="modal fade" id="viewSchAttendee" data-backdrop="static"
+     data-keyboard="false" style="z-index: 13000;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content row">
+            <!-- modal header : 제목 -->
+            <div class="modal-header">
+                <span><h3 class="modal-title text-left">일정 참석자</h3></span> <span><input
+                    type="image" data-dismiss="modal"
+                    src="/resources/assets/img/close.png/" style="width: 20px;"></span>
+            </div>
+            <!-- modal body : 내용 -->
+            <form class="form">
+                <div class="modal-body">
+                    <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
+                    <table class="inviteTable">
+                    </table>
+                    <br>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <!-- 할 일 담당자 선택 모달창 -->
 <div class="modal fade" id="todoFor" data-backdrop="static"
-     data-keyboard="false" style="z-index: 3000;">
+     data-keyboard="false" style="z-index: 13000;">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content row">
             <!-- modal header : 제목 -->
@@ -694,8 +719,7 @@
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
                                     class="bi bi-person fa-2x"></i></label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가"
-                                       name="sch_attendee">
+                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -775,8 +799,11 @@
                                 </div>
                                 <div class="col-lg-1">
                                     <i class="bi bi-person fa-2x todoPerson"></i>
-                                    <p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>
+                                    <p class="todoFor" style="font-size: 11px; margin-top: 6px;">
+                                        <input type="hidden" name="todo_for">
+                                    </p>
                                 </div>
+                                <input type="hidden" name="status" value="N">
                             </div>
 
                         </div>
@@ -910,8 +937,9 @@
                                 </div>
 
                                 <div class="col-lg-12 ml-3 mr-3">
-                                    <i class="bi bi-person fa-lg"></i> &nbsp;&nbsp; <b style="color: #5cb85c">참석 1</b>
-                                    &nbsp;&nbsp;<b style="color: #ac2925"> 불참 3</b>
+                                    <i class="bi bi-person fa-lg"></i> &nbsp;&nbsp; <b style="color: #5cb85c"
+                                                                                       id="schYCount"></b>
+                                    &nbsp;&nbsp;<b style="color: #ac2925" id="schNCount"></b>
                                     &nbsp;&nbsp; <a style="border-bottom: 1px black solid" class="viewAttendee"> 참석자
                                     조회</a>
                                     <br><br><br>
@@ -928,8 +956,8 @@
                                     <hr>
                                 </div>
                                 <div class="col-lg-12 text-center">
-                                    <button type="button" class="btn btn-success btn-lg mr-3">참석</button>
-                                    <button type="button" class="btn btn-danger btn-lg ml-3">불참</button>
+                                    <button type="button" class="btn btn-success btn-lg mr-3" id="schJoin">참석</button>
+                                    <button type="button" class="btn btn-danger btn-lg ml-3" id="schNotJoin">불참</button>
                                 </div>
                                 <div class="col-lg-12 text-right">
                                     <a class="replyCount"></a>
@@ -1086,8 +1114,8 @@
         var reply_no = $(this).parent().find(".reply_no").val()
         var reply_content = $(this).parents(".reply").find(".replyContent").text()
         $(this).parents(".reply").find(".replyContent").html(
-            '<input type=text style="width: 80%;" class="replyEditContent" value="' + reply_content + '">' +
-            '<button type="button" class="replyEditSubmit btn btn-primary");">수정</button>' +
+            '<input type=text style="width: 75%; display: inline-block" class="form-control replyEditContent" value="' + reply_content + '">' +
+            '<button type="button" style="height: 42px;" class="replyEditSubmit btn btn-lg btn-primary");">수정</button>' +
             '<input type="hidden" value="' + reply_no + '">'
         )
         $(this).parent().remove()
@@ -1156,12 +1184,55 @@
         }
     })
 
+    $(document).on('click', '#schJoin', function () {
+        var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
+        schJoin('Y', board_no)
+    })
+
+    $(document).on('click', '#schNotJoin ', function () {
+        var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
+        schJoin('N', board_no)
+    })
+
+    function schJoin(status, board_no) {
+        $.ajax({
+            url: '/schedule/schJoin.do',
+            data: {
+                "board_no": board_no,
+                "status": status
+            },
+            async: false,
+            success: function (data) {
+                console.log('dd')
+            }
+        })
+        loadSchAttendee(board_no)
+    }
+
+    function loadSchAttendee(board_no) {
+        $.ajax({
+            url: '/schedule/loadSchAttendee.do',
+            data: {
+                "board_no": board_no
+            },
+            async: false,
+            success: function (data) {
+                console.log(data)
+                $("#schYCount").text('참석 ' + data.yCount)
+                $("#schNCount").text('불참' + data.nCount)
+            }
+        })
+    }
+
     $(document).on('click', '.removeEmp', function () {
         $(this).parent().parent().remove()
         //console.log($("#postForArea").html())
         if ($("#postForArea").html() == '') {
             $(".postFor").css("display", "inline-block")
             console.log('ff')
+        }
+        if ($("input[name=sch_attendee]").length == 0) {
+            $("#addPeople").css("display", "block")
         }
 
     })
@@ -1321,15 +1392,15 @@
                 )
             }
             console.log($("#postForListArea").html())
-            if($("#postForListArea").html() != ''){
+            if ($("#postForListArea").html() != '') {
                 $(".postFor").css("display", "none")
-               $("#postForListArea").find("b").each(function (e) {
+                $("#postForListArea").find("b").each(function (e) {
                     //console.log($(this).text())
                     $("#postForArea").append('<span class="empName">' + $(this).text() + '<span><input type="hidden" name="post_for" ' +
                         'value="' + $(this).next().val() + '">' +
                         '<i class="bi bi-x fa-2x removeEmp" style="color: red; padding-right: 0px;"></i></span></span>')
 
-                   // $(".postFor").parent().append(content)
+                    // $(".postFor").parent().append(content)
                 })
 
             }
@@ -1344,7 +1415,7 @@
                 '<input type="hidden" name="change_name" value="' + $(this).val() + '">' +
                 '<input type="hidden" name="file_no" value="' + $(this).next().val() + '">' +
                 '<input type="hidden" name="origin_name" value="' + $(this).next().next().val() + '">' +
-            '<input type="hidden" name="path" value="' + $(this).next().next().next().val() + '">'
+                '<input type="hidden" name="path" value="' + $(this).next().next().next().val() + '">'
             )
             $(this).remove()
             $(".fileUploadBtn").css("display", "inline-block")
@@ -1379,9 +1450,9 @@
                     $("input[name=sch_place]").val(data.sch_place)
                     $("textarea[name=sch_content]").val(data.sch_content)
                     $("textarea[name=sch_content]").text(data.sch_content)
-                    if (data.sch_attendee != undefined) {
-                        $("#addPeople").val(data.sch_attendee)
-                    }
+                    // if (data.sch_attendee != undefined) {
+                    //     $("#addPeople").val(data.sch_attendee)
+                    // }
                 }
             })
             $(".boardUploadForm").append(
@@ -1443,8 +1514,17 @@
                             content += '</div>'
                             content += '</div>'
                             content += '<div class="col-lg-1">'
-                            content += '<i class="bi bi-person fa-2x todoPerson"></i>'
-                            content += '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'
+                            if (obj.todo_for != undefined) {
+                                content += '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">'
+                                content += '<a>' + obj.todo_for_name + '</a>'
+                                content += '<input type="hidden" name="todo_for" value="' + obj.todo_for + '">'
+                                content += '</p>'
+                            } else {
+                                content += '<i class="bi bi-person fa-2x todoPerson"></i>'
+                                content += '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">'
+                                content += '<input type="hidden" name="todo_for">'
+                                content += '</p>'
+                            }
                             content += '</div>'
                             content += '<input type="hidden" name="status" value="' + obj.status + '">'
                             content += '</div>'
@@ -1540,7 +1620,7 @@
                             }
                             content += '</tr>'
                             $(".inviteTable").append(content)
-                            $("#inviteEmpBtn").css("display", "block")
+                            $("#inviteEmpBtn").css("display", "inline-block")
                         })
                     } else {
                         var content = '<tr><td>초대할 수 있는 사원이 없습니다.</td></tr>'
@@ -1564,7 +1644,7 @@
                     console.log(list)
                     $(".inviteTable").html('')
                     $.each(list, function (i, obj) {
-                        if(obj.emp_no != ${pjMember.emp_no}){
+                        if (obj.emp_no != ${pjMember.emp_no}) {
                             var content = '<tr>'
                             content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
                             content += '</td>'
@@ -1585,6 +1665,8 @@
                             $(".inviteTable").append(content)
                         }
                     })
+                    $("#PostAddEmpBtn").css("display", "inline-block")
+                    $("#SchAddEmpBtn").css("display", "none")
                     $("#mentionForModal").css("z-index", "123333")
                     $("#mentionForModal").modal("show")
                 }
@@ -1622,6 +1704,10 @@
                 alert("관리자만 작성할 수 있습니다.")
                 return false
             }
+            $("textarea[name=sch_content]").val('')
+            $("textarea[name=sch_content]").text('')
+            $("input[name=sch_attendee]").parent().parent().remove()
+            $("#addPeople").css("display", "block")
             $("#postForm").css("display", "none")
             $("#postSch").css("display", "block")
             $("#postTodo").css("display", "none")
@@ -1715,7 +1801,11 @@
         })
 
 
-        $(document).on('click', '#addEmpBtn', function () {
+        $(document).on('click', '#PostAddEmpBtn', function () {
+            if ($(this).parents("#mentionForModal").find(".inviteEmpNo:checked").length == 0) {
+                alert("한명 이상 선택해주세요.")
+                return false
+            }
             console.log($(this).parents("#mentionForModal").find(".emp_name"))
             console.log($(this).parents("#mentionForModal").find(".inviteEmpNo"))
             $(this).parents("#mentionForModal").find(".inviteEmpNo:checked").each(function (e) {
@@ -1732,6 +1822,24 @@
             $("#mentionForModal").modal("hide")
         })
 
+        $(document).on('click', '#SchAddEmpBtn', function () {
+            if ($(this).parents("#mentionForModal").find(".inviteEmpNo:checked").length == 0) {
+                alert("한명 이상 선택해주세요.")
+                return false
+            }
+            console.log($(this).parents("#mentionForModal").find(".emp_name"))
+            console.log($(this).parents("#mentionForModal").find(".inviteEmpNo"))
+            $(this).parents("#mentionForModal").find(".inviteEmpNo:checked").each(function (e) {
+                var content = $(this).parents("tr").find(".emp_name").text()
+                $("#addPeople").parent().append('<span class="empName">' + content + '<span><input type="hidden" name="sch_attendee" ' +
+                    'value="' + $(this).val() + '">' +
+                    '<i class="bi bi-x fa-2x removeEmp" style="color: red; padding-right: 0px;"></i></span></span>')
+            })
+            if ($("input[name=sch_attendee]").length > 0) {
+                $("#addPeople").css("display", "none")
+            }
+            $("#mentionForModal").modal("hide")
+        })
         $(".fa-plus").click(function () {
             $(".todos").append(
                 '<div class="form-group row">' +
@@ -1751,7 +1859,9 @@
                 '</div>' +
                 '<div class="col-lg-1">' +
                 '<i class="bi bi-person fa-2x todoPerson"></i>' +
-                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>' +
+                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
+                '<input type="hidden" name="todo_for">' +
+                '</p>' +
                 '</div>' +
                 '<input type="hidden" name="status" value="N">' +
                 '</div>'
@@ -1832,8 +1942,11 @@
                 '</div>' +
                 '<div class="col-lg-1">' +
                 '<i class="bi bi-person fa-2x todoPerson"></i>' +
-                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>' +
+                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
+                '<input type="hidden" name="todo_for">' +
+                '</p>' +
                 '</div>' +
+                '<input type="hidden" name="status" value="N">' +
                 '</div>'
             )
             datepickerLoad()
@@ -1852,7 +1965,6 @@
         })
     })
 
-
     $(document).on('click', '#addPeople', function () {
         $.ajax({
             url: '/project/selectEmpListByPj.do',
@@ -1864,7 +1976,7 @@
                 console.log(list)
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
-                    if(obj.emp_no != ${pjMember.emp_no}){
+                    if (obj.emp_no != ${pjMember.emp_no}) {
                         var content = '<tr>'
                         content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
                         content += '</td>'
@@ -1885,13 +1997,52 @@
                         $(".inviteTable").append(content)
                     }
                 })
+                $("#PostAddEmpBtn").css("display", "none")
+                $("#SchAddEmpBtn").css("display", "inline-block")
+                $("#mentionForModal").css("z-index", "111112")
                 $("#mentionForModal").modal("show")
             }
         })
     })
 
     $(document).on('click', '.viewAttendee', function () {
-        $("#mentionForModal").modal("show")
+        $.ajax({
+            url: '/schedule/selectSchAttendee.do',
+            data: {
+                "board_no": $(this).parents(".boardBody").find(".detailViewBoard_no").val(),
+            },
+            success: function (list) {
+                console.log(list)
+                $("#viewSchAttendee").find(".inviteTable").html('')
+                console.log(list.length)
+                if (list.length > 0) {
+                    $.each(list, function (i, obj) {
+                        var content = '<tr>'
+                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                        content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                        content += '</td>'
+                        content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                        content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                        content += '</td>'
+                        content += '</tr>'
+                        content += '<tr>'
+                        if (obj.job_name != undefined) {
+                            content += '<td style="text-align: center;">' + obj.job_name + '</td>'
+                        } else {
+                            content += '<td style="text-align: center;">직급이 없습니다.</td>'
+                        }
+                        content += '</tr>'
+
+                        $("#viewSchAttendee").find(".inviteTable").append(content)
+                    })
+                } else {
+                    $("#viewSchAttendee").find(".inviteTable").append('<tr><td>참석한 사원이 없습니다.</td></tr>')
+                }
+
+                $("#viewSchAttendee").modal("show")
+            }
+        })
+
     })
 
     $(document).on('click', '.calendar', function () {
@@ -1908,18 +2059,59 @@
         location.href = "/project/drivePj.do?pj_no=" +
         ${pj.pj_no}
     })
-
+    var $forRemove
+    var $todo
     $(document).on('click', '.todoPerson', function () {
-        var $forRemove = $(this)
-        var $todo = $(this).next()
-        $("#todoFor").modal("show")
-        $(".selectTodoFor").click(function () {
-            console.log($todo)
-            console.log($(this))
-            $todo.html('테스트')
-            $forRemove.remove()
+        $forRemove = $(this)
+        $todo = $(this).next()
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'all'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    var content = '<tr class="selectTodoFor">'
+                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                    content += '</td>'
+                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                    content += '</td>'
+                    content += '</tr>'
+                    content += '<tr>'
+                    if (obj.job_name != undefined) {
+                        content += '<td style="text-align: center;">' + obj.job_name + '</td>'
+                    } else {
+                        content += '<td style="text-align: center;">직급이 없습니다.</td>'
+                    }
+                    content += '</tr>'
+
+                    $("#todoFor").find(".inviteTable").append(content)
+                })
+                $("#todoFor").find(".inviteTable").append('<tr><td></td>초대할 수 있는 사원이 없습니다.</tr>')
+
+                $("#todoFor").css("z-index","112222")
+                $("#todoFor").modal("show")
+            }
         })
     })
+    $(document).on('click', '.selectTodoFor', function () {
+        console.log($forRemove)
+        console.log($(this))
+        console.log($(this).find(".inviteEmpNo").val())
+        console.log($(this).children().eq(1).text())
+        var content = '<a>' + $(this).children().eq(1).text() + '</a>'
+        content += '<input type="hidden" name="todo_for" value="' + $(this).find(".inviteEmpNo").val() + '">'
+        $todo.html(content)
+        $forRemove.remove()
+        $("#todoFor").modal("hide")
+
+    })
+
 
     $(document).on('click', '.todoFor', function () {
         $(this).parent().html(' <i class="bi bi-person fa-2x todoPerson"></i>' +
@@ -1951,10 +2143,12 @@
             url: '/project/setProjectColor.do',
             data: {
                 "selectedProjects": selectedProjects,
-                "selectedColor": selectedColor
+                "selectedColor": selectedColor,
+                "pj_no": ${pj.pj_no}
             },
             success: function (data) {
-                //console.log(data)
+                console.log(data)
+                $(".colors").attr("class", "colors " + data)
 
             }
         })
@@ -2097,48 +2291,28 @@
                 } else {
                     $(".replyHrArea").css("display", "block")
                     $.each(list, function (i, obj) {
+                        var content = '<div class="reply">'
+                        content += '<div class="col-lg-10" style="display: inline-block">'
+                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
+                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
+                        content += '</div>'
                         if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
-                            $(".replyArea").append(
-                                '<div class="reply">' +
-                                '<div class="col-lg-10" style="display: inline-block">' +
-                                '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>' +
-                                '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>' +
-                                '</div>' +
-                                '<div class="col-lg-2 text-right" style="display: inline-block">' +
-                                '<a class="editReplyBtn">수정&nbsp </a>' +
-                                '<a class="deleteReplyBtn">&nbsp 삭제</a>' +
-                                '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>' +
-                                '</div>' +
-                                '<br> <br>' +
-                                '<div class="col-lg-10">' +
-                                '<a class="ml-4 replyContent">' + obj.reply_content + '</a>' +
-                                '</div>' +
-                                '<br> <br>' +
-                                '</div>'
-                            )
-
-                        } else {
-                            $(".replyArea").append(
-                                '<div class="col-lg-10" style="display: inline-block">' +
-                                '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>' +
-                                '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>' +
-                                '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>' +
-                                '</div>' +
-                                '<br> <br>' +
-                                '<div class="col-lg-10">' +
-                                '<a class="ml-4 replyContent">' + obj.reply_content + '</a>' +
-                                '</div>' +
-                                '<br> <br>'
-                            )
+                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
+                            content += '<a class="editReplyBtn">수정&nbsp </a>'
+                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
+                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
+                            content += '</div>'
                         }
-
-
+                        content += '<br> <br>'
+                        content += '<div class="col-lg-10">'
+                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
+                        content += '</div>'
+                        content += '<br> <br>'
+                        content += '</div>'
+                        $(".replyArea").append(content)
                     })
                 }
-
-
             }
-
         });
     }
 
@@ -2151,7 +2325,7 @@
             success: function (data) {
                 console.log(data)
                 $(".boardTable").html('')
-                $.each(data, function (i, obj) {
+                $.each(data.list, function (i, obj) {
                     if (obj.board_type == 'post') {
                         $(".boardTable").append(
                             '<tr>' +
@@ -2294,21 +2468,21 @@
                             $("#postFileArea").css("display", "block")
                         }
                         $("#postForListArea").html('')
-                        if(list.postForEmpList != null){
+                        if (list.postForEmpList != null) {
                             $.each(list.postForEmpList, function (i, obj) {
-                                var content = '<b style="color: #3C3B3D"> @'+ obj.name +'</b>'
-                                content += '<input type="hidden" value="'+ obj.emp_no +'">'
+                                var content = '<b style="color: #3C3B3D"> @' + obj.name + '</b>'
+                                content += '<input type="hidden" value="' + obj.emp_no + '">'
                                 $("#postForListArea").append(content)
-                                $("#postForListArea").css("display","block")
+                                $("#postForListArea").css("display", "block")
                             })
                         }
                         //console.log(list.count)
                         $(".viewCount").text("조회 " + list.post.count)
-                        if ("${sessionScope.loginEmp.name}" == list.name) {
+                        if ("${sessionScope.loginEmp.emp_no}" == list.post.emp_no) {
                             // console.log('확인')
-                            $(".postEdit").css("display", "block")
+                            $("#postEditBtn").parent().css("display", "block")
                         } else {
-                            $(".postEdit").css("display", "none")
+                            $("#postEditBtn").parent().css("display", "none")
                         }
 
                     }
@@ -2327,32 +2501,54 @@
                         $("#postView").css("display", "none")
                         $("#schView").css("display", "block")
                         $("#todoView").css("display", "none")
-                        $("#schTitle").html(list.sch_title)
-                        $("#schContent").html(list.sch_content)
-                        $("#schWriter").html(list.name)
-                        $("#schUploadDate").html(list.create_date)
-                        $(".detailViewBoard_no").val(list.board_no)
-                        if (moment(list.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        $("#schTitle").html(list.sch.sch_title)
+                        $("#schContent").html(list.sch.sch_content)
+                        $("#schWriter").html(list.sch.name)
+                        $("#schUploadDate").html(list.sch.create_date)
+                        $(".detailViewBoard_no").val(list.sch.board_no)
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
                             $("#schDate").html(
-                                moment(list.sch_start).format('YYYY-MM-DD (ddd)')
+                                moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
                         } else {
                             $("#schDate").html(
-                                moment(list.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch_end).format('YYYY-MM-DD (ddd)')
+                                moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
                             )
                         }
 
-                        $("#schPlace").html(list.sch_place)
+                        $("#schPlace").html(list.sch.sch_place)
                         //console.log(list.count)
-                        $(".viewCount").text("조회 " + list.count)
-                        if ("${sessionScope.loginEmp.name}" == list.name) {
+                        $(".viewCount").text("조회 " + list.sch.count)
+                        if ("${sessionScope.loginEmp.emp_no}" == list.sch.emp_no) {
                             // console.log('확인')
-                            $(".postEdit").css("display", "block")
+                            $("#schEditBtn").parent().css("display", "block")
                         } else {
-                            $(".postEdit").css("display", "none")
+                            $("#schEditBtn").parent().css("display", "none")
                         }
-
+                        $.each(list.schAttendeeList, function (i, obj) {
+                            if (obj.emp_no != ${pjMember.emp_no}) {
+                                var content = '<tr>'
+                                content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                                content += '</td>'
+                                content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
+                                content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                                content += '<div class="custom-control custom-checkbox">'
+                                content += '</div>'
+                                content += '</td>'
+                                content += '</tr>'
+                                content += '<tr>'
+                                if (obj.job_name != undefined) {
+                                    content += '<td>' + obj.job_name + '</td>'
+                                } else {
+                                    content += '<td>직급이 없습니다.</td>'
+                                }
+                                content += '</tr>'
+                                $("#viewSchAttendee").find(".inviteTable").append(content)
+                            }
+                        })
+                        loadSchAttendee(list.sch.board_no)
                     }
+
                 })
             } else if ($(this).find(".board_type").val() == 'todo') {
                 $.ajax({
@@ -2374,11 +2570,11 @@
                         $(".detailViewBoard_no").val(list[0].board_no)
                         //console.log(list.count)
                         $(".viewCount").text("조회 " + list[0].count)
-                        if ("${sessionScope.loginEmp.name}" == list[0].name) {
+                        if ("${sessionScope.loginEmp.emp_no}" == list[0].emp_no) {
                             // console.log('확인')
-                            $(".postEdit").css("display", "block")
+                            $("#todoEditBtn").parent().css("display", "block")
                         } else {
-                            $(".postEdit").css("display", "none")
+                            $("#todoEditBtn").parent().css("display", "none")
                         }
                         var completeCount = 0;
                         $("#todos").html('')
@@ -2403,10 +2599,14 @@
                                 content += '</div>'
                                 content += '<div class="col-3">'
                                 if (obj.todo_end != undefined) {
-                                    content += '<span>' + moment(obj.todo_end).format('MM-DD') + '</span>'
+                                    content += '<div class="todoForName" style="color: #8c98f3;width: 50%; display: inline-block">' + moment(obj.todo_end).format('MM-DD') + '</div>'
+                                } else {
+                                    content += '<div style="width: 50%; display: inline-block"></div>'
                                 }
                                 if (obj.todo_for != undefined) {
-                                    content += '<span>' + obj.todo_for + '</span>'
+                                    content += '<div style="width: 50%; display: inline-block">' + obj.todo_for_name + '</div>'
+                                } else {
+                                    content += '<div style="width: 50%; display: inline-block"></div>'
                                 }
                                 content += '</div>'
                                 content += '</div>'

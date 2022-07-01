@@ -1,15 +1,19 @@
 package com.uni.wt.project.boardAll.model.service;
 
+import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.project.boardAll.model.dao.BoardAllMapper;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
@@ -18,6 +22,8 @@ import java.util.ArrayList;
 public class BoardAllServiceImpl implements BoardAllService {
     @Autowired
     private BoardAllMapper boardAllMapper;
+
+    private Map<String, Object> paramMap = new HashMap<String, Object>();
     @Override
     public ArrayList<BoardAll> selectAllBoard(int pj_no) throws Exception {
         return boardAllMapper.selectAllBoard(pj_no);
@@ -61,6 +67,26 @@ public class BoardAllServiceImpl implements BoardAllService {
         if (result < 0) {
             throw new Exception("댓글 삭제 실패");
         }
+    }
+
+    @Override
+    public int getListCount(int pj_no, String boardType) throws Exception {
+        paramMap.put("boardType", boardType);
+        paramMap.put("pj_no", pj_no);
+        int result = boardAllMapper.getListCount(paramMap);
+        paramMap.clear();
+        return result;
+    }
+
+    @Override
+    public ArrayList<BoardAll> selectPjBoardList(int pj_no,PageInfo pi, String boardType) throws Exception {
+        int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+        RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
+        paramMap.put("boardType", boardType);
+        paramMap.put("pj_no", pj_no);
+        ArrayList<BoardAll> list = boardAllMapper.selectPjBoardList(paramMap, rwB);
+        paramMap.clear();
+        return  list;
     }
 
 }

@@ -120,6 +120,7 @@
         WHERE A.EMP_NO NOT IN (SELECT EMP_NO FROM PROJECT_MEMBER WHERE PJ_NO = #{pj_no})
         AND A.STATUS != 'Q'
     </select>
+
     <update id="editReply" parameterType="Reply">
         UPDATE BOARD_REPLY
         SET REPLY_CONTENT = #{reply_content}

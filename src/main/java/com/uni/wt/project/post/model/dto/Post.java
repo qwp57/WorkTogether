@@ -7,6 +7,8 @@ public class Post {
 
     private int board_no;
 
+    private int emp_no;
+
     private String post_title;
 
     private String post_content;

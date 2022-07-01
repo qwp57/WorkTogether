@@ -18,6 +18,10 @@
  	<result property="response_date" column="RESPONSE_DATE"/>
  	<result property="file_no" column="FILE_NO"/>
  	<result property="approval_no" column="APPROVAL_NO"/>
+ 	<result property="change_name" column="CHANGE_NAME"/>
+ 	<result property="original_name" column="ORIGINAL_NAME"/>
+ 	<result property="approval_name" column="APPROVAL_NAME"/>
+ 	<result property="vac_name" column="VAC_NAME"/>
  </resultMap>
  
  
@@ -283,7 +287,8 @@ ORDER BY A.START_DATE DESC
 
 <update id="updateVacStatus" parameterType="Vacation">
 UPDATE VACATION_LOG
-SET STATUS = #{status}
+SET STATUS = #{status},
+	RESPONSE_DATE = SYSDATE
 WHERE VAC_NO = #{vac_no}
 </update>
 
@@ -300,5 +305,37 @@ DELETE FROM VACATION_LOG
 WHERE VAC_NO = #{vac_no}
 </delete>
 
+<select id="selectVacationDetail" parameterType="_int" resultMap="vacationSet">
+SELECT 
+    VAC_NO,
+    A.EMP_NO,
+    B.VAC_NAME,
+    TO_CHAR(START_DATE, 'YYYY-MM-DD') STARTDATE,
+    TO_CHAR(END_DATE, 'YYYY-MM-DD') ENDDATE,
+    REQUEST_DATE,
+    TO_CHAR(RESPONSE_DATE, 'YYYY-MM-DD') RESPONSEDATE,
+    CONTENT,
+    A.FILE_NO,
+    C.CHANGE_NAME,
+    C.ORIGINAL_NAME, 
+    A.STATUS,
+    A.APPROVAL_NO,
+    D.NAME AS APPROVAL_NAME
+FROM VACATION_LOG A
+JOIN VACATION B ON A.VCATEGORY_NO = B.VCATEGORY_NO
+LEFT JOIN ATTACHMENT C ON A.FILE_NO = C.FILE_NO
+JOIN EMPLOYEE D ON A.APPROVAL_NO = D.EMP_NO
+WHERE A.VAC_NO = #{vac_no}
+</select>
+
+<update id="modifiedVacation" parameterType="Vacation">
+UPDATE VACATION_LOG
+SET START_DATE = #{start_date},
+	END_DATE = #{end_date},
+	CONTENT = #{content},
+	FILE_NO = #{file_no},
+	APPROVAL_NO = #{approval_no}
+WHERE VAC_NO = #{vac_no}
+</update>
 
 </mapper>

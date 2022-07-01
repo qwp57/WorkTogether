@@ -17,4 +17,6 @@ public interface TodoService {
     int getTodoPercent(int board_no) throws Exception;
 
     void editTodo(ArrayList<Todo> todos) throws Exception;
+
+    String getEmpNameByEmpNo(int emp_no) throws Exception;
 }

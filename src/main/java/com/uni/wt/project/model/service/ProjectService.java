@@ -1,6 +1,8 @@
 package com.uni.wt.project.model.service;
 
+import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
+import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
@@ -47,4 +49,5 @@ public interface ProjectService {
     void keepProject(int pj_no) throws Exception;
 
     ArrayList<RequestWork> loadRw(int pj_no) throws Exception;
+
 }
