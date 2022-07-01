@@ -22,4 +22,6 @@ public class ApprovalLine {
 	private Date firstApprovalDate;		//최초 결재자 결재일
 	private Date lastApprovalDate;		//최종 결재자 결재일
 	private String rejectionReason; 	//반려 사유
+	private String firstApprovalResult;
+	private String finalApprovalResult;
 }

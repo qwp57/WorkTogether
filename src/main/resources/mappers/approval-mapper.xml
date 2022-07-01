@@ -51,6 +51,8 @@
 		<result property="firstApprovalDate" column="FIRST_APPROVAL_DATE"/>
 		<result property="lastApprovalDate" column="FINAL_APPROVAL_DATE"/>
 		<result property="rejectionReason" column="REJECTION_REASON"/>
+		<result property="firstApprovalResult" column="FIRST_APPROVAL_RESULT"/>
+		<result property="finalApprovalResult" column="FINAL_APPROVAL_RESULT"/>
 	</resultMap>
 	
 	<resultMap type="ApprovalLoa" id="approvalLoaResultSet">
@@ -124,7 +126,7 @@
 	<!-- 최초 결재자만 있는 경우 등록 -->
 	<insert id="insertApprovalLine1" parameterType="ApprovalLine">
 		INSERT INTO APPROVAL_LINE
-		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, NULL, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL)
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, NULL, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL, NULL, NULL)
 		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
 			SELECT APPL_SEQ.CURRVAL AS LINE_NO FROM DUAL
 		</selectKey>
@@ -133,7 +135,7 @@
 	<!-- 최종 결재자도 있는 경우 등록 -->
 	<insert id="insertApprovalLine2" parameterType="ApprovalLine">
 		INSERT INTO APPROVAL_LINE
-		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, #{finalApproverNo}, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL)
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, #{finalApproverNo}, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL, NULL, NULL)
 		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
 			SELECT APPL_SEQ.CURRVAL AS LINE_NO FROM DUAL
 		</selectKey>
@@ -338,14 +340,16 @@
 		OR B.FINAL_APPROVER_NO=#{emp_no})
 		ORDER BY A.CREATE_DATE DESC
 	</select>
-	
+		
+	<!-- 승인 -->
 	<!-- 레벨 1 최초 결재자 결재선 업데이트 -->
-	<update id="updateAppLLevelOneFirstApprover" parameterType="Map">
+	<update id="updateAppLineLevelOneFirstApprover" parameterType="Map">
 		UPDATE APPROVAL_LINE
-		SET PROGRESS='C', FIRST_APPROVAL_DATE=SYSDATE
+		SET PROGRESS='C', FIRST_APPROVAL_DATE=SYSDATE, FIRST_APPROVAL_RESULT='C'
 		WHERE APPROVAL_NO=#{arppvoalNo}
 		AND FIRST_APPROVER_NO=#{firstApproverNo}
 	</update>
+	
 	
 	<!-- 레벨 1 최초 결재자 결재 문서 업데이트 -->
 	<update id="updateAppLevelOneFirstApprover" parameterType="int">
@@ -355,9 +359,9 @@
 	</update>
 	
 	<!-- 레벨 2 최초 결재자 결재선 업데이트  -->
-	<update id="updateAppLLevelTwoFirstApprover" parameterType="Map">
+	<update id="updateAppLineLevelTwoFirstApprover" parameterType="Map">
 		UPDATE APPROVAL_LINE
-		SET PROGRESS='P', FIRST_APPROVAL_DATE=SYSDATE
+		SET PROGRESS='P', FIRST_APPROVAL_DATE=SYSDATE, FIRST_APPROVAL_RESULT='C'
 		WHERE APPROVAL_NO=#{arppvoalNo}
 		AND FIRST_APPROVER_NO=#{firstApproverNo}
 	</update> 
@@ -370,9 +374,9 @@
 	</update>
 	
 	<!-- 레벨 2 최종 결재자 결재선 업데이트  -->
-	<update id="updateAppLLevelTwoFinalApprover" parameterType="Map">
+	<update id="updateAppLineLevelTwoFinalApprover" parameterType="Map">
 		UPDATE APPROVAL_LINE
-		SET PROGRESS='C', FINAL_APPROVAL_DATE=SYSDATE
+		SET PROGRESS='C', FINAL_APPROVAL_DATE=SYSDATE, FINAL_APPROVAL_RESULT='C'
 		WHERE APPROVAL_NO=#{arppvoalNo}
 		AND FINAL_APPROVER_NO=#{finalApproverNo}
 	</update>
@@ -383,4 +387,62 @@
 		SET PROGRESS='C', APPROVAL_DATE=SYSDATE
 		WHERE APPROVAL_NO=#{arppvoalNo}
 	</update>
-</mapper>
+	
+	<!--  반려 -->
+	<!-- 최초 결재자 결재선 업데이트  -->
+	<update id="updateRejectLineFirstApprover" parameterType="Map">
+		UPDATE APPROVAL_LINE
+		SET PROGRESS='R', FIRST_APPROVAL_DATE=SYSDATE, REJECTION_REASON=#{rejectionReason}, FIRST_APPROVAL_RESULT='R'
+		WHERE APPROVAL_NO=#{arppvoalNo}
+		AND FIRST_APPROVER_NO=#{firstApproverNo}
+	</update>
+	
+	<!--  최초 결재자 결재문서 업데이트  -->
+	<update id="updateRejectFirstApprover" parameterType="int">
+		UPDATE APPROVAL
+		SET PROGRESS='R', APPROVAL_DATE=SYSDATE
+		WHERE APPROVAL_NO=#{arppvoalNo}
+	</update>
+	
+	<!-- 최종 결재자 결재선 업데이트 -->
+	<update id="updateRejectLineFinalApprover" parameterType="Map">
+		UPDATE APPROVAL_LINE
+		SET PROGRESS='R', FINAL_APPROVAL_DATE=SYSDATE, REJECTION_REASON=#{rejectionReason}, FINAL_APPROVAL_RESULT='R'
+		WHERE APPROVAL_NO=#{arppvoalNo}
+		AND FINAL_APPROVER_NO=#{finalApproverNo}
+	</update>
+	
+	<!-- 최종 결재자 결재문서 업데이트 -->
+	<update id="updateRejectFinalApprover" parameterType="int">
+		UPDATE APPROVAL
+		SET PROGRESS='R', APPROVAL_DATE=SYSDATE
+		WHERE APPROVAL_NO=#{arppvoalNo}
+	</update>
+	
+	<!-- 업데이트 -->
+	<!-- 공통  문서 업데이트 -->
+	<update id="updateApproval" parameterType="Approval">
+		UPDATE APPROVAL
+		SET RETENTION_PERIOD=#{retentionPeriod}, EMERGENCY=#{emergency}, TITLE=#{title}, FILE_NO=#{fileNo}
+		WHERE APPROVAL_NO=#{approvalNo}
+	</update>
+	
+	<!-- 결재선 업데이트 -->
+	<update id="updateApprovalLineLevel" parameterType="Map">
+		UPDATE APPROVAL_LINE
+		<if test="finalApproverNo != 0">
+		SET FIRST_APPROVER_NO=#{firstApproverNo}, FINAL_APPROVER_NO=#{finalApproverNo}, LINE_LEVEL=2
+		</if>
+		<if test="finalApproverNo == 0">
+		SET FIRST_APPROVER_NO=#{firstApproverNo}
+		</if>
+		WHERE APPROVAL_NO=#{approvalNo}
+	</update>
+	
+	<!-- 품의서 업데이트 -->
+	<update id="updateLetterOfApproval" parameterType="ApprovalLoa">
+		UPDATE DOC_LOA
+		SET CONTENT=#{content}
+		WHERE APPROVAL_NO=#{approvalNo}
+	</update>
+</mapper> 
