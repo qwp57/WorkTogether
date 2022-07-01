@@ -19,6 +19,7 @@
         <result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
         <result property="job_name" column="JOB_NAME"/>
         <result property="name" column="NAME"/>
+        <result property="admin" column="ADMIN"/>
     </resultMap>
     <select id="nextPjNo" resultType="int">
         SELECT PJ_SEQ.NEXTVAL
@@ -103,7 +104,7 @@
         WHERE TAG_NO = #{tag_no}
     </delete>
     <select id="selectEmpListByPj" parameterType="int" resultMap="employeeSet">
-        SELECT B.EMP_NO, B.NAME, C.JOB_NAME
+        SELECT B.EMP_NO, B.NAME, C.JOB_NAME, A.ADMIN
         FROM PROJECT_MEMBER A
                  JOIN EMPLOYEE B
                       ON A.EMP_NO = B.EMP_NO

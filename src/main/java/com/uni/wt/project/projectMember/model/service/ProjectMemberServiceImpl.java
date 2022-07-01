@@ -37,11 +37,13 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public void removeBookmark(ProjectMember pjm) throws Exception {
+        log.info("여긴가4");
         int result = projectMemberMapper.removeBookmark(pjm);
 
         if (result < 0) {
             throw new Exception("즐겨찾기 삭제 실패");
         }
+        log.info("여긴가2");
     }
 
     @Override
@@ -107,6 +109,8 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         int result = projectMemberMapper.quitProject(pjMember);
         if (result < 0) {
             throw new Exception("프로젝트 나가기 실패");
+        }else {
+            removeBookmark(pjMember);
         }
     }
 

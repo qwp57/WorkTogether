@@ -23,14 +23,23 @@
         <result property="create_date" column="CREATE_DATE"/>
     </resultMap>
     <select id="nextBoardNo" resultType="int">
-        SELECT BOARD_SEQ.NEXTVAL FROM DUAL
+        SELECT BOARD_SEQ.NEXTVAL
+        FROM DUAL
     </select>
     <insert id="insertBoard" parameterType="BoardAll">
         INSERT INTO PJ_BOARD
         VALUES (#{board_no}, #{pj_no}, #{board_type}, #{writer}, SYSDATE, DEFAULT)
     </insert>
     <select id="selectAllBoard" parameterType="int" resultMap="boardAllSet">
-        SELECT DISTINCT A.BOARD_NO, A.PJ_NO, A.BOARD_TYPE, TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE ,E.NAME , B.POST_TITLE, C.SCH_TITLE, C.SCH_START, D.TODO_TITLE
+        SELECT DISTINCT A.BOARD_NO,
+                        A.PJ_NO,
+                        A.BOARD_TYPE,
+                        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE,
+                        E.NAME,
+                        B.POST_TITLE,
+                        C.SCH_TITLE,
+                        C.SCH_START,
+                        D.TODO_TITLE
         FROM PJ_BOARD A
                  LEFT JOIN BOARD_POST B
                            ON A.BOARD_NO = B.BOARD_NO
@@ -46,7 +55,15 @@
 
 
     <select id="selectPjBoardList" parameterType="map" resultMap="boardAllSet">
-        SELECT DISTINCT A.BOARD_NO, A.PJ_NO, A.BOARD_TYPE, TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE ,E.NAME , B.POST_TITLE, C.SCH_TITLE, C.SCH_START, D.TODO_TITLE
+        SELECT DISTINCT A.BOARD_NO,
+                        A.PJ_NO,
+                        A.BOARD_TYPE,
+                        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE,
+                        E.NAME,
+                        B.POST_TITLE,
+                        C.SCH_TITLE,
+                        C.SCH_START,
+                        D.TODO_TITLE
         FROM PJ_BOARD A
                  LEFT JOIN BOARD_POST B
                            ON A.BOARD_NO = B.BOARD_NO
@@ -57,22 +74,11 @@
                  JOIN EMPLOYEE E
                       ON A.WRITER = E.EMP_NO
         WHERE PJ_NO = #{pj_no}
-        <choose>
-            <when test='boardType.equals("all")'>
-            </when>
-            <when test='boardType.equals("post")'>
-                AND A.BOARD_TYPE = #{board_type}
-            </when>
-            <when test='boardType.equals("schedule")'>
-                AND A.BOARD_TYPE = #{board_type}
-            </when>
-            <when test='boardType.equals("todo")'>
-                AND A.BOARD_TYPE = #{board_type}
-            </when>
-        </choose>
+        <if test="board_type != null &amp;&amp; board_type != ''">
+            AND A.BOARD_TYPE = #{board_type}
+        </if>
         ORDER BY A.BOARD_NO DESC
-</select>
-
+    </select>
 
 
     <select id="getListCount" parameterType="map" resultType="_int">
@@ -80,26 +86,15 @@
         COUNT(*)
         FROM PJ_BOARD
         WHERE PJ_NO = #{pj_no}
-        <choose>
-            <when test='boardType.equals("all")'>
-            </when>
-            <when test='boardType.equals("post")'>
-                AND BOARD_TYPE = #{board_type}
-            </when>
-            <when test='boardType.equals("schedule")'>
-                AND BOARD_TYPE = #{board_type}
-            </when>
-            <when test='boardType.equals("todo")'>
-                AND BOARD_TYPE = #{board_type}
-            </when>
-        </choose>
+        <if test="board_type != null &amp;&amp; board_type != ''">
+            AND BOARD_TYPE = #{board_type}
+        </if>
     </select>
 
 
-
-
     <delete id="deleteBoard" parameterType="int">
-        DELETE FROM PJ_BOARD
+        DELETE
+        FROM PJ_BOARD
         WHERE BOARD_NO = #{board_no}
     </delete>
     <update id="increaseCount" parameterType="int">
@@ -120,7 +115,8 @@
         ORDER BY A.REPLY_NO
     </select>
     <delete id="deleteReply" parameterType="int">
-        DELETE FROM BOARD_REPLY
+        DELETE
+        FROM BOARD_REPLY
         WHERE REPLY_NO = #{reply_no}
     </delete>
 </mapper>
