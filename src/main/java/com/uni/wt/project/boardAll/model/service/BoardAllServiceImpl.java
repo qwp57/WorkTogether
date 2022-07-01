@@ -70,8 +70,9 @@ public class BoardAllServiceImpl implements BoardAllService {
     }
 
     @Override
-    public int getListCount(int pj_no, String boardType) throws Exception {
-        paramMap.put("boardType", boardType);
+    public int getListCount(int pj_no, String board_type) throws Exception {
+        log.info("글타입: " + board_type);
+        paramMap.put("board_type", board_type);
         paramMap.put("pj_no", pj_no);
         int result = boardAllMapper.getListCount(paramMap);
         paramMap.clear();
@@ -79,10 +80,10 @@ public class BoardAllServiceImpl implements BoardAllService {
     }
 
     @Override
-    public ArrayList<BoardAll> selectPjBoardList(int pj_no,PageInfo pi, String boardType) throws Exception {
+    public ArrayList<BoardAll> selectPjBoardList(int pj_no,PageInfo pi, String board_type) throws Exception {
         int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
         RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
-        paramMap.put("boardType", boardType);
+        paramMap.put("board_type", board_type);
         paramMap.put("pj_no", pj_no);
         ArrayList<BoardAll> list = boardAllMapper.selectPjBoardList(paramMap, rwB);
         paramMap.clear();

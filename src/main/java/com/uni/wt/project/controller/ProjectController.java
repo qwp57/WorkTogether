@@ -3,6 +3,7 @@ package com.uni.wt.project.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.uni.wt.common.Pagination;
+import com.uni.wt.common.commonFile.SearchDto;
 import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
@@ -79,9 +80,10 @@ public class ProjectController {
         myAllProjects.add(bookmarkProjects);
         return gson.toJson(myAllProjects);
     }
+
     @RequestMapping(value = "/invitePj.do", produces = "application/json; charset=utf-8")
     public String invitePj(@RequestParam("inviteEmpNo") int[] emp_no, @RequestParam("pj_no") int pj_no) throws Exception {
-        for (int i:emp_no) {
+        for (int i : emp_no) {
             log.info("사번 : " + i);
             ProjectMember pjm = new ProjectMember();
             pjm.setEmp_no(i);
@@ -93,6 +95,7 @@ public class ProjectController {
         msgMap.put("msg", "프로젝트 초대 완료.");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
+
     private Map<String, Object> responsList(int pj_no, int currentPage, String boardType) throws Exception {
         //요청된 업무 리스트 전체 개수
         int listCount = boardAllService.getListCount(pj_no, boardType);
@@ -102,7 +105,11 @@ public class ProjectController {
 
         ArrayList<BoardAll> list = boardAllService.selectPjBoardList(pj_no, pi, boardType);
         log.info("[요청받은 전체글 리스트] : {}", list);
-
+        if (boardType.equals("todo")) {
+            for (BoardAll b : list) {
+                b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
+            }
+        }
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("list", list);
@@ -110,19 +117,46 @@ public class ProjectController {
 
         return map;
     }
+
     @ResponseBody
     @RequestMapping(value = "/selectAllBoard.do", produces = "application/json; charset=utf-8")
     public String selectAllBoard(@RequestParam("pj_no") int pj_no) throws Exception {
 
         //ArrayList<BoardAll> allBoards = boardAllService.selectAllBoard(pj_no);
-        Map<String, Object>  allBoardsMap = responsList(pj_no, 1, "all");
-        for (BoardAll b : (ArrayList<BoardAll>)allBoardsMap.get("list")) {
-            if(b.getBoard_type().equals("todo")){
+        Map<String, Object> allBoardsMap = responsList(pj_no, 1, "");
+        for (BoardAll b : (ArrayList<BoardAll>) allBoardsMap.get("list")) {
+            if (b.getBoard_type().equals("todo")) {
                 b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
             }
         }
         //log.info("게시물 전체 조회 : " + new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoards));
         return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoardsMap);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/pagingAndSerachPj.do", produces = "application/text; charset=UTF-8")
+    public String pagingAndSerachPj(BoardAll boardAll, SearchDto sd, Project pj, int currentPage) throws Exception {
+//        log.info("검색할 내용 : {}", sd.toString());
+//
+//        log.info("board[type : "+boardAll.getBoard_type());
+//        log.info("SearchDto : {}", sd);
+//        log.info("pj : {}", pj);
+//
+//        int listCount = boardAllService.getListCount(pj.getPj_no(), boardAll.getBoard_type());
+//        log.info("전체 게시물 개수 : {}", listCount);
+//        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
+//
+//        ArrayList<BoardAll> list = boardAllService.selectPjBoardList(pj.getPj_no(), pi, boardAll.getBoard_type());
+//        for (BoardAll b : list) {
+//            if(b.getBoard_type().equals("todo")){
+//                b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
+//            }
+//        }
+//        log.info("[전체 게시물 리스트] : {}", list.toString());
+
+        Map<String, Object> map = responsList(pj.getPj_no(), currentPage, boardAll.getBoard_type());
+
+        return new Gson().toJson(map);
     }
 
     @ResponseBody
@@ -134,7 +168,7 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/quitProject.do")
-    public String quitProject(HttpSession session, @RequestParam("pj_no")int pj_no) throws Exception {
+    public String quitProject(HttpSession session, @RequestParam("pj_no") int pj_no) throws Exception {
         int loginEmp = ((Employee) session.getAttribute("loginEmp")).getEmp_no();
         ProjectMember pjMember = new ProjectMember();
         pjMember.setPj_no(pj_no);
@@ -142,6 +176,7 @@ public class ProjectController {
         projectMemberService.quitProject(pjMember);
         return "redirect:/project";
     }
+
     @ResponseBody
     @RequestMapping(value = "/setProjectColor.do", produces = "application/json; charset=utf-8")
     public String setProjectColor(HttpSession session, @RequestParam("selectedProjects[]") List<String> list, @RequestParam("selectedColor") String color) throws Exception {
@@ -213,11 +248,22 @@ public class ProjectController {
         ArrayList<Employee> list = new ArrayList<>();
         if (keyword != null) {
             list = projectService.selectEmpListByPj(pj_no);
-        }else {
+        } else {
             list = projectService.selectEmpInviteList(pj_no);
         }
         return new GsonBuilder().create().toJson(list);
 
+    }
+    @ResponseBody
+    @RequestMapping(value = "/deportEmp.do", produces = "application/json; charset=utf-8")
+    public String deportEmp(@RequestParam(value = "pj_no" ,required = false) int pj_no, @RequestParam("emp_no") int emp_no) throws Exception {
+        log.info("프로젝트 번호 : " + pj_no);
+        log.info("사원 번호 : " + emp_no);
+        ProjectMember pjMember = new ProjectMember();
+        pjMember.setPj_no(pj_no);
+        pjMember.setEmp_no(emp_no);
+        //projectMemberService.quitProject(pjMember);
+        return "test";
     }
 
     @ResponseBody
@@ -288,14 +334,16 @@ public class ProjectController {
 
         return "댓글 삭제 성공";
     }
+
     @ResponseBody
     @RequestMapping(value = "/loadRw.do", produces = "application/text;charset=utf8")
     public String loadRw(@RequestParam("pj_no") int pj_no) throws Exception {
 
-        ArrayList< RequestWork > list = projectService.loadRw(pj_no);
+        ArrayList<RequestWork> list = projectService.loadRw(pj_no);
 
         return new GsonBuilder().create().toJson(list);
     }
+
     @ResponseBody
     @RequestMapping(value = "/loadTag.do", produces = "application/text;charset=utf8")
     public String loadTag(HttpSession session, @RequestParam(value = "pj_no", required = false) String pj_noStr) throws Exception {
@@ -348,6 +396,7 @@ public class ProjectController {
         log.info("테스트");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
+
     @RequestMapping("/editPj.do")
     public String editPj(Project project) throws Exception {
         log.info("프로젝트 : " + project);
