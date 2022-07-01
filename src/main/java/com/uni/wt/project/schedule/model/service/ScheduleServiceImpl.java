@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
@@ -22,6 +24,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private BoardAllMapper boardAllMapper;
     @Autowired
     private ScheduleMapper scheduleMapper;
+
+    private Map<String, Object> paramMap = new HashMap<String, Object>();
 
     @Override
     public Schedule detailView(int board_no) throws Exception {
@@ -71,6 +75,16 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public ArrayList<Employee> selectSchAttendee(int board_no) throws Exception {
         return scheduleMapper.selectSchAttendee(board_no);
+    }
+
+    @Override
+    public ArrayList<Schedule> getCalendarByMonth(int pj_no, String date) throws Exception {
+        paramMap.put("pj_no", pj_no);
+        paramMap.put("date", date);
+
+        ArrayList<Schedule> list =  scheduleMapper.getCalendarByMonth(paramMap);
+        paramMap.clear();
+        return list;
     }
 
 }

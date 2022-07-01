@@ -1,18 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-		 pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+		 pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
-<jsp:include page="../common/header.jsp" />
-<jsp:include page="../common/sidebar.jsp" />
+<jsp:include page="../common/header.jsp"/>
+<jsp:include page="../common/sidebar.jsp"/>
 
 <head>
 	<meta charset="UTF-8">
-	<link href="${pageContext.request.contextPath}/resources/css/reset.css"
-		  rel="stylesheet" type="text/css">
-	<link
-			href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
-			rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
+		  rel="stylesheet">
 	<script src="https://kit.fontawesome.com/f2449ad7e5.js" crossorigin="anonymous"></script>
 </head>
 <style>
@@ -36,8 +33,8 @@
 	}
 
 	.project {
-		background-color: gray; -
-	-text: white;
+		background-color: gray;
+		--text: white;
 		margin: 20px;
 		padding: 20px;
 		padding-top: 0px;
@@ -52,6 +49,9 @@
 		color: #ffffff;
 		-text: white;
 	}
+
+
+	/*  색상 관련 */
 
 	.colors {
 		-text: white;
@@ -83,7 +83,6 @@
 		background: #8a40f2;
 	}
 
-
 	.color-5 {
 		background: #82B553;
 	}
@@ -99,6 +98,7 @@
 	.color-8 {
 		background: gray;
 	}
+
 
 	.project:hover {
 		box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.4);
@@ -123,7 +123,7 @@
 
 	.project__title {
 		grid-row: 3/4;
-		grid-column: 1 / 4;
+		grid-column: 1 / 5;
 		font-family: 'Nanum Gothic', sans-serif;
 		font-weight: 700;
 		color: #ffffff;
@@ -140,26 +140,13 @@
 	}
 
 	/* RESPONSIVE */
-	@media ( max-width : 1600px) {
+	@media ( max-width: 1600px) {
 		.projects {
 			justify-content: center;
 		}
 	}
 
-	/* .project__link::after {
-            position: absolute;
-            top: 25px;
-            left: 0;
-            content: "";
-            width: 0%;
-            height: 3px;
-            background-color: rgba(255, 255, 255, 0.6);
-            transition: all 0.5s;
-        }
-        .project__link:hover::after {
-            width: 100%;
-        }*/
-        
+
 	.newPj {
 		width: 180px;
 		height: 70px;
@@ -186,14 +173,13 @@
 		color: black;
 	}
 
-	.project .project__title {
-		justify-content: center;
-	}
-	.custom-radio{
+
+	.custom-radio {
 		position: relative;
 		left: 30px;
 		bottom: 20px;
 	}
+
 	#totalProjectEditBar {
 		z-index: 1000;
 		width: 100%;
@@ -204,7 +190,8 @@
 	}
 
 	#totalEditButton li {
-		display: inline-block; padding-left: 50px;
+		display: inline-block;
+		padding-left: 50px;
 		padding-right: 50px;
 		margin-left: 50px;
 		margin-right: 50px;
@@ -227,7 +214,8 @@
 	.select-clear {
 		color: red;
 	}
-	#tagTable{
+
+	#tagTable {
 		text-align: center;
 		width: 100%;
 		height: 100px;
@@ -247,14 +235,16 @@
 	}
 
 
-	td {
+	.listViewTable tr td {
 		padding: 10px;
 	}
+
 	td:first-child {
 		border-left-style: none;
 		border-top-left-radius: 25px;
 		border-bottom-left-radius: 25px;
 	}
+
 	td:last-child {
 		border-right-style: none;
 		border-bottom-right-radius: 25px;
@@ -262,17 +252,17 @@
 	}
 
 
-
-
-	#tagTable tr:hover, .fa-plus:hover{
+	#tagTable tr:hover, .fa-plus:hover {
 		color: #6777ef;
 	}
-	#colorTable{
+
+	#colorTable {
 		text-align: center;
 		margin-left: 2%;
 		width: 100%;
 	}
-	.custom-radio{
+
+	.custom-radio {
 		margin-right: 27px;
 	}
 
@@ -284,11 +274,12 @@
 		color: lightgray;
 	}
 
-	#editBarClose, .select-clear, .project, .listViewTable tr, .fa-cog,
-	.fa-th-list, .fa-th-large, .fa-ellipsis-v , .fa-plus{
+	#editBarClose, .select-clear, .project, .listViewTable tr, .pjSettingBtn,
+	.listViewBtn, .largeViewBtn, .fa-ellipsis-v, .fa-plus {
 		cursor: pointer
 	}
-	.modal-content{
+
+	.modal-content {
 		z-index: 1001;
 	}
 </style>
@@ -297,10 +288,10 @@
 	<nav id="test" class="navbar bg-primary"
 		 style="display: block; height: 100px; text-align: center;">
 		<br> <i class='fa fa-paint-brush fa-lg' style='color: white;'></i>
-		<a class="navbar-brand" href="#" id="color">색상 설정</a> <i
+		<a class="navbar-brand" href="#" id="colorSettingBtn">색상 설정</a> <i
 			class='fa fa-tags fa-lg' style='color: white;'></i> <a
-			class="navbar-brand" href="#" id="tag">프로젝트 태그 설정</a> <a
-			id="editBarClose"><i class='fa fa-window-close fa-2x'
+			class="navbar-brand" href="#" id="tagSettingBtn">프로젝트 태그 설정</a> <a
+			id="editBarClose"><i class='fa fa-window-close fa-2x' id="closeTagSettingBtn"
 								 style='color: white;'></i></a>
 		<div style="height: 80px;"></div>
 
@@ -312,7 +303,6 @@
 </div>
 
 
-
 <div class="main-content largeView">
 	<div style="height: 50px;"></div>
 
@@ -322,53 +312,34 @@
 		<br> <br> <br>
 		<div style="width: 100%;">
 
-			<div class="topmenu">
+			<div class="topmenu showTag">
 				<h2>보관된 프로젝트</h2>
 			</div>
 
 			<div class="topmenu" style="text-align: right;">
 				<div class="menuIcon">
-					<i class='fa fa-cog fa-2x'></i>
+					<i class='fa fa-cog fa-2x pjSettingBtn'></i>
 				</div>
 				<div class="menuIcon">
-					<i class='fa fa-th-list fa-2x'></i>
+					<i class='fa fa-th-list fa-2x listViewBtn'></i>
 				</div>
 				<div class="menuIcon">
-					<i class='fa fa-th-large fa-2x' style="color: black;"></i>
+					<i class='fa fa-th-large fa-2x largeViewBtn' style="color: black;"></i>
 				</div>
 			</div>
 		</div>
 		<div style="height: 30px;"></div>
-		<div class="projects">
-
-			<c:forEach var="index" begin="1" end="8">
-				<div class="project color-${index }">
-					<div class="project__icon">
-						<i class='fa fa-star fa-2x favoYellow'></i>
-					</div>
-					<div class="project__check pjCheck" style="display: none;">
-						<div class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input pjCheckAll"
-								   id="ckedFavo${index }"> <label class="custom-control-label"
-																  for="ckedFavo${index }"></label>
-						</div>
-					</div>
-					<h3 class="project__title">테스트</h3>
-					<p class="project__count">
-						<i class='fa fa-user'
-						   style='color: white;'>&nbsp;7</i>
-					</p>
-					<p class="project__date">
-						<i class='fa fa-flag'
-						   style='color: white;'>&nbsp;2022-06-02</i>
-					</p>
-				</div>
-			</c:forEach>
-
+		<h3 class="favorite" style="display: none;">즐겨찾기</h3>
+		<div class="projects" id="favoLargeProjects">
 		</div>
+		<div style="width: 100%; height: 30px;"></div>
+		<h3 class="myProjects" style="display:none;">참여중</h3>
+		<div style="width: 100%; height: 30px;"></div>
+		<div class="projects" id="myLargeProjects">
+		</div>
+
 	</div>
 </div>
-
 
 <div class="main-content listView" style="display: none;">
 	<div style="height: 50px;"></div>
@@ -379,199 +350,553 @@
 		<br> <br> <br>
 		<div style="width: 100%;">
 
-			<div class="topmenu">
-				<h2>보관된 프로젝트</h2>
+			<div class="topmenu showTag">
+				<h2>내 프로젝트</h2>
 			</div>
 			<div class="topmenu" style="text-align: right;">
 				<div class="menuIcon">
-					<i class='fa fa-cog fa-2x'></i>
+					<i class='fa fa-cog fa-2x pjSettingBtn'></i>
 				</div>
 				<div class="menuIcon">
-					<i class='fa fa-th-list fa-2x'></i>
+					<i class='fa fa-th-list fa-2x listViewBtn'></i>
 				</div>
 				<div class="menuIcon">
-					<i class='fa fa-th-large fa-2x'></i>
+					<i class='fa fa-th-large fa-2x largeViewBtn'></i>
 				</div>
 			</div>
 		</div>
 		<div style="height: 30px;"></div>
+		<h3 class="favorite" style="display: none;">즐겨찾기</h3>
 		<div class="lists">
-			<table class="listViewTable">
-				<c:forEach var="index" begin="1" end="8">
-					<tr style="width: 100%;">
-						<td>
-							<div class="custom-control custom-checkbox pjCheck"
-								 style="display: none;">
-								<input type="checkbox" class="custom-control-input pjCheckAll"
-									   id="ckedFavo${index }"> <label
-									class="custom-control-label" for="ckedFavo${index}"></label>
-							</div>
-						</td>
-						<td><div class="colors color-${index }"></div></td>
-						<td style="width: 10%;"><i
-								class='icon fa fa-star fa-2x favoYellow'></i></td>
-						<th style="width: 40%;">테스트</th>
-						<td style="width: 20%"><i
-								class='fa fa-user'></i>&nbsp;7</td>
-						<td style="width: 30%;"><i
-								class='fa fa-flag'></i>&nbsp;2022-06-02</td>
-					</tr>
-				</c:forEach>
+			<table id="favoListProjects" class="listViewTable">
 			</table>
-
+			<div style="width: 100%; height: 30px;"></div>
+			<h3 class="myProjects" style="display:none;">참여중</h3>
+			<div style="width: 100%; height: 30px;"></div>
+			<table id="myListProjects" class="listViewTable">
+			</table>
 		</div>
 	</div>
 </div>
 
-
-
-
-
-
-<jsp:include page="colorTagModal.jsp" />
-<jsp:include page="pjForm.jsp" />
+<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="colorTagModal.jsp"/>
+<jsp:include page="pjFormModal.jsp"/>
 <script>
-	$(function() {
-		$("#tag").click(function() {
+	$(function () {
+
+		//참여중인 프로젝트 로드
+		loadProjects()
+
+
+		$(document).on("click", "#tagSettingBtn", function () {
+			if ($("input:checkbox[name='checkedPj']:checked").length <= 0) {
+				alert("프로젝트를 체크해주세요")
+				return false;
+			}
+			loadTag()
 			$("#tagModal").modal("show")
-		});
+		})
 
-		$("#color").click(function() {
+
+		$(document).on("click", "#colorSettingBtn", function () {
+			if ($("input:checkbox[name='checkedPj']:checked").length <= 0) {
+				alert("프로젝트를 체크해주세요")
+				return false;
+			}
 			$("#colorModal").modal("show")
-		});
-		
+		})
 
-		$(".fa-star").click(function(e) {
+
+		$(document).on("click", ".favoBtn", function (e) {
+			if ($(this).hasClass("listView")) {
+				var $pj_no = $(this).parent("td").prev().children(".colors").find("input[name='pj_no']").val()
+			} else {
+				var $pj_no = $(this).parent(".project__icon").prev().val()
+			}
+			//console.log("pj_no : " + $pj_no)
 			if ($(this).hasClass("favoWhite")) {
 				$(this).removeClass("favoWhite")
 				$(this).addClass("favoYellow")
 				console.log("즐겨찾기 추가할것")
+				insertBookmark($pj_no)
+
 			} else if ($(this).hasClass("favoYellow")) {
 				$(this).removeClass("favoYellow")
 				$(this).addClass("favoWhite")
 				console.log("즐겨찾기 제거할것")
+
+				removeBookmark($pj_no);
 			}
 			e.stopPropagation()
 		})
 
-		$(".fa-cog").click(function() {
+		function loadTag() {
+			$.ajax({
+				url: '/project/loadTag.do',
+				success: function (list) {
+					$.parseJSON(list);
+					//console.log(list)
+					$("#tagTable").html('')
+					$.each($.parseJSON(list), function (i, obj) {
+						$("#tagTable").append(
+								'<tr>' +
+								'<td><i class="fa fa-tag fa-lg"></i>' +
+								'</td>' +
+								'<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
+								'<td style="width: 20%; text-align: right;">' +
+								'<div class="custom-control custom-checkbox">' +
+								'<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+								'<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
+								'</div>' +
+								'</td>' +
+								'<td style="width: 15%; text-align: right;">' +
+								'<div class="btn-group dropright">' +
+								'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+								'<div class="dropdown-menu dropright">' +
+								'<a class="dropdown-item editTag" href="#">수정</a>' +
+								'<div class="dropdown-divider"></div>' +
+								'<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+								'</div>' +
+								'</div>' +
+								'</td>' +
+								'</tr>'
+						)
+					})
+				}
+
+			});
+		}
+
+		function insertBookmark(pj_no) {
+			$.ajax({
+				url: '/project/insertBookmark.do',
+				data: {
+					pj_no: pj_no
+				},
+				success: function (data) {
+					console.log(data + "성공")
+
+					loadProjects()
+
+				}
+			});
+		}
+
+		function removeBookmark(pj_no) {
+			$.ajax({
+				url: '/project/removeBookmark.do',
+				data: {
+					pj_no: pj_no
+				},
+				success: function (data) {
+					console.log(data + "성공")
+
+					loadProjects()
+
+				}
+			});
+		}
+
+		$(document).on("click", ".pjSettingBtn", function () {
 			$("#totalProjectEditBar").css("display", "block")
 			$(".pjCheck").css("display", "block")
 		})
 
-		$(".fa-window-close").click(function() {
+		$(document).on("click", "#closeTagSettingBtn", function () {
 			$(".pjCheck").css("display", "none")
 		})
 
-		$(".fa-th-list").click(function() {
-			console.log("ㅋㅋ")
+		$(document).on("click", ".listViewBtn", function () {
 			$(".largeView").css("display", "none")
 			$(".listView").css("display", "block")
-			$(".fa-th-list").css("color", "black")
-			$(".fa-th-large").css("color", "")
-
+			$(".listViewBtn").css("color", "black")
+			$(".largeViewBtn").css("color", "")
 		})
 
-		$(".fa-th-large").click(function() {
-			console.log("bb")
-
+		$(document).on("click", ".largeViewBtn", function () {
 			$(".listView").css("display", "none")
 			$(".largeView").css("display", "block")
-			$(".fa-th-large").css("color", "black")
-			$(".fa-th-list").css("color", "")
-
+			$(".largeViewBtn").css("color", "black")
+			$(".listViewBtn").css("color", "")
 		})
 
-		$("#editBarClose").click(function() {
-			$(".pjCheckAll").prop("checked", false)
-			$(".select-count").text("0개 프로젝트가 선택되었습니다.")
-			$("#totalProjectEditBar").css("display", "none")
+		$(document).on("click", "#editBarClose", function () {
+			closeMenu()
 		})
 
-		$(".select-clear").click(function() {
+		$(document).on("click", ".select-clear", function () {
 			$(".pjCheckAll").prop("checked", false)
 			$(".select-count").text("0개 프로젝트가 선택되었습니다.")
 		})
 
+		$(document).on("change", ".pjCheckAll", function () {
 
-		$(".pjCheckAll").change(function() {
-			console.log("체크변경")
-			console.log($('.pjCheckAll:checked'))
-			var checkedCnt = $('.pjCheckAll:checked').length;
-			console.log(checkedCnt)
+			//console.log("체크변경")
+			//console.log($(this).val())
+			if ($(this).hasClass('largeViewCheck')) {
+				$(".listViewTable").find('#listCkedPj' + $(this).val()).prop("checked", $(this).prop("checked"))
+			} else if ($(this).hasClass('listViewCheck')) {
+				$(".projects").find("#largeCkedPj" + $(this).val()).prop("checked", $(this).prop("checked"))
+			}
+			var checkedCnt = $('.pjCheckAll:checked').length / 2;
+			//console.log(checkedCnt)
 			$(".select-count").text(checkedCnt + "개 프로젝트가 선택되었습니다.")
 		})
 
-		$(".pjCheck").click(function(e) {
+		$(document).on("click", ".pjCheck", function (e) {
 			e.stopPropagation()
 		})
 
-		/*$(".fa-plus").click(function(){
-            $("#tagTable").append('<tr class="dontAdd"><td colspan="4">'+
-                    '<div class="input-group mb-3 id="dontAdd">' +
-                        '<input type="text" class="form-control" placeholder="" aria-label="">' +
-                        '<div class="input-group-append">' +
-                          '<button class="btn btn-primary" type="button">추가</button>' +
-                         '</div></div></td></tr>'
-            )
-        })*/
-		$(".tagAddBtn").click(function(){
-			$("#AddTagModal").modal("show")
+
+		$(document).on("click", ".tagAddBtn", function () {
+			$("#addTagModal").modal("show")
 		})
 
-		$(".newPj").click(function(){
+		$(document).on("click", ".newPj", function () {
 			$("#makePj").modal("show")
 		})
 
-		$(".project").click(function(e){
-			//project__icon
-			//project__check
-			console.log(e.target)
-			location.href = "/detailPj.do";
+		$(document).on("click", ".project", function () {
+			//console.log($(this).children('input[name=pj_no]').val())
+			var $pj_no = $(this).children('input[name=pj_no]').val()
+			location.href = "/project/detailPj.do?pj_no=" + $pj_no;
+		})
+		$(document).on("click", ".listViewTable tr", function () {
+			//console.log($(this).find("input[name='pj_no']").val())
+			var $pj_no = $(this).find("input[name='pj_no']").val()
+			location.href = "/project/detailPj.do?pj_no=" + $pj_no;
 		})
 
-		$("#tagEdit").click(function(){
+		$(document).on("click", ".editTag", function () {
+			$tag_name = $(this).parents("tr").find(".tagName").text()
+			$tag_no = $(this).parents("tr").find(".tagInput").val()
+			console.log($tag_name)
+			console.log($tag_no)
+			$("#tagEditInput").val($tag_name)
 			$("#tagEditModal").modal("show")
+			$("#editTagBtn").click(function () {
+				if ($("#tagEditInput").val() == "") {
+					alert("태그를 입력해주세요.")
+					return false
+				}
+				editTag($tag_no)
+
+			})
 		})
 
-		$("#addTag").click(function(){
-			console.log('확인df')
-				$("#tagTable").append(
-						'<tr>'+
-						'<td><i class="fa fa-tag fa-lg"></i>'+
-						'</td>'+
-						'<th style="width: 50%">테스트</th>'+
-						'<td style="width: 20%; text-align: right;">'+
-							'<div class="custom-control custom-checkbox">'+
-								'<input type="checkbox" class="custom-control-input" id="tag6">'+
-									' <label class="custom-control-label" for="tag6"></label>'+
-							'</div>'+
-						'</td>'+
-						'<td style="width: 15%; text-align: right;">'+
-							'<div class="btn-group dropright">'+
-								'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"'+
-								   'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
-								'<div class="dropdown-menu dropright">'+
-									'<a class="dropdown-item" href="#" id="tagEdit">수정</a>'+
-									'<div class="dropdown-divider"></div>'+
-									'<a class="dropdown-item" href="#">삭제</a>'+
-								'</div>'+
-							'</div>'+
-						'</td>'+
-					'</tr>'
-						)
+		$(document).on("click", ".deleteTag", function () {
+			if (confirm("삭제하시겠습니까?")) {
+				$tag_no = $(this).parents("tr").find(".tagInput").val()
+				console.log($tag_no)
+				removeTag($tag_no)
+			}
+
 		})
-		
-		
-		
-		
-		
+
+		$("#addTagBtn").click(function () {
+			if ($("#addTagInput").val() == "") {
+				alert("태그를 입력해주세요.")
+				return false
+			}
+			addTag()
+			//console.log($("#addTagInput").val())
+		})
+		$("#saveTagBtn").click(function () {
+
+
+		})
+
+
+		function addTag() {
+			$.ajax({
+				url: '/project/addTag.do',
+				data: {
+					"tag_name": $("#addTagInput").val()
+				},
+				async: false,
+				success: function (data) {
+					console.log(data)
+				}
+			})
+			loadTag()
+		}
+
+		function editTag(tag_no) {
+			//console.log($("#tagEditInput").val())
+			$.ajax({
+				url: '/project/editTag.do',
+				data: {
+					"tag_name": $("#tagEditInput").val(),
+					"tag_no": tag_no
+				},
+				async: false,
+				success: function (data) {
+					//console.log(data)
+				}
+			})
+			loadTag()
+		}
+
+		function removeTag(tag_no) {
+			$.ajax({
+				url: '/project/removeTag.do',
+				data: {
+					"tag_no": tag_no
+				},
+				async: false,
+				success: function (data) {
+					console.log(data)
+				}
+			})
+			loadTag()
+		}
 	})
-	
+
+
+	function loadProjects() {
+		$.ajax({
+			url: '/project/selectProject.do',
+			data:{
+				type: "stored"
+			},
+			success: function (list) {
+				console.log(list)
+				//myAllProjectsByTag
+				//console.log(list[0].length)
+				//console.log(list[1].length)
+				$favoLargeProjects = $("#favoLargeProjects")
+				$myLargeProjects = $('#myLargeProjects')
+				$favoListProjects = $("#favoListProjects")
+				$myListProjects = $("#myListProjects")
+				if (list[1].length > 0) {
+					$favoLargeProjects.html('');
+					$favoListProjects.html('');
+					$(".favorite").css("display", "block")
+					$.each(list[1], function (i, obj) {
+
+						$favoLargeProjects.append(
+								'<div class="project">' +
+								'<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
+								'<div class="project__icon">' +
+								'<i class="fa fa-star fa-2x favoYellow largeView favoBtn"></i>' +
+								'</div>' +
+								'<div class="project__check pjCheck" style="display: none;">' +
+								'<div class="custom-control custom-checkbox">' +
+								'<input type="checkbox" class="custom-control-input pjCheckAll largeViewCheck" value="' + obj.pj_no + '" name="checkedPj" id="largeCkedPj' + obj.pj_no + '">' +
+								'<label class="custom-control-label"  for="largeCkedPj' + obj.pj_no + '">' +
+								'</label>' +
+								'</div>' +
+								'</div>' +
+								'<h3 class="project__title">' + obj.pj_title + '</h3>' +
+								'<p class="project__count">' +
+								'<i class="fa fa-user" style="color: white;">&nbsp;' + obj.count + '</i>' +
+								'</p>' +
+								'<p class="project__date">' +
+								'<i class="fa fa-flag" style="color: white;">&nbsp;' + obj.create_date + '</i>' +
+								'</p>' +
+								'</div>'
+						)
+						$favoListProjects.append(
+								'<tr style="width: 100%;">' +
+								'<td>' +
+								'<div class="custom-control custom-checkbox pjCheck" style="display: none;">' +
+								'<input type="checkbox" class="custom-control-input pjCheckAll listViewCheck" value="' + obj.pj_no + '" id="listCkedPj' + obj.pj_no + '">' +
+								'<label class="custom-control-label"  for="listCkedPj' + obj.pj_no + '"></label>' +
+								'</div>' +
+								'</td>' +
+								'<td>' +
+								'<div class="colors">' +
+								'<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
+								'</div>' +
+								'</td>' +
+								'<td style="width: 10%;">' +
+								'<i class="icon fa fa-star fa-2x favoYellow listView favoBtn"></i></td>' +
+								'<th style="width: 40%; text-align: left;">' + obj.pj_title + '</th>' +
+								'<td style="width: 20%">' +
+								'<i class="fa fa-user">&nbsp;' + obj.count + '</i>' +
+								'</td>' +
+								'<td style="width: 30%;">' +
+								'<i class="fa fa-flag"></i>&nbsp;' + obj.create_date +
+								'</td>' +
+								'</tr>'
+						)
+					})
+					$favoLargeProjects.append('<div style="width: 100%; height: 30px;"></div>')
+				} else {
+					$favoLargeProjects.html('');
+					$favoListProjects.html('')
+					$(".favorite").css("display", "none")
+				}
+
+				if (list[0].length > 0) {
+					$myLargeProjects.html('');
+					$myListProjects.html('')
+					$(".myProjects").css("display", "block")
+
+
+					$.each(list[0], function (i, obj) {
+						$myLargeProjects.append(
+								'<div class="project">' +
+								'<input  name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
+								'<div class="project__icon">' +
+								'<i class="fa fa-star fa-2x favoWhite largeView favoBtn"></i>' +
+								'</div>' +
+								'<div class="project__check pjCheck" style="display: none;">' +
+								'<div class="custom-control custom-checkbox">' +
+								'<input type="checkbox" class="custom-control-input pjCheckAll largeViewCheck" value="' + obj.pj_no + '" name="checkedPj" id="largeCkedPj' + obj.pj_no + '">' +
+								'<label class="custom-control-label" for="largeCkedPj' + obj.pj_no + '"></label>' +
+								'</div>' +
+								'</div>' +
+								'<h3 class="project__title">' + obj.pj_title + '</h3>' +
+								'<p class="project__count">' +
+								'<i class="fa fa-user" style="color: white;">&nbsp;' + obj.count + '</i>' +
+								'</p>' +
+								'<p class="project__date">' +
+								'<i class="fa fa-flag" style="color: white;">&nbsp;' + obj.create_date + '</i>' +
+								'</p>' +
+								'</div>'
+						)
+						$myListProjects.append(
+								'<tr style="width: 100%;">' +
+								'<td>' +
+								'<div class="custom-control custom-checkbox pjCheck" style="display: none;">' +
+								'<input type="checkbox" class="custom-control-input pjCheckAll listViewCheck" value="' + obj.pj_no + '" id="listCkedPj' + obj.pj_no + '">' +
+								'<label class="custom-control-label"  for="listCkedPj' + obj.pj_no + '"></label>' +
+								'</div>' +
+								'</td>' +
+								'<td>' +
+								'<div class="colors">' +
+								'<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
+								'</div>' +
+								'</td>' +
+								'<td style="width: 10%;">' +
+								'<i class="icon fa fa-star fa-2x favoWhite listView favoBtn"></i></td>' +
+								'<th style="width: 40%; text-align: left;">' + obj.pj_title + '</th>' +
+								'<td style="width: 20%">' +
+								'<i class="fa fa-user">&nbsp;' + obj.count + '</i>' +
+								'</td>' +
+								'<td style="width: 30%;">' +
+								'<i class="fa fa-flag"></i>&nbsp;' + obj.create_date +
+								'</td>' +
+								'</tr>'
+						)
+
+
+					})
+
+				} else if (list[0].length <= 0 && list[1].length <= 0) {
+					$myLargeProjects.html('');
+					$myListProjects.html('')
+					$(".myProjects").css("display", "none")
+					$myLargeProjects.append(
+							'<div style="width: 100%; height: 30px;"></div>' +
+							'<h4 style="margin-left: 10%;">참여중인 프로젝트가 없습니다.</h4>'
+					)
+
+				} else if (list[0].length == 0) {
+					$myLargeProjects.html('');
+					$myListProjects.html('')
+					$(".myProjects").css("display", "none")
+				}
+				loadPjColor()
+			}
+
+		});
+	}
+
+	function loadPjColor() {
+		//console.log($("#pj_no2").parent(".project"))
+		//$("#pj_no2").parent(".project").addClass("blue")
+		$.ajax({
+			url: '/project/selectProjectColor.do',
+			success: function (list) {
+				console.log(list)
+				$.each(list, function (i, obj) {
+					$(".pj_no" + obj.pj_no).parent(".project").addClass(obj.pj_color)
+					$(".pj_no" + obj.pj_no).parent(".colors").addClass(obj.pj_color)
+				})
+			}
+		})
+	}
+
 
 </script>
+<script>
+	function closeMenu() {
+		$(".pjCheckAll").prop("checked", false)
+		$(".select-count").text("0개 프로젝트가 선택되었습니다.")
+		$("#totalProjectEditBar").css("display", "none")
+		$(".pjCheck").css("display", "none")
+	}
 
+	function saveColor() {
+		if ($("input:radio[name='customRadio']:checked").length <= 0) {
+			alert("색상을 선택해주세요.")
+			return false;
+		}
+		var selectedProjects = []
+		$("input:checkbox[name='checkedPj']:checked").each(function () {
+			selectedProjects.push($(this).val());
+		})
 
+		//console.log(selectedProjects)
+		var selectedColor = $("input:radio[name='customRadio']:checked").val()
+		//console.log(selectedColor)
+		$("#colorModal").modal("hide")
+		setColor(selectedProjects, selectedColor)
+		$("input:radio[name='customRadio']").prop("checked", false)
+		closeMenu()
+		loadProjects()
+	}
 
+	function saveTag() {
+		if ($("input:checkbox[name='tagInput']:checked").length <= 0) {
+			alert("태그를 선택해주세요.")
+			return false;
+		}
+		var selectedProjects = []
+		$("input:checkbox[name='checkedPj']:checked").each(function () {
+			selectedProjects.push($(this).val());
+		})
+		var selectedTags = []
+		$("input:checkbox[name='tagInput']:checked").each(function () {
+			selectedTags.push($(this).val());
+		})
+
+		$("#tagModal").modal("hide")
+		setTag(selectedProjects, selectedTags)
+		closeMenu()
+	}
+
+	function setColor(selectedProjects, selectedColor) {
+		$.ajax({
+			url: '/project/setProjectColor.do',
+			data: {
+				"selectedProjects": selectedProjects,
+				"selectedColor": selectedColor
+			},
+			success: function (data) {
+				console.log(data)
+
+			}
+		})
+	}
+
+	function setTag(selectedProjects, selectedTags) {
+		$.ajax({
+			url: '/project/setProjectTag.do',
+			data: {
+				"selectedProjects": selectedProjects,
+				"selectedTags": selectedTags
+			},
+			success: function (data) {
+				//console.log(data)
+
+			}
+		})
+	}
+
+</script>
 </body>
 </html>

@@ -221,8 +221,8 @@
     </div>
 </div>
 
-
-<jsp:include page="invitePjModal.jsp"></jsp:include>
+<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="invitePjModal.jsp"/>
 
 </body>
 <script>
@@ -238,7 +238,10 @@
                 center: 'title',
                 right: 'dayGridMonth,timeGridWeek,timeGridDay'
             },
-            allDayText: '시간',
+            select: function (arg) {
+                console.log(arg)
+            },
+                allDayText: '시간',
             axisFormat: 'HH:mm',
             timeFormat: 'HH:mm',
             monthNames: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
@@ -255,6 +258,7 @@
             selectHelper: true,
             editable: true,     // 드래그 수정 가능 여부
             droppable: true,    // drop 가능하게
+
         });
         calendar.render();
     });

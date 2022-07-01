@@ -379,9 +379,9 @@
     </div>
 </div>
 
-
+<jsp:include page="../common/footer.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
-<jsp:include page="pjForm.jsp"/>
+<jsp:include page="pjFormModal.jsp"/>
 <script>
     $(function () {
 
@@ -656,7 +656,10 @@
 
     function loadProjects() {
         $.ajax({
-            url: '/project/selectAllProject.do',
+            url: '/project/selectProject.do',
+            data:{
+                type: "all"
+            },
             success: function (list) {
                 console.log(list)
                 //myAllProjectsByTag

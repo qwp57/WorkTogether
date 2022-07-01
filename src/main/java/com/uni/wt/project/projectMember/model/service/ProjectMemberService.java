@@ -33,4 +33,6 @@ public interface ProjectMemberService {
     void quitProject(ProjectMember pjMember) throws Exception;
 
     Employee selectEmpByEmpNo(int parseInt) throws Exception;
+
+    void setAdmin(ProjectMember pjMember) throws Exception;
 }

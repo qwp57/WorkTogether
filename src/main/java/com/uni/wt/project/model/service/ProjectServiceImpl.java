@@ -32,6 +32,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private RequestWorkMapper requestWorkMapper;
 
+    private Map<String, Object> paramMap = new HashMap<String, Object>();
 
     @Override
     public void insertProject(Project project) throws Exception{
@@ -43,13 +44,22 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ArrayList<Project> selectMyProject(int loginEmp) throws Exception {
-        return projectMapper.selectMyProject(loginEmp);
+    public ArrayList<Project> selectMyProject(int loginEmp, String type) throws Exception {
+        paramMap.put("emp_no", loginEmp);
+        paramMap.put("type", type);
+        ArrayList<Project> list =  projectMapper.selectMyProject(paramMap);
+        paramMap.clear();
+        return list;
+
     }
 
     @Override
-    public ArrayList<Project> selectMyBookmarkProject(int loginEmp) throws Exception {
-        return projectMapper.selectMyBookmarkProject(loginEmp);
+    public ArrayList<Project> selectMyBookmarkProject(int loginEmp, String type) throws Exception {
+        paramMap.put("emp_no", loginEmp);
+        paramMap.put("type", type);
+        ArrayList<Project> list = projectMapper.selectMyBookmarkProject(paramMap);
+        paramMap.clear();
+        return list;
     }
 
     @Override
@@ -133,11 +143,19 @@ public class ProjectServiceImpl implements ProjectService {
             throw new Exception("프로젝트 보관에 실패하였습니다.");
         }
     }
-
+    @Override
+    public void restoreProject(int pj_no) throws Exception {
+        int result =  projectMapper.restoreProject(pj_no);
+        if(result < 0) {
+            throw new Exception("프로젝트 복구에 실패하였습니다.");
+        }
+    }
     @Override
     public ArrayList<RequestWork> loadRw(int pj_no) throws Exception {
         return requestWorkMapper.loadRw(pj_no);
     }
+
+  
 
 
     @Override

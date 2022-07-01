@@ -31,23 +31,33 @@
         VALUES (#{pj_no}, #{pj_title}, #{pj_content}, SYSDATE, #{board_power}, #{reply_power}, #{file_power}, DEFAULT)
     </insert>
 
-    <select id="selectMyProject" resultMap="projectSet" parameterType="int">
+    <select id="selectMyProject" resultMap="projectSet" parameterType="map">
         SELECT *
         FROM PROJECT
-        WHERE STATUS = 'Y'
-          AND PJ_NO IN (SELECT PJ_NO FROM PROJECT_MEMBER WHERE EMP_NO = #{loginEmp}
+        <if test="type.equals('all')">
+            WHERE STATUS = 'Y'
+        </if>
+        <if test="type.equals('stored')">
+            WHERE STATUS = 'N'
+        </if>
+          AND PJ_NO IN (SELECT PJ_NO FROM PROJECT_MEMBER WHERE EMP_NO = #{emp_no}
             MINUS
         SELECT PJ_NO
         FROM PJ_BOOKMARK
-        WHERE EMP_NO = #{loginEmp})
+        WHERE EMP_NO = #{emp_no})
         ORDER BY PJ_NO
     </select>
 
-    <select id="selectMyBookmarkProject" resultMap="projectSet" parameterType="int">
+    <select id="selectMyBookmarkProject" resultMap="projectSet" parameterType="map">
         SELECT *
         FROM PROJECT
-        WHERE STATUS = 'Y'
-          AND PJ_NO IN (SELECT PJ_NO FROM PJ_BOOKMARK WHERE EMP_NO = #{loginEmp})
+        WHERE PJ_NO IN (SELECT PJ_NO FROM PJ_BOOKMARK WHERE EMP_NO = #{emp_no})
+        <if test="type.equals('all')">
+            AND STATUS = 'Y'
+        </if>
+        <if test="type.equals('stored')">
+            AND STATUS = 'N'
+        </if>
         ORDER BY PJ_NO
     </select>
     <select id="selectMyProjectByTag" resultMap="projectSet" parameterType="ProjectTag">
@@ -81,8 +91,7 @@
     <select id="selectOneProject" parameterType="int" resultMap="projectSet">
         SELECT *
         FROM PROJECT
-        WHERE STATUS = 'Y'
-          AND PJ_NO = #{pj_no}
+        WHERE PJ_NO = #{pj_no}
     </select>
     <select id="getProjectMemberCount" parameterType="int" resultType="int">
         SELECT COUNT(*)
@@ -143,6 +152,11 @@
     <update id="keepProject" parameterType="int">
         UPDATE PROJECT
         SET STATUS = 'N'
+        WHERE PJ_NO = #{pj_no}
+    </update>
+    <update id="restoreProject" parameterType="int">
+        UPDATE PROJECT
+        SET STATUS = 'Y'
         WHERE PJ_NO = #{pj_no}
     </update>
 

@@ -135,7 +135,6 @@ public class TodoController {
 
         return new GsonBuilder().setDateFormat("MM-dd").create().toJson(todos);
     }
-
     @RequestMapping("/editTodo.do")
     public String editTodo(Todo todo, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
 //        log.info("할일 : " + todo.getStatus());

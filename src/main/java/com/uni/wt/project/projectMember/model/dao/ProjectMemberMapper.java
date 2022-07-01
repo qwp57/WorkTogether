@@ -35,4 +35,6 @@ public interface ProjectMemberMapper {
     int quitProject(ProjectMember pjMember);
 
     Employee selectEmpByEmpNo(int emp_no);
+
+    int setAdmin(ProjectMember pjMember);
 }

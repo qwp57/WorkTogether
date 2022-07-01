@@ -11,11 +11,12 @@ import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.boardAll.model.service.BoardAllService;
 import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.model.service.ProjectService;
-import com.uni.wt.project.post.model.dto.Post;
 import com.uni.wt.project.post.model.service.PostService;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.project.projectMember.model.service.ProjectMemberService;
+import com.uni.wt.project.schedule.model.dto.Schedule;
+import com.uni.wt.project.schedule.model.service.ScheduleService;
 import com.uni.wt.project.todo.model.service.TodoService;
 import com.uni.wt.requestWork.model.dto.RequestWork;
 import org.slf4j.Logger;
@@ -27,9 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -47,9 +45,11 @@ public class ProjectController {
     @Autowired
     private ProjectMemberService projectMemberService;
     @Autowired
-    PostService postService;
+    private PostService postService;
     @Autowired
-    TodoService todoService;
+    private TodoService todoService;
+    @Autowired
+    private ScheduleService scheduleService;
     @Autowired
     private BoardAllService boardAllService;
     private Map<String, String> msgMap = new HashMap<String, String>();
@@ -62,14 +62,14 @@ public class ProjectController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/selectAllProject.do", produces = "application/json; charset=utf-8")
-    public String selectAllProject(HttpSession session) throws Exception {
+    @RequestMapping(value = "/selectProject.do", produces = "application/json; charset=utf-8")
+    public String selectAllProject(HttpSession session, String type) throws Exception {
         int loginEmp = ((Employee) session.getAttribute("loginEmp")).getEmp_no();
-        ArrayList<Project> myProjects = projectService.selectMyProject(loginEmp);
+        ArrayList<Project> myProjects = projectService.selectMyProject(loginEmp, type);
         for (int i = 0; i < myProjects.size(); i++) {
             myProjects.get(i).setCount(projectService.getProjectMemberCount(myProjects.get(i).getPj_no()));
         }
-        ArrayList<Project> bookmarkProjects = projectService.selectMyBookmarkProject(loginEmp);
+        ArrayList<Project> bookmarkProjects = projectService.selectMyBookmarkProject(loginEmp, type);
         for (int i = 0; i < bookmarkProjects.size(); i++) {
             bookmarkProjects.get(i).setCount(projectService.getProjectMemberCount(bookmarkProjects.get(i).getPj_no()));
         }
@@ -80,6 +80,7 @@ public class ProjectController {
         myAllProjects.add(bookmarkProjects);
         return gson.toJson(myAllProjects);
     }
+
 
     @RequestMapping(value = "/invitePj.do", produces = "application/json; charset=utf-8")
     public String invitePj(@RequestParam("inviteEmpNo") int[] emp_no, @RequestParam("pj_no") int pj_no) throws Exception {
@@ -105,11 +106,10 @@ public class ProjectController {
 
         ArrayList<BoardAll> list = boardAllService.selectPjBoardList(pj_no, pi, boardType);
         log.info("[요청받은 전체글 리스트] : {}", list);
-        if (boardType.equals("todo")) {
             for (BoardAll b : list) {
+                if(b.getBoard_type().equals("todo"))
                 b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
             }
-        }
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("list", list);
@@ -118,41 +118,24 @@ public class ProjectController {
         return map;
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/selectAllBoard.do", produces = "application/json; charset=utf-8")
-    public String selectAllBoard(@RequestParam("pj_no") int pj_no) throws Exception {
-
-        //ArrayList<BoardAll> allBoards = boardAllService.selectAllBoard(pj_no);
-        Map<String, Object> allBoardsMap = responsList(pj_no, 1, "");
-        for (BoardAll b : (ArrayList<BoardAll>) allBoardsMap.get("list")) {
-            if (b.getBoard_type().equals("todo")) {
-                b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
-            }
-        }
-        //log.info("게시물 전체 조회 : " + new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoards));
-        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoardsMap);
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/selectAllBoard.do", produces = "application/json; charset=utf-8")
+//    public String selectAllBoard(@RequestParam("pj_no") int pj_no) throws Exception {
+//
+//        //ArrayList<BoardAll> allBoards = boardAllService.selectAllBoard(pj_no);
+//        Map<String, Object> allBoardsMap = responsList(pj_no, 1, "");
+//        for (BoardAll b : (ArrayList<BoardAll>) allBoardsMap.get("list")) {
+//            if (b.getBoard_type().equals("todo")) {
+//                b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
+//            }
+//        }
+//        //log.info("게시물 전체 조회 : " + new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoards));
+//        return new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm").create().toJson(allBoardsMap);
+//    }
 
     @ResponseBody
     @RequestMapping(value = "/pagingAndSerachPj.do", produces = "application/text; charset=UTF-8")
     public String pagingAndSerachPj(BoardAll boardAll, SearchDto sd, Project pj, int currentPage) throws Exception {
-//        log.info("검색할 내용 : {}", sd.toString());
-//
-//        log.info("board[type : "+boardAll.getBoard_type());
-//        log.info("SearchDto : {}", sd);
-//        log.info("pj : {}", pj);
-//
-//        int listCount = boardAllService.getListCount(pj.getPj_no(), boardAll.getBoard_type());
-//        log.info("전체 게시물 개수 : {}", listCount);
-//        PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 5, 10);
-//
-//        ArrayList<BoardAll> list = boardAllService.selectPjBoardList(pj.getPj_no(), pi, boardAll.getBoard_type());
-//        for (BoardAll b : list) {
-//            if(b.getBoard_type().equals("todo")){
-//                b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
-//            }
-//        }
-//        log.info("[전체 게시물 리스트] : {}", list.toString());
 
         Map<String, Object> map = responsList(pj.getPj_no(), currentPage, boardAll.getBoard_type());
 
@@ -254,17 +237,7 @@ public class ProjectController {
         return new GsonBuilder().create().toJson(list);
 
     }
-    @ResponseBody
-    @RequestMapping(value = "/deportEmp.do", produces = "application/json; charset=utf-8")
-    public String deportEmp(@RequestParam(value = "pj_no" ,required = false) int pj_no, @RequestParam("emp_no") int emp_no) throws Exception {
-        log.info("프로젝트 번호 : " + pj_no);
-        log.info("사원 번호 : " + emp_no);
-        ProjectMember pjMember = new ProjectMember();
-        pjMember.setPj_no(pj_no);
-        pjMember.setEmp_no(emp_no);
-        //projectMemberService.quitProject(pjMember);
-        return "test";
-    }
+
 
     @ResponseBody
     @RequestMapping(value = "/editReply.do", produces = "application/json; charset=utf-8")
@@ -273,6 +246,30 @@ public class ProjectController {
         projectService.editReply(reply);
 
         return "댓글 수정 성공";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deportEmp.do", produces = "application/json; charset=utf-8")
+    public String deportEmp(int pj_no, int emp_no) throws Exception {
+        log.info("프로젝트 번호 : " + pj_no);
+        log.info("사원 번호 : " + emp_no);
+        ProjectMember pjMember = new ProjectMember();
+        pjMember.setPj_no(pj_no);
+        pjMember.setEmp_no(emp_no);
+        projectMemberService.quitProject(pjMember);
+        return "test";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/setAdmin.do", produces = "application/json; charset=utf-8")
+    public String setAdmin(int pj_no, int emp_no) throws Exception {
+        log.info("프로젝트 번호 : " + pj_no);
+        log.info("사원 번호 : " + emp_no);
+        ProjectMember pjMember = new ProjectMember();
+        pjMember.setPj_no(pj_no);
+        pjMember.setEmp_no(emp_no);
+        projectMemberService.setAdmin(pjMember);
+        return "test";
     }
 
     @ResponseBody
@@ -390,11 +387,17 @@ public class ProjectController {
     }
 
     @RequestMapping("/deleteBoard.do")
-    public String deleteBoard(@RequestParam("board_no") int board_no, @RequestParam("pj_no") int pj_no) throws Exception {
+    public String deleteBoard(int board_no, int pj_no, String type) throws Exception {
         log.info("board_no : " + board_no);
         boardAllService.deleteBoard(board_no);
         log.info("테스트");
-        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+            if (type.equals("calendar")){
+                return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
+            }else if(type.equals("home")){
+                return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+            }else {
+                return "redirect:/project/";
+            }
     }
 
     @RequestMapping("/editPj.do")
@@ -417,7 +420,13 @@ public class ProjectController {
         msgMap.put("msg", "프로젝트 보관 완료.");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
-
+    @RequestMapping("/restoreProject.do")
+    public String restoreProject(@RequestParam("pj_no") int pj_no) throws Exception {
+        projectService.restoreProject(pj_no);
+        msgMap.put("msg", "프로젝트 복구 완료.");
+        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+    }
+    
     @RequestMapping("/tagViewSelect.do")
     public ModelAndView tagViewSelect(@RequestParam("tag_no") int tag_no, @RequestParam("tag_name") String tag_name, ModelAndView mv) {
         ProjectTag projectTag = new ProjectTag();
@@ -458,12 +467,38 @@ public class ProjectController {
 
 
     @RequestMapping("/detailCalendar.do")
-    public String detailCalendar() {
+    public String detailCalendar(@RequestParam("pj_no") int pj_no, @RequestParam(value = "date", required = false) String date, Model m, HttpSession session) throws Exception {
+        ProjectTag projectTag = new ProjectTag();
+        projectTag.setPj_no(pj_no);
+        projectTag.setEmp_no(((Employee) session.getAttribute("loginEmp")).getEmp_no());
+        ArrayList<ProjectMember> list = projectMemberService.selectProjectColor(projectTag);
+        log.info("색상 단건조회 : " + list.toString());
+        Project pj = projectService.selectOneProject(pj_no);
+        //log.info("프로젝트 상세보기 pj : " + pj);
+        int checkBookmark = projectMemberService.checkBookmark(projectTag);
+
+        ArrayList<Schedule> schList = scheduleService.getCalendarByMonth(pj_no, date);
+        m.addAttribute("schList", schList);
+        m.addAttribute("checkBookmark", checkBookmark);
+        m.addAttribute("pj", pj);
+        m.addAttribute("pjMember", list.get(0));
         return "project/detailCalendar";
     }
 
     @RequestMapping("/drivePj.do")
-    public String drivePj() {
+    public String drivePj(@RequestParam("pj_no") int pj_no, @RequestParam(value = "date", required = false) String date, Model m, HttpSession session) throws Exception {
+        ProjectTag projectTag = new ProjectTag();
+        projectTag.setPj_no(pj_no);
+        projectTag.setEmp_no(((Employee) session.getAttribute("loginEmp")).getEmp_no());
+        ArrayList<ProjectMember> list = projectMemberService.selectProjectColor(projectTag);
+        log.info("색상 단건조회 : " + list.toString());
+        Project pj = projectService.selectOneProject(pj_no);
+        //log.info("프로젝트 상세보기 pj : " + pj);
+        int checkBookmark = projectMemberService.checkBookmark(projectTag);
+
+        m.addAttribute("checkBookmark", checkBookmark);
+        m.addAttribute("pj", pj);
+        m.addAttribute("pjMember", list.get(0));
         return "project/drivePj";
     }
 
@@ -484,7 +519,7 @@ public class ProjectController {
 
     @RequestMapping("/enrollProject.do")
     public String enrollProject() {
-        return "project/pjForm";
+        return "pjFormModal";
     }
 
     @RequestMapping("/storedPj.do")

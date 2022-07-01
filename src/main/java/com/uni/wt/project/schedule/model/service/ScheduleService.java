@@ -18,4 +18,6 @@ public interface ScheduleService {
     int loadSchAttendee(Schedule schedule) throws Exception;
 
     ArrayList<Employee> selectSchAttendee(int board_no) throws Exception;
+
+    ArrayList<Schedule> getCalendarByMonth(int pj_no, String date) throws Exception;
 }

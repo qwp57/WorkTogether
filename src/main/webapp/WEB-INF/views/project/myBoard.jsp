@@ -249,4 +249,5 @@ td:last-child {
 		</div>
 	</div>
 </body>
+<jsp:include page="../common/footer.jsp"/>
 </html>

@@ -77,4 +77,17 @@
           AND A.STATUS = 'Y'
           AND B.STATUS != 'Q'
     </select>
+    <select id="getCalendarByMonth" parameterType="map" resultMap="scheduleSet">
+        SELECT TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE, B.COUNT, C.NAME, C.EMP_NO, A.*
+        FROM BOARD_SCHEDULE A
+        JOIN PJ_BOARD B
+        ON A.BOARD_NO = B.BOARD_NO
+        JOIN EMPLOYEE C
+        ON B.WRITER = C.EMP_NO
+        WHERE B.PJ_NO = #{pj_no}
+        <if test="date != null">
+            AND (TO_CHAR(SCH_START, 'YYYY-MM') = #{date}
+            OR TO_CHAR(SCH_END, 'YYY-MM') = #{date})
+        </if>
+    </select>
 </mapper>

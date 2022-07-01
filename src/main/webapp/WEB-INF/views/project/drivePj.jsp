@@ -13,8 +13,6 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
             rel="stylesheet">
-    <link href="resources/css/reset.css" rel="stylesheet" type="text/css">
-    <script src="https://kit.fontawesome.com/f2449ad7e5.js" crossorigin="anonymous"></script>
 </head>
 
 <style>
@@ -23,7 +21,7 @@
     }
 
     .newPj {
-    	color: white !important;
+        color: white !important;
         width: 180px;
         height: 70px;
         font-family: 'Nanum Gothic', sans-serif;
@@ -192,7 +190,7 @@
         height: 650px;
     }
 
-  #caSetting:hover, .fa-star:hover, .fa-ellipsis-v:hover, .navMenu:hover, .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch, .switchTodo {
+    #caSetting:hover, .fa-star:hover, .fa-ellipsis-v:hover, .navMenu:hover, .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch, .switchTodo {
         cursor: pointer;
     }
 
@@ -350,7 +348,6 @@
         display: inline-block;
         width: 20px;
         height: 48px;
-        background: url('${pageContext.request.contextPath}/resources/img/checked-2-01.png') no-repeat 0 50%;
         background-size: 20px 20px;
     }
 
@@ -448,10 +445,6 @@
         position: relative;
     }
 
-    .picfdate {
-        padding-left: 14px;
-        padding-right: 14px;
-    }
 
     .piclist_wrapper {
         padding: 20px 0px 0 20px;
@@ -527,237 +520,394 @@
 
 <body>
 
-    <div class="main-content">
-        <div style="height: 50px;"></div>
+<div class="main-content">
+    <div style="height: 50px;"></div>
 
 
-        <div class="container">
-            <section class="section">
-                <div class="section-body">
+    <div class="container">
+        <section class="section">
 
-                    <div class="row mt-sm-4">
+            <jsp:include page="projectHead.jsp"/>
 
-                        <div class="col-12 col-md-12 col-lg-12">
-                            <div class="card">
-                                <div class="card-body body-1">
-                                    <div>
-                                        <button class="btn btn-primary newPj">+ 새 프로젝트</button>
+
+            <div class="section-body">
+
+                <div class="row mt-sm-4">
+
+                    <div class="col-12 col-md-12 col-lg-12">
+                        <div class="card">
+                            <div class="card-body body-2">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                    <div class="picfdate filetable"
+                                         style="text-decoration: underline; display: inline-block; font-weight:700; color:#111; margin-right: 25px;">최근
+                                        업로드순<span class="tarrow">↓</span></div>
+                                    <div class="picfname filetable" style="display: inline-block;">파일명 순<span class="tarrow">↓</span></div>
                                     </div>
-                                    <div class="detailTop">
-                                        <div class="colors color-1"></div>
-                                        <i class='icon fa fa-star fa-2x favoYellow'></i>
-                                        <div class="btn-group dropright" id="pjMenu">
-                                            <i class='fa fa-ellipsis-v fa-2x' data-toggle="dropdown"
-                                               aria-haspopup="true" aria-expanded="false"
-                                               style="width: 30px;"></i>
-                                            <div class="dropdown-menu dropright">
-                                            <a class="dropdown-item" href="#" id="setColor">색상 설정</a> <a
-                                                class="dropdown-item" href="#" id="setTag">태그 설정</a> <a
-                                                class="dropdown-item" href="#">참여자 조회</a> <a
-                                                class="dropdown-item" href="#"  id="setPj">프로젝트 설정</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">프젝트 나가기</a>
-                                        </div>
-                                        </div>
-                                        <p id="pjDetail"></p>
-                                        <h5 id="pjTitle">프로젝트 제목</h5>
-                                        <a href="#" id="inviteBtn"
-                                           class="btn btn-icon icon-left btn-secondary"><i
-                                                class="far fa-user"></i> +초대하기</a>
-                                        <div id="navMenus">
-                                            <a class="navMenu home">홈</a> <a
-                                                class="navMenu calendar">캘린더</a> <a class="navMenu drive clicked">드라이브</a>
-                                        </div>
+                                    <div class="col-lg-6 text-right">
+                                        <a class="title_down title_btn" style="cursor:default">
+                                            <i class="bi bi-download fa-lg" style="margin-right: 25px;"> 다운로드</i>
+                                        </a>
+                                        <a class="title_del title_btn" style="cursor:default">
+                                            <i class="bi bi-trash3 fa-lg">삭제</i>
+                                        </a>
                                     </div>
-
                                 </div>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                <div class="contents" style="width: 100%;">
 
+                                    <div class="piclist" style="display:block; width: 100%;">
+                                        <div class="piclist_index">
+                                            <div class="file_chk">
+                                                <input type="checkbox" id="thumb_list_all">
+                                                <label for="thumb_list_all" class="thumb_list_all"
+                                                       style="cursor:pointer;"></label>
+                                            </div>
 
-                <div class="section-body">
-
-                    <div class="row mt-sm-4">
-
-                        <div class="col-12 col-md-12 col-lg-12">
-                            <div class="card">
-                                <div class="card-body body-2">
-                                    <div class="row">
-
-                                        <div class="col-lg-12 text-right">
-                                            <a class="title_down title_btn" style="cursor:default">
-                                                <i class="bi bi-download fa-lg"> 다운로드</i>
-                                            </a>
-                                            <a class="title_del title_btn" style="cursor:default">
-                                                <i class="bi bi-trash3 fa-lg">삭제</i>
-
-                                            </a>
                                         </div>
-                                        <br> <br> <br>
-                                    </div>
 
-                                    <div class="contents" style="width: 100%;">
 
-                                        <div class="piclist" style="display:block; width: 100%;">
-                                            <div class="piclist_index">
+                                        <div class="piclist_wrapper">
+                                            <div class="piclist_tr">
+                                                <div class="picinfo text-center mt-5">
+                                                    <i class="bi bi-file-earmark-fill fa-4x"></i>
+
+                                                    <input type="hidden" class="imgfname">
+                                                </div>
                                                 <div class="file_chk">
-                                                    <input type="checkbox" id="thumb_list_all">
-                                                    <label for="thumb_list_all" class="thumb_list_all"
+                                                    <input type="checkbox" id="thumb_chk" class="thumb_chk"
+                                                           name="fname">
+                                                    <label for="thumb_chk" class="thumb_chk picchk"
                                                            style="cursor:pointer;"></label>
                                                 </div>
-                                                <div class="picfdate filetable"
-                                                     style="text-decoration: underline; font-weight:700; color:#111;">최근
-                                                    업로드순<span class="tarrow">↓</span></div>
-                                                <div class="picfname filetable">파일명 순<span class="tarrow">↓</span></div>
+                                                <input type="text" maxlength="50" class="pictext" readonly
+                                                       style="cursor:pointer">
                                             </div>
 
-
-                                            <div class="piclist_wrapper">
-                                                <div class="piclist_tr">
-                                                    <div class="picinfo text-center mt-5">
-                                                        <i class="bi bi-file-earmark-fill fa-4x"></i>
-
-                                                        <input type="hidden" class="imgfname">
-                                                    </div>
-                                                    <div class="file_chk">
-                                                        <input type="checkbox" id="thumb_chk" class="thumb_chk"
-                                                               name="fname">
-                                                        <label for="thumb_chk" class="thumb_chk picchk"
-                                                               style="cursor:pointer;"></label>
-                                                    </div>
-                                                    <input type="text" maxlength="50" class="pictext" readonly
-                                                           style="cursor:pointer">
-                                                </div>
-                                                <div class="piclist_tr">
-                                                    <div class="picinfo text-center mt-5">
-                                                        <i class="bi bi-file-earmark-fill fa-4x"></i>
-
-                                                        <input type="hidden" class="imgfname">
-                                                    </div>
-                                                    <div class="file_chk">
-                                                        <input type="checkbox" id="thumb_chk" class="thumb_chk"
-                                                               name="fname">
-                                                        <label for="thumb_chk" class="thumb_chk picchk"
-                                                               style="cursor:pointer;"></label>
-                                                    </div>
-                                                    <input type="text" maxlength="50" class="pictext" readonly
-                                                           style="cursor:pointer">
-                                                </div>
-                                                <div class="piclist_tr">
-                                                    <div class="picinfo text-center mt-5">
-                                                        <i class="bi bi-file-earmark-fill fa-4x"></i>
-
-                                                        <input type="hidden" class="imgfname">
-                                                    </div>
-                                                    <div class="file_chk">
-                                                        <input type="checkbox" id="thumb_chk" class="thumb_chk"
-                                                               name="fname">
-                                                        <label for="thumb_chk" class="thumb_chk picchk"
-                                                               style="cursor:pointer;"></label>
-                                                    </div>
-                                                    <input type="text" maxlength="50" class="pictext" readonly
-                                                           style="cursor:pointer">
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-            </section>
-        </div>
 
+
+            </div>
+        </section>
     </div>
+
+</div>
+<jsp:include page="../common/footer.jsp"/>
 <jsp:include page="invitePjModal.jsp"></jsp:include>
-<jsp:include page="colorTagModal.jsp" />
-<jsp:include page="pjForm.jsp" />
+<jsp:include page="colorTagModal.jsp"/>
+<jsp:include page="pjFormModal.jsp"/>
 
 </body>
 <script>
     $(function () {
-    	$(document).on('click', '.newPj', function(){
-			$("#makePj").modal("show")
-		})
-		
-    	$(document).on('click', '#setColor', function(){
-			$("#colorModal").modal("show")
-		})
-		
-		$(document).on('click', '#setTag', function(){
-			$("#tagModal").modal("show")
-		})
-		
-		$(document).on('click', '#tagEdit', function(){
-			$("#tagEditModal").modal("show")
-		})
-		
-		$(document).on('click', '.tagAddBtn', function(){
-			console.log('테스트')
-			$("#tagTable").append(
-					'<tr>'+
-					'<td><i class="fa fa-tag fa-lg"></i>'+
-					'</td>'+
-					'<th style="width: 50%">테스트</th>'+
-					'<td style="width: 20%; text-align: right;">'+
-						'<div class="custom-control custom-checkbox">'+
-							'<input type="checkbox" class="custom-control-input" id="tag6">'+
-								' <label class="custom-control-label" for="tag6"></label>'+
-						'</div>'+
-					'</td>'+
-					'<td style="width: 15%; text-align: right;">'+
-						'<div class="btn-group dropright">'+
-							'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"'+
-							   'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>'+
-							'<div class="dropdown-menu dropright">'+
-								'<a class="dropdown-item" href="#" id="tagEdit">수정</a>'+
-								'<div class="dropdown-divider"></div>'+
-								'<a class="dropdown-item" href="#">삭제</a>'+
-							'</div>'+
-						'</div>'+
-					'</td>'+
-				'</tr>'
-					)
-		})
-		
-        $(document).on('click', '.fa-star', function () {
-            if ($(this).hasClass("favoWhite")) {
-                $(this).removeClass("favoWhite")
-                $(this).addClass("favoYellow")
-                console.log("즐겨찾기 추가할것")
-            } else if ($(this).hasClass("favoYellow")) {
-                $(this).removeClass("favoYellow")
-                $(this).addClass("favoWhite")
-                console.log("즐겨찾기 제거할것")
-            }
-            e.stopPropagation()
-        })
-		
-        $(document).on('click', '#inviteBtn', function () {
-            $("#inviteModal").modal("show")
-        })
-        
-        $(document).on('click', '.home', function () {
-            location.href = "/project/detailPj.do"
-        })
-        $(document).on('click', '.drive', function () {
-            location.href = "/project/drivePj.do"
-        })
+        $(".calendar").removeClass("clicked")
+        $(".home").removeClass("clicked")
+        $(".drive").addClass("clicked")
+    })
+    $(document).on('click', '.home', function () {
+        location.href = "/project/detailPj.do?pj_no=" +
+        ${pj.pj_no}
 
-        $(document).on('click', '#inviteBtn', function () {
-            $("#inviteModal").modal("show")
-        })
-        $(document).on('click', '.calendar', function () {
-            location.href = "/project/detailCalendar.do"
-        })
+    })
+    $(document).on('click', '.calendar', function () {
+        location.href = "/project/detailCalendar.do?pj_no=" +
+        ${pj.pj_no}
+    })
+
+</script>
+<script>
+    function checkStored(){
+        if(${pj.status == 'N'}){
+            alert("보관된 프로젝트는 작성/수정 관련 기능이 제한됩니다.")
+            return false
+        }else {
+            return true
+        }
+    }
+</script>
+<%-- 프로젝트 헤드 --%>
+<script>
+    $(document).on('click', '#quitProject', function () {
+        if (confirm("프로젝트를 나가시겠습니까?")) {
+            location.href = "/project/quitProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#deletePjBtn', function () {
+        if (confirm("프로젝트를 삭제하시겠습니까?")) {
+            location.href = "/project/deleteProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#keepPjBtn', function () {
+        if (confirm("프로젝트를 보관하시겠습니까?")) {
+            location.href = "/project/keepProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#restorePjBtn', function () {
+        if (confirm("프로젝트를 복구하시겠습니까?")) {
+            location.href = "/project/restoreProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#setPj', function () {
+        $("#editPj").find("input[name=pj_title]").val("${pj.pj_title}")
+        $("#editPj").find("input[name=pj_content]").val("${pj.pj_content}")
+        $("#editPj").find("input[name=pj_content]").text("${pj.pj_content}")
+        console.log("${pj.board_power}")
+        console.log("${pj.reply_power}")
+        console.log("${pj.file_power}")
+        if ("${pj.board_power}" == 'Y') {
+            $("#editPj").find("select[name=board_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=board_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=board_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=board_power]").find(".all").attr("selected", true)
+        }
+        if ("${pj.reply_power}" == 'Y') {
+            $("#editPj").find("select[name=reply_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=reply_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=reply_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=reply_power]").find(".all").attr("selected", true)
+        }
+        if ("${pj.file_power}" == 'Y') {
+            $("#editPj").find("select[name=file_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=file_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=file_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
+        }
+        $("#editPj").find("#pj_no").val("${pj.pj_no}")
+        $("#editPjModal").modal("show")
     })
 
 
+    function loadViewEmpInPj() {
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'all'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    var content = '<tr>'
+                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                    content += '</td>'
+                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<td rowspan="2" style="width: 30%; text-align: right;">'
+                    if ('${pjMember.admin}' == 'Y' && obj.admin == 'N') {
+                        content += '<button type="button" class="btn btn-sm btn-dark deportBtn">내보내기</button>'
+                        content += '<button type="button" class="btn btn-sm btn-primary setAdminBtn">관리자 지정</button>'
+                    }
+                    if (obj.admin == 'Y') {
+                        content += '<b>관리자</b>'
+                    }
+                    content += '</td>'
+                    content += '</tr>'
+                    content += '<tr>'
+                    if (obj.job_name != undefined) {
+                        content += '<td style="text-align: center;">' + obj.job_name + '</td>'
+                    } else {
+                        content += '<td style="text-align: center;">직급이 없습니다.</td>'
+                    }
+                    content += '</tr>'
+
+                    $(".inviteTable").append(content)
+                })
+
+
+                $("#empListModal").modal("show")
+            }
+        })
+    }
+
+    $(document).on('click', '.deportBtn', function () {
+        console.log($(this).parent().parent().find(".inviteEmpNo").val())
+        console.log("${pj.pj_no}")
+        if (confirm("내보내시겠습니까?")) {
+            $.ajax({
+                url: '/project/deportEmp.do',
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "emp_no": $(this).parent().parent().find(".inviteEmpNo").val()
+                },
+                async: false,
+                success: function (list) {
+                    console.log('확인')
+                }
+            })
+            loadViewEmpInPj()
+        }
+    })
+
+    $(document).on('click', '.setAdminBtn', function () {
+        console.log($(this).parent().parent().find(".inviteEmpNo").val())
+        console.log("${pj.pj_no}")
+        if (confirm("해당 사원을 관리자로 지정하시겠습니까?")) {
+            $.ajax({
+                url: '/project/setAdmin.do',
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "emp_no": $(this).parent().parent().find(".inviteEmpNo").val()
+                },
+                async: false,
+                success: function (data) {
+                    console.log('dd')
+                }
+            })
+            loadViewEmpInPj()
+        }
+
+    })
+
+
+    function loadTag() {
+        $.ajax({
+            url: '/project/loadTag.do',
+            data: {
+                pj_no: ${pj.pj_no}
+            },
+            success: function (data) {
+                data = $.parseJSON(data)
+                // console.log(data)
+                // console.log(data.tagByEmpNo)
+                // console.log(data.tagByPjNo)
+                $("#tagTable").html('')
+                $.each(data.tagByEmpNo, function (i, obj) {
+                    $("#tagTable").append(
+                        '<tr>' +
+                        '<td><i class="fa fa-tag fa-lg"></i>' +
+                        '</td>' +
+                        '<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
+                        '<td style="width: 20%; text-align: right;">' +
+                        '<div class="custom-control custom-checkbox">' +
+                        '<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+                        '<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
+                        '</div>' +
+                        '</td>' +
+                        '<td style="width: 15%; text-align: right;">' +
+                        '<div class="btn-group dropright">' +
+                        '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+                        '<div class="dropdown-menu dropright">' +
+                        '<a class="dropdown-item editTag" href="#">수정</a>' +
+                        '<div class="dropdown-divider"></div>' +
+                        '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>'
+                    )
+                })
+                $.each(data.tagByPjNo, function (i, obj) {
+                    $('#tag' + obj.tag_no).next('label').css("display", "none")
+                    $('#tag' + obj.tag_no).parent().css("display", "none")
+                    $('#tag' + obj.tag_no).parents("td").append(
+                        '<i class="bi bi-dash-square mr-2 disconnectingTagBtn"></i>'
+                    )
+                })
+
+            }
+
+        });
+    }
+
+    function removeTagByPjNo(tag_no) {
+        $.ajax({
+            url: '/project/removeTagByPjNo.do',
+            data: {
+                "tag_no": tag_no,
+                "pj_no": ${pj.pj_no}
+            },
+            async: false,
+            success: function (data) {
+                console.log(data)
+            }
+        })
+        loadTag()
+    }
+
+    $(document).on("click", ".favoBtn", function (e) {
+        var pj_no = ${pj.pj_no}
+            console.log("pj_no : " + pj_no)
+
+        if ($(this).hasClass("favoWhite")) {
+            $(this).removeClass("favoWhite")
+            $(this).addClass("favoYellow")
+            console.log("즐겨찾기 추가할것")
+
+            insertBookmark(pj_no)
+
+        } else if ($(this).hasClass("favoYellow")) {
+            $(this).removeClass("favoYellow")
+            $(this).addClass("favoWhite")
+            console.log("즐겨찾기 제거할것")
+
+            removeBookmark(pj_no);
+        }
+    })
+
+
+    $(document).on('click', '#inviteBtn', function () {
+        if(checkStored()){
+            $.ajax({
+                url: '/project/selectEmpListByPj.do',
+                data: {
+                    "pj_no": ${pj.pj_no}
+                },
+                success: function (list) {
+                    //list = $.parseJSON(list)
+                    console.log(list)
+                    $(".inviteTable").html('')
+                    $("#invitePj").find("input[name=pj_no]").val(${pj.pj_no})
+                    if (list.length > 0) {
+                        $.each(list, function (i, obj) {
+                            var content = '<tr>'
+                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            content += '</td>'
+                            content += '<th style="width: 50%">' + obj.name + '</th>'
+                            content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                            content += '<div class="custom-control custom-checkbox">'
+                            content += '<input type="checkbox" name="inviteEmpNo" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                            content += '</div>'
+                            content += '</td>'
+                            content += '</tr>'
+                            content += '<tr>'
+                            if (obj.job_name != undefined) {
+                                content += '<td>' + obj.job_name + '</td>'
+                            } else {
+                                content += '<td>직급 없음</td>'
+                            }
+                            content += '</tr>'
+                            $(".inviteTable").append(content)
+                            $("#inviteEmpBtn").css("display", "inline-block")
+                        })
+                    } else {
+                        var content = '<tr><td>초대할 수 있는 사원이 없습니다.</td></tr>'
+                        $(".inviteTable").append(content)
+                        $("#inviteEmpBtn").css("display", "none")
+                    }
+
+                    $("#inviteModal").modal("show")
+                }
+            })
+        }
+
+    })
 </script>
 </html>

@@ -1,13 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
-</head>
-<body>
 
 
 <!-- 프로젝트 초대 모달창 -->
@@ -132,7 +125,15 @@
                     <div class="col-lg-12 text-left mr-5 ml-5 mt-5 pjSetting">
                         <h5>프로젝트 설정</h5>
                         <div class="col-lg-5 text-left">
-                            <a id="keepPjBtn" href="#" class="btn btn-outline-warning mr-5">프로젝트 보관</a>
+                            <c:choose>
+                                <c:when test="${pj.status == 'Y'}}">
+                                    <a id="keepPjBtn" href="#" class="btn btn-outline-warning mr-5">프로젝트 보관</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <a id="restorePjBtn" href="#" class="btn btn-outline-warning mr-5">프로젝트 복구</a>
+                                </c:otherwise>
+                            </c:choose>
+
                             <a id="deletePjBtn" href="#" class="btn btn-outline-danger">프로젝트 삭제</a>
                         </div>
                     </div>
@@ -147,9 +148,3 @@
         </div>
     </div>
 </div>
-</body>
-<script>
-
-
-</script>
-</html>

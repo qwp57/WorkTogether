@@ -42,7 +42,7 @@ public class ScheduleController {
 
     @RequestMapping("/insertSch.do")
     public String insertSch(Schedule schedule, BoardAll boardAll, @RequestParam("pj_no") int pj_no, HttpSession session,
-                            RedirectAttributes redirect, HttpServletRequest request) throws Exception {
+                            RedirectAttributes redirect, String type) throws Exception {
         log.info("글 : " + schedule);
         boardAll.setBoard_type("schedule");
         boardAll.setPj_no(pj_no);
@@ -54,8 +54,13 @@ public class ScheduleController {
 
         msgMap.put("msg", "게시물 등록 완료.");
         redirect.addFlashAttribute("msg", msgMap);
-
-        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        if (type.equals("calendar")){
+            return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
+        }else if(type.equals("home")){
+            return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        }else {
+            return "redirect:/project/";
+        }
     }
     @ResponseBody
     @RequestMapping(value = "/detailView.do", produces = "application/json; charset=utf-8")
@@ -150,7 +155,7 @@ public class ScheduleController {
     }
 
     @RequestMapping("/editSch.do")
-    public String editSch(Schedule schedule, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
+    public String editSch(Schedule schedule, int pj_no, String type, RedirectAttributes redirect) throws Exception {
         log.info("일정 : " + schedule);
 
         scheduleService.editSch(schedule);
@@ -158,6 +163,12 @@ public class ScheduleController {
         msgMap.put("msg", "게시물 수정 완료.");
         redirect.addFlashAttribute("msg", msgMap);
 
-        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        if (type.equals("calendar")){
+            return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
+        }else if(type.equals("home")){
+            return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        }else {
+            return "redirect:/project/";
+        }
     }
 }

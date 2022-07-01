@@ -9,14 +9,15 @@ import com.uni.wt.project.model.dto.Project;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Mapper
 public interface ProjectMapper {
 
     public int insertProject(Project pj);
 
-    public ArrayList<Project> selectMyProject(int loginEmp);
-    ArrayList<Project> selectMyBookmarkProject(int loginEmp);
+    public ArrayList<Project> selectMyProject(Map<String, Object> paramMap);
+    ArrayList<Project> selectMyBookmarkProject(Map<String, Object> paramMap);
 
     Project selectOneProject(int pj_no);
 
@@ -46,4 +47,5 @@ public interface ProjectMapper {
 
     int keepProject(int pj_no);
 
+    int restoreProject(int pj_no);
 }
