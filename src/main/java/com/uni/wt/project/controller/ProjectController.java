@@ -13,7 +13,6 @@ import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.model.dto.ProjectFile;
 import com.uni.wt.project.model.service.ProjectFileService;
 import com.uni.wt.project.model.service.ProjectService;
-import com.uni.wt.project.post.model.service.PostService;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.project.projectMember.model.service.ProjectMemberService;
@@ -21,25 +20,17 @@ import com.uni.wt.project.schedule.model.dto.Schedule;
 import com.uni.wt.project.schedule.model.service.ScheduleService;
 import com.uni.wt.project.todo.model.service.TodoService;
 import com.uni.wt.requestWork.model.dto.RequestWork;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,7 +84,7 @@ public class ProjectController {
 
 
     @RequestMapping(value = "/invitePj.do", produces = "application/json; charset=utf-8")
-    public String invitePj(@RequestParam("inviteEmpNo") int[] emp_no, @RequestParam("pj_no") int pj_no) throws Exception {
+    public String invitePj(@RequestParam("inviteEmpNo") int[] emp_no, @RequestParam("pj_no") int pj_no,  RedirectAttributes redirect) throws Exception {
         for (int i : emp_no) {
             log.info("사번 : " + i);
             ProjectMember pjm = new ProjectMember();
@@ -104,6 +95,7 @@ public class ProjectController {
             projectMemberService.insertProjectMember(pjm);
         }
         msgMap.put("msg", "프로젝트 초대 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
 
@@ -161,12 +153,14 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/quitProject.do")
-    public String quitProject(HttpSession session, @RequestParam("pj_no") int pj_no) throws Exception {
+    public String quitProject(RedirectAttributes redirect, HttpSession session, @RequestParam("pj_no") int pj_no) throws Exception {
         int loginEmp = ((Employee) session.getAttribute("loginEmp")).getEmp_no();
         ProjectMember pjMember = new ProjectMember();
         pjMember.setPj_no(pj_no);
         pjMember.setEmp_no(loginEmp);
         projectMemberService.quitProject(pjMember);
+        msgMap.put("msg", "프로젝트 나가기 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
         return "redirect:/project";
     }
 
@@ -416,13 +410,16 @@ public class ProjectController {
     }
 
     @RequestMapping("/deleteBoard.do")
-    public String deleteBoard(int board_no, int pj_no, String type, ProjectFile projectFile) throws Exception {
+    public String deleteBoard(RedirectAttributes redirect, int board_no, int pj_no, String type, ProjectFile projectFile) throws Exception {
         log.info("board_no : " + board_no);
         boardAllService.deleteBoard(board_no);
         if (projectFile.getFile_no() > 0) {
             projectFileService.deleteFile(projectFile);
         }
-        log.info("테스트");
+
+        msgMap.put("msg", "게시물 삭제 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
+
             if (type.equals("calendar")){
                 return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
             }else if(type.equals("home")){
@@ -433,29 +430,44 @@ public class ProjectController {
     }
 
     @RequestMapping("/editPj.do")
-    public String editPj(Project project) throws Exception {
+    public String editPj(RedirectAttributes redirect, Project project, String type) throws Exception {
         log.info("프로젝트 : " + project);
         projectService.editPj(project);
-        return "redirect:/project/detailPj.do?pj_no=" + project.getPj_no();
+        msgMap.put("msg", "프로젝트 수정 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
+
+        if (type.equals("calendar")){
+            return "redirect:/project/detailCalendar.do?pj_no=" + project.getPj_no();
+        }else if(type.equals("home")){
+            return "redirect:/project/detailPj.do?pj_no=" + project.getPj_no();
+        }else if(type.equals("drive")){
+            return "redirect:/project/drivePj.do?pj_no=" + project.getPj_no();
+        }else{
+            return "redirect:/project/";
+        }
+
     }
 
     @RequestMapping("/deleteProject.do")
-    public String deleteProject(@RequestParam("pj_no") int pj_no) throws Exception {
+    public String deleteProject(@RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
         projectService.deleteProject(pj_no);
         msgMap.put("msg", "프로젝트 삭제 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
         return "redirect:/project";
     }
 
     @RequestMapping("/keepProject.do")
-    public String keepProject(@RequestParam("pj_no") int pj_no) throws Exception {
+    public String keepProject(@RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
         projectService.keepProject(pj_no);
         msgMap.put("msg", "프로젝트 보관 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
     @RequestMapping("/restoreProject.do")
-    public String restoreProject(@RequestParam("pj_no") int pj_no) throws Exception {
+    public String restoreProject(@RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
         projectService.restoreProject(pj_no);
         msgMap.put("msg", "프로젝트 복구 완료.");
+        redirect.addFlashAttribute("msg", msgMap);
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
     

@@ -627,6 +627,7 @@
             $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
         }
         $("#editPj").find("#pj_no").val("${pj.pj_no}")
+        $("#editPj").find("input[name=type]").val("calendar")
         $("#editPjModal").modal("show")
     })
 

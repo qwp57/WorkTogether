@@ -429,13 +429,13 @@
                 </div>
             </div>
             <div class="section-body">
-                <div class="row mt-sm-4 ">
-                    <div class="col-md-12 col-lg-12" style="margin-left: 450px;">
-
+                <div class="row mt-sm-4 center">
+                    <div class="col-lg-4"></div>
+                    <div class="col-md-12 col-lg-4 center">
                         <div id="pagination">
-
                         </div>
                     </div>
+                    <div class="col-lg-4"></div>
                 </div>
             </div>
         </section>
@@ -957,6 +957,7 @@
             $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
         }
         $("#editPj").find("#pj_no").val("${pj.pj_no}")
+        $("#editPj").find("input[name=type]").val("home")
         $("#editPjModal").modal("show")
     })
 

@@ -81,6 +81,7 @@
             </div>
             <!-- modal body : 내용 -->
             <form class="form" id="editPj" action="/project/editPj.do" method="post">
+                <input type="hidden" name="type">
                 <input type="hidden" id="pj_no" name="pj_no">
                 <div class="modal-body">
                     <div class="col-lg-12 text-center mt-5">
@@ -148,3 +149,5 @@
         </div>
     </div>
 </div>
+<script>
+</script>

@@ -218,11 +218,11 @@
         font-weight: bolder;
     }
 
-    input[type="checkbox"] {
+    .fileCheckBox {
         display: none;
     }
 
-    input[type="checkbox"] + label {
+    .fileCheckBox + label {
         display: inline-block;
         width: 20px;
         height: 48px;
@@ -230,7 +230,7 @@
         background-size: 20px 20px;
     }
 
-    input[type="checkbox"]:checked + label {
+    .fileCheckBox:checked + label {
         background: url('/resources/assets/img/checked_checked.png') no-repeat center / contain;
     }
 
@@ -359,7 +359,7 @@
                                 <div class="contents" style="width: 100%;">
                                     <div class="checkAllArea">
                                         <div class="checkFile">
-                                            <input type="checkbox" id="checkAll">
+                                            <input type="checkbox" id="checkAll" class="fileCheckBox">
                                             <label for="checkAll" class="checkAll" style="cursor:pointer;"></label>
                                         </div>
                                     </div>
@@ -385,7 +385,7 @@
                                                         <input type="hidden" class="fileChangeName"
                                                                value="${file.change_name}">
                                                         <input type="checkbox" id="file_no${e.count}"
-                                                               class="file_no" name="file_no"
+                                                               class="file_no  fileCheckBox" name="file_no"
                                                                value="${file.file_no}">
                                                         <label for="file_no${e.count}" class="file_no fileNoLabel"
                                                                style="cursor:pointer;"></label>
@@ -412,6 +412,7 @@
 <jsp:include page="invitePjModal.jsp"></jsp:include>
 <jsp:include page="colorTagModal.jsp"/>
 <jsp:include page="pjFormModal.jsp"/>
+<jsp:include page="attendeeViewModal.jsp"/>
 
 </body>
 <script src="/resources/assets/js/pjHead.js"></script>
@@ -636,13 +637,12 @@
             content += ' </div>'
             content += '<div class="checkFile">'
             content += '<input type="hidden" class="fileChangeName" value="' + obj.change_name + '">'
-            content += ' <input type="checkbox" id="file_no' + i + '" class="file_no" name="file_no" value="' + obj.file_no + '">'
+            content += ' <input type="checkbox" id="file_no' + i + '" class="file_no fileCheckBox" name="file_no" value="' + obj.file_no + '">'
             content += ' <label for="file_no' + i + '" class="file_no fileNoLabel" style="cursor:pointer;"></label>'
             content += ' </div>'
             content += '<input type="text" maxlength="50" class="fileName" readonly style="cursor:pointer" value="' + obj.origin_name + '">'
             content += '  </div>'
         })
-        checkAll
         $("#checkAll").prop("checked", false)
         $(".file_no").prop("checked", false)
         $(".file").removeAttr("style")
@@ -745,6 +745,7 @@
             $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
         }
         $("#editPj").find("#pj_no").val("${pj.pj_no}")
+        $("#editPj").find("input[name=type]").val("drive")
         $("#editPjModal").modal("show")
     })
 
