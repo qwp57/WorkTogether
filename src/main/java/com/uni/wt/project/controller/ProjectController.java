@@ -10,6 +10,8 @@ import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.boardAll.model.service.BoardAllService;
 import com.uni.wt.project.model.dto.Project;
+import com.uni.wt.project.model.dto.ProjectFile;
+import com.uni.wt.project.model.service.ProjectFileService;
 import com.uni.wt.project.model.service.ProjectService;
 import com.uni.wt.project.post.model.service.PostService;
 import com.uni.wt.project.projectMember.model.dto.ProjectMember;
@@ -19,17 +21,25 @@ import com.uni.wt.project.schedule.model.dto.Schedule;
 import com.uni.wt.project.schedule.model.service.ScheduleService;
 import com.uni.wt.project.todo.model.service.TodoService;
 import com.uni.wt.requestWork.model.dto.RequestWork;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +55,7 @@ public class ProjectController {
     @Autowired
     private ProjectMemberService projectMemberService;
     @Autowired
-    private PostService postService;
+    private ProjectFileService projectFileService;
     @Autowired
     private TodoService todoService;
     @Autowired
@@ -340,6 +350,25 @@ public class ProjectController {
 
         return new GsonBuilder().create().toJson(list);
     }
+    @ResponseBody
+    @RequestMapping(value = "/deleteFile.do", produces = "application/text;charset=utf8")
+    public String deleteFile(@RequestParam("file_no[]") int[] file_no) throws Exception {
+
+        log.info("삭제할 파일 : " + file_no.toString());
+        for (int i : file_no){
+            projectFileService.deleteFile(projectFileService.getFileByFileNo(i));
+        }
+        return new GsonBuilder().create().toJson("파일 삭제 성공");
+    }
+    @ResponseBody
+    @RequestMapping(value = "/fileSort.do", produces = "application/text;charset=utf8")
+    public String fileSort(@RequestParam("pj_no") int pj_no, @RequestParam("sort") String sort) throws Exception {
+
+        ArrayList<ProjectFile> fList = projectService.getPjFiles(pj_no, sort);
+        log.info("파일리스트 : " + fList);
+
+        return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(fList);
+    }
 
     @ResponseBody
     @RequestMapping(value = "/loadTag.do", produces = "application/text;charset=utf8")
@@ -387,9 +416,12 @@ public class ProjectController {
     }
 
     @RequestMapping("/deleteBoard.do")
-    public String deleteBoard(int board_no, int pj_no, String type) throws Exception {
+    public String deleteBoard(int board_no, int pj_no, String type, ProjectFile projectFile) throws Exception {
         log.info("board_no : " + board_no);
         boardAllService.deleteBoard(board_no);
+        if (projectFile.getFile_no() > 0) {
+            projectFileService.deleteFile(projectFile);
+        }
         log.info("테스트");
             if (type.equals("calendar")){
                 return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
@@ -486,7 +518,7 @@ public class ProjectController {
     }
 
     @RequestMapping("/drivePj.do")
-    public String drivePj(@RequestParam("pj_no") int pj_no, @RequestParam(value = "date", required = false) String date, Model m, HttpSession session) throws Exception {
+    public String drivePj(@RequestParam("pj_no") int pj_no, Model m, HttpSession session) throws Exception {
         ProjectTag projectTag = new ProjectTag();
         projectTag.setPj_no(pj_no);
         projectTag.setEmp_no(((Employee) session.getAttribute("loginEmp")).getEmp_no());
@@ -496,16 +528,15 @@ public class ProjectController {
         //log.info("프로젝트 상세보기 pj : " + pj);
         int checkBookmark = projectMemberService.checkBookmark(projectTag);
 
+        ArrayList<ProjectFile> fList = projectService.getPjFiles(pj_no, "dateDesc");
+        log.info("파일리스트 : " + fList);
+        m.addAttribute("fList", fList);
         m.addAttribute("checkBookmark", checkBookmark);
         m.addAttribute("pj", pj);
         m.addAttribute("pjMember", list.get(0));
         return "project/drivePj";
     }
 
-    @RequestMapping("/mentionedBoard.do")
-    public String mentionedBoard() {
-        return "project/mentionedBoard";
-    }
 
     @RequestMapping("/myBoard.do")
     public String myBoard() {

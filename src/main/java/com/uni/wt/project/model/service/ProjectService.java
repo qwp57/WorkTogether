@@ -3,6 +3,7 @@ package com.uni.wt.project.model.service;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.model.dto.Project;
+import com.uni.wt.project.model.dto.ProjectFile;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.requestWork.model.dto.RequestWork;
 
@@ -49,4 +50,6 @@ public interface ProjectService {
     ArrayList<RequestWork> loadRw(int pj_no) throws Exception;
 
     void restoreProject(int pj_no) throws Exception;
+
+    ArrayList<ProjectFile> getPjFiles(int pj_no, String sort) throws Exception;
 }

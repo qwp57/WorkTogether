@@ -2,6 +2,7 @@ package com.uni.wt.project.model.dao;
 
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.Reply;
+import com.uni.wt.project.model.dto.ProjectFile;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.requestWork.model.dto.RequestWork;
 import org.apache.ibatis.annotations.Mapper;
@@ -48,4 +49,5 @@ public interface ProjectMapper {
     int keepProject(int pj_no);
 
     int restoreProject(int pj_no);
+
 }

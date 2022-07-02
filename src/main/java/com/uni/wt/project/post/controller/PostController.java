@@ -51,7 +51,8 @@ public class PostController {
 
     @RequestMapping("/insertPost.do")
     public String insertPost(Post post, BoardAll boardAll, @RequestParam("pj_no") int pj_no, HttpSession session,
-                             @RequestParam(name = "upload_file", required = false) MultipartFile file, RedirectAttributes redirect, HttpServletRequest request) throws Exception {
+                             @RequestParam(name = "upload_file", required = false) MultipartFile file,  @RequestParam("isImage") String isImage,
+                             RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("글 : " + post);
         boardAll.setBoard_type("post");
         boardAll.setPj_no(pj_no);
@@ -62,7 +63,7 @@ public class PostController {
         int board_no = postService.insertPost(post, boardAll);
 
         if(!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
-           projectFileService.uploadFile(file, request, board_no);
+           projectFileService.uploadFile(file, request, board_no, isImage);
         }
 
 
@@ -73,7 +74,8 @@ public class PostController {
     }
     @RequestMapping("/editPost.do")
     public String editPost(Post post, ProjectFile projectFile, @RequestParam("pj_no") int pj_no,
-                             @RequestParam(name = "upload_file", required = false) MultipartFile file, RedirectAttributes redirect, HttpServletRequest request) throws Exception {
+                             @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam("isImage") String isImage,
+                           RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("글 : " + post);
         log.info("삭제할 파일 : " + projectFile);
         if (projectFile.getFile_no() > 0) {
@@ -83,7 +85,7 @@ public class PostController {
 
         if(!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
 
-            projectFileService.uploadFile(file, request, post.getBoard_no());
+            projectFileService.uploadFile(file, request, post.getBoard_no(), isImage);
         }
 
 
@@ -122,7 +124,7 @@ public class PostController {
             String value = viewCookie.getValue(); // 쿠키 값 받아옴.
             log.info("cookie 값 : " + value);
         }
-        ProjectFile projectFile = projectFileService.getFile(board_no);
+        ProjectFile projectFile = projectFileService.getFileByBoardNo(board_no);
         Post post = postService.detailView(board_no);
         log.info("포스트 조회 : " + post);
         Map<String, Object> map = new HashMap<>();

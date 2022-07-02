@@ -5,8 +5,10 @@ import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dao.BoardAllMapper;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
+import com.uni.wt.project.model.dao.ProjectFileMapper;
 import com.uni.wt.project.model.dao.ProjectMapper;
 import com.uni.wt.project.model.dto.Project;
+import com.uni.wt.project.model.dto.ProjectFile;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.requestWork.model.dao.RequestWorkMapper;
 import com.uni.wt.requestWork.model.dto.RequestWork;
@@ -31,7 +33,8 @@ public class ProjectServiceImpl implements ProjectService {
     private ProjectMapper projectMapper;
     @Autowired
     private RequestWorkMapper requestWorkMapper;
-
+    @Autowired
+    private ProjectFileMapper projectFileMapper;
     private Map<String, Object> paramMap = new HashMap<String, Object>();
 
     @Override
@@ -150,6 +153,16 @@ public class ProjectServiceImpl implements ProjectService {
             throw new Exception("프로젝트 복구에 실패하였습니다.");
         }
     }
+
+    @Override
+    public ArrayList<ProjectFile> getPjFiles(int pj_no, String sort) throws Exception {
+        paramMap.put("pj_no", pj_no);
+        paramMap.put("sort", sort);
+        ArrayList<ProjectFile> list = projectFileMapper.getPjFiles(paramMap);
+        paramMap.clear();
+        return list;
+    }
+
     @Override
     public ArrayList<RequestWork> loadRw(int pj_no) throws Exception {
         return requestWorkMapper.loadRw(pj_no);

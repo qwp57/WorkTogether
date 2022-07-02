@@ -511,6 +511,7 @@
         })
         return array
     }
+
     $(function () {
 
         $(".calendar").removeClass("clicked")
@@ -523,14 +524,15 @@
 </script>
 <%--게시글 전체--%>
 <script>
-    function checkStored(){
-        if(${pj.status == 'N'}){
+    function checkStored() {
+        if (${pj.status == 'N'}) {
             alert("보관된 프로젝트는 작성/수정/삭제 관련 기능이 제한됩니다.")
             return false
-        }else {
+        } else {
             return true
         }
     }
+
     function sendajax(searchTarget, searchKeyword, type, currentPage) {
         console.log("sendajax");
 
@@ -557,6 +559,7 @@
         console.log("sendajax 끝남");
 
     }
+
     $(document).on('click', '.boardTable tr', function () {
             console.log($(this).find(".board_no").val())
             $board_no = $(this).find(".board_no").val()
@@ -580,14 +583,17 @@
                         $("#postUploadDate").html(list.post.create_date)
                         $(".detailViewBoard_no").val(list.post.board_no)
                         if (list.projectFile != null) {
-                            $("#postFileArea").html(
-                                "<a href='/resources/upload_files/" + list.projectFile.change_name + "'download " +
-                                "type='text/example')>" + list.projectFile.origin_name + "</a>" +
-                                "<input type='hidden' name='file_no' value='" + list.projectFile.file_no + "'>" +
-                                "<input type='hidden' name='change_name' value='" + list.projectFile.change_name + "'>" +
-                                "<input type='hidden' name='origin_name' value='" + list.projectFile.origin_name + "'>" +
-                                "<input type='hidden' name='path' value='" + list.projectFile.path + "'>"
-                            );
+                            if (checkImageType(list.projectFile.origin_name)) {
+                                var content = '<img style="max-width: 630px;" src="/resources/upload_files/' + list.projectFile.change_name + '" alt="file" class="imgthumb">'
+                            } else {
+                                var content = "<a href='/resources/upload_files/" + list.projectFile.change_name + "'download " +
+                                    "type='text/example')>" + list.projectFile.origin_name + "</a>"
+                            }
+                            content += "<input type='hidden' name='file_no' value='" + list.projectFile.file_no + "'>"
+                            content += "<input type='hidden' name='change_name' value='" + list.projectFile.change_name + "'>"
+                            content += "<input type='hidden' name='origin_name' value='" + list.projectFile.origin_name + "'>"
+                            content += "<input type='hidden' name='path' value='" + list.projectFile.path + "'>"
+                            $("#postFileArea").html(content);
                             $("#postFileArea").css("display", "block")
                         }
                         $("#postForListArea").html('')
@@ -794,7 +800,8 @@
 
 
     $(document).on('click', '.addReplyBtn', function () {
-        if (${pj.reply_power == 'Y'} && ${pjMember.admin == 'N'})
+        if (${pj.reply_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
         {
             alert("관리자만 작성할 수 있습니다.")
             return false
@@ -1124,7 +1131,7 @@
 
 
     $(document).on('click', '#inviteBtn', function () {
-        if(checkStored()){
+        if (checkStored()) {
             $.ajax({
                 url: '/project/selectEmpListByPj.do',
                 data: {
@@ -1169,6 +1176,7 @@
         }
 
     })
+
     function setColor(selectedProjects, selectedColor) {
         $.ajax({
             url: '/project/setProjectColor.do',
@@ -1200,6 +1208,7 @@
         $("#tagModal").modal("hide")
         setTag(selectedProjects, selectedTags)
     }
+
     function saveColor() {
         if ($("input:radio[name='customRadio']:checked").length <= 0) {
             alert("색상을 선택해주세요.")
@@ -1268,7 +1277,7 @@
             alert("관리자만 작성할 수 있습니다.")
             return false
         }
-        if(checkStored()){
+        if (checkStored()) {
             $("#postForm").css("display", "block")
             $("#postSch").css("display", "none")
             $("#postTodo").css("display", "none")
@@ -1330,7 +1339,7 @@
             alert("관리자만 작성할 수 있습니다.")
             return false
         }
-        if(checkStored()){
+        if (checkStored()) {
             $("#postSch").find("input[name=type]").val("home")
             $("textarea[name=sch_content]").val('')
             $("textarea[name=sch_content]").text('')
@@ -1361,7 +1370,7 @@
             alert("관리자만 작성할 수 있습니다.")
             return false
         }
-        if(checkStored()){
+        if (checkStored()) {
             $("#postForm").css("display", "none")
             $("#postSch").css("display", "none")
             $("#postTodo").css("display", "block")
@@ -1433,7 +1442,6 @@
         location.href = "/project/drivePj.do?pj_no=" +
         ${pj.pj_no}
     })
-
 
 
 </script>

@@ -10,9 +10,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert title here</title>
-    <link
-            href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
-            rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
+          rel="stylesheet">
 </head>
 
 <style>
@@ -200,143 +199,22 @@
     }
 
 
-    a {
-        text-decoration: none;
-        color: #333333;
-    }
-
-
     input:focus {
         outline: none;
-    }
-
-
-    /*위 메뉴*/
-    .title {
-        width: 100%;
-        height: 33px;
-        margin: 7px 0;
-        background-color: rgb(242, 242, 242);
-        position: relative;
-        padding: 10px 0;
-    }
-
-    .title_btn {
-        display: inline-block;
-        background: #fff;
-        border-radius: 3px;
-        box-sizing: border-box;
-        position: relative;
-    }
-
-    .title_btn img {
-        width: 24px;
-        left: 6px;
-        top: 2.5px;
-        position: absolute;
-    }
-
-
-    .title_btn span {
-        padding: 0 8px 0 34px;
-        /* background: url(../img/chat-04.png) no-repeat -40% center; */
-    }
-
-
-    .class {
-        position: relative;
-        top: 10px;
-    }
-
-    .class img {
-        width: 32px;
-    }
-
-
-    .project_all a {
-        position: relative;
-        height: 38px;
-        line-height: 38px;
-    }
-
-    .project_all > a::after {
-        display: block;
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 19px;
-        width: 200px;
-        height: 1px;
-        background: #e2e2e2;
-    }
-
-    /* .project_all a em{
-        position: relative;
-        width: 14px;
-        height: 14px;
-        margin-top: 13px;
-        border-radius: 2px;
-        background: #5f5ab9;
-    } */
-    .project_list a {
-        padding-left: 9px;
-    }
-
-    .project_all a {
-        padding: 0 20px 0 20px;
-    }
-
-    .project_list_sub {
-        position: relative;
-        padding: 0 20px 0 20px;
-        height: 28px;
-        line-height: 28px;
-        cursor: pointer;
-    }
-
-    .file_list_wrapper {
-        height: 100%;
-        overflow-y: scroll;
     }
 
     .contents {
         height: 81%;
     }
 
-    .project_all:hover,
-    .project_list_sub:hover,
-    .piclist_tr:hover {
+    .file:hover {
         background-color: #f5f5f5;
     }
 
-    /*오른쪽 메뉴*/
-    .file_list,
-    .piclist {
-        padding: 0;
-        height: 100%;
-        background: #fff;
-    }
-
-    .file_list_index {
-        /* width: 988.31px; */
-        display: flex;
-        padding: 0 9px 0 20px;
-        height: 49px;
-        line-height: 49px;
-        font-weight: bold;
-        color: #888;
-        text-align: center;
-        border-bottom: 1px solid #e2e2e2;
-        position: relative;
-    }
-
-    .filetable {
-        cursor: pointer;
-    }
 
     .arrow,
     .tarrow {
-        font-size: 11px;
+        font-size: 18px;
         font-weight: bolder;
     }
 
@@ -348,91 +226,26 @@
         display: inline-block;
         width: 20px;
         height: 48px;
+        background: url('/resources/assets/img/checkbox_unchecked.png') no-repeat 0 50%;
         background-size: 20px 20px;
     }
 
     input[type="checkbox"]:checked + label {
-        background: url('${pageContext.request.contextPath}/resources/img/checked-2-02.png') no-repeat center / contain;
+        background: url('/resources/assets/img/checked_checked.png') no-repeat center / contain;
     }
 
-    .file_list_tr:hover {
-        background-color: rgb(242, 242, 242);
+    .sortNow {
+        text-decoration: underline;
+        font-weight: 700;
+        color: #111;
     }
 
-    .file_list_fname {
-        width: 644.31px;
-    }
-
-    .file_tr_fname {
-        padding-left: 54px;
-        width: 577px;
-    }
-
-    .file_list_fsize,
-    .file_tr_fsize {
-        width: 87px;
-    }
-
-    .file_list_uname,
-    .file_tr_uname {
-        width: 93px;
-    }
-
-    .file_list_fdate,
-    .file_tr_fdate {
-        width: 163px;
-    }
-
-    .file_list_tr {
-        position: relative;
-        padding: 0 9px 0 20px;
-        height: 49px;
-        line-height: 49px;
-        display: flex;
+    .sortDate, .sortName {
+        display: inline-block;
         cursor: pointer;
-        border-bottom: 1px solid #e2e2e2;
-        color: #333;
     }
 
-    .center {
-        text-align: center;
-    }
-
-    .listfname {
-        /* background-color:gray; */
-        padding-left: 6%;
-        position: relative;
-        overflow: hidden;
-        /* background-repeat: no-repeat;
-        background-size: 27px 27px;
-        background-position: 20px 50%; */
-    }
-
-    .ficon {
-        position: absolute;
-        left: 20px;
-        top: 10px;
-        width: 27px;
-        height: 27px;
-    }
-
-    .notfile {
-        margin: 34vh 0;
-        padding-top: 10px;
-        height: 100%;
-        text-align: center;
-    }
-
-    .notfile h2 {
-        margin-top: 20px;
-        font-size: 20px;
-        font-weight: bold;
-        color: #777;
-    }
-
-    /*썸네일*/
-
-    .piclist_index {
+    .checkAllArea {
         display: flex;
         flex-direction: row;
         padding: 0 9px 0 20px;
@@ -446,7 +259,7 @@
     }
 
 
-    .piclist_wrapper {
+    .fileListArea {
         padding: 20px 0px 0 20px;
         display: flex;
         flex-wrap: wrap;
@@ -455,12 +268,12 @@
         align-content: flex-start;
     }
 
-    .piclist_tr {
+    .file {
         display: inline-block;
         margin-bottom: 44px;
         padding: 0;
-        width: 162.1px;
-        height: 162.1px;
+        width: 162px;
+        height: 162px;
         border: 1px solid #e2e2e2;
         border-radius: 25px;
         box-sizing: border-box;
@@ -469,29 +282,30 @@
         position: relative;
     }
 
-    .picinfo {
+    .fileDetail {
         cursor: pointer;
+        position: relative;
     }
 
-    .picinfo img {
+    .fileDetail img {
         display: inline-block;
         margin-bottom: 44px;
         padding: 0;
-        width: 162.1px;
-        height: 162.1px;
+        width: 163px;
+        height: 163px;
         box-sizing: border-box;
         position: relative;
-        margin-right: 20px;
-        position: relative;
+        bottom: 2px;
+        right: 2px;
     }
 
-    .picchk {
+    .fileNoLabel {
         position: absolute;
         top: -3px;
         left: 10px;
     }
 
-    .pictext {
+    .fileName {
         padding: 0px;
         height: 21px;
         line-height: 21px;
@@ -502,17 +316,6 @@
         position: absolute;
         top: 170px;
         border: none;
-    }
-
-    .class {
-        cursor: pointer;
-        position: relative;
-        top: 10px;
-    }
-
-    .class img {
-        width: 32px;
-        z-index: -1;
     }
 
 
@@ -539,64 +342,71 @@
                             <div class="card-body body-2">
                                 <div class="row">
                                     <div class="col-lg-6">
-                                    <div class="picfdate filetable"
-                                         style="text-decoration: underline; display: inline-block; font-weight:700; color:#111; margin-right: 25px;">최근
-                                        업로드순<span class="tarrow">↓</span></div>
-                                    <div class="picfname filetable" style="display: inline-block;">파일명 순<span class="tarrow">↓</span></div>
+                                        <div class="sortDate" style=" margin-right: 15px;"> 최근 업로드순<span class="tarrow">↓</span>
+                                        </div>
+                                        <div class="sortName" style="display: inline-block;">파일명 순<span
+                                                class="tarrow">↓</span></div>
                                     </div>
                                     <div class="col-lg-6 text-right">
-                                        <a class="title_down title_btn" style="cursor:default">
-                                            <i class="bi bi-download fa-lg" style="margin-right: 25px;"> 다운로드</i>
-                                        </a>
-                                        <a class="title_del title_btn" style="cursor:default">
-                                            <i class="bi bi-trash3 fa-lg">삭제</i>
-                                        </a>
+                                        <i class="bi bi-download fa-lg"
+                                           style="margin-right: 25px; color: lightgray; cursor: default;"
+                                           id="downloadBtn"> 다운로드</i>
+                                        <i class="bi bi-trash3 fa-lg" style="color: lightgray; cursor: default;"
+                                           id="deleteBtn">삭제</i>
                                     </div>
                                 </div>
 
                                 <div class="contents" style="width: 100%;">
-
-                                    <div class="piclist" style="display:block; width: 100%;">
-                                        <div class="piclist_index">
-                                            <div class="file_chk">
-                                                <input type="checkbox" id="thumb_list_all">
-                                                <label for="thumb_list_all" class="thumb_list_all"
-                                                       style="cursor:pointer;"></label>
-                                            </div>
-
+                                    <div class="checkAllArea">
+                                        <div class="checkFile">
+                                            <input type="checkbox" id="checkAll">
+                                            <label for="checkAll" class="checkAll" style="cursor:pointer;"></label>
                                         </div>
-
-
-                                        <div class="piclist_wrapper">
-                                            <div class="piclist_tr">
-                                                <div class="picinfo text-center mt-5">
-                                                    <i class="bi bi-file-earmark-fill fa-4x"></i>
-
-                                                    <input type="hidden" class="imgfname">
+                                    </div>
+                                    <div class="fileList" style="display:block; width: 100%;">
+                                        <div id="fileInfo" style="text-align: center">
+                                            <h3 style="margin-top: 240px;">프로젝트에 등록된 파일이 없습니다.</h3>
+                                        </div>
+                                        <c:if test="${not empty fList}">
+                                        <div class="fileListArea">
+                                            <c:forEach items="${fList}" var="file" varStatus="e">
+                                            <div class="file">
+                                                <c:if test="${file.img_path == 'Y'}">
+                                                <div class="fileDetail">
+                                                    <img src="/resources/upload_files/${file.change_name}" alt="file">
+                                                    </c:if>
+                                                    <c:if test="${file.img_path == 'N'}">
+                                                    <div class="fileDetail"
+                                                         style="margin-left: 50px; margin-top: 40px;">
+                                                        <i class="bi bi-file-earmark-fill fa-4x"></i>
+                                                        </c:if>
+                                                    </div>
+                                                    <div class="checkFile">
+                                                        <input type="hidden" class="fileChangeName"
+                                                               value="${file.change_name}">
+                                                        <input type="checkbox" id="file_no${e.count}"
+                                                               class="file_no" name="file_no"
+                                                               value="${file.file_no}">
+                                                        <label for="file_no${e.count}" class="file_no fileNoLabel"
+                                                               style="cursor:pointer;"></label>
+                                                    </div>
+                                                    <input type="text" maxlength="50" class="fileName" readonly
+                                                           style="cursor:pointer" value="${file.origin_name}">
                                                 </div>
-                                                <div class="file_chk">
-                                                    <input type="checkbox" id="thumb_chk" class="thumb_chk"
-                                                           name="fname">
-                                                    <label for="thumb_chk" class="thumb_chk picchk"
-                                                           style="cursor:pointer;"></label>
-                                                </div>
-                                                <input type="text" maxlength="50" class="pictext" readonly
-                                                       style="cursor:pointer">
+                                                </c:forEach>
                                             </div>
-
+                                            </c:if>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
-
-
             </div>
         </section>
     </div>
-
 </div>
 <jsp:include page="../common/footer.jsp"/>
 <jsp:include page="invitePjModal.jsp"></jsp:include>
@@ -604,11 +414,251 @@
 <jsp:include page="pjFormModal.jsp"/>
 
 </body>
+<script src="/resources/assets/js/pjHead.js"></script>
+
+<%--파일관련--%>
+<script>
+
+    var input = $('.checkAllArea').find("input[type=checkbox]");
+    var allLength = input.length;
+
+    $(document).on("click", "#checkAll", function () {
+        if ($("#checkAll").is(":checked")) {
+            $(".file_no").prop("checked", true);
+            $(".file").css("background-color", "#b2b2c7")
+            $("#downloadBtn").css("color", "black").css("cursor", "pointer")
+            $("#deleteBtn").css("color", "black").css("cursor", "pointer")
+        } else {
+            $(".file_no").prop("checked", false);
+            $(".file").removeAttr("style");
+            $("#downloadBtn").css("color", "lightgray").css("cursor", "default")
+            $("#deleteBtn").css("color", "lightgray").css("cursor", "default")
+        }
+    });
+
+    $(document).on("click", ".file", function (e) {
+        e.stopPropagation()
+        let check = $(this).find(".file_no");
+
+        if (check.is(":checked")) {
+            check.prop("checked", false)
+            $(this).removeAttr("style")
+        } else {
+            check.prop("checked", true);
+            $(this).css("background-color", "#b2b2c7")
+        }
+
+        var checkedinput = $("input:checked").length
+        if (allLength != checkedinput) {
+            $("#file_list_all").prop("checked", false)
+        }
+        if (checkedinput != 0) {
+            $("#downloadBtn").css("color", "black").css("cursor", "pointer")
+            $("#deleteBtn").css("color", "black").css("cursor", "pointer")
+        } else {
+            $("#downloadBtn").css("color", "lightgray").css("cursor", "default")
+            $("#deleteBtn").css("color", "lightgray").css("cursor", "default")
+        }
+    })
+
+    // 다중파일 다운로드
+    $(document).on("click", "#downloadBtn", function () {
+        if (confirm("선택한 파일을 다운받으시겠습니까?")) {
+            var checkedinput = $("input:checked").length
+            if (checkedinput != 0) {
+                var check = $("input[name=file_no]:checked");
+
+                $(check).each(function () {
+                    var fileName = $(this).prev().val();
+                    var path = '/resources/upload_files/'
+                    console.log(fileName)
+                    download(fileName, path)
+                })
+                $("input[name=file_no]").prop("checked", false)
+                $(".file").css("background-color", "white")
+            }
+        }
+    })
+
+    function download(fileName, path) {
+        // console.log(fileName)
+        // console.log(path)
+        // console.log(path + fileName)
+        var element = document.createElement('a')
+        element.setAttribute('href', path + fileName)
+        element.setAttribute('download', fileName)
+        document.body.appendChild(element)
+        element.click()
+        document.body.removeChild(element)
+    }
+
+    // 파일 삭제
+    $(document).on("click", "#deleteBtn", function (e) {
+        if (confirm("선택한 파일을 삭제하시겠습니까?")) {
+            // 파일번호를 배열에 저장
+            var check = $("input[name=file_no]:checked")
+            var arr = []
+            $(check).each(function (index) {
+                arr.push($(this).val())
+            })
+            console.log(arr)
+            if (arr.length > 0) {
+                $.ajax({
+                    url: "/project/deleteFile.do",
+                    type: "post",
+                    data: {
+                        "file_no": arr
+                    },
+                    success: function (data) {
+                        check.parents(".file").remove()
+                        checkFileList()
+                        alert("삭제되었습니다.")
+                    }
+                })
+            } else {
+                alert("파일을 선택해주세요.")
+            }
+        }
+    })
+
+    function checkFileList() {
+        if ($(".file").length == 0) {
+            $(".checkAll").css("display", "none")
+            $("#downloadBtn").css("color", "lightgray").css("cursor", "default")
+            $("#deleteBtn").css("color", "lightgray").css("cursor", "default")
+            $("#fileInfo").css("display", "block")
+
+        } else {
+            $(".checkAll").css("display", "block")
+            $("#fileInfo").css("display", "none")
+        }
+    }
+</script>
+
+<%--정렬--%>
+<script>
+
+    $(".sortDate").click(function () {
+        let arrow = $(this).children().html()
+        let pno = $('#thispno').val()
+        if (arrow === "↓") {
+            $.ajax({
+                url: "/project/fileSort.do",
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "sort": "dateAsc"
+                },
+                type: "POST",
+                success: function (list) {
+                    list = $.parseJSON(list)
+                    console.log(list)
+                    $(".tarrow").html("↓")
+                    $(".sortDate").children().html("↑")
+                    $(".sortDate").addClass("sortNow")
+                    $(".sortName").removeClass("sortNow")
+                    loadFileList(list)
+                }
+            })
+        } else {
+            $.ajax({
+                url: "/project/fileSort.do",
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "sort": "dateDesc"
+                },
+                type: "POST",
+                success: function (list) {
+                    list = $.parseJSON(list)
+                    console.log(list)
+                    $(".tarrow").html("↓")
+                    $(".sortDate").children().html("↓")
+                    $(".sortDate").addClass("sortNow")
+                    $(".sortName").removeClass("sortNow")
+                    loadFileList(list)
+                }
+            })
+        }
+    })
+
+    $(".sortName").click(function () {
+        let arrow = $(this).children().html()
+        console.log(arrow)
+        if (arrow === "↓") {
+            $.ajax({
+                url: "/project/fileSort.do",
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "sort": "nameAsc"
+                },
+                type: "POST",
+                success: function (list) {
+                    list = $.parseJSON(list)
+                    console.log(list)
+                    $(".tarrow").html("↓")
+                    $(".sortName").children().html("↑")
+                    $(".sortName").addClass("sortNow")
+                    $(".sortDate").removeClass("sortNow")
+                    loadFileList(list)
+                }
+            })
+        } else {
+            $.ajax({
+                url: "/project/fileSort.do",
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "sort": "nameDesc"
+                },
+                type: "POST",
+                success: function (list) {
+                    list = $.parseJSON(list)
+                    console.log(list)
+                    $(".tarrow").html("↓")
+                    $(".sortName").children().html("↓")
+                    $(".sortName").addClass("sortNow")
+                    $(".sortDate").removeClass("sortNow")
+                    loadFileList(list)
+                }
+            })
+        }
+    })
+
+    function loadFileList(list) {
+        var content = ""
+        $.each(list, function (i, obj) {
+            content += '<div class="file">'
+            if (obj.img_path == "Y") {
+                content += '<div class="fileDetail">'
+                content += '<img src="/resources/upload_files/' + obj.change_name + '" alt="file">'
+            } else {
+                content += '<div class="fileDetail" style="margin-left: 50px; margin-top: 40px;">'
+                content += '<i class="bi bi-file-earmark-fill fa-4x"></i>'
+            }
+            content += ' </div>'
+            content += '<div class="checkFile">'
+            content += '<input type="hidden" class="fileChangeName" value="' + obj.change_name + '">'
+            content += ' <input type="checkbox" id="file_no' + i + '" class="file_no" name="file_no" value="' + obj.file_no + '">'
+            content += ' <label for="file_no' + i + '" class="file_no fileNoLabel" style="cursor:pointer;"></label>'
+            content += ' </div>'
+            content += '<input type="text" maxlength="50" class="fileName" readonly style="cursor:pointer" value="' + obj.origin_name + '">'
+            content += '  </div>'
+        })
+        checkAll
+        $("#checkAll").prop("checked", false)
+        $(".file_no").prop("checked", false)
+        $(".file").removeAttr("style")
+        $("#downloadBtn").css("color", "lightgray").css("cursor", "default")
+        $("#deleteBtn").css("color", "lightgray").css("cursor", "default")
+        $('.fileListArea').html(content)
+        checkFileList()
+    }
+</script>
 <script>
     $(function () {
         $(".calendar").removeClass("clicked")
         $(".home").removeClass("clicked")
         $(".drive").addClass("clicked")
+        checkFileList()
+        $(".sortDate").addClass("sortNow")
     })
     $(document).on('click', '.home', function () {
         location.href = "/project/detailPj.do?pj_no=" +
@@ -622,15 +672,19 @@
 
 </script>
 <script>
-    function checkStored(){
-        if(${pj.status == 'N'}){
+    function checkStored() {
+        if (${pj.status == 'N'}) {
             alert("보관된 프로젝트는 작성/수정 관련 기능이 제한됩니다.")
             return false
-        }else {
+        } else {
             return true
         }
     }
+
+
 </script>
+
+
 <%-- 프로젝트 헤드 --%>
 <script>
     $(document).on('click', '#quitProject', function () {
@@ -660,6 +714,7 @@
             ${pj.pj_no}
         }
     })
+
 
     $(document).on('click', '#setPj', function () {
         $("#editPj").find("input[name=pj_title]").val("${pj.pj_title}")
@@ -864,7 +919,7 @@
 
 
     $(document).on('click', '#inviteBtn', function () {
-        if(checkStored()){
+        if (checkStored()) {
             $.ajax({
                 url: '/project/selectEmpListByPj.do',
                 data: {
@@ -909,5 +964,54 @@
         }
 
     })
+
+    function setColor(selectedProjects, selectedColor) {
+        $.ajax({
+            url: '/project/setProjectColor.do',
+            data: {
+                "selectedProjects": selectedProjects,
+                "selectedColor": selectedColor,
+                "pj_no": ${pj.pj_no}
+            },
+            success: function (data) {
+                console.log(data)
+                $(".colors").attr("class", "colors " + data)
+
+            }
+        })
+    }
+
+    function saveTag() {
+        if ($("input:checkbox[name='tagInput']:checked").length <= 0) {
+            alert("태그를 선택해주세요.")
+            return false;
+        }
+        var selectedProjects = []
+        selectedProjects.push(${pj.pj_no});
+        var selectedTags = []
+        $("input:checkbox[name='tagInput']:checked").each(function () {
+            selectedTags.push($(this).val());
+        })
+
+        $("#tagModal").modal("hide")
+        setTag(selectedProjects, selectedTags)
+    }
+
+    function saveColor() {
+        if ($("input:radio[name='customRadio']:checked").length <= 0) {
+            alert("색상을 선택해주세요.")
+            return false;
+        }
+        var selectedProjects = []
+        selectedProjects.push(${pj.pj_no})
+        var selectedColor = $("input:radio[name='customRadio']:checked").val()
+        console.log(selectedProjects)
+        console.log(selectedColor)
+        $("#colorModal").modal("hide")
+        setColor(selectedProjects, selectedColor)
+        $("input:radio[name='customRadio']").prop("checked", false)
+    }
+
 </script>
+
 </html>

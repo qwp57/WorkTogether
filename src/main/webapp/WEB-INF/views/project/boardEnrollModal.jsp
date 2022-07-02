@@ -55,6 +55,7 @@
                 <input type="text" class="form-control" id="file-label"
                        style="display: none; border: 0px white;">
                 <input type="file" name="upload_file" id="upload-file" hidden>
+                <input type="hidden" name="isImage">
                 <i class="bi bi-paperclip fa-2x fileUploadBtn"></i>
                 <i class="bi bi-person fa-2x postFor"></i>
               </div>

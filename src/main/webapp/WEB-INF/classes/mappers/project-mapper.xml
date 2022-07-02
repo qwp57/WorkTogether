@@ -21,6 +21,8 @@
         <result property="name" column="NAME"/>
         <result property="admin" column="ADMIN"/>
     </resultMap>
+
+
     <select id="nextPjNo" resultType="int">
         SELECT PJ_SEQ.NEXTVAL
         FROM DUAL

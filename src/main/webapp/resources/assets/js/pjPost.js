@@ -1,3 +1,19 @@
+$(function () {
+    $('#summernote').summernote({
+        placeholder: '내용을 입력해주세요',
+        tabsize: 2,
+        height: 300,
+        toolbar: [
+            ['style', ['style']],
+            ['font', ['bold', 'underline']],
+            ['color', ['color']],
+            ['ul', 'ol', 'paragraph'],
+            ['table', ['table']],
+            ['insert', ['link', 'video']],
+        ]
+    });
+})
+
 $(document).on('click', '.fileUploadBtn', function () {
     $('#upload-file').click()
 })
@@ -19,6 +35,11 @@ $(document).on('change', '#upload-file', function () {
 
     // 추출한 파일명 삽입
     $("#file-label").val(filename);
+    if(checkImageType(filename)){
+        $("input[name=isImage]").val("Y")
+    }else {
+        $("input[name=isImage]").val("N")
+    }
     $("#file-label").css("display", "block")
     $(".fileUploadBtn").css("display", "none")
 });
@@ -86,3 +107,11 @@ $(document).on('click', '#postEditFormDeleteFile', function () {
     $(".fileUploadBtn").css("display", "inline-block")
 })
 
+function checkImageType(fullName) {
+    let type = fullName.slice(fullName.lastIndexOf(".") + 1).toLowerCase();
+    let check = true;
+    if (!(type == "gif" || type == "jpg" || type == "jpeg" || type == "png")) {
+        check = false;
+    }
+    return check;
+}
