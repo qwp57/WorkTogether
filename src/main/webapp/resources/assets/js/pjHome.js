@@ -24,7 +24,7 @@ function changePage(num) {
 
 
 function setpi(pi) {
-    var content = '<ul class="pagination Pi">'
+    var content = '<ul class="pagination Pi" style="justify-content: center;">'
     if (pi.currentPage != 1) {
         content += '<li class="page-item" ><a class="page-link" onclick="beforafterPage(-1)">이전</a></li>'
     } else {
@@ -47,55 +47,67 @@ function setpi(pi) {
 
 }
 
-function setList(list) {
+function setList(list, myBoard) {
     $(".boardTable").html('')
     $.each(list, function (i, obj) {
+        var pj_no = '<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">'
         if (obj.board_type == 'post') {
-            $(".boardTable").append(
-                '<tr>' +
-                '<td style="width: 7%; text-align: right; color: #f3a435 ;">' +
-                '<span class="bi bi-file-text"></span>' +
-                '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
-                '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
-                '</td>' +
-                '<td style="width: 8%; text-align: left;">글</td>' +
-                '<th style="width: 40%;">' + obj.post_title + '</th>' +
-                '<td style="width: 12%;">' + obj.name + '</td>' +
-                '<td style="width: 22%;">' + obj.create_date + '</td>' +
-                '<td>' +
-                '</td>' +
-                '</tr>'
-            )
+
+            var content = '<tr>'
+            content += pj_no
+            if(myBoard == 'myBoard'){
+                content += '<td style="width: 7%"><div class="colors"></div></td>'
+            }
+            content += '<td style="width: 7%; text-align: right; color: #f3a435 ;">'
+            content += '<span class="bi bi-file-text"></span>'
+            content += '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">'
+            content +=  '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">'
+            content += '</td>'
+            content += '<td style="width: 8%; text-align: left;">글</td>'
+            content +=  '<th style="width: 40%;">' + obj.post_title + '</th>'
+            content +=  '<td style="width: 12%;">' + obj.name + '</td>'
+            content +=  '<td style="width: 22%;">' + obj.create_date + '</td>'
+            content +=  '<td>'
+            content +=  '</td>'
+            content +=  '</tr>'
+            $(".boardTable").append(content)
         } else if (obj.board_type == 'schedule') {
-            $(".boardTable").append(
-                '<tr>' +
-                '<td style="width: 7%; text-align: right; color: #1cc88a">' +
-                '<span class="bi bi-calendar"></span>' +
-                '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
-                '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
-                '</td>' +
-                '<td style="width: 8%; text-align: left;">일정</td>' +
-                '<th style="width: 40%;">' + obj.sch_title + '</th>' +
-                '<td style="width: 12%;">' + obj.name + '</td>' +
-                '<td style="width: 22%;">' + obj.create_date + '</td>' +
-                '<td><b>' + moment(obj.sch_start).format('MM/DD') + '</b></td>' +
-                '</tr>'
-            )
+
+            var content = '<tr>'
+            content += pj_no
+            if(myBoard == 'myBoard'){
+                content += '<td style="width: 7%"><div class="colors"></div></td>'
+            }
+            content +=  '<td style="width: 7%; text-align: right; color: #1cc88a">'
+            content +=  '<span class="bi bi-calendar"></span>'
+            content +=  '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">'
+            content +=  '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">'
+            content +=   '</td>'
+            content +=  '<td style="width: 8%; text-align: left;">일정</td>'
+            content +=  '<th style="width: 40%;">' + obj.sch_title + '</th>'
+            content +=  '<td style="width: 12%;">' + obj.name + '</td>'
+            content +=  '<td style="width: 22%;">' + obj.create_date + '</td>'
+            content +=  '<td><b>' + moment(obj.sch_start).format('MM/DD') + '</b></td>'
+            content +=   '</tr>'
+            $(".boardTable").append(content)
         } else if (obj.board_type == 'todo') {
-            $(".boardTable").append(
-                '<tr>' +
-                '<td style="width: 7%; text-align: right; color: #4e73df;">' +
-                '<span class="bi bi-check2-square"></span>' +
-                '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
-                '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
-                '</td>' +
-                '<td style="width: 8%; text-align: left;">할 일</td>' +
-                '<th style="width: 40%;">' + obj.todo_title + '</th>' +
-                '<td style="width: 12%;">' + obj.name + '</td>' +
-                '<td style="width: 22%;">' + obj.create_date + '</td>' +
-                '<td><span class="badge" style="background-color: #3591f3 ; height: 100%; font-size: 18px; color: white;">' + obj.todo_percent + '%</span></td>' +
-                '</tr>'
-            )
+            var content = '<tr>'
+            content += pj_no
+            if(myBoard == 'myBoard'){
+                content += '<td style="width: 7%"><div class="colors"></div></td>'
+            }
+            content += '<td style="width: 7%; text-align: right; color: #4e73df;">'
+            content +='<span class="bi bi-check2-square"></span>'
+            content += '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">'
+            content += '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">'
+            content += '</td>'
+            content += '<td style="width: 8%; text-align: left;">할 일</td>'
+            content += '<th style="width: 40%;">' + obj.todo_title + '</th>'
+            content += '<td style="width: 12%;">' + obj.name + '</td>'
+            content += '<td style="width: 22%;">' + obj.create_date + '</td>'
+            content += '<td><span class="badge" style="background-color: #3591f3 ; height: 100%; font-size: 18px; color: white;">' + obj.todo_percent + '%</span></td>'
+            content += '</tr>'
+            $(".boardTable").append(content)
         }
     })
 }

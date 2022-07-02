@@ -50,7 +50,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public ArrayList<ProjectMember> selectProjectColor(ProjectTag projectTag) {
+    public ProjectMember selectProjectColor(ProjectTag projectTag) {
 
         return projectMemberMapper.selectProjectColor(projectTag);
     }

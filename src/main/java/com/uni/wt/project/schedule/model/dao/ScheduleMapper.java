@@ -24,4 +24,6 @@ public interface ScheduleMapper {
     ArrayList<Employee> selectSchAttendee(int board_no);
 
     ArrayList<Schedule> getCalendarByMonth(Map<String, Object> paramMap);
+
+    ArrayList<Schedule> getCalendarByEmp(int emp_no);
 }

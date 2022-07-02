@@ -167,8 +167,10 @@ public class ScheduleController {
             return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
         }else if(type.equals("home")){
             return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        }else if(type.equals("myBoard")){
+            return "redirect:/project/myBoard.do";
         }else {
-            return "redirect:/project/";
+            return "redirect:/allCalendar.do";
         }
     }
 }

@@ -351,7 +351,7 @@
 		<div style="width: 100%;">
 
 			<div class="topmenu showTag">
-				<h2>내 프로젝트</h2>
+				<h2>보관된 프로젝트</h2>
 			</div>
 			<div class="topmenu" style="text-align: right;">
 				<div class="menuIcon">
@@ -786,14 +786,12 @@
 					})
 
 				} else if (list[0].length <= 0 && list[1].length <= 0) {
-					$myLargeProjects.html('');
-					$myListProjects.html('')
-					$(".myProjects").css("display", "none")
-					$myLargeProjects.append(
-							'<div style="width: 100%; height: 30px;"></div>' +
-							'<h4 style="margin-left: 10%;">참여중인 프로젝트가 없습니다.</h4>'
-					)
+					var content = '<div style="width: 100%; height: 30px;"></div>'
+						content += '<h4 style="margin-left: 10%;">보관된 프로젝트가 없습니다.</h4>'
 
+					$(".myProjects").css("display", "none")
+					$myLargeProjects.html(content)
+					$myListProjects.html(content)
 				} else if (list[0].length == 0) {
 					$myLargeProjects.html('');
 					$myListProjects.html('')

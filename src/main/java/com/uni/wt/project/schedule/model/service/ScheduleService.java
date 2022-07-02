@@ -20,4 +20,6 @@ public interface ScheduleService {
     ArrayList<Employee> selectSchAttendee(int board_no) throws Exception;
 
     ArrayList<Schedule> getCalendarByMonth(int pj_no, String date) throws Exception;
+
+    ArrayList<Schedule> getCalendarByEmp(int emp_no) throws Exception;
 }

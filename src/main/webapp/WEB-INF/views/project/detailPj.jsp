@@ -300,6 +300,12 @@
         color: white;
     }
 
+    .sorttmenu {
+        float: right;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    }
+
     #caSetting, .favoBtn, .navMenu, .fa-plus, .todoCalendar, .todoPerson, #todoEditBtn, .todoDue, .todoFor, .selectTodoFor, #schEditBtn, .viewAttendee,
     .switchPost, .switchSch, .switchTodo, disconnectingTagBtn, .fileUploadBtn, .postFor, .removeTodo, .boardDeleteBtn, #postEditBtn, .editReplyBtn, .deleteReplyBtn {
         cursor: pointer;
@@ -430,12 +436,24 @@
             </div>
             <div class="section-body">
                 <div class="row mt-sm-4 center">
-                    <div class="col-lg-4"></div>
-                    <div class="col-md-12 col-lg-4 center">
-                        <div id="pagination">
+                    <div id="pagination" class="col-lg-12">
+                    </div>
+                    <div class="col-lg-3"></div>
+                    <div class="input-group col-lg-6 mb-6">
+                        <select class="sorttmenu" id="selectsearch" name="searchTarget">
+                            <option value="name">작성자</option>
+                            <option value="title">제목</option>
+                            <option value="content">내용</option>
+                        </select>
+                        <input type="text" class="form-control" id="searchedKeyword"
+                               placeholder="검색어를 입력해주세요">
+                        <div class="input-group-append">
+                            <button class="btn btn-light" type="button" onclick="changePage(1)();">
+                                <i class="bi bi-search"></i>
+                            </button>
                         </div>
                     </div>
-                    <div class="col-lg-4"></div>
+                    <div class="col-lg-3"></div>
                 </div>
             </div>
         </section>
@@ -856,6 +874,7 @@
         }
 
     })
+
 
     $("#close").click(function () {
         //console.log("진입확인")

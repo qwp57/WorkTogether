@@ -17,11 +17,11 @@
                         </div>
                     </div>
                     <div class="col-lg-11" style="margin-top: 10px;">
-                        <div><h5>${pj.pj_title}</h5></div>
+                        <div><h5 class="pjTitle">${pj.pj_title}</h5></div>
                     </div>
                 </div>
                 <span><input
-                        type="image" data-dismiss="modal"
+                        type="image" data-dismiss="modal" onclick="loadBoards()"
                         src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->

@@ -16,7 +16,7 @@ public interface ProjectMemberMapper {
     int removeBookmark(ProjectMember pjm);
 
     ArrayList<ProjectMember> selectProjectColorByEmpNo(int loginEmp);
-    ArrayList<ProjectMember> selectProjectColor(ProjectTag projectTag);
+    ProjectMember selectProjectColor(ProjectTag projectTag);
 
     int setProjectColor(ProjectMember pjm);
 

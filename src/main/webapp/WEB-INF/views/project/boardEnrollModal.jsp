@@ -31,6 +31,7 @@
             </table>
             <br> <br>
             <div class="form-group row mb-4">
+              <input type="hidden" name="type">
               <input type="hidden" name="pj_no" value="${pj.pj_no}">
               <label
                       class="col-form-label text-md-right col-10 col-md-3 col-lg-2">제목</label>
@@ -72,7 +73,6 @@
       <!-- 일정 작성 모달창 -->
       <div id="postSch" style="display: block;">
         <form class="form boardUploadForm" id="enrollSch" action="/schedule/insertSch.do" method="post">
-          <input type="hidden" name="type">
           <div class="modal-body">
             <table class="boardEnrollBtn"
                    style="width: 100%; height: 100%; text-align: center;">
@@ -87,6 +87,7 @@
             </table>
             <br> <br>
             <div class="form-group row mb-4">
+              <input type="hidden" name="type">
               <input type="hidden" name="pj_no" value="${pj.pj_no}">
               <label
                       class="col-form-label text-md-right col-10 col-md-3 col-lg-3">제목</label>
@@ -166,6 +167,7 @@
             <br> <br>
             <div class="form-group row">
               <input type="hidden" name="pj_no" value="${pj.pj_no}">
+              <input type="hidden" name="type">
               <label
                       class="col-form-label text-md-right col-10 col-md-3 col-lg-1">제목</label>
               <div class="col-sm-12 col-md-7 col-lg-11">

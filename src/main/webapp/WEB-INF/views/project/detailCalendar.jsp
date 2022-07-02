@@ -180,7 +180,8 @@
             transition: transform .3s;
         }
 
-        #caSetting:hover, .fa-star:hover, .fa-ellipsis-v:hover, .navMenu:hover, .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch, .switchTodo {
+        #caSetting, .favoBtn, .navMenu, .fa-plus, .todoCalendar, .todoPerson, #todoEditBtn, .todoDue, .todoFor, .selectTodoFor, #schEditBtn, .viewAttendee,
+        .switchPost, .switchSch, .switchTodo, disconnectingTagBtn, .fileUploadBtn, .postFor, .removeTodo, .boardDeleteBtn, #postEditBtn, .editReplyBtn, .deleteReplyBtn {
             cursor: pointer;
         }
 
@@ -257,8 +258,6 @@
 <script src="/resources/assets/js/pjSchedule.js"></script>
 <script src="/resources/assets/js/pjBoard.js"></script>
 <script>
-
-
     document.addEventListener('DOMContentLoaded', function () {
         // calendar element 취득
         var calendarEl = document.getElementById('calendar');

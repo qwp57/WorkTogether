@@ -75,7 +75,7 @@ public class PostController {
     @RequestMapping("/editPost.do")
     public String editPost(Post post, ProjectFile projectFile, @RequestParam("pj_no") int pj_no,
                              @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam("isImage") String isImage,
-                           RedirectAttributes redirect, HttpServletRequest request) throws Exception {
+                           RedirectAttributes redirect, HttpServletRequest request, String type) throws Exception {
         log.info("글 : " + post);
         log.info("삭제할 파일 : " + projectFile);
         if (projectFile.getFile_no() > 0) {
@@ -92,7 +92,13 @@ public class PostController {
         msgMap.put("msg", "게시물 수정 완료.");
         redirect.addFlashAttribute("msg", msgMap);
 
-        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        if (type == null){
+            return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        }else if(type.equals("myBoard")){
+            return "redirect:/project/myBoard.do";
+        }else {
+            return "redirect:/project/";
+        }
     }
     @ResponseBody
     @RequestMapping(value = "/detailView.do", produces = "application/json; charset=utf-8")

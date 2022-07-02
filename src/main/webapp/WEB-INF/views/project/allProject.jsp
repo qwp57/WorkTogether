@@ -706,7 +706,7 @@
                             '</div>' +
                             '</td>' +
                             '<td>' +
-                            '<div class="colors">' +
+                            '<div class="colors" style="margin: 10px">' +
                             '<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
                             '</div>' +
                             '</td>' +
@@ -766,7 +766,7 @@
                             '</div>' +
                             '</td>' +
                             '<td>' +
-                            '<div class="colors">' +
+                            '<div class="colors" style="margin: 10px">' +
                             '<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
                             '</div>' +
                             '</td>' +

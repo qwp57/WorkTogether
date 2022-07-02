@@ -13,7 +13,7 @@ public interface ProjectMemberService {
 
     void removeBookmark(ProjectMember pjm) throws Exception;
 
-    ArrayList<ProjectMember> selectProjectColor(ProjectTag projectTag);
+    ProjectMember selectProjectColor(ProjectTag projectTag);
     ArrayList<ProjectMember> selectProjectColorByEmpNo(int loginEmp);
 
     void setProjectColor(ProjectMember pjm) throws Exception;
