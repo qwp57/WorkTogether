@@ -27,7 +27,7 @@
 
 	<insert id="insertEmp" parameterType="Employee">
 		INSERT INTO EMPLOYEE
-		VALUES(EMP_SEQ.NEXTVAL, #{name}, #{id}, #{password}, #{email}, #{phone}, #{birth}, NULL, NULL, NULL, #{join_date}, NULL, DEFAULT, DEFAULT, NULL, SYSDATE, NULL )
+		VALUES(EMP_SEQ.NEXTVAL, #{name}, #{id}, #{password}, #{email}, #{phone}, TO_DATE(#{birth}, 'YYYY-MM-DD'), NULL, NULL, NULL, TO_DATE(#{join_date}, 'YYYY-MM-DD'), NULL, DEFAULT, DEFAULT, NULL, SYSDATE, NULL )
 	</insert>
 
 	<select id="loginEmp"  parameterType="Employee" resultMap="employeeSet">

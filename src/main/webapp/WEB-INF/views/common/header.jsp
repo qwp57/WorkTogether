@@ -104,7 +104,7 @@
 <script type="text/javascript">
 
 $(function(){
-	let msg = "${msg.msg}";
+	let msg = "${msg}";
 	if(msg != ""){
 		alert(msg);
 
