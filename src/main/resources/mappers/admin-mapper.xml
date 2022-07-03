@@ -133,7 +133,21 @@
 	<!-- 인사 관리 리스트 조회 -->
 	<select id="selectEmpList" resultMap="employeeResultSet">
 		SELECT 
-		    A.*,
+		    A.EMP_NO,
+			A.NAME,
+			A.ID,
+			A.EMAIL,
+			A.PHONE,
+			TO_CHAR(A.BIRTH, 'YYYY-MM-DD') AS BIRTH,
+			A.DEPT_CODE,
+			A.UPPER_DEPT_CODE,
+			A.JOB_CODE,
+			TO_CHAR(A.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE,
+			A.RESIGNATION_DATE,
+			A.STATUS,
+			A.ADMIN,
+			A.CREATE_DATE,
+			A.REJECT_REASON,
 		    DEPT_NAME,
 		    JOB_NAME
 		FROM EMPLOYEE A
@@ -147,7 +161,7 @@
 	<!-- 사원 추가 -->
 	<insert id="addEmployee" parameterType="Employee">
 		INSERT INTO EMPLOYEE
-		VALUES(EMP_SEQ.NEXTVAL, #{name} ,#{id}, #{password}, #{email}, #{phone}, #{birth}, #{dept_code}, #{upper_dept_code}, #{job_code}, #{join_date}, NULL, 'I', DEFAULT, NULL, SYSDATE, NULL)
+		VALUES(EMP_SEQ.NEXTVAL, #{name} ,#{id}, #{password}, #{email}, #{phone}, TO_DATE(#{birth}, 'YYYY-MM-DD'), #{dept_code}, #{upper_dept_code}, #{job_code}, TO_DATE(#{join_date}, 'YYYY-MM-DD'), NULL, 'I', DEFAULT, NULL, SYSDATE, NULL)
 	</insert>
 	
 	<!-- 사원 업데이트 모달 -->
