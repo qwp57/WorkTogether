@@ -270,8 +270,12 @@ public class WorkStateController {
 	@RequestMapping("/workStatistics.do")
 	public String workStatistics() {
 		
+		LocalDate ld = LocalDate.now();
 		
+		int month = ld.getMonthValue();
+		int year = ld.getYear();
 		
+		ArrayList<Map<String, String>> monthOfTheMonth = wsService.monthOfTheMonth(month);
 		
 		
 		
