@@ -268,10 +268,17 @@ public class WorkStateController {
 	}
 	
 	@RequestMapping("/workStatistics.do")
-	public String workStatistics() {
+	public String workStatistics() throws Exception {
 		
+		LocalDate ld = LocalDate.now();
 		
+		int month = ld.getMonthValue();
+		int year = ld.getYear();
 		
+		ArrayList<Map<String, String>> empOfTheMonthList = wsService.empOfTheMonth(month);
+		ArrayList<Map<String, String>> statsOfTheMonthList= wsService.statsOfTheMonth(month);
+		ArrayList<Map<String, String>> empOfTheYearList = wsService.empOfTheYear(month);
+		ArrayList<Map<String, String>> statsOfTheYearList = wsService.statsfTheYear(month);
 		
 		
 		
