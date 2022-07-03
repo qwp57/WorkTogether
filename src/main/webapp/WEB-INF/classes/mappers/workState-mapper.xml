@@ -113,7 +113,7 @@ AND IN_TIME BETWEEN TO_DATE(#{startday}, 'YYYY.MM.DD') AND TO_DATE(#{startday}, 
  
  	SELECT 
     	B.NAME,
-    	NVL(F.CHANGE_NAME, 'avatar-1.png') AS CHANGE_NAME,
+    	F.CHANGE_NAME,
    		 C.JOB_NAME,
      NVL(TOTALTIME,'0') AS TOTALTIME,
     NVL(OVERTIME,'0') AS OVERTIME,

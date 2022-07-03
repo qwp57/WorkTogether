@@ -181,7 +181,7 @@
                             <input type="text" class="form-control" id="searchedKeyword"
                                    placeholder="검색어를 입력해주세요">
                             <div class="input-group-append">
-                                <button class="btn btn-light" type="button" onclick="changePage(1)();">
+                                <button class="btn btn-light" type="button" onclick="changePage(1);">
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
