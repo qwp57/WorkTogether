@@ -2,6 +2,7 @@ package com.uni.wt.project.post.controller;
 
 import com.google.gson.GsonBuilder;
 import com.uni.wt.common.commonFile.FileService;
+import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
@@ -43,27 +44,38 @@ public class PostController {
     BoardAllService boardAllService;
     @Autowired
     private ProjectFileService projectFileService;
-
     @Autowired
     private ProjectMemberService projectMemberService;
+    @Autowired
+    private NoticeService noticeService;
+
     private Map<String, String> msgMap = new HashMap<String, String>();
 
 
     @RequestMapping("/insertPost.do")
     public String insertPost(Post post, BoardAll boardAll, @RequestParam("pj_no") int pj_no, HttpSession session,
-                             @RequestParam(name = "upload_file", required = false) MultipartFile file,  @RequestParam("isImage") String isImage,
+                             @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam("isImage") String isImage,
                              RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("글 : " + post);
         boardAll.setBoard_type("post");
         boardAll.setPj_no(pj_no);
-
-        log.info("로그인 유저 : " + session.getAttribute("loginEmp"));
-        boardAll.setWriter(((Employee) session.getAttribute("loginEmp")).getEmp_no());
-
+        Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+        log.info("로그인 유저 : " + emp);
+        boardAll.setWriter(emp.getEmp_no());
+        HashMap<String, Object> content = new HashMap<String, Object>();
+        content.put("POST", post);
         int board_no = postService.insertPost(post, boardAll);
+        if (post.getPost_for() != null) {
+            String[] postForList = post.getPost_for().split(",");
+            if (postForList.length > 0) {
+                for (String emp_no : postForList) {
 
-        if(!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
-           projectFileService.uploadFile(file, request, board_no, isImage);
+                    noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "POST");
+                }
+            }
+        }
+        if (!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
+            projectFileService.uploadFile(file, request, board_no, isImage);
         }
 
 
@@ -72,18 +84,29 @@ public class PostController {
 
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
+
     @RequestMapping("/editPost.do")
     public String editPost(Post post, ProjectFile projectFile, @RequestParam("pj_no") int pj_no,
-                             @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam("isImage") String isImage,
+                           @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam("isImage") String isImage,
                            RedirectAttributes redirect, HttpServletRequest request, String type) throws Exception {
         log.info("글 : " + post);
         log.info("삭제할 파일 : " + projectFile);
+        Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
         if (projectFile.getFile_no() > 0) {
             projectFileService.deleteFile(projectFile);
         }
         postService.editPost(post);
-
-        if(!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
+        HashMap<String, Object> content = new HashMap<String, Object>();
+        content.put("POST", post);
+        if (post.getPost_for() != null) {
+            String[] postForList = post.getPost_for().split(",");
+            if (postForList.length > 0) {
+                for (String emp_no : postForList) {
+                    noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "POST");
+                }
+            }
+        }
+        if (!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
 
             projectFileService.uploadFile(file, request, post.getBoard_no(), isImage);
         }
@@ -92,14 +115,15 @@ public class PostController {
         msgMap.put("msg", "게시물 수정 완료.");
         redirect.addFlashAttribute("msg", msgMap);
 
-        if (type.equals("")){
+        if (type.equals("")) {
             return "redirect:/project/detailPj.do?pj_no=" + pj_no;
-        }else if(type.equals("myBoard")){
+        } else if (type.equals("myBoard")) {
             return "redirect:/project/myBoard.do";
-        }else {
+        } else {
             return "redirect:/project/";
         }
     }
+
     @ResponseBody
     @RequestMapping(value = "/detailView.do", produces = "application/json; charset=utf-8")
     public String detailView(@RequestParam("board_no") int board_no, HttpServletResponse response, HttpServletRequest request) throws Exception {
@@ -108,10 +132,10 @@ public class PostController {
 
 
         // 쿠키가 있을 경우
-        if(cookies != null && cookies.length > 0) {
+        if (cookies != null && cookies.length > 0) {
             for (Cookie cookie : cookies) {
                 // Cookie의 name이 cookie + boardNo와 일치하는 쿠키를 viewCookie에 넣어줌
-                if(cookie.getName().equals("cookie"+board_no)) {
+                if (cookie.getName().equals("cookie" + board_no)) {
 
                     log.info("처음 쿠키가 생성한 뒤 들어옴.");
                     viewCookie = cookie;
@@ -122,7 +146,7 @@ public class PostController {
         // 만일 viewCookie가 null일 경우 쿠키를 생성해서 조회수 증가 로직을 처리함.
         if (viewCookie == null) {
             log.info("cookie 없음");
-            Cookie newCookie = new Cookie("cookie"+board_no, "|" + board_no + "|"); // 쿠키 생성(이름, 값)
+            Cookie newCookie = new Cookie("cookie" + board_no, "|" + board_no + "|"); // 쿠키 생성(이름, 값)
             response.addCookie(newCookie); // 쿠키 추가
             boardAllService.increaseCount(board_no); // 쿠키를 추가 시키고 조회수 증가시킴
         } else {
@@ -135,11 +159,11 @@ public class PostController {
         log.info("포스트 조회 : " + post);
         Map<String, Object> map = new HashMap<>();
         map.put("post", post);
-        if(post.getPost_for() != null){
+        if (post.getPost_for() != null) {
             String[] postForList = post.getPost_for().split(",");
-            if(postForList.length > 0){
+            if (postForList.length > 0) {
                 ArrayList<Employee> list = new ArrayList<>();
-                for (String emp_no : postForList){
+                for (String emp_no : postForList) {
                     Employee emp = projectMemberService.selectEmpByEmpNo(Integer.parseInt(emp_no));
                     list.add(emp);
                 }
@@ -147,7 +171,7 @@ public class PostController {
             }
         }
 
-        if(projectFile != null){
+        if (projectFile != null) {
             map.put("projectFile", projectFile);
         }
 

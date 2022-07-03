@@ -114,8 +114,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="form-group" style="width: 49%; display: inline-block;">
                                     <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
                                         <input type="text" class="form-control datetimepicker-input"

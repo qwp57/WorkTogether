@@ -108,7 +108,7 @@ function schJoin(status, board_no) {
         },
         async: false,
         success: function (data) {
-            console.log('dd')
+            //console.log('dd')
         }
     })
     loadSchAttendee(board_no)
@@ -153,42 +153,29 @@ $(document).on('click', '.viewAttendee', function () {
     })
 
 })
+$(function (){
+    $('#datetimepicker7').datetimepicker({
+        icons: {
+            time: "fa fa-clock"
+        },
+        locale: 'ko',
+        format: "YYYY-MM-DD HH:mm"
 
-// $('#datepicker').datepicker({
-//     format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-//     autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-//     clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
-//     daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
-//     disableTouchKeyboard: false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
-//     templates: {
-//         leftArrow: '&laquo;',
-//         rightArrow: '&raquo;'
-//     }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-//     showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
-//     todayHighlight: true,	//오늘 날짜에 하이라이팅 기능 기본값 :false
-//     weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
-//     language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-//
-// })
-$('#datetimepicker7').datetimepicker({
-    locale: 'ko',
-    format: "YYYY-MM-DD HH:mm",
-    icons: {
-        time: 'fa fa-clock',
-    }
-});
-$('#datetimepicker8').datetimepicker({
-    useCurrent: false,
-    locale: 'ko',
-    format: "YYYY-MM-DD HH:mm",
+    });
+    $('#datetimepicker8').datetimepicker({
+        icons: {
+            time: "fa fa-clock"
+        },
+        useCurrent: false,
+        locale: 'ko',
+        format: "YYYY-MM-DD HH:mm"
 
-    icons: {
-        time: 'fa fa-clock',
-    }
-});
-$("#datetimepicker7").on("change.datetimepicker", function (e) {
-    $('#datetimepicker8').datetimepicker('minDate', e.date);
-});
-$("#datetimepicker8").on("change.datetimepicker", function (e) {
-    $('#datetimepicker7').datetimepicker('maxDate', e.date);
-});
+    });
+    $("#datetimepicker7").on("change.datetimepicker", function (e) {
+        console.log('ㅋㅋ')
+        $('#datetimepicker8').datetimepicker('minDate', e.date);
+    });
+    $("#datetimepicker8").on("change.datetimepicker", function (e) {
+        $('#datetimepicker7').datetimepicker('maxDate', e.date);
+    });
+})

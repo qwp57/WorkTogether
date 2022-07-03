@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.uni.wt.common.Pagination;
 import com.uni.wt.common.commonFile.SearchDto;
 import com.uni.wt.common.dto.PageInfo;
+import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
@@ -53,6 +54,7 @@ public class ProjectController {
     private ScheduleService scheduleService;
     @Autowired
     private BoardAllService boardAllService;
+
     private Map<String, String> msgMap = new HashMap<String, String>();
 
     @RequestMapping("")

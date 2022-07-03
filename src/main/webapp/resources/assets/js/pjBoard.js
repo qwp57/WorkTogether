@@ -31,7 +31,7 @@ $(document).on('click', '.replyEditSubmit', function () {
         },
         async: false,
         success: function (data) {
-            console.log('dd')
+            //console.log('dd')
         }
     })
     loadReply($(".detailViewBoard_no").val())

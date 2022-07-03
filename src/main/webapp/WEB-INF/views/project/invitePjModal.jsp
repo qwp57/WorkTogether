@@ -47,3 +47,22 @@
 
 </body>
 </html>
+<script>
+    $(document).on('keydown', '#memberSearching', function (e){
+        console.log('몇번')
+        $("#inviteModal").find(".inviteTable tr").each(function(){
+            var empName = $(this).children("th").text()
+            if($("#memberSearching").val() != empName){
+                $(this).css("display", "none");
+                $(this).next("tr").css("display", "none");
+            }else {
+                console.log('같음')
+                console.log($("#memberSearching").val())
+                console.log(empName)
+                $(this).css("display", "table-row");
+                $(this).next("tr").css("display", "table-row");
+            }
+        });
+    })
+
+</script>

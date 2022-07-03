@@ -4,6 +4,7 @@
 <mapper namespace="com.uni.wt.project.schedule.model.dao.ScheduleMapper">
     <resultMap type="Schedule" id="scheduleSet">
         <id property="board_no" column="BOARD_NO"/>
+        <result property="pj_no" column="PJ_NO"/>
         <result property="sch_title" column="SCH_TITLE"/>
         <result property="sch_content" column="SCH_CONTENT"/>
         <result property="sch_attendee" column="SCH_ATTENDEE"/>
@@ -25,7 +26,7 @@
     </resultMap>
 
     <select id="detailView" parameterType="int" resultMap="scheduleSet">
-        SELECT TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE, B.COUNT, A.*, C.NAME, C.EMP_NO
+        SELECT TO_CHAR(B.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE, B.COUNT, A.*, C.NAME, C.EMP_NO, B.PJ_NO
         FROM BOARD_SCHEDULE A
                  JOIN PJ_BOARD B
                       ON A.BOARD_NO = B.BOARD_NO

@@ -243,10 +243,6 @@
 
 <jsp:include page="../common/footer.jsp"/>
 <jsp:include page="invitePjModal.jsp"/>
-<jsp:include page="boardViewModal.jsp"/>
-<jsp:include page="attendeeViewModal.jsp"/>
-<script src="/resources/assets/js/pjSchedule.js"></script>
-<script src="/resources/assets/js/pjBoard.js"></script>
 
 </body>
 <script>
@@ -403,48 +399,7 @@
         }
     }
 
-    function loadReply(board_no) {
-        console.log(board_no)
-        $.ajax({
-            url: '/project/selectReply.do',
-            data: {
-                board_no: board_no
-            },
-            success: function (list) {
-                list = $.parseJSON(list)
-                console.log(list)
-                $(".replyArea").html('')
-                $(".replyCount").text("댓글 " + list.length)
-                if (list.length == 0) {
-                    $(".replyHrArea").css("display", "none")
-                    console.log('확인')
-                } else {
-                    $(".replyHrArea").css("display", "block")
-                    $.each(list, function (i, obj) {
-                        var content = '<div class="reply">'
-                        content += '<div class="col-lg-10" style="display: inline-block">'
-                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
-                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
-                        content += '</div>'
-                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
-                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
-                            content += '<a class="editReplyBtn">수정&nbsp </a>'
-                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
-                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
-                            content += '</div>'
-                        }
-                        content += '<br> <br>'
-                        content += '<div class="col-lg-10">'
-                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
-                        content += '</div>'
-                        content += '<br> <br>'
-                        content += '</div>'
-                        $(".replyArea").append(content)
-                    })
-                }
-            }
-        });
-    }
+
 
     $(document).on('click', '.addReplyBtn', function () {
         if (${pj.reply_power == 'Y'} &&

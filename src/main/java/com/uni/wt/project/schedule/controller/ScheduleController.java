@@ -1,6 +1,7 @@
 package com.uni.wt.project.schedule.controller;
 
 import com.google.gson.GsonBuilder;
+import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.service.BoardAllService;
@@ -38,6 +39,8 @@ public class ScheduleController {
     BoardAllService boardAllService;
     @Autowired
     private ProjectMemberService projectMemberService;
+    @Autowired
+    private NoticeService noticeService;
     private Map<String, String> msgMap = new HashMap<String, String>();
 
     @RequestMapping("/insertSch.do")
@@ -47,11 +50,21 @@ public class ScheduleController {
         boardAll.setBoard_type("schedule");
         boardAll.setPj_no(pj_no);
 
-        log.info("로그인 유저 : " + session.getAttribute("loginEmp"));
-        boardAll.setWriter(((Employee) session.getAttribute("loginEmp")).getEmp_no());
-
+        Employee emp = (Employee) session.getAttribute("loginEmp");
+        log.info("로그인 유저 : " + emp);
+        boardAll.setWriter(emp.getEmp_no());
+        HashMap<String, Object> content = new HashMap<String, Object>();
+        content.put("SCH", schedule);
         scheduleService.insertSch(schedule, boardAll);
+        if (schedule.getSch_attendee() != null) {
+            String[] schAttendeeList = schedule.getSch_attendee().split(",");
+            if (schAttendeeList.length > 0) {
+                for (String emp_no : schAttendeeList) {
 
+                    noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "SCH");
+                }
+            }
+        }
         msgMap.put("msg", "게시물 등록 완료.");
         redirect.addFlashAttribute("msg", msgMap);
         if (type.equals("calendar")){
@@ -155,11 +168,23 @@ public class ScheduleController {
     }
 
     @RequestMapping("/editSch.do")
-    public String editSch(Schedule schedule, int pj_no, String type, RedirectAttributes redirect) throws Exception {
+    public String editSch(Schedule schedule, int pj_no, String type, RedirectAttributes redirect, HttpSession session) throws Exception {
         log.info("일정 : " + schedule);
 
-        scheduleService.editSch(schedule);
 
+        Employee emp = (Employee) session.getAttribute("loginEmp");
+        log.info("로그인 유저 : " + emp);
+        scheduleService.editSch(schedule);
+        HashMap<String, Object> content = new HashMap<String, Object>();
+        content.put("SCH", schedule);
+        if (schedule.getSch_attendee() != null) {
+            String[] schAttendeeList = schedule.getSch_attendee().split(",");
+            if (schAttendeeList.length > 0) {
+                for (String emp_no : schAttendeeList) {
+                    noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "SCH");
+                }
+            }
+        }
         msgMap.put("msg", "게시물 수정 완료.");
         redirect.addFlashAttribute("msg", msgMap);
 

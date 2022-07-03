@@ -244,13 +244,9 @@
 <jsp:include page="invitePjModal.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
 <jsp:include page="pjFormModal.jsp"/>
-<jsp:include page="boardViewModal.jsp"/>
-<jsp:include page="attendeeViewModal.jsp"/>
 <jsp:include page="boardEnrollModal.jsp"/>
 </body>
 <script src="/resources/assets/js/pjHead.js"></script>
-<script src="/resources/assets/js/pjSchedule.js"></script>
-<script src="/resources/assets/js/pjBoard.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // calendar element 취득
@@ -449,115 +445,7 @@
 </script>
 <%--게시글 전체--%>
 <script>
-    function checkStored() {
-        if (${pj.status == 'N'}) {
-            alert("보관된 프로젝트는 작성/수정 관련 기능이 제한됩니다.")
-            return false
-        } else {
-            return true
-        }
-    }
 
-    function loadReply(board_no) {
-        console.log(board_no)
-        $.ajax({
-            url: '/project/selectReply.do',
-            data: {
-                board_no: board_no
-            },
-            success: function (list) {
-                list = $.parseJSON(list)
-                console.log(list)
-                $(".replyArea").html('')
-                $(".replyCount").text("댓글 " + list.length)
-                if (list.length == 0) {
-                    $(".replyHrArea").css("display", "none")
-                    console.log('확인')
-                } else {
-                    $(".replyHrArea").css("display", "block")
-                    $.each(list, function (i, obj) {
-                        var content = '<div class="reply">'
-                        content += '<div class="col-lg-10" style="display: inline-block">'
-                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
-                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
-                        content += '</div>'
-                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
-                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
-                            content += '<a class="editReplyBtn">수정&nbsp </a>'
-                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
-                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
-                            content += '</div>'
-                        }
-                        content += '<br> <br>'
-                        content += '<div class="col-lg-10">'
-                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
-                        content += '</div>'
-                        content += '<br> <br>'
-                        content += '</div>'
-                        $(".replyArea").append(content)
-                    })
-                }
-            }
-        });
-    }
-
-    $(document).on('click', '.addReplyBtn', function () {
-        if (${pj.reply_power == 'Y'} &&
-        ${pjMember.admin == 'N'})
-        {
-            alert("관리자만 작성할 수 있습니다.")
-            return false
-        }
-        if (checkStored()) {
-            var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
-            console.log(reply_content)
-            console.log(board_no.val())
-            $.ajax({
-                url: '/project/insertReply.do',
-                data: {
-                    "reply_content": reply_content.val(),
-                    "board_no": board_no.val()
-                },
-                success: function (data) {
-                    //console.log(data)
-                    $(".replyContentEnroll").val("")
-                    loadReply(board_no.val())
-                }
-            })
-        }
-    })
-
-
-    $(document).on('click', '.boardDeleteBtn', function () {
-        if (checkStored()) {
-            if (confirm("삭제하시겠습니까?")) {
-                var form = document.createElement('form'); // 폼객체 생성
-                var obj1;
-                var obj2;
-                var obj3;
-                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj1.setAttribute('name', 'board_no'); // 객체이름
-                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
-                form.appendChild(obj1);
-                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj2.setAttribute('name', 'pj_no'); // 객체이름
-                obj2.setAttribute('value', ${pj.pj_no}); //객체값
-                form.appendChild(obj2);
-                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj3.setAttribute('name', 'type'); // 객체이름
-                obj3.setAttribute('value', 'calendar'); //객체값
-                form.appendChild(obj3);
-                form.setAttribute('method', 'post'); //get,post 가능
-                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
-                document.body.appendChild(form);
-                form.submit();
-            }
-        }
-    })
 
 </script>
 
@@ -698,7 +586,7 @@
                 },
                 async: false,
                 success: function (data) {
-                    console.log('dd')
+                    //console.log('dd')
                 }
             })
             loadViewEmpInPj()

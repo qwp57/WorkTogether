@@ -5,20 +5,21 @@
 <!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
 <!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
 <div class="modal fade" id="boardView" data-backdrop="static"
-     data-keyboard="false">
+     data-keyboard="false" style="color: black">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content row">
             <!-- modal header : 제목 -->
-            <div class="modal-header">
+            <div class="modal-header" style="height: 100px;">
                 <div class="row col-12">
                     <div class="col-lg-1">
                         <div class="colors ${pjMember.pj_color} ml-2"
                              style="margin: 0px; width:20px; height:20px;">
                         </div>
                     </div>
-                    <div class="col-lg-11" style="margin-top: 10px;">
-                        <div><h5 class="pjTitle">${pj.pj_title}</h5></div>
+                    <div class="col-lg-3" >
+                        <div><h5 class="pjTitle" style="margin-top: 10px; cursor: pointer;" id="boardViewTitle">${pj.pj_title}</h5></div>
                     </div>
+                    <div class="col-lg-8"></div>
                 </div>
                 <span><input
                         type="image" data-dismiss="modal" onclick="loadBoards()"
@@ -55,10 +56,10 @@
                                     <hr>
                                 </div>
                                 <div class="col-lg-12" id="postForListArea"
-                                     style="display: none; margin-bottom: 10px;"></div>
+                                     style="display: none; margin-bottom: 10px; height: 30px;"></div>
                                 <div class="col-lg-12" id="postFileArea"
                                      style="display: none; margin-bottom: 10px;"></div>
-                                <div class="replyArea col-lg-12">
+                                <div class="replyArea col-lg-12" style="margin-top: 20px;">
 
                                 </div>
                                 <div class="col-lg-12 replyHrArea" style="display: none;">

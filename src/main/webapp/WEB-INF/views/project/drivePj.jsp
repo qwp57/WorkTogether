@@ -409,10 +409,9 @@
     </div>
 </div>
 <jsp:include page="../common/footer.jsp"/>
-<jsp:include page="invitePjModal.jsp"></jsp:include>
+<jsp:include page="invitePjModal.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
 <jsp:include page="pjFormModal.jsp"/>
-<jsp:include page="attendeeViewModal.jsp"/>
 
 </body>
 <script src="/resources/assets/js/pjHead.js"></script>
@@ -831,7 +830,7 @@
                 },
                 async: false,
                 success: function (data) {
-                    console.log('dd')
+                    //console.log('dd')
                 }
             })
             loadViewEmpInPj()
