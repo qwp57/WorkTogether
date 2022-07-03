@@ -48,8 +48,14 @@
 				<span><h3>문서 제목</h3></span> 
 			</div>
 			<div class="float-right">
-				<button type="button" class="btn btn-primary" onclick="approveFunction()">승인</button>
-				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal">반려</button>
+				<c:if test="${ map['appL'].progress == 'W' || map['appL'].progress == 'P' }">
+					<button type="button" class="btn btn-primary" onclick="approveFunction()">승인</button>
+					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal">반려</button>
+				</c:if>
+				<c:if test="${ map['appL'].progress == 'C' || map['appL'].progress == 'R' }">
+					<button type="button" class="btn btn-primary" onclick="approveFunction()" disabled>승인</button>
+					<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#rejectModal" disabled>반려</button>
+				</c:if>
 			</div>	
 			<section class="section-body mt-5">
 				<div id="letterOfApproval">
@@ -66,12 +72,12 @@
 							</tr>
 							<tr>
 								<c:choose>								
-									 <c:when test="${ map['appL'].lastApprovalDate != null && map['appL'].progress == 'C'}">
+									<c:when test="${ map['appL'].finalApprovalResult == 'C' }">
 										<td colspan="2" class="text-center" style="color:blue"><strong>승인 완료</strong></td>
 									</c:when>	
-									<c:when test="${  map['appL'].lastApprovalDate != null  && map['appL'].progress == 'R' }">
-										<td colspan="2" class="text-center" style="color:red"><strong>반려</strong></td>
-									</c:when>					
+									<c:when test="${  map['appL'].finalApprovalResult == 'R' }">
+										<td colspan="2" class="text-center" style="color:red"><strong>반려</strong></td>				
+									</c:when>
 								</c:choose>
 							</tr>
 						</table>
@@ -87,10 +93,10 @@
 						</tr>
 						<tr>
 							<c:choose>								
-								 <c:when test="${ (map['appL'].firstApprovalDate != null && map['appL'].progress == 'P') || (map['appL'].firstApprovalDate != null && map['appL'].progress == 'C')}"><!-- 첫 번째 결재 날짜가 null이 아니고 progress가 C, 첫번째 결재 날짜가 null이 아니고 progress가 p여야 결재가 승인된 것이다. -->
+								 <c:when test="${ map['appL'].firstApprovalResult == 'C' }">
 									<td colspan="2" class="text-center" style="color:blue"><strong>승인 완료</strong></td>
 								</c:when>	
-								<c:when test="${  map['appL'].firstApprovalDate != null  && map['appL'].progress == 'R' }">
+								<c:when test="${  map['appL'].firstApprovalResult == 'R' }">
 									<td colspan="2" class="text-center" style="color:red"><strong>반려</strong></td>
 								</c:when>					
 							</c:choose>
@@ -163,19 +169,19 @@
 				</div>
 				
 				<!-- modal body -->
-				<form method="">
+				<form>
 					<div class="modal-body">
 						<div class="mt-2">
-							<form class="form-group">
+							<div class="form-group">
 								<label for="comment"><h6>반려 사유</h6></label>
-								<textarea class="form-control" rows="10" id="comment" style="resize:none; height:300px;"></textarea>
-							</form>
+								<textarea class="form-control" rows="10" id="rejectionReason" style="resize:none; height:300px;"></textarea>
+							</div>
 						</div>
 					</div>
 					
 					<!-- modal footer -->
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary">반려</button>
+						<button type="button" class="btn btn-primary" onclick="rejectFunction()">반려</button>
 						<button type="button" class="btn btn-primary" data-dismiss="modal">취소</button>
 					</div>
 				</form>
@@ -208,9 +214,36 @@
 				}else if(progress == 'P'){
 					location.href="approvalUpdate.do?finalApproverNo=" + finalApproverNo + "&approvalNo=" + approvalNo + "&lineLevel=" + lineLevel;
 				}
-			}
+			}		
+		};
 		
-		}
+		function rejectFunction(){
+			var emp_no = "${map['emp_no']}";
+			var firstApproverNo = $("#firstApproverNo").text();
+			var finalApproverNo = $("#finalApproverNo").text();
+			var approvalNo = "${map['app'].approvalNo}";
+			var progress = "${map['appL'].progress}";
+			var lineLevel = "${map['appL'].lineLevel}";
+			var rejectionReason = $("#rejectionReason").val();
+			
+			console.log(rejectionReason);
+			
+			if(rejectionReason.replace(/(\s*)/g, "").length == 0){
+				alert("반려 사유를 작성해주세요."); return false;
+			}else {
+				//첫번째 결재자와 같으면 결재 순서를 확인하지 않아도 된다.
+				if(emp_no == firstApproverNo){ 
+					location.href="rejectionUpdate.do?firstApproverNo=" + firstApproverNo +"&approvalNo=" +approvalNo + "&lineLevel=" + lineLevel + "&rejectionReason=" + rejectionReason;
+				}else if(emp_no == finalApproverNo){
+					if(progress == 'W') { //아직 첫번째 결재자가 결재하지 않은 상태
+						alert("결재 순서가 아닙니다."); return false;						
+					}else if(progress == 'P'){
+						location.href="rejectionUpdate.do?finalApproverNo=" + finalApproverNo + "&approvalNo=" + approvalNo + "&lineLevel=" + lineLevel + "&rejectionReason=" + rejectionReason;
+					}
+				}
+			}
+			
+		};
 	</script>
 <jsp:include page="../common/footer.jsp"/>
 </body>

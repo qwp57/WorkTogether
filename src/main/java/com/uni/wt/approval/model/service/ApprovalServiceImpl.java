@@ -243,12 +243,12 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public void updateAppLLevelOneFirstApprover(Map<String, Object> map) throws Exception {
+	public void updateAppLineLevelOneFirstApprover(Map<String, Object> map) throws Exception {
 		
-		int result = approvalMapper.updateAppLLevelOneFirstApprover(map);
+		int result = approvalMapper.updateAppLineLevelOneFirstApprover(map);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
 	}
@@ -259,17 +259,17 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.updateAppLevelOneFirstApprover(arppvoalNo);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 	}
 
 	@Override
-	public void updateAppLLevelTwoFirstApprover(Map<String, Object> map) throws Exception {
+	public void updateAppLineLevelTwoFirstApprover(Map<String, Object> map) throws Exception {
 		
-		int result = approvalMapper.updateAppLLevelTwoFirstApprover(map);
+		int result = approvalMapper.updateAppLineLevelTwoFirstApprover(map);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
 	}
@@ -280,18 +280,18 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.updateAppLevelTwoFirstApprover(arppvoalNo);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
 	}
 
 	@Override
-	public void updateAppLLevelTwoFinalApprover(Map<String, Object> map) throws Exception {
+	public void updateAppLineLevelTwoFinalApprover(Map<String, Object> map) throws Exception {
 		
-		int result = approvalMapper.updateAppLLevelTwoFinalApprover(map);
+		int result = approvalMapper.updateAppLineLevelTwoFinalApprover(map);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
 	}
@@ -302,9 +302,112 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.updateAppLevelTwoFinalApprover(arppvoalNo);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
+	}
+
+	@Override
+	public void updateRejectLineFirstApprover(Map<String, Object> map) throws Exception {
+		
+		int result = approvalMapper.updateRejectLineFirstApprover(map);
+		
+		if(result < 0) {
+			new Exception("결재 반려에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public void updateRejectFirstApprover(int arppvoalNo) throws Exception {
+		
+		int result = approvalMapper.updateRejectFirstApprover(arppvoalNo);
+		
+		if(result < 0) {
+			new Exception("결재 반려에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public void updateRejectLineFinalApprover(Map<String, Object> map) throws Exception {
+		
+		int result = approvalMapper.updateRejectLineFinalApprover(map);
+		
+		if(result < 0) {
+			new Exception("결재 반려에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public void updateRejectFinalApprover(int arppvoalNo) throws Exception {
+		
+		int result = approvalMapper.updateRejectFinalApprover(arppvoalNo);
+		
+		if(result < 0) {
+			new Exception("결재 반려에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public ApprovalLoa selectUpdateLoa(int approvalNo) throws Exception {
+		
+		ApprovalLoa loa = approvalMapper.selectApprovalLoa(approvalNo);
+		
+		if(loa == null) {
+			new Exception("수정할 품의서를 조회하는데 실패하였습니다.");
+		}
+		
+		return loa;
+	}
+
+	@Override
+	public void updateApproval(Approval app) throws Exception {
+		
+		int result = approvalMapper.updateApproval(app);
+		
+		if(result < 0) {
+			new Exception("결재 문서 업데이트에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public void updateApprovalLineLevel(Map<String, Object> map) throws Exception {
+		
+		int result = approvalMapper.updateApprovalLineLevel(map);
+		
+		if(result < 0) {
+			new Exception("결재선 업데이트에 실패하였습니다.");
+		}
+		
+	}
+	/*
+	@Override
+	public void updateApprovalLine(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}*/
+
+	@Override
+	public void updateLetterOfApproval(ApprovalLoa loa) throws Exception {
+		
+		int result = approvalMapper.updateLetterOfApproval(loa);
+		
+		if(result < 0) {
+			new Exception("품의서 업데이트에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public ApprovalExpenditure selectUpdateAppEx(int approvalNo) throws Exception {
+
+		ApprovalExpenditure appEx = approvalMapper.selectApprovalExpenditure(approvalNo);
+		
+		if(appEx == null) {
+			new Exception("수정할 지출결의서 조회에 실패하였습니다.");
+		}
+		
+		return appEx;
 	}
 
 

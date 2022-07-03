@@ -430,7 +430,7 @@ public class ApprovalController {
 		return app;
 	}
 	
-	//조회
+	//결재선 조회
 	private ApprovalLine selectApprovalLine(int approvalNo, ApprovalLine appL) throws Exception {
 		
 		appL = approvalService.selectApprovalLine(approvalNo);
@@ -474,15 +474,121 @@ public class ApprovalController {
 		return map;
 	}
 	
-	//일반 품의서 수정으로 이동
-	@RequestMapping("updateMyLetterOfApproval.do")
-	public String updateMyLetterOfApprovalForm() {
+	//일반 품의서 수정폼으로 이동
+	@RequestMapping("updateMyLetterOfApprovalForm.do")
+	public String updateMyLetterOfApprovalForm(String approvalNo, Approval app, ApprovalLine appL, ApprovalLoa loa, Model model) throws Exception {
+		//디테일 조회할 때 사용한 공통 문서 조회 메소드 사용
+		app = selectApproval(Integer.parseInt(approvalNo), app);
+		//디테일 조회할 때 사용한 공통 결재선 조회 메소드 사용
+		appL = selectApprovalLine(Integer.parseInt(approvalNo), appL);
+		//일반품의서 조회
+		loa = approvalService.selectUpdateLoa(Integer.parseInt(approvalNo));
+		//부서 조회
+		ArrayList<Department> deptList = approvalService.selectDeptList();		
+		//사원 조회
+		ArrayList<Employee> empList= approvalService.selectEmpList();	 
+		
+		model.addAttribute("app", app);
+		model.addAttribute("appL", appL);
+		model.addAttribute("loa", loa);
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("empList", empList);
+		
 		return "approval/myLetterOfApprovalUpdateForm";
 	}
 	
+	//일반 품의서 수정
+	@RequestMapping("updateMyLetterOfApproval.do")
+	public ModelAndView updateMyLetterOfApproval(Approval app, ApprovalLoa loa, @RequestParam(name="firstApproverNo") int firstApproverNo, @RequestParam(name="finalApp", required = false) String finalApp,
+													@RequestParam(name="reUpfile" ,required=false) MultipartFile file, ModelAndView mv, HttpServletRequest request) throws Exception {
+		log.info("업데이트 app : " + app);
+		log.info("업데이트 loa : " + loa);
+		log.info("업데이트 firstApproverNo : " + firstApproverNo);
+		log.info("업데이트 finalApp : " + finalApp);
+		log.info("업데이트 file : " + file);
+		
+		//첨부파일 -> 기존 첨부파일이 있으면 넘어온다.
+		String orgChangeName = app.getChange_name();
+		int orgFileNo = app.getFileNo();
+		
+		//새로 넘어온 reUploadFile의 originalFileName이 빈 문자열이 아닌 경우 -> 새로 등록된 파일이 있는 경우 
+		String fileNo = null;
+		if(!file.getOriginalFilename().equals("")) {
+			fileNo = String.valueOf(fileService.uploadFile(file, request, "AP"));
+			
+			app.setFileNo(Integer.parseInt(fileNo));
+		}
+		
+		if(app.getEmergency() == null) {
+			app.setEmergency("N");
+		}
+		
+		//공통 결재 업데이트
+		updateApproval(app);
+		
+		//결재선 업데이트
+		updateApprovalLine(app.getApprovalNo(), firstApproverNo, finalApp);
+		
+		//품의서 업데이트
+		approvalService.updateLetterOfApproval(loa);
+		
+		//파일 삭제
+		if(orgChangeName != null && !file.getOriginalFilename().equals("")) {
+			fileService.deleteFile(String.valueOf(orgFileNo));
+		}
+		
+		mv.addObject("approvalNo", app.getApprovalNo()).addObject("docNo", 1).setViewName("redirect:detailDraftDocument.do");
+		return mv;
+	}
+
+	//공통 결재 업데이트
+	private void updateApproval(Approval app) throws Exception {
+		approvalService.updateApproval(app);
+	}
+	
+	//결재선 업데이트
+	private void updateApprovalLine(int approvalNo, int firstApproverNo, String finalApp) throws Exception {
+		
+		int finalApproverNo = 0;
+		if(finalApp != null) {
+			finalApproverNo = Integer.parseInt(finalApp);
+		}
+		
+		//if(finalApp != null) { //최종 결재자가 있을 때
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("approvalNo", approvalNo);
+			map.put("firstApproverNo", firstApproverNo);
+			map.put("finalApproverNo", finalApproverNo);
+			approvalService.updateApprovalLineLevel(map);
+		/*}else { //최종 결재자 넘어오지 않거나, 최초 결재자만 변경
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("approvalNo", approvalNo);
+			map.put("firstApproverNo", firstApproverNo);
+			approvalService.updateApprovalLine(map);
+		}*/
+		
+	}
+
 	//지출 결의서 수정으로 이동
-	@RequestMapping("updateMyExpenditure.do")
-	public String updateMyExpenditureForm() {
+	@RequestMapping("updateMyExpenditureForm.do")
+	public String updateMyExpenditureForm(String approvalNo, Approval app, ApprovalLine appL, ApprovalExpenditure appEx, Model model) throws NumberFormatException, Exception {
+		//디테일 조회할 때 사용한 공통 문서 조회 메소드 사용
+		app = selectApproval(Integer.parseInt(approvalNo), app);
+		//디테일 조회할 때 사용한 공통 결재선 조회 메소드 사용
+		appL = selectApprovalLine(Integer.parseInt(approvalNo), appL);
+		//일반품의서 조회
+		appEx = approvalService.selectUpdateAppEx(Integer.parseInt(approvalNo));
+		//부서 조회
+		ArrayList<Department> deptList = approvalService.selectDeptList();		
+		//사원 조회
+		ArrayList<Employee> empList= approvalService.selectEmpList();	 
+		
+		model.addAttribute("app", app);
+		model.addAttribute("appL", appL);
+		model.addAttribute("appEx", appEx);
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("empList", empList);
+		
 		return "approval/myExpenditureUpdateForm";
 	}
 	
@@ -606,7 +712,7 @@ public class ApprovalController {
 				map.put("arppvoalNo", approval_no);
 				map.put("firstApproverNo", firstApprover_no);
 				//결재선 업데이트
-				approvalService.updateAppLLevelOneFirstApprover(map);
+				approvalService.updateAppLineLevelOneFirstApprover(map);
 				//결재 업데이트
 				approvalService.updateAppLevelOneFirstApprover(approval_no);
 			}else { //lineLevel이 2인 최초 결재자 -> 결재 상태를 P(진행 중)으로 변경
@@ -614,7 +720,7 @@ public class ApprovalController {
 				map.put("arppvoalNo", approval_no);
 				map.put("firstApproverNo", firstApprover_no);
 				//결재선 업데이트
-				approvalService.updateAppLLevelTwoFirstApprover(map);
+				approvalService.updateAppLineLevelTwoFirstApprover(map);
 				//결재 업데이트
 				approvalService.updateAppLevelTwoFirstApprover(approval_no);
 			}			
@@ -625,7 +731,7 @@ public class ApprovalController {
 			map.put("arppvoalNo", approval_no);
 			map.put("finalApproverNo", finalApprover_no);
 			//결재선 업데이트
-			approvalService.updateAppLLevelTwoFinalApprover(map);
+			approvalService.updateAppLineLevelTwoFinalApprover(map);
 			//결재 업데이트
 			approvalService.updateAppLevelTwoFinalApprover(approval_no);
 		}
@@ -635,7 +741,46 @@ public class ApprovalController {
 	
 	//결재 상태 업데이트 -> 반려
 	@RequestMapping("rejectionUpdate.do")
-	public String rejectionUpdate(@RequestParam(value="firstApproverNo", required = false) String firstApproverNo, @RequestParam(value="finalApproverNo", required=false) String finalApproverNo, String approvalNo, String lineLevel) {
+	public String rejectionUpdate(@RequestParam(value="firstApproverNo", required = false) String firstApproverNo, @RequestParam(value="finalApproverNo", required=false) String finalApproverNo, String approvalNo, String lineLevel, String rejectionReason) throws Exception {
+		log.info(rejectionReason);
+		
+		//문서번호 
+		int approval_no = Integer.parseInt(approvalNo);
+		
+		if(firstApproverNo != null && finalApproverNo == null) { //최초 결재자인 경우
+			//최초 결재자 번호
+			int firstApprover_no = Integer.parseInt(firstApproverNo);	
+			//if(Integer.parseInt(lineLevel) == 1) { //최초 결재자가 최종 결재자
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("arppvoalNo", approval_no); //문서 번호
+				map.put("firstApproverNo", firstApprover_no); //첫번째 결재자
+				map.put("rejectionReason", rejectionReason); 
+				//결재선 업데이트
+				approvalService.updateRejectLineFirstApprover(map);
+				//결재 문서 업데이트
+				approvalService.updateRejectFirstApprover(approval_no);
+			//}else { //lineLevel이 2인 경우 -> 최초 결재자가 최종 결재자가 아님
+				/*Map<String, Object> map = new HashMap<String, Object>();
+				map.put("arppvoalNo", approval_no); //문서 번호
+				map.put("firstApproverNo", firstApprover_no); //첫번째 결재자
+				map.put("rejectionReason", rejectionReason);  
+				//결재선 업데이트
+				approvalService.updateRejectLineLevelTwoFirstApprover(map);
+				//결재 문서 업데이트
+				approvalService.updateRejectLevelTwoFirstApprover(approval_no);*/
+			//}
+		}else if(finalApproverNo != null && firstApproverNo == null) {
+			int finalApprover_no = Integer.parseInt(finalApproverNo);
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("arppvoalNo", approval_no);
+			map.put("finalApproverNo", finalApprover_no);
+			map.put("rejectionReason", rejectionReason); 
+			//결재선 업데이트
+			approvalService.updateRejectLineFinalApprover(map);
+			//결재 문서 업데이트
+			approvalService.updateRejectFinalApprover(approval_no);
+		}
 		
 		return "redirect:approvalDocument.do";
 	}

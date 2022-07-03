@@ -59,16 +59,30 @@ public interface ApprovalMapper {
 
 	ArrayList<Approval> searchAppList(Map<String, Object> map, RowBounds rowBounds);
 
-	int updateAppLLevelOneFirstApprover(Map<String, Object> map);
+	int updateAppLineLevelOneFirstApprover(Map<String, Object> map);
 
 	int updateAppLevelOneFirstApprover(int arppvoalNo);
 
-	int updateAppLLevelTwoFirstApprover(Map<String, Object> map);
+	int updateAppLineLevelTwoFirstApprover(Map<String, Object> map);
 
 	int updateAppLevelTwoFirstApprover(int arppvoalNo);
 
-	int updateAppLLevelTwoFinalApprover(Map<String, Object> map);
+	int updateAppLineLevelTwoFinalApprover(Map<String, Object> map);
 
 	int updateAppLevelTwoFinalApprover(int arppvoalNo);
+
+	int updateRejectLineFirstApprover(Map<String, Object> map);
+
+	int updateRejectFirstApprover(int arppvoalNo);
+
+	int updateRejectLineFinalApprover(Map<String, Object> map);
+
+	int updateRejectFinalApprover(int arppvoalNo);
+
+	int updateApproval(Approval app);
+
+	int updateApprovalLineLevel(Map<String, Object> map);
+
+	int updateLetterOfApproval(ApprovalLoa loa);
 
 }
