@@ -10,6 +10,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.uni.wt.project.model.dto.Project;
+import com.uni.wt.project.model.service.ProjectService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,10 @@ public class EmployeeController {
 	
 	@Autowired
 	private WorkStateService wsService;
-	
+
+	@Autowired
+	private ProjectService projectService;
+
 	@Autowired
 	private NoticeService noticeService;
 	
@@ -107,9 +112,11 @@ public class EmployeeController {
 
 		}
 		
+
 		//개인정보
 		ArrayList<Map<String, String>> deptList = empService.getDetpList();
 		ArrayList<Map<String, String>> jobList = empService.getJobList();
+
 		m.addAttribute("jList", jobList);
 		m.addAttribute("dList", deptList);
 		
@@ -117,7 +124,16 @@ public class EmployeeController {
 		int empNo = emp.getEmp_no();
 		ArrayList<Approval> appList = approvalService.mainApprovalWaitingList(empNo);
 		m.addAttribute("appList", appList);
-		
+
+		//즐겨찾기 프로젝트
+		ArrayList<Project> bookmarkProjects = projectService.selectMyBookmarkProject(emp.getEmp_no(), "all");
+		for (int i = 0; i < bookmarkProjects.size(); i++) {
+			bookmarkProjects.get(i).setCount(projectService.getProjectMemberCount(bookmarkProjects.get(i).getPj_no()));
+		}
+		log.info("즐겨찾기 프로젝트 : " + bookmarkProjects);
+		m.addAttribute("pjList", bookmarkProjects);
+
+
 		return "common/main";
 	}
 

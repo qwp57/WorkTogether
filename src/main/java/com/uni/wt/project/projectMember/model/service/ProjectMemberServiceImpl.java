@@ -50,7 +50,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
     }
 
     @Override
-    public ArrayList<ProjectMember> selectProjectColor(ProjectTag projectTag) {
+    public ProjectMember selectProjectColor(ProjectTag projectTag) {
 
         return projectMemberMapper.selectProjectColor(projectTag);
     }
@@ -107,11 +107,21 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         int result = projectMemberMapper.quitProject(pjMember);
         if (result < 0) {
             throw new Exception("프로젝트 나가기 실패");
+        }else {
+            removeBookmark(pjMember);
         }
     }
 
     @Override
     public Employee selectEmpByEmpNo(int emp_no) throws Exception {
         return projectMemberMapper.selectEmpByEmpNo(emp_no);
+    }
+
+    @Override
+    public void setAdmin(ProjectMember pjMember) throws Exception {
+       int result = projectMemberMapper.setAdmin(pjMember);
+        if (result < 0) {
+            throw new Exception("관리자 지정 실패");
+        }
     }
 }

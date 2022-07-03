@@ -379,9 +379,9 @@
     </div>
 </div>
 
-
+<jsp:include page="../common/footer.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
-<jsp:include page="pjForm.jsp"/>
+<jsp:include page="pjFormModal.jsp"/>
 <script>
     $(function () {
 
@@ -656,7 +656,10 @@
 
     function loadProjects() {
         $.ajax({
-            url: '/project/selectAllProject.do',
+            url: '/project/selectProject.do',
+            data:{
+                type: "all"
+            },
             success: function (list) {
                 console.log(list)
                 //myAllProjectsByTag
@@ -703,7 +706,7 @@
                             '</div>' +
                             '</td>' +
                             '<td>' +
-                            '<div class="colors">' +
+                            '<div class="colors" style="margin: 10px">' +
                             '<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
                             '</div>' +
                             '</td>' +
@@ -763,7 +766,7 @@
                             '</div>' +
                             '</td>' +
                             '<td>' +
-                            '<div class="colors">' +
+                            '<div class="colors" style="margin: 10px">' +
                             '<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
                             '</div>' +
                             '</td>' +

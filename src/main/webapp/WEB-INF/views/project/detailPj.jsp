@@ -300,6 +300,12 @@
         color: white;
     }
 
+    .sorttmenu {
+        float: right;
+        border: 1px solid lightgray;
+        border-radius: 5px;
+    }
+
     #caSetting, .favoBtn, .navMenu, .fa-plus, .todoCalendar, .todoPerson, #todoEditBtn, .todoDue, .todoFor, .selectTodoFor, #schEditBtn, .viewAttendee,
     .switchPost, .switchSch, .switchTodo, disconnectingTagBtn, .fileUploadBtn, .postFor, .removeTodo, .boardDeleteBtn, #postEditBtn, .editReplyBtn, .deleteReplyBtn {
         cursor: pointer;
@@ -327,51 +333,10 @@
     <div class="container text-left">
 
         <section class="section">
-            <div class="section-body">
 
-                <div class="row mt-sm-4">
+            <jsp:include page="projectHead.jsp"/>
 
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-body body-1">
-                                <div>
-                                    <button class="btn btn-primary newPj">+ 새 프로젝트</button>
-                                </div>
-                                <div class="detailTop">
-                                    <div class="colors ${pjMember.pj_color}"></div>
-                                    <i class='icon fa fa-star fa-2x favoBtn <c:choose><c:when test="${checkBookmark > 0}">favoYellow</c:when><c:otherwise>favoWhite</c:otherwise></c:choose>'></i>
-                                    <div class="btn-group dropright" id="pjMenu">
-                                        <i class='fa fa-ellipsis-v fa-2x' data-toggle="dropdown"
-                                           aria-haspopup="true" aria-expanded="false"
-                                           style="width: 30px;"></i>
-                                        <div class="dropdown-menu dropright">
-                                            <a class="dropdown-item" href="#" id="setColor">색상 설정</a>
-                                            <a class="dropdown-item" href="#" id="tagSettingBtn">태그 설정</a>
-                                            <a class="dropdown-item" href="#" id="viewEmpInPj">참여자 조회</a>
-                                            <c:if test="${pjMember.admin == 'Y'}">
-                                                <a class="dropdown-item" href="#" id="setPj">프로젝트 설정</a>
-                                            </c:if>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#" id="quitProject">프로젝트 나가기</a>
-                                        </div>
-                                    </div>
-                                    <p id="pjDetail">${pj.pj_content}</p>
-                                    <h5 id="pjTitle">${pj.pj_title}</h5>
-                                    <a href="#" id="inviteBtn"
-                                       class="btn btn-icon icon-left btn-secondary"><i
-                                            class="far fa-user"></i> +초대하기</a>
-                                    <div id="navMenus">
-                                        <a class="navMenu home clicked">홈</a> <a
-                                            class="navMenu calendar">캘린더</a> <a class="navMenu drive">드라이브</a>
-                                    </div>
-                                </div>
 
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="section-body">
                 <div class="row mt-sm-4">
                     <div class="col-12 col-md-12 col-lg-12">
@@ -446,11 +411,12 @@
                              aria-haspopup="true" aria-expanded="false"/>
                         <h4>&nbsp;&nbsp;필터</h4>
                         <div class="dropdown-menu dropright">
-                            <a class="dropdown-item" href="#">전체</a>
+                            <input type="hidden" id="filter">
+                            <a class="dropdown-item" id="filterAll">전체</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">글</a>
-                            <a class="dropdown-item" href="#">일정</a>
-                            <a class="dropdown-item" href="#">할 일</a>
+                            <a class="dropdown-item" id="filterPost">글</a>
+                            <a class="dropdown-item" id="filterSch">일정</a>
+                            <a class="dropdown-item" id="filterTodo">할 일</a>
                         </div>
                     </div>
                 </div>
@@ -469,1918 +435,48 @@
                 </div>
             </div>
             <div class="section-body">
-                <div class="row mt-sm-4 ">
-                    <div class="col-md-12 col-lg-12" style="margin-left: 450px;">
-
-                        <div class="buttons">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination text-center">
-                                    <li class="page-item"><a class="page-link" href="#"
-                                                             aria-label="Previous"> <span
-                                            aria-hidden="true">&laquo;</span>
-                                        <span class="sr-only">이전</span>
-                                    </a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#"
-                                                             aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-                                        <span class="sr-only">다음</span>
-                                    </a></li>
-                                </ul>
-                            </nav>
+                <div class="row mt-sm-4 center">
+                    <div id="pagination" class="col-lg-12">
+                    </div>
+                    <div class="col-lg-3"></div>
+                    <div class="input-group col-lg-6 mb-6">
+                        <select class="sorttmenu" id="selectsearch" name="searchTarget">
+                            <option value="name">작성자</option>
+                            <option value="title">제목</option>
+                            <option value="content">내용</option>
+                        </select>
+                        <input type="text" class="form-control" id="searchedKeyword"
+                               placeholder="검색어를 입력해주세요">
+                        <div class="input-group-append">
+                            <button class="btn btn-light" type="button" onclick="changePage(1)();">
+                                <i class="bi bi-search"></i>
+                            </button>
                         </div>
                     </div>
+                    <div class="col-lg-3"></div>
                 </div>
             </div>
         </section>
     </div>
 </div>
-
-<jsp:include page="invitePjModal.jsp"></jsp:include>
-
-<!-- 글 멘션, 일정 참석자 추가 모달창 -->
-<div class="modal fade" id="mentionForModal" data-backdrop="static"
-     data-keyboard="false" style="z-index: 13000;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content row">
-            <!-- modal header : 제목 -->
-            <div class="modal-header">
-                <span><h3 class="modal-title text-left">사원 추가</h3></span> <span><input
-                    type="image" data-dismiss="modal"
-                    src="/resources/assets/img/close.png/" style="width: 20px;"></span>
-            </div>
-            <!-- modal body : 내용 -->
-            <form class="form">
-                <div class="modal-body">
-                    <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
-                    <table class="inviteTable">
-                    </table>
-                    <br>
-                </div>
-                <div class="modal-footer">
-                    <div class="col-lg-12 text-center">
-                        <button type="button" id="PostAddEmpBtn" class="btn btn-primary btn-lg mb-3">추가</button>
-                        <button type="button" id="SchAddEmpBtn" class="btn btn-primary btn-lg mb-3">추가</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<!-- 글 멘션, 일정 참석자 추가 모달창 -->
-<div class="modal fade" id="viewSchAttendee" data-backdrop="static"
-     data-keyboard="false" style="z-index: 13000;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content row">
-            <!-- modal header : 제목 -->
-            <div class="modal-header">
-                <span><h3 class="modal-title text-left">일정 참석자</h3></span> <span><input
-                    type="image" data-dismiss="modal"
-                    src="/resources/assets/img/close.png/" style="width: 20px;"></span>
-            </div>
-            <!-- modal body : 내용 -->
-            <form class="form">
-                <div class="modal-body">
-                    <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
-                    <table class="inviteTable">
-                    </table>
-                    <br>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- 할 일 담당자 선택 모달창 -->
-<div class="modal fade" id="todoFor" data-backdrop="static"
-     data-keyboard="false" style="z-index: 13000;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content row">
-            <!-- modal header : 제목 -->
-            <div class="modal-header">
-                <span><h3 class="modal-title text-left">담당자 선택</h3></span> <span><input
-                    type="image" data-dismiss="modal"
-                    src="/resources/assets/img/close.png/" style="width: 20px;"></span>
-            </div>
-            <!-- modal body : 내용 -->
-            <form class="form">
-                <div class="modal-body">
-                    <form>
-                        <input type="text" class="form-control" id="memberSearching"
-                               placeholder="사원명으로 검색">
-                        <table class="inviteTable">
-                        </table>
-                        <br>
-                    </form>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- 참여자 조회 모달창 -->
-<div class="modal fade" id="empListModal" data-backdrop="static"
-     data-keyboard="false" style="z-index: 3000;">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content row">
-            <!-- modal header : 제목 -->
-            <div class="modal-header">
-                <span><h3 class="modal-title text-left">참여자 조회</h3></span> <span><input
-                    type="image" data-dismiss="modal"
-                    src="/resources/assets/img/close.png/" style="width: 20px;"></span>
-            </div>
-            <!-- modal body : 내용 -->
-            <form class="form">
-                <div class="modal-body">
-                    <form>
-                        <input type="text" class="form-control memberSearching" placeholder="사원명으로 검색">
-                        <table class="inviteTable">
-                        </table>
-                        <br>
-                    </form>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<!-- 글 작성 모달창 -->
-<div class="modal fade" id="boardPost" data-backdrop="static"
-     data-keyboard="false">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content row">
-            <!-- modal header : 제목 -->
-            <div class="modal-header">
-					<span><h3 class="modal-title text-left boardNoti" style="color: gray;">게시물
-							작성</h3></span> <span><input type="image" data-dismiss="modal" id="close"
-                                                        src="/resources/assets/img/close.png/"
-                                                        style="width: 20px;"></span>
-            </div>
-            <!-- modal body : 내용 -->
-
-            <div id="postForm" style="display: block;">
-                <form class="form boardUploadForm" id="enrollPost" action="/post/insertPost.do" method="post"
-                      enctype="multipart/form-data">
-                    <div class="modal-body">
-                        <table class="boardEnrollBtn" style="width: 100%; height: 100%; text-align: center;">
-                            <tr>
-                                <td class="switchPost"><b><span class='bi bi-file-text fa-lg'>
-												&nbsp;&nbsp;글</span></b></td>
-                                <td class="switchSch"><b><span class='bi bi-calendar fa-lg'>
-												&nbsp;&nbsp;일정</span></b></td>
-                                <td class="switchTodo"><b><span class='bi bi-check2-square fa-lg'>
-												&nbsp;&nbsp;할 일</span></b></td>
-                            </tr>
-                        </table>
-                        <br> <br>
-                        <div class="form-group row mb-4">
-                            <input type="hidden" name="pj_no" value="${pj.pj_no}">
-                            <label
-                                    class="col-form-label text-md-right col-10 col-md-3 col-lg-2">제목</label>
-                            <div class="col-sm-12 col-md-7 col-lg-9">
-                                <input type="text" name="post_title" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-4">
-                            <label
-                                    class="col-form-label text-md-right col-12 col-md-3 col-lg-2">내용</label>
-                            <div class="col-sm-12 col-md-7 col-lg-9">
-                                <textarea name="post_content" id="summernote"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer row">
-                            <div class="col-lg-10 center">
-                                <div id="postForArea" style="margin-left: 60px;"></div>
-                            </div>
-                            <div class="col-lg-1"></div>
-                            <div class="col-lg-5 text-left" id="fileAndMentionArea">
-                                <input type="text" class="form-control" id="file-label"
-                                       style="display: none; border: 0px white;">
-                                <input type="file" name="upload_file" id="upload-file" hidden>
-                                <i class="bi bi-paperclip fa-2x fileUploadBtn"></i>
-                                <i class="bi bi-person fa-2x postFor"></i>
-                            </div>
-                            <div class="col-lg-4 text-right">
-                                <button type="submit" class="btn btn-primary btn-lg mr-4 boardUploadBtn">올리기</button>
-                            </div>
-                            <div class="col-lg-1"></div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-
-            <!-- 일정 작성 모달창 -->
-            <div id="postSch" style="display: block;">
-                <form class="form boardUploadForm" id="enrollSch" action="/schedule/insertSch.do" method="post">
-                    <div class="modal-body">
-                        <table class="boardEnrollBtn"
-                               style="width: 100%; height: 100%; text-align: center;">
-                            <tr>
-                                <td class="switchPost"><b><span class='bi bi-file-text fa-lg'>
-												&nbsp;&nbsp;글</span></b></td>
-                                <td class="switchSch"><b><span class='bi bi-calendar fa-lg'>
-												&nbsp;&nbsp;일정</span></b></td>
-                                <td class="switchTodo"><b><span class='bi bi-check2-square fa-lg'>
-												&nbsp;&nbsp;할 일</span></b></td>
-                            </tr>
-                        </table>
-                        <br> <br>
-                        <div class="form-group row mb-4">
-                            <input type="hidden" name="pj_no" value="${pj.pj_no}">
-                            <label
-                                    class="col-form-label text-md-right col-10 col-md-3 col-lg-3">제목</label>
-                            <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control" name="sch_title">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-4">
-
-                            <label
-                                    class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
-                                    class="bi bi-calendar fa-2x"></i></label>
-                            <div class="col-sm-12 col-md-7">
-                                <!-- <input type="text" id="datepicker" class="form-control"> -->
-                                <div class="input-daterange input-group" id="datepicker">
-                                    <input type="text" class="input-sm form-control" name="sch_start"/>
-                                    <span class="input-group-addon">&nbsp;&nbsp;부터&nbsp;&nbsp;
-                                    </span>
-                                    <input type="text" class="input-sm form-control" name="sch_end"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group row mb-4">
-                            <label
-                                    class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
-                                    class="bi bi-person fa-2x"></i></label>
-                            <div class="col-sm-12 col-md-7">
-                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-4">
-                            <label
-                                    class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
-                                    class="bi bi-geo-alt-fill fa-2x"></i> </label>
-                            <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control bg-white border-0 small" name="sch_place"
-                                       placeholder="장소를 입력하세요">
-                            </div>
-                        </div>
-                        <div class="form-group row mb-4">
-                            <label
-                                    class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
-                                    class="bi bi-card-text fa-2x"></i> </label>
-                            <div class="col-sm-12 col-md-7">
-                                <textarea type="text" class="form-control bg-white border-0 small"
-                                          placeholder="내용을 입력하세요" name="sch_content"></textarea>
-                            </div>
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="col-lg-4 text-right">
-                            <button type="submit" class="btn btn-primary btn-lg boardUploadBtn">올리기</button>
-                        </div>
-                        <div class="col-lg-2"></div>
-                    </div>
-                </form>
-            </div>
-
-
-            <!-- 할 일 작성 모달창 -->
-            <div id="postTodo" style="display: block;">
-                <form class="form boardUploadForm" id="enrollTodo" action="/todo/insertTodo.do" method="post">
-                    <div class="modal-body">
-                        <table class="boardEnrollBtn"
-                               style="width: 100%; height: 100%; text-align: center;">
-                            <tr>
-                                <td class="switchPost"><b><span class='bi bi-file-text fa-lg'>
-												&nbsp;&nbsp;글</span></b></td>
-                                <td class="switchSch"><b><span class='bi bi-calendar fa-lg'>
-												&nbsp;&nbsp;일정</span></b></td>
-                                <td class="switchTodo"><b><span class='bi bi-check2-square fa-lg'>
-												&nbsp;&nbsp;할 일</span></b></td>
-                            </tr>
-                        </table>
-                        <br> <br>
-                        <div class="form-group row">
-                            <input type="hidden" name="pj_no" value="${pj.pj_no}">
-                            <label
-                                    class="col-form-label text-md-right col-10 col-md-3 col-lg-1">제목</label>
-                            <div class="col-sm-12 col-md-7 col-lg-11">
-                                <input type="text" class="form-control" name="todo_title">
-                            </div>
-                            <div class="col-lg-3"></div>
-                        </div>
-
-                        <div class="todos">
-                            <div class="form-group row">
-                                <div class="col-lg-1 pr-0 text-right">
-
-                                </div>
-                                <div class="text-md-right col-10 col-md-7 col-lg-9">
-                                    <input type="text" class="form-control" name="todo_content"
-                                           placeholder="할 일 추가 / 최대 50자">
-                                </div>
-                                <div class="col-sm-12 col-md-3 col-lg-1">
-                                    <div class="input-group todoInput date" style="width: 100px;">
-                                        <input type="text" style="display: none; width:25px;"
-                                               class="form-control bg-white border-0 small todoDue" name="todo_end">
-                                        <span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>
-
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-1">
-                                    <i class="bi bi-person fa-2x todoPerson"></i>
-                                    <p class="todoFor" style="font-size: 11px; margin-top: 6px;">
-                                        <input type="hidden" name="todo_for">
-                                    </p>
-                                </div>
-                                <input type="hidden" name="status" value="N">
-                            </div>
-
-                        </div>
-                        <div class="col-lg-12 text-center">
-                            <i class='fa fa-plus fa-2x'></i>
-                        </div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <div class="col-lg-4 text-right">
-                            <button type="submit" class="btn btn-primary btn-lg boardUploadBtn">올리기</button>
-                        </div>
-                        <div class="col-lg-2"></div>
-                    </div>
-                </form>
-            </div>
-            </form>
-        </div>
-
-    </div>
-</div>
-
-
-<!-- 게시물 조회 모달창 -->
-<!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->
-<!-- data-keybaord="false" 속성은 esc키를 눌러도 창이 닫히지 않게 한다. -->
-<div class="modal fade" id="boardView" data-backdrop="static"
-     data-keyboard="false">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content row">
-            <!-- modal header : 제목 -->
-            <div class="modal-header">
-                <div class="row col-12">
-                    <div class="col-lg-1">
-                        <div class="colors ${pjMember.pj_color} ml-2"
-                             style="margin: 0px; width:20px; height:20px;">
-                        </div>
-                    </div>
-                    <div class="col-lg-11" style="margin-top: 10px;">
-                        <div><h5>${pj.pj_title}</h5></div>
-                    </div>
-                </div>
-                <span><input
-                        type="image" data-dismiss="modal"
-                        src="/resources/assets/img/close.png/" style="width: 20px;"></span>
-            </div>
-            <!-- modal body : 내용 -->
-            <div id="postView" style="display: block;">
-                <form class="form">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div class="row ml-5 mr-5 boardBody">
-                                <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg' id="postWriter"></span>
-                                    <span style="color: gray" id="postUploadDate"></span>
-                                </div>
-                                <div class="col-lg-2 text-right">
-                                    <input class="detailViewBoard_no" type="text" hidden>
-                                    <a id="postEditBtn">수정&nbsp;</a>
-                                    <a class="boardDeleteBtn">&nbsp;삭제</a>
-                                </div>
-
-                                <br><br>
-
-                                <div class="col-12">
-                                    <h3 id="postTitle"></h3>
-                                    <hr>
-                                </div>
-
-                                <div class="col-lg-12 ml-3 mr-3" id="postContent">
-                                </div>
-                                <div class="col-lg-12 text-right">
-                                    <a class="replyCount"></a>
-                                    <a class="viewCount"></a>
-                                    <hr>
-                                </div>
-                                <div class="col-lg-12" id="postForListArea"
-                                     style="display: none; margin-bottom: 10px;"></div>
-                                <div class="col-lg-12" id="postFileArea"
-                                     style="display: none; margin-bottom: 10px;"></div>
-                                <div class="replyArea col-lg-12">
-
-                                </div>
-                                <div class="col-lg-12 replyHrArea" style="display: none;">
-                                    <hr>
-                                </div>
-
-
-                                <label
-                                        class="col-form-label col-lg-1 pt-0">
-                                    <span class='bi bi-person-circle fa-2x'></span>
-                                </label>
-                                <div class="col-lg-9 text-center">
-                                    <input type="text" class="form-control replyContentEnroll">
-                                </div>
-                                <div class="col-lg-2 text-right">
-                                    <button type="button" class="btn btn-primary btn-lg addReplyBtn">등록</button>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-
-            <div id="schView" style="display: block;">
-                <form class="form">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div class="row ml-5 mr-5 boardBody">
-                                <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg' id="schWriter"></span>
-                                    <span style="color: gray" id="schUploadDate"></span>
-                                </div>
-                                <div class="col-lg-2 text-right">
-                                    <input class="detailViewBoard_no" type="text" hidden>
-                                    <a id="schEditBtn">수정&nbsp;</a>
-                                    <a class="boardDeleteBtn">&nbsp;삭제</a>
-                                </div>
-
-                                <br><br>
-
-                                <div class="col-12">
-                                    <h3 id="schTitle"></h3>
-                                    <br>
-                                    <span class='bi bi-calendar fa-lg ml-3' id="schDate"></span>
-                                    <hr>
-                                </div>
-
-                                <div class="col-lg-12 ml-3 mr-3">
-                                    <i class="bi bi-person fa-lg"></i> &nbsp;&nbsp; <b style="color: #5cb85c"
-                                                                                       id="schYCount"></b>
-                                    &nbsp;&nbsp;<b style="color: #ac2925" id="schNCount"></b>
-                                    &nbsp;&nbsp; <a style="border-bottom: 1px black solid" class="viewAttendee"> 참석자
-                                    조회</a>
-                                    <br><br><br>
-                                </div>
-                                <div class="col-lg-12 ml-3 mr-3">
-                                    <i class="bi bi-geo-alt-fill fa-lg"></i>
-                                    &nbsp;&nbsp;<span id="schPlace"></span>
-                                    <br><br><br>
-                                </div>
-                                <div class="col-lg-12 ml-3 mr-3">
-                                    <i class="bi bi-card-text fa-lg"></i>
-                                    &nbsp;&nbsp;<span id="schContent"></span>
-                                    <br>
-                                    <hr>
-                                </div>
-                                <div class="col-lg-12 text-center">
-                                    <button type="button" class="btn btn-success btn-lg mr-3" id="schJoin">참석</button>
-                                    <button type="button" class="btn btn-danger btn-lg ml-3" id="schNotJoin">불참</button>
-                                </div>
-                                <div class="col-lg-12 text-right">
-                                    <a class="replyCount"></a>
-                                    <a class="viewCount"></a>
-                                    <hr>
-                                </div>
-                                <div class="replyArea col-lg-12">
-
-                                </div>
-                                <div class="col-lg-12 replyHrArea" style="display: none;">
-                                    <hr>
-                                </div>
-                                <label
-                                        class="col-form-label col-lg-1 pt-0">
-                                    <span class='bi bi-person-circle fa-2x'></span>
-                                </label>
-                                <div class="col-lg-9 text-center">
-                                    <input type="text" class="form-control replyContentEnroll">
-                                </div>
-                                <div class="col-lg-2 text-right">
-                                    <button type="button" class="btn btn-primary btn-lg addReplyBtn">등록</button>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-
-            <div id="todoView" style="display: block;">
-                <form class="form" id="">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <div class="row ml-5 mr-5 boardBody">
-                                <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg' id="todoWriter"></span>
-                                    <span style="color: gray" id="todoUploadDate"></span>
-                                </div>
-                                <div class="col-lg-2 text-right">
-                                    <input class="detailViewBoard_no" type="text" hidden>
-                                    <a id="todoEditBtn">수정&nbsp;</a>
-                                    <a class="boardDeleteBtn">&nbsp;삭제</a>
-                                </div>
-
-                                <br><br>
-
-                                <div class="col-12">
-                                    <h3 id="todoTitle"></h3>
-                                    <hr>
-                                </div>
-
-                                <div class="col-lg-12">
-                                    <div class="row">
-                                        <div class="col-lg-6"><h5 style="display: inline-block" id="todoCompleteCount">1
-                                            &nbsp; </h5><h5
-                                                style="display: inline-block; color: gray" id="todoTotalCount"></h5>
-                                        </div>
-                                        <div class="col-lg-6 text-right"><h5 style="color: #5cb85c"
-                                                                             id="todoCompletePercent"></h5></div>
-                                    </div>
-                                    <div class="progress mb-3" data-height="25">
-                                        <div class="progress-bar bg-success" role="progressbar" id="todoBar"
-                                             aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <br><br>
-                                    <div id="todos">
-
-                                    </div>
-                                    <hr>
-                                    <br><br>
-                                </div>
-                                <div class="col-lg-12 text-right">
-                                    <a class="replyCount"></a>
-                                    <a class="viewCount"></a>
-                                    <hr>
-                                </div>
-                                <div class="replyArea col-lg-12">
-
-                                </div>
-                                <div class="col-lg-12 replyHrArea" style="display: none;">
-                                    <hr>
-                                </div>
-
-                                <label
-                                        class="col-form-label col-lg-1 pt-0">
-                                    <span class='bi bi-person-circle fa-2x'></span>
-                                </label>
-                                <div class="col-lg-9 text-center">
-                                    <input type="text" class="form-control replyContentEnroll">
-                                </div>
-                                <div class="col-lg-2 text-right">
-                                    <button type="button" class="btn btn-primary btn-lg addReplyBtn">등록</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-
+<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="invitePjModal.jsp"/>
+<jsp:include page="attendeeViewModal.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
-<jsp:include page="pjForm.jsp"/>
+<jsp:include page="pjFormModal.jsp"/>
+<jsp:include page="boardViewModal.jsp"/>
+<jsp:include page="boardEnrollModal.jsp"/>
+
+</body>
+
+<script src="/resources/assets/js/pjHead.js"></script>
+<script src="/resources/assets/js/pjBoard.js"></script>
+<script src="/resources/assets/js/pjHome.js"></script>
+<script src="/resources/assets/js/pjPost.js"></script>
+<script src="/resources/assets/js/pjSchedule.js"></script>
+<script src="/resources/assets/js/pjTodo.js"></script>
+
 <script>
-    $(document).on('change', '.todoDue', function () {
-        console.log($(this).val())
-        if ($(this).val() != "") {
-            $(this).css("display", "block")
-            $(this).next().css("display", "none")
-        }
-    })
-
-    $(document).on('click', '.addReplyBtn', function () {
-        if (${pj.reply_power == 'Y'} &&
-        ${pjMember.admin == 'N'})
-        {
-            alert("관리자만 작성할 수 있습니다.")
-            return false
-        }
-        var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
-        var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
-        console.log(reply_content)
-        console.log(board_no.val())
-        $.ajax({
-            url: '/project/insertReply.do',
-            data: {
-                "reply_content": reply_content.val(),
-                "board_no": board_no.val()
-            },
-            success: function (data) {
-                //console.log(data)
-                $(".replyContentEnroll").val("")
-                loadReply(board_no.val())
-            }
-        })
-    })
-
-    $(document).on('click', '.deleteReplyBtn', function () {
-        if (confirm("댓글을 삭제하시겠습니까?")) {
-            //console.log($(this).parent().find(".reply_no").val())
-            var reply_no = $(this).parent().find(".reply_no").val()
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
-            //console.log(board_no)
-            deleteReply(reply_no, board_no)
-        }
-    })
-    $(document).on('click', '.editReplyBtn', function () {
-        var reply_no = $(this).parent().find(".reply_no").val()
-        var reply_content = $(this).parents(".reply").find(".replyContent").text()
-        $(this).parents(".reply").find(".replyContent").html(
-            '<input type=text style="width: 75%; display: inline-block" class="form-control replyEditContent" value="' + reply_content + '">' +
-            '<button type="button" style="height: 42px;" class="replyEditSubmit btn btn-lg btn-primary");">수정</button>' +
-            '<input type="hidden" value="' + reply_no + '">'
-        )
-        $(this).parent().remove()
-
-
-    })
-    $(document).on('click', '.replyEditSubmit', function () {
-        //console.log($(this).next().val())
-        $.ajax({
-            url: '/project/editReply.do',
-            data: {
-                "reply_no": $(this).next().val(),
-                "reply_content": $(this).prev().val()
-            },
-            async: false,
-            success: function (data) {
-                console.log('dd')
-            }
-        })
-        loadReply($(".detailViewBoard_no").val())
-    })
-
-    $(document).on('click', '.fileUploadBtn', function () {
-        $('#upload-file').click()
-    })
-
-    $(document).on('click', '#file-label', function () {
-        //console.log('변경')
-        $('#upload-file').val("")
-        $("#file-label").css("display", "none")
-        $(".fileUploadBtn").css("display", "inline-block")
-    })
-
-    $(document).on('change', '#upload-file', function () {
-        if (window.FileReader) {  // modern browser
-            var filename = $(this)[0].files[0].name;
-
-        } else {  // old IE
-            var filename = $(this).val().split('/').pop().split('\\').pop();  // 파일명만 추출
-        }
-
-        // 추출한 파일명 삽입
-        $("#file-label").val(filename);
-        $("#file-label").css("display", "block")
-        $(".fileUploadBtn").css("display", "none")
-    });
-
-    $(document).on('click', '#quitProject', function () {
-        if (confirm("프로젝트를 나가시겠습니까?")) {
-            location.href = "/project/quitProject.do?pj_no=" +
-            ${pj.pj_no}
-        }
-    })
-
-    $(document).on('click', '#deletePjBtn', function () {
-        if (confirm("프로젝트를 삭제하시겠습니까?")) {
-            location.href = "/project/deleteProject.do?pj_no=" +
-            ${pj.pj_no}
-        }
-    })
-
-    $(document).on('click', '#keepPjBtn', function () {
-        if (confirm("프로젝트를 보관하시겠습니까?")) {
-            location.href = "/project/keepProject.do?pj_no=" +
-            ${pj.pj_no}
-        }
-    })
-
-    $(document).on('click', '#schJoin', function () {
-        var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
-        schJoin('Y', board_no)
-    })
-
-    $(document).on('click', '#schNotJoin ', function () {
-        var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
-        schJoin('N', board_no)
-    })
-
-    function schJoin(status, board_no) {
-        $.ajax({
-            url: '/schedule/schJoin.do',
-            data: {
-                "board_no": board_no,
-                "status": status
-            },
-            async: false,
-            success: function (data) {
-                console.log('dd')
-            }
-        })
-        loadSchAttendee(board_no)
-    }
-
-    function loadSchAttendee(board_no) {
-        $.ajax({
-            url: '/schedule/loadSchAttendee.do',
-            data: {
-                "board_no": board_no
-            },
-            async: false,
-            success: function (data) {
-                console.log(data)
-                $("#schYCount").text('참석 ' + data.yCount)
-                $("#schNCount").text('불참' + data.nCount)
-            }
-        })
-    }
-
-    $(document).on('click', '.removeEmp', function () {
-        $(this).parent().parent().remove()
-        //console.log($("#postForArea").html())
-        if ($("#postForArea").html() == '') {
-            $(".postFor").css("display", "inline-block")
-            console.log('ff')
-        }
-        if ($("input[name=sch_attendee]").length == 0) {
-            $("#addPeople").css("display", "block")
-        }
-
-    })
-
-    $(document).on('click', '#setPj', function () {
-        $("#editPj").find("input[name=pj_title]").val("${pj.pj_title}")
-        $("#editPj").find("input[name=pj_content]").val("${pj.pj_content}")
-        $("#editPj").find("input[name=pj_content]").text("${pj.pj_content}")
-        console.log("${pj.board_power}")
-        console.log("${pj.reply_power}")
-        console.log("${pj.file_power}")
-        if ("${pj.board_power}" == 'Y') {
-            $("#editPj").find("select[name=board_power]").find(".all").removeAttr("selected")
-            $("#editPj").find("select[name=board_power]").find(".admin").attr("selected", true)
-        } else {
-            $("#editPj").find("select[name=board_power]").find(".admin").removeAttr("selected")
-            $("#editPj").find("select[name=board_power]").find(".all").attr("selected", true)
-        }
-        if ("${pj.reply_power}" == 'Y') {
-            $("#editPj").find("select[name=reply_power]").find(".all").removeAttr("selected")
-            $("#editPj").find("select[name=reply_power]").find(".admin").attr("selected", true)
-        } else {
-            $("#editPj").find("select[name=reply_power]").find(".admin").removeAttr("selected")
-            $("#editPj").find("select[name=reply_power]").find(".all").attr("selected", true)
-        }
-        if ("${pj.file_power}" == 'Y') {
-            $("#editPj").find("select[name=file_power]").find(".all").removeAttr("selected")
-            $("#editPj").find("select[name=file_power]").find(".admin").attr("selected", true)
-        } else {
-            $("#editPj").find("select[name=file_power]").find(".admin").removeAttr("selected")
-            $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
-        }
-        $("#editPj").find("#pj_no").val("${pj.pj_no}")
-        $("#editPjModal").modal("show")
-    })
-
-    $(document).on('click', '#viewEmpInPj', function () {
-        $.ajax({
-            url: '/project/selectEmpListByPj.do',
-            data: {
-                "pj_no": ${pj.pj_no},
-                "keyword": 'all'
-            },
-            success: function (list) {
-                console.log(list)
-                $(".inviteTable").html('')
-                $.each(list, function (i, obj) {
-                    var content = '<tr>'
-                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
-                    content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
-                    content += '</td>'
-                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
-                    content += '<td rowspan="2" style="width: 20%; text-align: right;">'
-                    content += '</td>'
-                    content += '</tr>'
-                    content += '<tr>'
-                    if (obj.job_name != undefined) {
-                        content += '<td style="text-align: center;">' + obj.job_name + '</td>'
-                    } else {
-                        content += '<td style="text-align: center;">직급이 없습니다.</td>'
-                    }
-                    content += '</tr>'
-
-                    $(".inviteTable").append(content)
-                })
-                $(".inviteTable").append('<tr><td></td>초대할 수 있는 사원이 없습니다.</tr>')
-
-
-                $("#empListModal").modal("show")
-            }
-        })
-    })
-
-    $(document).on('click', '.boardDeleteBtn', function () {
-
-        if (confirm("삭제하시겠습니까?")) {
-            var form = document.createElement('form'); // 폼객체 생성
-            var obj1;
-            var obj2;
-            obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-            obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-            obj1.setAttribute('name', 'board_no'); // 객체이름
-            obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
-            form.appendChild(obj1);
-            obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-            obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-            obj2.setAttribute('name', 'pj_no'); // 객체이름
-            obj2.setAttribute('value', ${pj.pj_no}); //객체값
-            form.appendChild(obj2);
-
-            form.setAttribute('method', 'post'); //get,post 가능
-            form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
-            document.body.appendChild(form);
-            form.submit();
-
-        }
-
-    })
-
-
-    $(function () {
-        loadRw()
-        datepickerLoad()
-        loadBoards()
-        $(document).on('click', '.newPj', function () {
-            $("#makePj").modal("show")
-        })
-
-        $(document).on('click', '#setColor', function () {
-            $("#colorModal").modal("show")
-        })
-
-        $(document).on("click", ".tagAddBtn", function () {
-            $("#addTagModal").modal("show")
-        })
-
-        $(document).on('click', '#tagSettingBtn', function () {
-            loadTag()
-            $("#tagModal").modal("show")
-        })
-
-        $(document).on('click', '.boardEnrollBtn', function () {
-
-            $(".boardNoti").text('게시물 작성')
-            $(".boardUploadBtn").text('올리기')
-        })
-
-        $(document).on('click', '#postEditBtn', function () {
-            var file_no = $(this).parents(".boardBody").find("input[name=file_no]").val()
-            var change_name = $(this).parents(".boardBody").find("input[name=change_name]").val()
-            var origin_name = $(this).parents(".boardBody").find("input[name=origin_name]").val()
-            var path = $(this).parents(".boardBody").find("input[name=path]").val()
-            var test = path + origin_name
-
-            console.log(test)
-            $("#postForm").css("display", "block")
-            $("#postSch").css("display", "none")
-            $("#postTodo").css("display", "none")
-            $(".switchSch").css("color", "black")
-            $(".switchTodo").css("color", "black")
-            $(".switchPost").css("color", "#6777ef")
-            $('#summernote').summernote('insertText', $(this).parents(".boardBody").find("#postContent").text())
-            $(".boardNoti").text('게시물 수정')
-            $(".boardUploadBtn").text('수정')
-            $("#boardPost").find("input[name=post_title]").val($(this).parents(".boardBody").find("#postTitle").text())
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
-            $(".boardUploadForm").append(
-                '<input type="hidden" name="board_no" value="' + board_no + '">'
-            )
-            if ($("#postFileArea").html() != '') {
-                $(".fileUploadBtn").css("display", "none")
-                $(".fileUploadBtn").parent().append(
-                    '<input type="text" readonly style="border: 0px;" id="postEditFormDeleteFile" value="' + origin_name + '">' +
-                    '<input type="hidden" value="' + file_no + '">' +
-                    '<input type="hidden" value="' + change_name + '">' +
-                    '<input type="hidden" value="' + path + '">'
-                )
-            }
-            console.log($("#postForListArea").html())
-            if ($("#postForListArea").html() != '') {
-                $(".postFor").css("display", "none")
-                $("#postForListArea").find("b").each(function (e) {
-                    //console.log($(this).text())
-                    $("#postForArea").append('<span class="empName">' + $(this).text() + '<span><input type="hidden" name="post_for" ' +
-                        'value="' + $(this).next().val() + '">' +
-                        '<i class="bi bi-x fa-2x removeEmp" style="color: red; padding-right: 0px;"></i></span></span>')
-
-                    // $(".postFor").parent().append(content)
-                })
-
-            }
-            $(".boardUploadForm").attr("id", "editPost");
-            $(".boardUploadForm").attr("action", "/post/editPost.do");
-            $("#boardPost").modal("show")
-            $("#boardPost").css("z-index", "111111")
-
-        })
-        $(document).on('click', '#postEditFormDeleteFile', function () {
-            $(this).parent().append(
-                '<input type="hidden" name="change_name" value="' + $(this).val() + '">' +
-                '<input type="hidden" name="file_no" value="' + $(this).next().val() + '">' +
-                '<input type="hidden" name="origin_name" value="' + $(this).next().next().val() + '">' +
-                '<input type="hidden" name="path" value="' + $(this).next().next().next().val() + '">'
-            )
-            $(this).remove()
-            $(".fileUploadBtn").css("display", "inline-block")
-        })
-
-
-        $(document).on('click', '#schEditBtn', function () {
-            console.log($(this).parents(".boardBody").find("#schTitle").text())
-            console.log($(this).parents(".boardBody").find("#schDate").html())
-            console.log($(this))
-            $("#postForm").css("display", "none")
-            $("#postSch").css("display", "block")
-            $("#postTodo").css("display", "none")
-            $(".switchSch").css("color", "#6777ef")
-            $(".switchTodo").css("color", "black")
-            $(".switchPost").css("color", "black")
-
-            $(".boardNoti").text('게시물 수정')
-            $(".boardUploadBtn").text('수정')
-            $("#boardPost").find("input[name=sch_title]").val($(this).parents(".boardBody").find("#schTitle").text())
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
-            $.ajax({
-                url: '/schedule/selectSchDate.do',
-                data: {
-                    "board_no": board_no
-                },
-                async: false,
-                success: function (data) {
-                    console.log(data)
-                    $("input[name=sch_start]").val(data.sch_start)
-                    $("input[name=sch_end]").val(data.sch_end)
-                    $("input[name=sch_place]").val(data.sch_place)
-                    $("textarea[name=sch_content]").val(data.sch_content)
-                    $("textarea[name=sch_content]").text(data.sch_content)
-                    // if (data.sch_attendee != undefined) {
-                    //     $("#addPeople").val(data.sch_attendee)
-                    // }
-                }
-            })
-            $(".boardUploadForm").append(
-                '<input type="hidden" name="board_no" value="' + board_no + '">'
-            )
-            $(".boardUploadForm").attr("id", "editSch");
-            $(".boardUploadForm").attr("action", "/schedule/editSch.do");
-            $("#boardPost").modal("show")
-            $("#boardPost").css("z-index", "111111")
-        })
-
-        $(document).on('click', '#todoEditBtn', function () {
-            console.log($(this).parents(".boardBody").find("#todoTitle").text())
-            console.log($(this))
-            $("#postForm").css("display", "none")
-            $("#postSch").css("display", "none")
-            $("#postTodo").css("display", "block")
-            $(".switchSch").css("color", "black")
-            $(".switchTodo").css("color", "#6777ef")
-            $(".switchPost").css("color", "black")
-
-            $(".boardNoti").text('게시물 수정')
-            $(".boardUploadBtn").text('수정')
-            console.log($(this).parents(".boardBody").find("#todoTitle").text())
-            $("#boardPost").find("input[name=todo_title]").val($(this).parents(".boardBody").find("#todoTitle").text())
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no").val()
-            $.ajax({
-                url: '/todo/selectTodo.do',
-                data: {
-                    "board_no": board_no
-                },
-                async: false,
-                success: function (data) {
-                    console.log(data)
-                    $("#boardPost").find("input[name=todo_content]").parent().parent().remove()
-                    $.each(data, function (i, obj) {
-
-                            var content = '<div class="form-group row">'
-                            content += '<div class="col-lg-1 pr-0 text-right">'
-                            content += '<i class="bi bi-x fa-2x removeTodo" style="color: red; padding-right: 0px;"></i>'
-                            content += '</div>'
-                            content += '<div class="text-md-right col-10 col-md-7 col-lg-9">'
-                            content += '<input type="text" class="form-control"'
-                            content += 'value ="' + obj.todo_content
-                            content += '" placeholder="할 일 추가 / 최대 50자" name="todo_content">'
-                            content += '</div>'
-                            content += '<div class="col-sm-12 col-md-3 col-lg-1">'
-                            content += '<div class="input-group todoInput date" style="width: 100px;">'
-                            if (obj.todo_end != undefined) {
-
-                                content += '<input type="text" style="display: block; width: 25px;" class="form-control bg-white border-0 small todoDue" value="' + moment(obj.todo_end).format('MM-DD') + '" name="todo_end">'
-
-                                content += '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon" style="display: none;"></span>'
-                            } else {
-                                content += '<input type="text" style="display: none; width:25px;"'
-                                content += 'class="form-control bg-white border-0 small todoDue" name="todo_end">'
-                                content += '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>'
-                            }
-                            content += '</div>'
-                            content += '</div>'
-                            content += '<div class="col-lg-1">'
-                            if (obj.todo_for != undefined) {
-                                content += '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">'
-                                content += '<a>' + obj.todo_for_name + '</a>'
-                                content += '<input type="hidden" name="todo_for" value="' + obj.todo_for + '">'
-                                content += '</p>'
-                            } else {
-                                content += '<i class="bi bi-person fa-2x todoPerson"></i>'
-                                content += '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">'
-                                content += '<input type="hidden" name="todo_for">'
-                                content += '</p>'
-                            }
-                            content += '</div>'
-                            content += '<input type="hidden" name="status" value="' + obj.status + '">'
-                            content += '</div>'
-
-                            $("#postTodo").find(".todos").append(content)
-
-                        }
-                    )
-                    datepickerLoad()
-                }
-            })
-            $(".boardUploadForm").append(
-                '<input type="hidden" name="board_no" value="' + board_no + '">'
-            )
-            $(".boardUploadForm").attr("id", "editTodo");
-            $(".boardUploadForm").attr("action", "/todo/editTodo.do");
-            $("#boardPost").modal("show")
-            $("#boardPost").css("z-index", "111111")
-        })
-
-
-        $(document).on('click', '.disconnectingTagBtn', function () {
-            console.log($(this).prev().find('input[name=tagInput]').val())
-            $tag_no = $(this).prev().find('input[name=tagInput]').val()
-            removeTag($tag_no)
-        })
-
-        function removeTag(tag_no) {
-            $.ajax({
-                url: '/project/removeTagByPjNo.do',
-                data: {
-                    "tag_no": tag_no,
-                    "pj_no": ${pj.pj_no}
-                },
-                async: false,
-                success: function (data) {
-                    console.log(data)
-                }
-            })
-            loadTag()
-        }
-
-
-        $(document).on("click", ".favoBtn", function (e) {
-            var pj_no = ${pj.pj_no}
-                console.log("pj_no : " + pj_no)
-
-            if ($(this).hasClass("favoWhite")) {
-                $(this).removeClass("favoWhite")
-                $(this).addClass("favoYellow")
-                console.log("즐겨찾기 추가할것")
-
-                insertBookmark(pj_no)
-
-            } else if ($(this).hasClass("favoYellow")) {
-                $(this).removeClass("favoYellow")
-                $(this).addClass("favoWhite")
-                console.log("즐겨찾기 제거할것")
-
-                removeBookmark(pj_no);
-            }
-        })
-
-
-        $(document).on('click', '#inviteBtn', function () {
-            $.ajax({
-                url: '/project/selectEmpListByPj.do',
-                data: {
-                    "pj_no": ${pj.pj_no}
-                },
-                success: function (list) {
-                    //list = $.parseJSON(list)
-                    console.log(list)
-                    $(".inviteTable").html('')
-                    $("#invitePj").find("input[name=pj_no]").val(${pj.pj_no})
-                    if (list.length > 0) {
-                        $.each(list, function (i, obj) {
-                            var content = '<tr>'
-                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
-                            content += '</td>'
-                            content += '<th style="width: 50%">' + obj.name + '</th>'
-                            content += '<td rowspan="2" style="width: 20%; text-align: right;">'
-                            content += '<div class="custom-control custom-checkbox">'
-                            content += '<input type="checkbox" name="inviteEmpNo" class="inviteEmpNo" value="' + obj.emp_no + '">'
-                            content += '</div>'
-                            content += '</td>'
-                            content += '</tr>'
-                            content += '<tr>'
-                            if (obj.job_name != undefined) {
-                                content += '<td>' + obj.job_name + '</td>'
-                            } else {
-                                content += '<td>직급 없음</td>'
-                            }
-                            content += '</tr>'
-                            $(".inviteTable").append(content)
-                            $("#inviteEmpBtn").css("display", "inline-block")
-                        })
-                    } else {
-                        var content = '<tr><td>초대할 수 있는 사원이 없습니다.</td></tr>'
-                        $(".inviteTable").append(content)
-                        $("#inviteEmpBtn").css("display", "none")
-                    }
-
-                    $("#inviteModal").modal("show")
-                }
-            })
-        })
-
-        $(document).on('click', '.postFor', function () {
-            $.ajax({
-                url: '/project/selectEmpListByPj.do',
-                data: {
-                    "pj_no": ${pj.pj_no},
-                    "keyword": 'mention'
-                },
-                success: function (list) {
-                    console.log(list)
-                    $(".inviteTable").html('')
-                    $.each(list, function (i, obj) {
-                        if (obj.emp_no != ${pjMember.emp_no}) {
-                            var content = '<tr>'
-                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
-                            content += '</td>'
-                            content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
-                            content += '<td rowspan="2" style="width: 20%; text-align: right;">'
-                            content += '<div class="custom-control custom-checkbox">'
-                            content += '<input type="checkbox" class="inviteEmpNo" value="' + obj.emp_no + '">'
-                            content += '</div>'
-                            content += '</td>'
-                            content += '</tr>'
-                            content += '<tr>'
-                            if (obj.job_name != undefined) {
-                                content += '<td>' + obj.job_name + '</td>'
-                            } else {
-                                content += '<td>직급이 없습니다.</td>'
-                            }
-                            content += '</tr>'
-                            $(".inviteTable").append(content)
-                        }
-                    })
-                    $("#PostAddEmpBtn").css("display", "inline-block")
-                    $("#SchAddEmpBtn").css("display", "none")
-                    $("#mentionForModal").css("z-index", "123333")
-                    $("#mentionForModal").modal("show")
-                }
-            })
-        })
-
-        $('#boardPost').on('hidden.bs.modal', function (e) {
-            $(this).find('form')[0].reset();
-            $(this).find('form')[1].reset();
-            $(this).find('form')[2].reset();
-        })
-
-        $(document).on('click', '#postBtn', function () {
-            if (${pj.board_power == 'Y'} &&
-            ${pjMember.admin == 'N'})
-            {
-                alert("관리자만 작성할 수 있습니다.")
-                return false
-            }
-            $("#postForm").css("display", "block")
-            $("#postSch").css("display", "none")
-            $("#postTodo").css("display", "none")
-            $(".switchSch").css("color", "black")
-            $(".switchTodo").css("color", "black")
-            $(".switchPost").css("color", "#6777ef")
-            $(".boardUploadForm").attr("id", "enrollPost");
-            $(".boardUploadForm").attr("action", "/post/insertPost.do");
-            $("#boardPost").modal("show")
-        })
-
-        $(document).on('click', '#schBtn', function () {
-            if (${pj.board_power == 'Y'} &&
-            ${pjMember.admin == 'N'})
-            {
-                alert("관리자만 작성할 수 있습니다.")
-                return false
-            }
-            $("textarea[name=sch_content]").val('')
-            $("textarea[name=sch_content]").text('')
-            $("input[name=sch_attendee]").parent().parent().remove()
-            $("#addPeople").css("display", "block")
-            $("#postForm").css("display", "none")
-            $("#postSch").css("display", "block")
-            $("#postTodo").css("display", "none")
-            $(".switchSch").css("color", "#6777ef")
-            $(".switchTodo").css("color", "black")
-            $(".switchPost").css("color", "black")
-            $(".boardUploadForm").attr("id", "enrollSch");
-            $(".boardUploadForm").attr("action", "/schedule/insertSch.do");
-            $("#boardPost").modal("show")
-        })
-
-
-        $(document).on('click', '#todoBtn', function () {
-            if (${pj.board_power == 'Y'} &&
-            ${pjMember.admin == 'N'})
-            {
-                alert("관리자만 작성할 수 있습니다.")
-                return false
-            }
-            $("#postForm").css("display", "none")
-            $("#postSch").css("display", "none")
-            $("#postTodo").css("display", "block")
-            $(".switchSch").css("color", "black")
-            $(".switchTodo").css("color", "#6777ef")
-            $(".switchPost").css("color", "black")
-            $(".boardUploadForm").attr("id", "enrollTodo");
-            $(".boardUploadForm").attr("action", "/todo/insertTodo.do");
-            $("#boardPost").modal("show")
-        })
-
-        $(document).on('click', '.ckedInput', function () {
-            if ($(this).is(":checked")) {
-                $.ajax({
-                    url: '/todo/completeTodo.do',
-                    data: {
-                        "todo_no": $(this).val()
-                    },
-                    success: function (data) {
-                        console.log(data)
-
-                    }
-                })
-                $(this).parent().next().children(".ckedTodo").addClass("underline")
-            } else {
-                $.ajax({
-                    url: '/todo/uncompleteTodo.do',
-                    data: {
-                        "todo_no": $(this).val()
-                    },
-                    success: function (data) {
-                        console.log(data)
-
-                    }
-                })
-                $(this).parent().next().children(".ckedTodo").removeClass("underline")
-            }
-        })
-
-        $(document).on('click', '.switchPost', function () {
-            $(".switchSch").css("color", "black")
-            $(".switchTodo").css("color", "black")
-            $(".switchPost").css("color", "#6777ef")
-            $("#postForm").css("display", "block")
-            $("#postSch").css("display", "none")
-            $("#postTodo").css("display", "none")
-            $(".boardUploadForm").attr("id", "enrollPost");
-            $(".boardUploadForm").attr("action", "/post/insertPost.do");
-        })
-
-        $(document).on('click', '.switchSch', function () {
-            $(".switchSch").css("color", "#6777ef")
-            $(".switchTodo").css("color", "black")
-            $(".switchPost").css("color", "black")
-            $("#postForm").css("display", "none")
-            $("#postSch").css("display", "block")
-            $("#postTodo").css("display", "none")
-            $(".boardUploadForm").attr("id", "enrollSch");
-            $(".boardUploadForm").attr("action", "/schedule/insertSch.do");
-        })
-
-        $(document).on('click', '.switchTodo', function () {
-            $(".switchSch").css("color", "black")
-            $(".switchTodo").css("color", "#6777ef")
-            $(".switchPost").css("color", "black")
-            $("#postForm").css("display", "none")
-            $("#postSch").css("display", "none")
-            $("#postTodo").css("display", "block")
-            $(".boardUploadForm").attr("id", "enrollTodo");
-            $(".boardUploadForm").attr("action", "/todo/insertTodo.do");
-
-        })
-
-
-        $(document).on('click', '#PostAddEmpBtn', function () {
-            if ($(this).parents("#mentionForModal").find(".inviteEmpNo:checked").length == 0) {
-                alert("한명 이상 선택해주세요.")
-                return false
-            }
-            console.log($(this).parents("#mentionForModal").find(".emp_name"))
-            console.log($(this).parents("#mentionForModal").find(".inviteEmpNo"))
-            $(this).parents("#mentionForModal").find(".inviteEmpNo:checked").each(function (e) {
-                console.log($(this).val())
-                console.log($(this).parents("tr").find(".emp_name").text())
-                var content = $(this).parents("tr").find(".emp_name").text()
-                $("#postForArea").append('<span class="empName">' + content + '<span><input type="hidden" name="post_for" ' +
-                    'value="' + $(this).val() + '">' +
-                    '<i class="bi bi-x fa-2x removeEmp" style="color: red; padding-right: 0px;"></i></span></span>')
-            })
-            if ($("#postForArea").html() != '') {
-                $(".postFor").css("display", "none")
-            }
-            $("#mentionForModal").modal("hide")
-        })
-
-        $(document).on('click', '#SchAddEmpBtn', function () {
-            if ($(this).parents("#mentionForModal").find(".inviteEmpNo:checked").length == 0) {
-                alert("한명 이상 선택해주세요.")
-                return false
-            }
-            console.log($(this).parents("#mentionForModal").find(".emp_name"))
-            console.log($(this).parents("#mentionForModal").find(".inviteEmpNo"))
-            $(this).parents("#mentionForModal").find(".inviteEmpNo:checked").each(function (e) {
-                var content = $(this).parents("tr").find(".emp_name").text()
-                $("#addPeople").parent().append('<span class="empName">' + content + '<span><input type="hidden" name="sch_attendee" ' +
-                    'value="' + $(this).val() + '">' +
-                    '<i class="bi bi-x fa-2x removeEmp" style="color: red; padding-right: 0px;"></i></span></span>')
-            })
-            if ($("input[name=sch_attendee]").length > 0) {
-                $("#addPeople").css("display", "none")
-            }
-            $("#mentionForModal").modal("hide")
-        })
-        $(".fa-plus").click(function () {
-            $(".todos").append(
-                '<div class="form-group row">' +
-                '<div class="col-lg-1 pr-0 text-right">' +
-                '<i class="bi bi-x fa-2x removeTodo" style="color: red; padding-right: 0px;"></i>' +
-                '</div>' +
-                '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
-                '<input type="text" class="form-control"' +
-                'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
-                '</div>' +
-                '<div class="col-sm-12 col-md-3 col-lg-1">' +
-                '<div class="input-group todoInput date" style="width: 100px;">' +
-                '<input type="text" style="display: none; width:25px;"' +
-                'class="form-control bg-white border-0 small todoDue" name="todo_end">' +
-                '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-lg-1">' +
-                '<i class="bi bi-person fa-2x todoPerson"></i>' +
-                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
-                '<input type="hidden" name="todo_for">' +
-                '</p>' +
-                '</div>' +
-                '<input type="hidden" name="status" value="N">' +
-                '</div>'
-            )
-            datepickerLoad()
-        })
-
-        function datepickerLoad() {
-
-            $('.todoInput').datepicker({
-                format: "mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-                autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-                clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
-                daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
-                disableTouchKeyboard: false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
-                templates: {
-                    leftArrow: '&laquo;',
-                    rightArrow: '&raquo;'
-                }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-                showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
-                todayHighlight: true,	//오늘 날짜에 하이라이팅 기능 기본값 :false
-                weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
-                language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-
-            })
-            $('.todoInput').datepicker().on("clearDate", function (e) {
-                console.log(e.currentTarget)
-                var $test = e.currentTarget;
-                $($test).children(".todoCalendar").css("display", "block")
-                $($test).children(".todoDue").css("display", "none")
-
-            })
-        }
-
-        $('#datepicker').datepicker({
-            format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-            autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-            clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
-            daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
-            disableTouchKeyboard: false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
-            templates: {
-                leftArrow: '&laquo;',
-                rightArrow: '&raquo;'
-            }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-            showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
-            todayHighlight: true,	//오늘 날짜에 하이라이팅 기능 기본값 :false
-            weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
-            language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
-
-        })
-
-
-        $("#close").click(function () {
-            //console.log("진입확인")
-            $("#fileAndMentionArea").html(
-                '<input type="text" class="form-control" id="file-label"' +
-                'style="display: none; border: 0px white;">' +
-                '<input type="file" name="upload_file" id="upload-file" hidden>' +
-                '<i class="bi bi-paperclip fa-2x fileUploadBtn"></i>' +
-                '<i class="bi bi-person fa-2x postFor"></i>'
-            )
-            $("#postForArea").html('')
-            $('#summernote').summernote('reset');
-            $(".todos").html(
-                '<div class="form-group row">' +
-                '<div class="col-lg-1 pr-0 text-right">' +
-                '</div>' +
-                '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
-                '<input type="text" class="form-control"' +
-                'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
-                '</div>' +
-                '<div class="col-sm-12 col-md-3 col-lg-1">' +
-                '<div class="input-group todoInput date" style="width: 100px;">' +
-                '<input type="text" style="display: none; width:25px;"' +
-                'class="form-control bg-white border-0 small todoDue">' +
-                '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-lg-1">' +
-                '<i class="bi bi-person fa-2x todoPerson"></i>' +
-                '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
-                '<input type="hidden" name="todo_for">' +
-                '</p>' +
-                '</div>' +
-                '<input type="hidden" name="status" value="N">' +
-                '</div>'
-            )
-            datepickerLoad()
-
-        })
-        $("input[type=image]").click(function () {
-            loadBoards()
-        })
-
-        $('.todoInput').datepicker().on("clearDate", function (e) {
-            console.log(e.currentTarget)
-            var $test = e.currentTarget;
-            $($test).children(".todoCalendar").css("display", "block")
-            $($test).children(".todoDue").css("display", "none")
-
-        })
-    })
-
-    $(document).on('click', '#addPeople', function () {
-        $.ajax({
-            url: '/project/selectEmpListByPj.do',
-            data: {
-                "pj_no": ${pj.pj_no},
-                "keyword": 'mention'
-            },
-            success: function (list) {
-                console.log(list)
-                $(".inviteTable").html('')
-                $.each(list, function (i, obj) {
-                    if (obj.emp_no != ${pjMember.emp_no}) {
-                        var content = '<tr>'
-                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
-                        content += '</td>'
-                        content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
-                        content += '<td rowspan="2" style="width: 20%; text-align: right;">'
-                        content += '<div class="custom-control custom-checkbox">'
-                        content += '<input type="checkbox" class="inviteEmpNo" value="' + obj.emp_no + '">'
-                        content += '</div>'
-                        content += '</td>'
-                        content += '</tr>'
-                        content += '<tr>'
-                        if (obj.job_name != undefined) {
-                            content += '<td>' + obj.job_name + '</td>'
-                        } else {
-                            content += '<td>직급이 없습니다.</td>'
-                        }
-                        content += '</tr>'
-                        $(".inviteTable").append(content)
-                    }
-                })
-                $("#PostAddEmpBtn").css("display", "none")
-                $("#SchAddEmpBtn").css("display", "inline-block")
-                $("#mentionForModal").css("z-index", "111112")
-                $("#mentionForModal").modal("show")
-            }
-        })
-    })
-
-    $(document).on('click', '.viewAttendee', function () {
-        $.ajax({
-            url: '/schedule/selectSchAttendee.do',
-            data: {
-                "board_no": $(this).parents(".boardBody").find(".detailViewBoard_no").val(),
-            },
-            success: function (list) {
-                console.log(list)
-                $("#viewSchAttendee").find(".inviteTable").html('')
-                console.log(list.length)
-                if (list.length > 0) {
-                    $.each(list, function (i, obj) {
-                        var content = '<tr>'
-                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
-                        content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
-                        content += '</td>'
-                        content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
-                        content += '<td rowspan="2" style="width: 20%; text-align: right;">'
-                        content += '</td>'
-                        content += '</tr>'
-                        content += '<tr>'
-                        if (obj.job_name != undefined) {
-                            content += '<td style="text-align: center;">' + obj.job_name + '</td>'
-                        } else {
-                            content += '<td style="text-align: center;">직급이 없습니다.</td>'
-                        }
-                        content += '</tr>'
-
-                        $("#viewSchAttendee").find(".inviteTable").append(content)
-                    })
-                } else {
-                    $("#viewSchAttendee").find(".inviteTable").append('<tr><td>참석한 사원이 없습니다.</td></tr>')
-                }
-
-                $("#viewSchAttendee").modal("show")
-            }
-        })
-
-    })
-
-    $(document).on('click', '.calendar', function () {
-        location.href = "/project/detailCalendar.do?pj_no=" +
-        ${pj.pj_no}
-    })
-    $(document).on('click', '.drive', function () {
-        if (${pj.file_power == 'Y'} &&
-        ${pjMember.admin == 'N'})
-        {
-            alert("관리자만 조회할 수 있습니다.")
-            return false
-        }
-        location.href = "/project/drivePj.do?pj_no=" +
-        ${pj.pj_no}
-    })
-    var $forRemove
-    var $todo
-    $(document).on('click', '.todoPerson', function () {
-        $forRemove = $(this)
-        $todo = $(this).next()
-        $.ajax({
-            url: '/project/selectEmpListByPj.do',
-            data: {
-                "pj_no": ${pj.pj_no},
-                "keyword": 'all'
-            },
-            success: function (list) {
-                console.log(list)
-                $(".inviteTable").html('')
-                $.each(list, function (i, obj) {
-                    var content = '<tr class="selectTodoFor">'
-                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
-                    content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
-                    content += '</td>'
-                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
-                    content += '<td rowspan="2" style="width: 20%; text-align: right;">'
-                    content += '</td>'
-                    content += '</tr>'
-                    content += '<tr>'
-                    if (obj.job_name != undefined) {
-                        content += '<td style="text-align: center;">' + obj.job_name + '</td>'
-                    } else {
-                        content += '<td style="text-align: center;">직급이 없습니다.</td>'
-                    }
-                    content += '</tr>'
-
-                    $("#todoFor").find(".inviteTable").append(content)
-                })
-                $("#todoFor").find(".inviteTable").append('<tr><td></td>초대할 수 있는 사원이 없습니다.</tr>')
-
-                $("#todoFor").css("z-index","112222")
-                $("#todoFor").modal("show")
-            }
-        })
-    })
-    $(document).on('click', '.selectTodoFor', function () {
-        console.log($forRemove)
-        console.log($(this))
-        console.log($(this).find(".inviteEmpNo").val())
-        console.log($(this).children().eq(1).text())
-        var content = '<a>' + $(this).children().eq(1).text() + '</a>'
-        content += '<input type="hidden" name="todo_for" value="' + $(this).find(".inviteEmpNo").val() + '">'
-        $todo.html(content)
-        $forRemove.remove()
-        $("#todoFor").modal("hide")
-
-    })
-
-
-    $(document).on('click', '.todoFor', function () {
-        $(this).parent().html(' <i class="bi bi-person fa-2x todoPerson"></i>' +
-            '<p class="todoFor" style="font-size: 11px; margin-top: 6px;"></p>'
-        )
-    })
-
-    $(document).on('click', '.removeTodo', function () {
-        $(this).parent().parent().remove()
-    })
-
-    function saveColor() {
-        if ($("input:radio[name='customRadio']:checked").length <= 0) {
-            alert("색상을 선택해주세요.")
-            return false;
-        }
-        var selectedProjects = []
-        selectedProjects.push(${pj.pj_no})
-        var selectedColor = $("input:radio[name='customRadio']:checked").val()
-        console.log(selectedProjects)
-        console.log(selectedColor)
-        $("#colorModal").modal("hide")
-        setColor(selectedProjects, selectedColor)
-        $("input:radio[name='customRadio']").prop("checked", false)
-    }
-
-    function setColor(selectedProjects, selectedColor) {
-        $.ajax({
-            url: '/project/setProjectColor.do',
-            data: {
-                "selectedProjects": selectedProjects,
-                "selectedColor": selectedColor,
-                "pj_no": ${pj.pj_no}
-            },
-            success: function (data) {
-                console.log(data)
-                $(".colors").attr("class", "colors " + data)
-
-            }
-        })
-    }
-
-    function saveTag() {
-        if ($("input:checkbox[name='tagInput']:checked").length <= 0) {
-            alert("태그를 선택해주세요.")
-            return false;
-        }
-        var selectedProjects = []
-        selectedProjects.push(${pj.pj_no});
-        var selectedTags = []
-        $("input:checkbox[name='tagInput']:checked").each(function () {
-            selectedTags.push($(this).val());
-        })
-
-        $("#tagModal").modal("hide")
-        setTag(selectedProjects, selectedTags)
-    }
-
-    function setTag(selectedProjects, selectedTags) {
-        $.ajax({
-            url: '/project/setProjectTag.do',
-            data: {
-                "selectedProjects": selectedProjects,
-                "selectedTags": selectedTags
-            },
-            success: function (data) {
-                //console.log(data)
-
-            }
-        })
-    }
-
-    function insertBookmark(pj_no) {
-        $.ajax({
-            url: '/project/insertBookmark.do',
-            data: {
-                pj_no: pj_no
-            },
-            success: function (data) {
-                console.log(data + "성공")
-
-            }
-        });
-    }
-
-    function removeBookmark(pj_no) {
-        $.ajax({
-            url: '/project/removeBookmark.do',
-            data: {
-                pj_no: pj_no
-            },
-            success: function (data) {
-                console.log(data + "성공")
-
-            }
-        });
-    }
-
-    function deleteReply(reply_no, board_no) {
-        $.ajax({
-            url: '/project/deleteReply.do',
-            data: {
-                "reply_no": reply_no
-            },
-            success: function (data) {
-                console.log(data)
-                loadReply(board_no)
-            }
-        })
-    }
-
-    function loadTag() {
-        $.ajax({
-            url: '/project/loadTag.do',
-            data: {
-                pj_no: ${pj.pj_no}
-            },
-            success: function (data) {
-                data = $.parseJSON(data)
-                // console.log(data)
-                // console.log(data.tagByEmpNo)
-                // console.log(data.tagByPjNo)
-                $("#tagTable").html('')
-                $.each(data.tagByEmpNo, function (i, obj) {
-                    $("#tagTable").append(
-                        '<tr>' +
-                        '<td><i class="fa fa-tag fa-lg"></i>' +
-                        '</td>' +
-                        '<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
-                        '<td style="width: 20%; text-align: right;">' +
-                        '<div class="custom-control custom-checkbox">' +
-                        '<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
-                        '<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
-                        '</div>' +
-                        '</td>' +
-                        '<td style="width: 15%; text-align: right;">' +
-                        '<div class="btn-group dropright">' +
-                        '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
-                        '<div class="dropdown-menu dropright">' +
-                        '<a class="dropdown-item editTag" href="#">수정</a>' +
-                        '<div class="dropdown-divider"></div>' +
-                        '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
-                        '</div>' +
-                        '</div>' +
-                        '</td>' +
-                        '</tr>'
-                    )
-                })
-                $.each(data.tagByPjNo, function (i, obj) {
-                    $('#tag' + obj.tag_no).next('label').css("display", "none")
-                    $('#tag' + obj.tag_no).parent().css("display", "none")
-                    $('#tag' + obj.tag_no).parents("td").append(
-                        '<i class="bi bi-dash-square mr-2 disconnectingTagBtn"></i>'
-                    )
-                })
-
-            }
-
-        });
-    }
-
-    function loadReply(board_no) {
-        console.log(board_no)
-        $.ajax({
-            url: '/project/selectReply.do',
-            data: {
-                board_no: board_no
-            },
-            success: function (list) {
-                list = $.parseJSON(list)
-                console.log(list)
-                $(".replyArea").html('')
-                $(".replyCount").text("댓글 " + list.length)
-                if (list.length == 0) {
-                    $(".replyHrArea").css("display", "none")
-                    console.log('확인')
-                } else {
-                    $(".replyHrArea").css("display", "block")
-                    $.each(list, function (i, obj) {
-                        var content = '<div class="reply">'
-                        content += '<div class="col-lg-10" style="display: inline-block">'
-                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
-                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
-                        content += '</div>'
-                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
-                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
-                            content += '<a class="editReplyBtn">수정&nbsp </a>'
-                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
-                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
-                            content += '</div>'
-                        }
-                        content += '<br> <br>'
-                        content += '<div class="col-lg-10">'
-                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
-                        content += '</div>'
-                        content += '<br> <br>'
-                        content += '</div>'
-                        $(".replyArea").append(content)
-                    })
-                }
-            }
-        });
-    }
-
-    function loadBoards() {
-        $.ajax({
-            url: '/project/selectAllBoard.do',
-            data: {
-                pj_no: ${pj.pj_no}
-            },
-            success: function (data) {
-                console.log(data)
-                $(".boardTable").html('')
-                $.each(data.list, function (i, obj) {
-                    if (obj.board_type == 'post') {
-                        $(".boardTable").append(
-                            '<tr>' +
-                            '<td style="width: 7%; text-align: right; color: #f3a435 ;">' +
-                            '<span class="bi bi-file-text"></span>' +
-                            '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
-                            '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
-                            '</td>' +
-                            '<td style="width: 8%; text-align: left;">글</td>' +
-                            '<th style="width: 40%;">' + obj.post_title + '</th>' +
-                            '<td style="width: 12%;">' + obj.name + '</td>' +
-                            '<td style="width: 22%;">' + obj.create_date + '</td>' +
-                            '<td>' +
-                            '</td>' +
-                            '</tr>'
-                        )
-                    } else if (obj.board_type == 'schedule') {
-                        $(".boardTable").append(
-                            '<tr>' +
-                            '<td style="width: 7%; text-align: right; color: #1cc88a">' +
-                            '<span class="bi bi-calendar"></span>' +
-                            '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
-                            '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
-                            '</td>' +
-                            '<td style="width: 8%; text-align: left;">일정</td>' +
-                            '<th style="width: 40%;">' + obj.sch_title + '</th>' +
-                            '<td style="width: 12%;">' + obj.name + '</td>' +
-                            '<td style="width: 22%;">' + obj.create_date + '</td>' +
-                            '<td><b>' + moment(obj.sch_start).format('MM/DD') + '</b></td>' +
-                            '</tr>'
-                        )
-                    } else if (obj.board_type == 'todo') {
-                        $(".boardTable").append(
-                            '<tr>' +
-                            '<td style="width: 7%; text-align: right; color: #4e73df;">' +
-                            '<span class="bi bi-check2-square"></span>' +
-                            '<input type="text" class="board_no" value="' + obj.board_no + '" style="display: none;">' +
-                            '<input type="text" class="board_type" value="' + obj.board_type + '" style="display: none;">' +
-                            '</td>' +
-                            '<td style="width: 8%; text-align: left;">할 일</td>' +
-                            '<th style="width: 40%;">' + obj.todo_title + '</th>' +
-                            '<td style="width: 12%;">' + obj.name + '</td>' +
-                            '<td style="width: 22%;">' + obj.create_date + '</td>' +
-                            '<td><span class="badge" style="background-color: #3591f3 ; height: 100%; font-size: 18px; color: white;">' + obj.todo_percent + '%</span></td>' +
-                            '</tr>'
-                        )
-                    }
-                })
-
-
-            }
-
-        });
-    }
-
     function loadRw() {
         var pCount = 0;
         var rqCount = 0;
@@ -2434,6 +530,54 @@
         return array
     }
 
+    $(function () {
+
+        $(".calendar").removeClass("clicked")
+        $(".home").addClass("clicked")
+        $(".drive").removeClass("clicked")
+        loadRw()
+        datepickerLoad()
+        changePage(1)
+    })
+</script>
+<%--게시글 전체--%>
+<script>
+    function checkStored() {
+        if (${pj.status == 'N'}) {
+            alert("보관된 프로젝트는 작성/수정/삭제 관련 기능이 제한됩니다.")
+            return false
+        } else {
+            return true
+        }
+    }
+
+    function sendajax(searchTarget, searchKeyword, type, currentPage) {
+        console.log("sendajax");
+
+        $.ajax({
+            url: "/project/pagingAndSerachPj.do",
+            type: "post",
+            data: {
+                searchTarget: searchTarget,
+                searchKeyword: searchKeyword,
+                board_type: type,
+                pj_no: ${pj.pj_no},
+                currentPage: currentPage
+            },
+            success: function (result) {
+                console.log("데이터 가져옴");
+                // console.log(result)
+                let data = JSON.parse(result);
+                console.log(data);
+                setList(data.list)
+                setpi(data.pi);
+            }
+        })
+
+        console.log("sendajax 끝남");
+
+    }
+
     $(document).on('click', '.boardTable tr', function () {
             console.log($(this).find(".board_no").val())
             $board_no = $(this).find(".board_no").val()
@@ -2457,14 +601,17 @@
                         $("#postUploadDate").html(list.post.create_date)
                         $(".detailViewBoard_no").val(list.post.board_no)
                         if (list.projectFile != null) {
-                            $("#postFileArea").html(
-                                "<a href='/resources/upload_files/" + list.projectFile.change_name + "'download " +
-                                "type='text/example')>" + list.projectFile.origin_name + "</a>" +
-                                "<input type='hidden' name='file_no' value='" + list.projectFile.file_no + "'>" +
-                                "<input type='hidden' name='change_name' value='" + list.projectFile.change_name + "'>" +
-                                "<input type='hidden' name='origin_name' value='" + list.projectFile.origin_name + "'>" +
-                                "<input type='hidden' name='path' value='" + list.projectFile.path + "'>"
-                            );
+                            if (checkImageType(list.projectFile.origin_name)) {
+                                var content = '<img style="max-width: 630px;" src="/resources/upload_files/' + list.projectFile.change_name + '" alt="file" class="imgthumb">'
+                            } else {
+                                var content = "<a href='/resources/upload_files/" + list.projectFile.change_name + "'download " +
+                                    "type='text/example')>" + list.projectFile.origin_name + "</a>"
+                            }
+                            content += "<input type='hidden' name='file_no' value='" + list.projectFile.file_no + "'>"
+                            content += "<input type='hidden' name='change_name' value='" + list.projectFile.change_name + "'>"
+                            content += "<input type='hidden' name='origin_name' value='" + list.projectFile.origin_name + "'>"
+                            content += "<input type='hidden' name='path' value='" + list.projectFile.path + "'>"
+                            $("#postFileArea").html(content);
                             $("#postFileArea").css("display", "block")
                         }
                         $("#postForListArea").html('')
@@ -2616,7 +763,7 @@
                         $("#todoCompleteCount").html(completeCount + "&nbsp;")
                         $("#todoCompletePercent").html(Math.floor(completeCount / list.length * 100) + "%")
                         $("#todoBar").attr("data-width", $("#todoCompletePercent").text())
-                        $("#todoBar").attr("style", 'width:+' + $("#todoCompletePercent").text() + ';')
+                        $("#todoBar").attr("style", 'width:' + $("#todoCompletePercent").text() + ';')
                     }
                 })
             }
@@ -2625,9 +772,700 @@
 
         }
     )
-</script>
-<script type="text/javascript">
 
+    function loadReply(board_no) {
+        console.log(board_no)
+        $.ajax({
+            url: '/project/selectReply.do',
+            data: {
+                board_no: board_no
+            },
+            success: function (list) {
+                list = $.parseJSON(list)
+                console.log(list)
+                $(".replyArea").html('')
+                $(".replyCount").text("댓글 " + list.length)
+                if (list.length == 0) {
+                    $(".replyHrArea").css("display", "none")
+                    console.log('확인')
+                } else {
+                    $(".replyHrArea").css("display", "block")
+                    $.each(list, function (i, obj) {
+                        var content = '<div class="reply">'
+                        content += '<div class="col-lg-10" style="display: inline-block">'
+                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
+                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
+                        content += '</div>'
+                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
+                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
+                            content += '<a class="editReplyBtn">수정&nbsp </a>'
+                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
+                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
+                            content += '</div>'
+                        }
+                        content += '<br> <br>'
+                        content += '<div class="col-lg-10">'
+                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
+                        content += '</div>'
+                        content += '<br> <br>'
+                        content += '</div>'
+                        $(".replyArea").append(content)
+                    })
+                }
+            }
+        });
+    }
+
+
+    $(document).on('click', '.addReplyBtn', function () {
+        if (${pj.reply_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
+        {
+            alert("관리자만 작성할 수 있습니다.")
+            return false
+        }
+        if (checkStored()) {
+            var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
+            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
+            console.log(reply_content)
+            console.log(board_no.val())
+            $.ajax({
+                url: '/project/insertReply.do',
+                data: {
+                    "reply_content": reply_content.val(),
+                    "board_no": board_no.val()
+                },
+                success: function (data) {
+                    //console.log(data)
+                    $(".replyContentEnroll").val("")
+                    loadReply(board_no.val())
+                }
+            })
+        }
+    })
+
+
+    $(document).on('click', '.boardDeleteBtn', function () {
+        if (checkStored()) {
+            if (confirm("삭제하시겠습니까?")) {
+                var form = document.createElement('form'); // 폼객체 생성
+                var obj1;
+                var obj2;
+                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj1.setAttribute('name', 'board_no'); // 객체이름
+                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
+                form.appendChild(obj1);
+                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj2.setAttribute('name', 'pj_no'); // 객체이름
+                obj2.setAttribute('value', ${pj.pj_no}); //객체값
+                form.appendChild(obj2);
+                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj3.setAttribute('name', 'type'); // 객체이름
+                obj3.setAttribute('value', 'home'); //객체값
+                form.appendChild(obj3);
+                form.setAttribute('method', 'post'); //get,post 가능
+                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+    })
+
+
+    $("#close").click(function () {
+        //console.log("진입확인")
+        $("#fileAndMentionArea").html(
+            '<input type="text" class="form-control" id="file-label"' +
+            'style="display: none; border: 0px white;">' +
+            '<input type="file" name="upload_file" id="upload-file" hidden>' +
+            '<i class="bi bi-paperclip fa-2x fileUploadBtn"></i>' +
+            '<i class="bi bi-person fa-2x postFor"></i>'
+        )
+        $("#postForArea").html('')
+        $('#summernote').summernote('reset');
+        $(".todos").html(
+            '<div class="form-group row">' +
+            '<div class="col-lg-1 pr-0 text-right">' +
+            '</div>' +
+            '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
+            '<input type="text" class="form-control"' +
+            'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
+            '</div>' +
+            '<div class="col-sm-12 col-md-3 col-lg-1">' +
+            '<div class="input-group todoInput date" style="width: 100px;">' +
+            '<input type="text" style="display: none; width:25px;"' +
+            'class="form-control bg-white border-0 small todoDue">' +
+            '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-lg-1">' +
+            '<i class="bi bi-person fa-2x todoPerson"></i>' +
+            '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
+            '<input type="hidden" name="todo_for">' +
+            '</p>' +
+            '</div>' +
+            '<input type="hidden" name="status" value="N">' +
+            '</div>'
+        )
+        datepickerLoad()
+        loadBoards()
+    })
+</script>
+
+<%-- 프로젝트 헤드 --%>
+<script>
+    $(document).on('click', '#quitProject', function () {
+        if (confirm("프로젝트를 나가시겠습니까?")) {
+            location.href = "/project/quitProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#deletePjBtn', function () {
+        if (confirm("프로젝트를 삭제하시겠습니까?")) {
+            location.href = "/project/deleteProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#keepPjBtn', function () {
+        if (confirm("프로젝트를 보관하시겠습니까?")) {
+            location.href = "/project/keepProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#restorePjBtn', function () {
+        if (confirm("프로젝트를 복구하시겠습니까?")) {
+            location.href = "/project/restoreProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+
+    $(document).on('click', '#setPj', function () {
+        $("#editPj").find("input[name=pj_title]").val("${pj.pj_title}")
+        $("#editPj").find("input[name=pj_content]").val("${pj.pj_content}")
+        $("#editPj").find("input[name=pj_content]").text("${pj.pj_content}")
+        console.log("${pj.board_power}")
+        console.log("${pj.reply_power}")
+        console.log("${pj.file_power}")
+        if ("${pj.board_power}" == 'Y') {
+            $("#editPj").find("select[name=board_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=board_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=board_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=board_power]").find(".all").attr("selected", true)
+        }
+        if ("${pj.reply_power}" == 'Y') {
+            $("#editPj").find("select[name=reply_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=reply_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=reply_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=reply_power]").find(".all").attr("selected", true)
+        }
+        if ("${pj.file_power}" == 'Y') {
+            $("#editPj").find("select[name=file_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=file_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=file_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
+        }
+        $("#editPj").find("#pj_no").val("${pj.pj_no}")
+        $("#editPj").find("input[name=type]").val("home")
+        $("#editPjModal").modal("show")
+    })
+
+
+    function loadViewEmpInPj() {
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'all'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    var content = '<tr>'
+                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                    content += '</td>'
+                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<td rowspan="2" style="width: 30%; text-align: right;">'
+                    if ('${pjMember.admin}' == 'Y' && obj.admin == 'N') {
+                        content += '<button type="button" class="btn btn-sm btn-dark deportBtn">내보내기</button>'
+                        content += '<button type="button" class="btn btn-sm btn-primary setAdminBtn">관리자 지정</button>'
+                    }
+                    if (obj.admin == 'Y') {
+                        content += '<b>관리자</b>'
+                    }
+                    content += '</td>'
+                    content += '</tr>'
+                    content += '<tr>'
+                    if (obj.job_name != undefined) {
+                        content += '<td style="text-align: center;">' + obj.job_name + '</td>'
+                    } else {
+                        content += '<td style="text-align: center;">직급이 없습니다.</td>'
+                    }
+                    content += '</tr>'
+
+                    $(".inviteTable").append(content)
+                })
+
+
+                $("#empListModal").modal("show")
+            }
+        })
+    }
+
+    $(document).on('click', '.deportBtn', function () {
+        console.log($(this).parent().parent().find(".inviteEmpNo").val())
+        console.log("${pj.pj_no}")
+        if (confirm("내보내시겠습니까?")) {
+            $.ajax({
+                url: '/project/deportEmp.do',
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "emp_no": $(this).parent().parent().find(".inviteEmpNo").val()
+                },
+                async: false,
+                success: function (list) {
+                    console.log('확인')
+                }
+            })
+            loadViewEmpInPj()
+        }
+    })
+
+    $(document).on('click', '.setAdminBtn', function () {
+        console.log($(this).parent().parent().find(".inviteEmpNo").val())
+        console.log("${pj.pj_no}")
+        if (confirm("해당 사원을 관리자로 지정하시겠습니까?")) {
+            $.ajax({
+                url: '/project/setAdmin.do',
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "emp_no": $(this).parent().parent().find(".inviteEmpNo").val()
+                },
+                async: false,
+                success: function (data) {
+                    console.log('dd')
+                }
+            })
+            loadViewEmpInPj()
+        }
+
+    })
+
+
+    function loadTag() {
+        $.ajax({
+            url: '/project/loadTag.do',
+            data: {
+                pj_no: ${pj.pj_no}
+            },
+            success: function (data) {
+                data = $.parseJSON(data)
+                // console.log(data)
+                // console.log(data.tagByEmpNo)
+                // console.log(data.tagByPjNo)
+                $("#tagTable").html('')
+                $.each(data.tagByEmpNo, function (i, obj) {
+                    $("#tagTable").append(
+                        '<tr>' +
+                        '<td><i class="fa fa-tag fa-lg"></i>' +
+                        '</td>' +
+                        '<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
+                        '<td style="width: 20%; text-align: right;">' +
+                        '<div class="custom-control custom-checkbox">' +
+                        '<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+                        '<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
+                        '</div>' +
+                        '</td>' +
+                        '<td style="width: 15%; text-align: right;">' +
+                        '<div class="btn-group dropright">' +
+                        '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+                        '<div class="dropdown-menu dropright">' +
+                        '<a class="dropdown-item editTag" href="#">수정</a>' +
+                        '<div class="dropdown-divider"></div>' +
+                        '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>'
+                    )
+                })
+                $.each(data.tagByPjNo, function (i, obj) {
+                    $('#tag' + obj.tag_no).next('label').css("display", "none")
+                    $('#tag' + obj.tag_no).parent().css("display", "none")
+                    $('#tag' + obj.tag_no).parents("td").append(
+                        '<i class="bi bi-dash-square mr-2 disconnectingTagBtn"></i>'
+                    )
+                })
+
+            }
+
+        });
+    }
+
+    function removeTagByPjNo(tag_no) {
+        $.ajax({
+            url: '/project/removeTagByPjNo.do',
+            data: {
+                "tag_no": tag_no,
+                "pj_no": ${pj.pj_no}
+            },
+            async: false,
+            success: function (data) {
+                console.log(data)
+            }
+        })
+        loadTag()
+    }
+
+    $(document).on("click", ".favoBtn", function (e) {
+        var pj_no = ${pj.pj_no}
+            console.log("pj_no : " + pj_no)
+
+        if ($(this).hasClass("favoWhite")) {
+            $(this).removeClass("favoWhite")
+            $(this).addClass("favoYellow")
+            console.log("즐겨찾기 추가할것")
+
+            insertBookmark(pj_no)
+
+        } else if ($(this).hasClass("favoYellow")) {
+            $(this).removeClass("favoYellow")
+            $(this).addClass("favoWhite")
+            console.log("즐겨찾기 제거할것")
+
+            removeBookmark(pj_no);
+        }
+    })
+
+
+    $(document).on('click', '#inviteBtn', function () {
+        if (checkStored()) {
+            $.ajax({
+                url: '/project/selectEmpListByPj.do',
+                data: {
+                    "pj_no": ${pj.pj_no}
+                },
+                success: function (list) {
+                    //list = $.parseJSON(list)
+                    console.log(list)
+                    $(".inviteTable").html('')
+                    $("#invitePj").find("input[name=pj_no]").val(${pj.pj_no})
+                    if (list.length > 0) {
+                        $.each(list, function (i, obj) {
+                            var content = '<tr>'
+                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            content += '</td>'
+                            content += '<th style="width: 50%">' + obj.name + '</th>'
+                            content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                            content += '<div class="custom-control custom-checkbox">'
+                            content += '<input type="checkbox" name="inviteEmpNo" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                            content += '</div>'
+                            content += '</td>'
+                            content += '</tr>'
+                            content += '<tr>'
+                            if (obj.job_name != undefined) {
+                                content += '<td>' + obj.job_name + '</td>'
+                            } else {
+                                content += '<td>직급 없음</td>'
+                            }
+                            content += '</tr>'
+                            $(".inviteTable").append(content)
+                            $("#inviteEmpBtn").css("display", "inline-block")
+                        })
+                    } else {
+                        var content = '<tr><td>초대할 수 있는 사원이 없습니다.</td></tr>'
+                        $(".inviteTable").append(content)
+                        $("#inviteEmpBtn").css("display", "none")
+                    }
+
+                    $("#inviteModal").modal("show")
+                }
+            })
+        }
+
+    })
+
+    function setColor(selectedProjects, selectedColor) {
+        $.ajax({
+            url: '/project/setProjectColor.do',
+            data: {
+                "selectedProjects": selectedProjects,
+                "selectedColor": selectedColor,
+                "pj_no": ${pj.pj_no}
+            },
+            success: function (data) {
+                console.log(data)
+                $(".colors").attr("class", "colors " + data)
+
+            }
+        })
+    }
+
+    function saveTag() {
+        if ($("input:checkbox[name='tagInput']:checked").length <= 0) {
+            alert("태그를 선택해주세요.")
+            return false;
+        }
+        var selectedProjects = []
+        selectedProjects.push(${pj.pj_no});
+        var selectedTags = []
+        $("input:checkbox[name='tagInput']:checked").each(function () {
+            selectedTags.push($(this).val());
+        })
+
+        $("#tagModal").modal("hide")
+        setTag(selectedProjects, selectedTags)
+    }
+
+    function saveColor() {
+        if ($("input:radio[name='customRadio']:checked").length <= 0) {
+            alert("색상을 선택해주세요.")
+            return false;
+        }
+        var selectedProjects = []
+        selectedProjects.push(${pj.pj_no})
+        var selectedColor = $("input:radio[name='customRadio']:checked").val()
+        console.log(selectedProjects)
+        console.log(selectedColor)
+        $("#colorModal").modal("hide")
+        setColor(selectedProjects, selectedColor)
+        $("input:radio[name='customRadio']").prop("checked", false)
+    }
+
+</script>
+
+
+<%--일반글--%>
+<script>
+    $(document).on('click', '.postFor', function () {
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'mention'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    if (obj.emp_no != ${pjMember.emp_no}) {
+                        var content = '<tr>'
+                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                        content += '</td>'
+                        content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
+                        content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                        content += '<div class="custom-control custom-checkbox">'
+                        content += '<input type="checkbox" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                        content += '</div>'
+                        content += '</td>'
+                        content += '</tr>'
+                        content += '<tr>'
+                        if (obj.job_name != undefined) {
+                            content += '<td>' + obj.job_name + '</td>'
+                        } else {
+                            content += '<td>직급이 없습니다.</td>'
+                        }
+                        content += '</tr>'
+                        $(".inviteTable").append(content)
+                    }
+                })
+                $("#PostAddEmpBtn").css("display", "inline-block")
+                $("#SchAddEmpBtn").css("display", "none")
+                $("#mentionForModal").css("z-index", "123333")
+                $("#mentionForModal").modal("show")
+            }
+        })
+    })
+
+
+    $(document).on('click', '#postBtn', function () {
+        if (${pj.board_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
+        {
+            alert("관리자만 작성할 수 있습니다.")
+            return false
+        }
+        if (checkStored()) {
+            $("#postForm").css("display", "block")
+            $("#postSch").css("display", "none")
+            $("#postTodo").css("display", "none")
+            $(".switchSch").css("color", "black")
+            $(".switchTodo").css("color", "black")
+            $(".switchPost").css("color", "#6777ef")
+            $(".boardUploadForm").attr("id", "enrollPost");
+            $(".boardUploadForm").attr("action", "/post/insertPost.do");
+            $("#boardPost").modal("show")
+        }
+    })
+
+    $(document).on('click', '#addPeople', function () {
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'mention'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    if (obj.emp_no != ${pjMember.emp_no}) {
+                        var content = '<tr>'
+                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                        content += '</td>'
+                        content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
+                        content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                        content += '<div class="custom-control custom-checkbox">'
+                        content += '<input type="checkbox" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                        content += '</div>'
+                        content += '</td>'
+                        content += '</tr>'
+                        content += '<tr>'
+                        if (obj.job_name != undefined) {
+                            content += '<td>' + obj.job_name + '</td>'
+                        } else {
+                            content += '<td>직급이 없습니다.</td>'
+                        }
+                        content += '</tr>'
+                        $(".inviteTable").append(content)
+                    }
+                })
+                $("#PostAddEmpBtn").css("display", "none")
+                $("#SchAddEmpBtn").css("display", "inline-block")
+                $("#mentionForModal").css("z-index", "111112")
+                $("#mentionForModal").modal("show")
+            }
+        })
+    })
+</script>
+<%--일정글--%>
+<script>
+    $(document).on('click', '#schBtn', function () {
+        if (${pj.board_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
+        {
+            alert("관리자만 작성할 수 있습니다.")
+            return false
+        }
+        if (checkStored()) {
+            $("#postSch").find("input[name=type]").val("home")
+            $("textarea[name=sch_content]").val('')
+            $("textarea[name=sch_content]").text('')
+            $("input[name=sch_attendee]").parent().parent().remove()
+            $("#addPeople").css("display", "block")
+            $("#postForm").css("display", "none")
+            $("#postSch").css("display", "block")
+            $("#postTodo").css("display", "none")
+            $(".switchSch").css("color", "#6777ef")
+            $(".switchTodo").css("color", "black")
+            $(".switchPost").css("color", "black")
+            $(".boardUploadForm").attr("id", "enrollSch");
+            $(".boardUploadForm").attr("action", "/schedule/insertSch.do");
+            $("#boardPost").modal("show")
+        }
+
+    })
+    $(document).on('click', '#schEditBtn', function () {
+        $("#postSch").find("input[name=type]").val("home")
+    })
+</script>
+<%--할일글--%>
+<script>
+    $(document).on('click', '#todoBtn', function () {
+        if (${pj.board_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
+        {
+            alert("관리자만 작성할 수 있습니다.")
+            return false
+        }
+        if (checkStored()) {
+            $("#postForm").css("display", "none")
+            $("#postSch").css("display", "none")
+            $("#postTodo").css("display", "block")
+            $(".switchSch").css("color", "black")
+            $(".switchTodo").css("color", "#6777ef")
+            $(".switchPost").css("color", "black")
+            $(".boardUploadForm").attr("id", "enrollTodo");
+            $(".boardUploadForm").attr("action", "/todo/insertTodo.do");
+            $("#boardPost").modal("show")
+        }
+
+    })
+
+    var $forRemove
+    var $todo
+    $(document).on('click', '.todoPerson', function () {
+        $forRemove = $(this)
+        $todo = $(this).next()
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'all'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    var content = '<tr class="selectTodoFor">'
+                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                    content += '</td>'
+                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                    content += '</td>'
+                    content += '</tr>'
+                    content += '<tr>'
+                    if (obj.job_name != undefined) {
+                        content += '<td style="text-align: center;">' + obj.job_name + '</td>'
+                    } else {
+                        content += '<td style="text-align: center;">직급이 없습니다.</td>'
+                    }
+                    content += '</tr>'
+
+                    $("#todoFor").find(".inviteTable").append(content)
+                })
+                $("#todoFor").find(".inviteTable").append('<tr><td></td>초대할 수 있는 사원이 없습니다.</tr>')
+
+                $("#todoFor").css("z-index", "112222")
+                $("#todoFor").modal("show")
+            }
+        })
+    })
+</script>
+
+
+<script>
+    $(document).on('click', '.calendar', function () {
+        location.href = "/project/detailCalendar.do?pj_no=" +
+        ${pj.pj_no}
+    })
+    $(document).on('click', '.drive', function () {
+        if (${pj.file_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
+        {
+            alert("관리자만 조회할 수 있습니다.")
+            return false
+        }
+        location.href = "/project/drivePj.do?pj_no=" +
+        ${pj.pj_no}
+    })
+
+
+</script>
+<script>
     var sum = loadRw()
     console.log(sum)
     // Pie Chart Example
@@ -2677,24 +1515,4 @@
             }
         });
 </script>
-<script>
-    $(function () {
-        $('#summernote').summernote({
-            placeholder: '내용을 입력해주세요',
-            tabsize: 2,
-            height: 300,
-            toolbar: [
-                ['style', ['style']],
-                ['font', ['bold', 'underline']],
-                ['color', ['color']],
-                ['ul', 'ol', 'paragraph'],
-                ['table', ['table']],
-                ['insert', ['link', 'video']],
-            ]
-        });
-    })
-
-</script>
-</body>
-</body>
 </html>

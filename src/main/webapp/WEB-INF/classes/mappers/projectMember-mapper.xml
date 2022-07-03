@@ -32,10 +32,12 @@
         VALUES (#{pj_no}, #{emp_no})
     </insert>
     <delete id="removeBookmark" parameterType="ProjectMember">
+        <if test="pj_no != null">
         DELETE
         FROM PJ_BOOKMARK
-        WHERE PJ_NO = #{pj_no}
-          AND EMP_NO = #{emp_no}
+        WHERE EMP_NO = #{emp_no}
+            AND PJ_NO = #{pj_no}
+        </if>
     </delete>
     <select id="selectProjectColorByEmpNo" resultMap="projectMemberSet" parameterType="int">
         SELECT * FROM PROJECT_MEMBER
@@ -54,10 +56,17 @@
         WHERE PJ_NO = #{pj_no}
           AND EMP_NO = #{emp_no}
     </update>
+
     <insert id="setProjectTag" parameterType="ProjectTag">
         INSERT INTO PROJECT_TAG
         VALUES (#{tag_no}, #{pj_no})
     </insert>
+    <update id="setAdmin" parameterType="ProjectMember">
+        UPDATE PROJECT_MEMBER
+        SET ADMIN = 'Y'
+        WHERE PJ_NO = #{pj_no}
+          AND EMP_NO = #{emp_no}
+    </update>
     <select id="loadTag" parameterType="int" resultMap="ProjectTagSet">
         SELECT *
         FROM MB_PJ_TAG

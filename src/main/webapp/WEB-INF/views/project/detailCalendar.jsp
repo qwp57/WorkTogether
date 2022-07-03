@@ -12,9 +12,29 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
             rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"
+            integrity="sha512-x/vqovXY/Q4b+rNjgiheBsA/vbWA3IVvsS8lkQSX1gQ4ggSJx38oI2vREZXpTzhAv6tNUaX81E7QBBzkpDQayA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"
+            integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales-ko.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales-all.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
+
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
+            integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js"
+            integrity="sha512-L4qpL1ZotXZLLe8Oo0ZyHrj/SweV7CieswUODAAPN/tnqN3PA1P+4qPu5vIryNor6HQ5o22NujIcAZIfyVXwbQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+          integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
         body {
             color: black;
@@ -160,7 +180,8 @@
             transition: transform .3s;
         }
 
-        #caSetting:hover, .fa-star:hover, .fa-ellipsis-v:hover, .navMenu:hover, .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch, .switchTodo {
+        #caSetting, .favoBtn, .navMenu, .fa-plus, .todoCalendar, .todoPerson, #todoEditBtn, .todoDue, .todoFor, .selectTodoFor, #schEditBtn, .viewAttendee,
+        .switchPost, .switchSch, .switchTodo, disconnectingTagBtn, .fileUploadBtn, .postFor, .removeTodo, .boardDeleteBtn, #postEditBtn, .editReplyBtn, .deleteReplyBtn {
             cursor: pointer;
         }
 
@@ -204,49 +225,9 @@
     <div style="height: 50px;"></div>
     <div class="container">
         <section class="section">
-            <div class="section-body">
 
-                <div class="row mt-sm-4">
+            <jsp:include page="projectHead.jsp"/>
 
-                    <div class="col-12 col-md-12 col-lg-12">
-                        <div class="card">
-                            <div class="card-body body-1">
-                                <div>
-                                    <button class="btn btn-primary newPj">+ 새 프로젝트</button>
-                                </div>
-                                <div class="detailTop">
-                                    <div class="colors color-1"></div>
-                                    <i class='icon fa fa-star fa-2x favoYellow'></i>
-                                    <div class="btn-group dropright" id="pjMenu">
-                                        <i class='fa fa-ellipsis-v fa-2x' data-toggle="dropdown"
-                                           aria-haspopup="true" aria-expanded="false"
-                                           style="width: 30px;"></i>
-                                        <div class="dropdown-menu dropright">
-                                            <a class="dropdown-item" href="#" id="setColor">색상 설정</a> <a
-                                                class="dropdown-item" href="#" id="setTag">태그 설정</a> <a
-                                                class="dropdown-item" href="#">참여자 조회</a> <a
-                                                class="dropdown-item" href="#" id="setPj">프로젝트 설정</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">프젝트 나가기</a>
-                                        </div>
-                                    </div>
-                                    <p id="pjDetail"></p>
-                                    <h5 id="pjTitle">프로젝트 제목</h5>
-                                    <a href="#" id="inviteBtn"
-                                       class="btn btn-icon icon-left btn-secondary"><i
-                                            class="far fa-user"></i> +초대하기</a>
-                                    <div id="navMenus">
-                                        <a class="navMenu home">홈</a> <a
-                                            class="navMenu calendar clicked">캘린더</a> <a class="navMenu drive">드라이브</a>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <div class="section-body">
 
@@ -265,150 +246,181 @@
     </div>
 </div>
 
-
-<jsp:include page="invitePjModal.jsp"></jsp:include>
+<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="invitePjModal.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
-<jsp:include page="pjForm.jsp"/>
+<jsp:include page="pjFormModal.jsp"/>
+<jsp:include page="boardViewModal.jsp"/>
+<jsp:include page="attendeeViewModal.jsp"/>
+<jsp:include page="boardEnrollModal.jsp"/>
 </body>
+<script src="/resources/assets/js/pjHead.js"></script>
+<script src="/resources/assets/js/pjSchedule.js"></script>
+<script src="/resources/assets/js/pjBoard.js"></script>
 <script>
-
-
     document.addEventListener('DOMContentLoaded', function () {
         // calendar element 취득
-        var calendarEl = $('#calendar')[0];
+        var calendarEl = document.getElementById('calendar');
 // full-calendar 생성하기
         var calendar = new FullCalendar.Calendar(calendarEl, {
+            googleCalendarApiKey: "AIzaSyBnwhawjRdP8NTTPx4cvuu5zr35zZB6mAI",
+            eventSources: [
+                {
+                    googleCalendarId: 'ko.south_korea#holiday@group.v.calendar.google.com'
+                    , backgroundColor: "gray"
+                    , textColor: 'orange'
+                }
+            ],
             height: '800px', // calendar 높이 설정
             expandRows: true, // 화면에 맞게 높이 재설정
-            slotMinTime: '08:00', // Day 캘린더에서 시작 시간
-            slotMaxTime: '20:00', // Day 캘린더에서 종료 시간
 // 해더에 표시할 툴바
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                right: 'dayGridMonth,timeGridWeek,listWeek'
             },
+
             initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
             navLinks: true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
-            editable: true, // 수정 가능?
             selectable: true, // 달력 일자 드래그 설정가능
             nowIndicator: true, // 현재 시간 마크
             dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+            editable: false,
             locale: 'ko', // 한국어 설정
 
+            select: function (arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
+                <%--일정글--%>
+                console.log(arg)
+                //moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
 
-            eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
-                console.log(obj);
-                console.log(obj.event._def.title);
-                console.log(obj.event)
-            },
-            eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트
-                console.log(obj);
-            },
-            eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트
-                console.log(obj);
-            },
-            eventClick: function (info){
-                if(confirm("'"+ info.event.title +"' 일정을 삭제하시겠습니까?")){
-                    // 확인 클릭 시
-                    info.event.remove();
+
+                if (${pj.board_power == 'Y'} &&
+                ${pjMember.admin == 'N'})
+                {
+                    alert("관리자만 작성할 수 있습니다.")
+                    return false
+                }
+                if (checkStored()) {
+                    $("#postSch").find("input[name=type]").val("calendar")
+                    $("textarea[name=sch_content]").val('')
+                    $("textarea[name=sch_content]").text('')
+                    $("input[name=sch_attendee]").parent().parent().remove()
+                    $("input[name=sch_start]").val(arg.startStr)
+                    //종료일 하루 빼기
+                    var y = arg.endStr.substr(0, 4);
+                    var m = arg.endStr.substr(5, 2);
+                    var d = arg.endStr.substr(8, 2);
+                    console.log(y, m, d)
+                    var endDate = new Date(y, m - 1, d);
+                    $("input[name=sch_end]").val(moment(endDate.setDate(endDate.getDate() - 1)).format('YYYY-MM-DD'))
+                    $("#addPeople").css("display", "block")
+                    $("#postForm").css("display", "none")
+                    $("#postSch").css("display", "block")
+                    $("#postTodo").css("display", "none")
+                    $(".switchSch").css("color", "#6777ef")
+                    $(".switchTodo").css("color", "black")
+                    $(".switchPost").css("color", "black")
+                    $(".boardUploadForm").attr("id", "enrollSch");
+                    $(".boardUploadForm").attr("action", "/schedule/insertSch.do");
+                    $("#boardPost").modal("show")
+                    calendar.unselect()
                 }
 
-                /*   console.log(info.event);
-                   var events = new Array(); // Json 데이터를 받기 위한 배열 선언
-                   var obj = new Object();
-                   obj.title = info.event._def.title;
-                   obj.start = info.event._instance.range.start;
-                   events.push(obj);
-
-                   console.log(events);
-                   $(function deleteData(){
-                       $.ajax({
-                           url: "/full-calendar/calendar-admin-update",
-                           method: "DELETE",
-                           dataType: "json",
-                           data: JSON.stringify(events),
-                           contentType: 'application/json',
-                           //addEvent도 같은 방식으로 데이터를 json으로 전송해서, DB에 추가해주면 되는지?
-                       })
-                   }) */
             },
+            eventClick: function (info) {
+                console.log(info)
+                console.log(info.event.groupId)
 
-            select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
-                var title = prompt('일정을 입력해주세요.');
-                if (title) {
-                    //******addEvent에 ajax로 형식에 맞춰서 값을 넣어주면 되는지?*****
-                    calendar.addEvent({
-                        title: title,
-                        start: arg.start,
-                        end: arg.end,
-                        allDay: arg.allDay
-                    });
-                    // $.ajax
-                }
-                calendar.unselect()
+                $.ajax({
+                    url: '/schedule/detailView.do',
+                    data: {
+                        "board_no": info.event.groupId
+                    },
+                    success: function (list) {
+                        //list = $.parseJSON(list)
+                        console.log(list)
+
+                        $("#postView").css("display", "none")
+                        $("#schView").css("display", "block")
+                        $("#todoView").css("display", "none")
+                        $("#schTitle").html(list.sch.sch_title)
+                        $("#schContent").html(list.sch.sch_content)
+                        $("#schWriter").html(list.sch.name)
+                        $("#schUploadDate").html(list.sch.create_date)
+                        $(".detailViewBoard_no").val(list.sch.board_no)
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
+                            )
+                        } else {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
+                            )
+                        }
+
+                        $("#schPlace").html(list.sch.sch_place)
+                        //console.log(list.count)
+                        $(".viewCount").text("조회 " + list.sch.count)
+                        if ("${sessionScope.loginEmp.emp_no}" == list.sch.emp_no) {
+                            // console.log('확인')
+                            $("#schEditBtn").parent().css("display", "block")
+                        } else {
+                            $("#schEditBtn").parent().css("display", "none")
+                        }
+                        $.each(list.schAttendeeList, function (i, obj) {
+                            if (obj.emp_no != ${pjMember.emp_no}) {
+                                var content = '<tr>'
+                                content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                                content += '</td>'
+                                content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
+                                content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                                content += '<div class="custom-control custom-checkbox">'
+                                content += '</div>'
+                                content += '</td>'
+                                content += '</tr>'
+                                content += '<tr>'
+                                if (obj.job_name != undefined) {
+                                    content += '<td>' + obj.job_name + '</td>'
+                                } else {
+                                    content += '<td>직급이 없습니다.</td>'
+                                }
+                                content += '</tr>'
+                                $("#viewSchAttendee").find(".inviteTable").append(content)
+                            }
+                        })
+                        loadSchAttendee(info.event.groupId)
+                        loadReply(info.event.groupId)
+                        $("#boardView").modal("show")
+                    }
+
+                })
+
             },
 // 이벤트 : *******조회하려면 VO 만들고, JSON을 ajax로 받으면 되는지?*******
             events: [
+                <c:forEach items="${ schList }" var="sch" varStatus="status">
+                <c:choose>
+                <c:when test="status.last">
                 {
-                    title: 'All Day Event',
-                    start: '2021-07-01',
-                },
-                {
-                    title: 'All Day Event2',
-                    start: '2021-07-01',
-                },
-                {
-                    title: 'Long Event',
-                    start: '2021-07-07',
-                    end: '2021-07-10'
-                },
-                {
-                    groupId: 999,
-                    title: 'Repeating Event',
-                    start: '2021-07-09T16:00:00',
-                    end: '2021-07-09T20:00:00'
-                },
-                {
-                    groupId: 999,
-                    title: 'Repeating Event',
-                    start: '2021-07-09T21:00:00'
-                },
-                {
-                    title: 'Conference',
-                    start: '2021-07-11',
-                    end: '2021-07-13'
-                },
-                {
-                    title: 'Meeting',
-                    start: '2021-07-12T10:30:00',
-                    end: '2021-07-12T12:30:00'
-                },
-                {
-                    title: 'Lunch',
-                    start: '2021-07-12T12:00:00'
-                },
-                {
-                    title: 'Meeting',
-                    start: '2021-07-12T14:30:00'
-                },
-                {
-                    title: 'Happy Hour',
-                    start: '2021-07-12T17:30:00'
-                },
-                {
-                    title: 'Dinner',
-                    start: '2021-07-12T20:00:00'
-                },
-                {
-                    title: 'Birthday Party',
-                    start: '2021-07-13T07:00:00'
-                },
-                {
-                    title: 'Click for Google',
-                    url: 'http://google.com/', // 클릭시 해당 url로 이동
-                    start: '2021-07-28'
+                    title: '${sch.sch_title}',
+                    start: '${sch.sch_start}',
+                    end: '${sch.sch_end}',
+                    groupId: ${sch.board_no},
+                    allDay: true
                 }
+                </c:when>
+                <c:otherwise>
+                {
+                    title: '${sch.sch_title}',
+                    start: '${sch.sch_start}',
+                    end: '${sch.sch_end}',
+                    groupId: ${sch.board_no},
+                    allDay: true
+                },
+                </c:otherwise>
+                </c:choose>
+                </c:forEach>
+
             ]
         });
 // 캘린더 랜더링
@@ -417,77 +429,475 @@
     });
 
 </script>
+
 <script>
     $(function () {
-        $(document).on('click', '.newPj', function () {
-            $("#makePj").modal("show")
-        })
+        $(".calendar").addClass("clicked")
+        $(".home").removeClass("clicked")
+        $(".drive").removeClass("clicked")
+    })
+    $(document).on('click', '.home', function () {
 
-        $(document).on('click', '#setColor', function () {
-            $("#colorModal").modal("show")
-        })
+        location.href = "/project/detailPj.do?pj_no=" +
+        ${pj.pj_no}
 
-        $(document).on('click', '#setTag', function () {
-            $("#tagModal").modal("show")
-        })
+    })
+    $(document).on('click', '.drive', function () {
+        location.href = "/project/drivePj.do?pj_no=" +
+        ${pj.pj_no}
+    })
 
-        $(document).on('click', '#tagEdit', function () {
-            $("#tagEditModal").modal("show")
-        })
+</script>
+<%--게시글 전체--%>
+<script>
+    function checkStored() {
+        if (${pj.status == 'N'}) {
+            alert("보관된 프로젝트는 작성/수정 관련 기능이 제한됩니다.")
+            return false
+        } else {
+            return true
+        }
+    }
 
-        $(document).on('click', '.tagAddBtn', function () {
-            console.log('테스트')
-            $("#tagTable").append(
-                '<tr>' +
-                '<td><i class="fa fa-tag fa-lg"></i>' +
-                '</td>' +
-                '<th style="width: 50%">테스트</th>' +
-                '<td style="width: 20%; text-align: right;">' +
-                '<div class="custom-control custom-checkbox">' +
-                '<input type="checkbox" class="custom-control-input" id="tag6">' +
-                ' <label class="custom-control-label" for="tag6"></label>' +
-                '</div>' +
-                '</td>' +
-                '<td style="width: 15%; text-align: right;">' +
-                '<div class="btn-group dropright">' +
-                '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown"' +
-                'aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
-                '<div class="dropdown-menu dropright">' +
-                '<a class="dropdown-item" href="#" id="tagEdit">수정</a>' +
-                '<div class="dropdown-divider"></div>' +
-                '<a class="dropdown-item" href="#">삭제</a>' +
-                '</div>' +
-                '</div>' +
-                '</td>' +
-                '</tr>'
-            )
-        })
-
-        $(document).on('click', '.fa-star', function () {
-            if ($(this).hasClass("favoWhite")) {
-                $(this).removeClass("favoWhite")
-                $(this).addClass("favoYellow")
-                console.log("즐겨찾기 추가할것")
-            } else if ($(this).hasClass("favoYellow")) {
-                $(this).removeClass("favoYellow")
-                $(this).addClass("favoWhite")
-                console.log("즐겨찾기 제거할것")
+    function loadReply(board_no) {
+        console.log(board_no)
+        $.ajax({
+            url: '/project/selectReply.do',
+            data: {
+                board_no: board_no
+            },
+            success: function (list) {
+                list = $.parseJSON(list)
+                console.log(list)
+                $(".replyArea").html('')
+                $(".replyCount").text("댓글 " + list.length)
+                if (list.length == 0) {
+                    $(".replyHrArea").css("display", "none")
+                    console.log('확인')
+                } else {
+                    $(".replyHrArea").css("display", "block")
+                    $.each(list, function (i, obj) {
+                        var content = '<div class="reply">'
+                        content += '<div class="col-lg-10" style="display: inline-block">'
+                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
+                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
+                        content += '</div>'
+                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
+                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
+                            content += '<a class="editReplyBtn">수정&nbsp </a>'
+                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
+                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
+                            content += '</div>'
+                        }
+                        content += '<br> <br>'
+                        content += '<div class="col-lg-10">'
+                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
+                        content += '</div>'
+                        content += '<br> <br>'
+                        content += '</div>'
+                        $(".replyArea").append(content)
+                    })
+                }
             }
-            e.stopPropagation()
-        })
+        });
+    }
 
-        $(document).on('click', '.home', function () {
-            location.href = "/project/detailPj.do"
-        })
-        $(document).on('click', '.drive', function () {
-            location.href = "/project/drivePj.do"
-        })
+    $(document).on('click', '.addReplyBtn', function () {
+        if (${pj.reply_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
+        {
+            alert("관리자만 작성할 수 있습니다.")
+            return false
+        }
+        if (checkStored()) {
+            var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
+            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
+            console.log(reply_content)
+            console.log(board_no.val())
+            $.ajax({
+                url: '/project/insertReply.do',
+                data: {
+                    "reply_content": reply_content.val(),
+                    "board_no": board_no.val()
+                },
+                success: function (data) {
+                    //console.log(data)
+                    $(".replyContentEnroll").val("")
+                    loadReply(board_no.val())
+                }
+            })
+        }
+    })
 
-        $(document).on('click', '#inviteBtn', function () {
-            $("#inviteModal").modal("show")
+    $(document).on('click', '#schEditBtn', function () {
+        if (checkStored()) {
+            editSch()
+        }
+    })
+
+    $(document).on('click', '.boardDeleteBtn', function () {
+        if (checkStored()) {
+            if (confirm("삭제하시겠습니까?")) {
+                var form = document.createElement('form'); // 폼객체 생성
+                var obj1;
+                var obj2;
+                var obj3;
+                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj1.setAttribute('name', 'board_no'); // 객체이름
+                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
+                form.appendChild(obj1);
+                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj2.setAttribute('name', 'pj_no'); // 객체이름
+                obj2.setAttribute('value', ${pj.pj_no}); //객체값
+                form.appendChild(obj2);
+                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj3.setAttribute('name', 'type'); // 객체이름
+                obj3.setAttribute('value', 'calendar'); //객체값
+                form.appendChild(obj3);
+                form.setAttribute('method', 'post'); //get,post 가능
+                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    })
+
+</script>
+
+<%-- 프로젝트 헤드 --%>
+<script>
+    $(document).on('click', '#quitProject', function () {
+        if (confirm("프로젝트를 나가시겠습니까?")) {
+            location.href = "/project/quitProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#deletePjBtn', function () {
+        if (confirm("프로젝트를 삭제하시겠습니까?")) {
+            location.href = "/project/deleteProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#keepPjBtn', function () {
+        if (confirm("프로젝트를 보관하시겠습니까?")) {
+            location.href = "/project/keepProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#restorePjBtn', function () {
+        if (confirm("프로젝트를 복구하시겠습니까?")) {
+            location.href = "/project/restoreProject.do?pj_no=" +
+            ${pj.pj_no}
+        }
+    })
+
+    $(document).on('click', '#setPj', function () {
+        $("#editPj").find("input[name=pj_title]").val("${pj.pj_title}")
+        $("#editPj").find("input[name=pj_content]").val("${pj.pj_content}")
+        $("#editPj").find("input[name=pj_content]").text("${pj.pj_content}")
+        console.log("${pj.board_power}")
+        console.log("${pj.reply_power}")
+        console.log("${pj.file_power}")
+        if ("${pj.board_power}" == 'Y') {
+            $("#editPj").find("select[name=board_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=board_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=board_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=board_power]").find(".all").attr("selected", true)
+        }
+        if ("${pj.reply_power}" == 'Y') {
+            $("#editPj").find("select[name=reply_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=reply_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=reply_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=reply_power]").find(".all").attr("selected", true)
+        }
+        if ("${pj.file_power}" == 'Y') {
+            $("#editPj").find("select[name=file_power]").find(".all").removeAttr("selected")
+            $("#editPj").find("select[name=file_power]").find(".admin").attr("selected", true)
+        } else {
+            $("#editPj").find("select[name=file_power]").find(".admin").removeAttr("selected")
+            $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
+        }
+        $("#editPj").find("#pj_no").val("${pj.pj_no}")
+        $("#editPj").find("input[name=type]").val("calendar")
+        $("#editPjModal").modal("show")
+    })
+
+
+    function loadViewEmpInPj() {
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'all'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    var content = '<tr>'
+                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                    content += '</td>'
+                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<td rowspan="2" style="width: 30%; text-align: right;">'
+                    if ('${pjMember.admin}' == 'Y' && obj.admin == 'N') {
+                        content += '<button type="button" class="btn btn-sm btn-dark deportBtn">내보내기</button>'
+                        content += '<button type="button" class="btn btn-sm btn-primary setAdminBtn">관리자 지정</button>'
+                    }
+                    if (obj.admin == 'Y') {
+                        content += '<b>관리자</b>'
+                    }
+                    content += '</td>'
+                    content += '</tr>'
+                    content += '<tr>'
+                    if (obj.job_name != undefined) {
+                        content += '<td style="text-align: center;">' + obj.job_name + '</td>'
+                    } else {
+                        content += '<td style="text-align: center;">직급이 없습니다.</td>'
+                    }
+                    content += '</tr>'
+
+                    $(".inviteTable").append(content)
+                })
+
+
+                $("#empListModal").modal("show")
+            }
         })
+    }
+
+    $(document).on('click', '.deportBtn', function () {
+        console.log($(this).parent().parent().find(".inviteEmpNo").val())
+        console.log("${pj.pj_no}")
+        if (confirm("내보내시겠습니까?")) {
+            $.ajax({
+                url: '/project/deportEmp.do',
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "emp_no": $(this).parent().parent().find(".inviteEmpNo").val()
+                },
+                async: false,
+                success: function (list) {
+                    console.log('확인')
+                }
+            })
+            loadViewEmpInPj()
+        }
+    })
+
+    $(document).on('click', '.setAdminBtn', function () {
+        console.log($(this).parent().parent().find(".inviteEmpNo").val())
+        console.log("${pj.pj_no}")
+        if (confirm("해당 사원을 관리자로 지정하시겠습니까?")) {
+            $.ajax({
+                url: '/project/setAdmin.do',
+                data: {
+                    "pj_no": ${pj.pj_no},
+                    "emp_no": $(this).parent().parent().find(".inviteEmpNo").val()
+                },
+                async: false,
+                success: function (data) {
+                    console.log('dd')
+                }
+            })
+            loadViewEmpInPj()
+        }
 
     })
 
+
+    function loadTag() {
+        $.ajax({
+            url: '/project/loadTag.do',
+            data: {
+                pj_no: ${pj.pj_no}
+            },
+            success: function (data) {
+                data = $.parseJSON(data)
+                // console.log(data)
+                // console.log(data.tagByEmpNo)
+                // console.log(data.tagByPjNo)
+                $("#tagTable").html('')
+                $.each(data.tagByEmpNo, function (i, obj) {
+                    $("#tagTable").append(
+                        '<tr>' +
+                        '<td><i class="fa fa-tag fa-lg"></i>' +
+                        '</td>' +
+                        '<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
+                        '<td style="width: 20%; text-align: right;">' +
+                        '<div class="custom-control custom-checkbox">' +
+                        '<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+                        '<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
+                        '</div>' +
+                        '</td>' +
+                        '<td style="width: 15%; text-align: right;">' +
+                        '<div class="btn-group dropright">' +
+                        '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+                        '<div class="dropdown-menu dropright">' +
+                        '<a class="dropdown-item editTag" href="#">수정</a>' +
+                        '<div class="dropdown-divider"></div>' +
+                        '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>'
+                    )
+                })
+                $.each(data.tagByPjNo, function (i, obj) {
+                    $('#tag' + obj.tag_no).next('label').css("display", "none")
+                    $('#tag' + obj.tag_no).parent().css("display", "none")
+                    $('#tag' + obj.tag_no).parents("td").append(
+                        '<i class="bi bi-dash-square mr-2 disconnectingTagBtn"></i>'
+                    )
+                })
+
+            }
+
+        });
+    }
+
+    function removeTagByPjNo(tag_no) {
+        $.ajax({
+            url: '/project/removeTagByPjNo.do',
+            data: {
+                "tag_no": tag_no,
+                "pj_no": ${pj.pj_no}
+            },
+            async: false,
+            success: function (data) {
+                console.log(data)
+            }
+        })
+        loadTag()
+    }
+
+    $(document).on("click", ".favoBtn", function (e) {
+        var pj_no = ${pj.pj_no}
+            console.log("pj_no : " + pj_no)
+
+        if ($(this).hasClass("favoWhite")) {
+            $(this).removeClass("favoWhite")
+            $(this).addClass("favoYellow")
+            console.log("즐겨찾기 추가할것")
+
+            insertBookmark(pj_no)
+
+        } else if ($(this).hasClass("favoYellow")) {
+            $(this).removeClass("favoYellow")
+            $(this).addClass("favoWhite")
+            console.log("즐겨찾기 제거할것")
+
+            removeBookmark(pj_no);
+        }
+    })
+
+
+    $(document).on('click', '#inviteBtn', function () {
+        if (checkStored()) {
+            $.ajax({
+                url: '/project/selectEmpListByPj.do',
+                data: {
+                    "pj_no": ${pj.pj_no}
+                },
+                success: function (list) {
+                    //list = $.parseJSON(list)
+                    console.log(list)
+                    $(".inviteTable").html('')
+                    $("#invitePj").find("input[name=pj_no]").val(${pj.pj_no})
+                    if (list.length > 0) {
+                        $.each(list, function (i, obj) {
+                            var content = '<tr>'
+                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            content += '</td>'
+                            content += '<th style="width: 50%">' + obj.name + '</th>'
+                            content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                            content += '<div class="custom-control custom-checkbox">'
+                            content += '<input type="checkbox" name="inviteEmpNo" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                            content += '</div>'
+                            content += '</td>'
+                            content += '</tr>'
+                            content += '<tr>'
+                            if (obj.job_name != undefined) {
+                                content += '<td>' + obj.job_name + '</td>'
+                            } else {
+                                content += '<td>직급 없음</td>'
+                            }
+                            content += '</tr>'
+                            $(".inviteTable").append(content)
+                            $("#inviteEmpBtn").css("display", "inline-block")
+                        })
+                    } else {
+                        var content = '<tr><td>초대할 수 있는 사원이 없습니다.</td></tr>'
+                        $(".inviteTable").append(content)
+                        $("#inviteEmpBtn").css("display", "none")
+                    }
+
+                    $("#inviteModal").modal("show")
+                }
+            })
+        }
+
+    })
+
+    function setColor(selectedProjects, selectedColor) {
+        $.ajax({
+            url: '/project/setProjectColor.do',
+            data: {
+                "selectedProjects": selectedProjects,
+                "selectedColor": selectedColor,
+                "pj_no": ${pj.pj_no}
+            },
+            success: function (data) {
+                console.log(data)
+                $(".colors").attr("class", "colors " + data)
+
+            }
+        })
+    }
+
+    function saveTag() {
+        if ($("input:checkbox[name='tagInput']:checked").length <= 0) {
+            alert("태그를 선택해주세요.")
+            return false;
+        }
+        var selectedProjects = []
+        selectedProjects.push(${pj.pj_no});
+        var selectedTags = []
+        $("input:checkbox[name='tagInput']:checked").each(function () {
+            selectedTags.push($(this).val());
+        })
+
+        $("#tagModal").modal("hide")
+        setTag(selectedProjects, selectedTags)
+    }
+
+    function saveColor() {
+        if ($("input:radio[name='customRadio']:checked").length <= 0) {
+            alert("색상을 선택해주세요.")
+            return false;
+        }
+        var selectedProjects = []
+        selectedProjects.push(${pj.pj_no})
+        var selectedColor = $("input:radio[name='customRadio']:checked").val()
+        console.log(selectedProjects)
+        console.log(selectedColor)
+        $("#colorModal").modal("hide")
+        setColor(selectedProjects, selectedColor)
+        $("input:radio[name='customRadio']").prop("checked", false)
+    }
+
+</script>
+<script>
+    $(document).on('click', '#schEditBtn', function () {
+        $("#postSch").find("input[name=type]").val("calendar")
+    })
 </script>
 </html>

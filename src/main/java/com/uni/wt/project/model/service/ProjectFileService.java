@@ -23,7 +23,7 @@ public class ProjectFileService {
 
     @Autowired
     private ProjectFileMapper projectFileMapper;
-    public ProjectFile saveFile(MultipartFile file, HttpServletRequest request, int board_no)  {//서버에 업로드 하는 메소드
+    public ProjectFile saveFile(MultipartFile file, HttpServletRequest request, int board_no, String isImage)  {//서버에 업로드 하는 메소드
         ProjectFile projectFile;
 
         String resources = request.getSession().getServletContext().getRealPath("resources");
@@ -36,7 +36,7 @@ public class ProjectFileService {
         String changeName = currentTime+ext;
         log.info("[file changeName] :{} ",changeName);
         log.info("[file resources] :{} ",resources);
-
+        log.info(isImage);
         try {
             file.transferTo(new File(savePath+changeName));//업로드된 파일을 transfetTo() 메서드를 이용해서 바꾼 이름과 경로로 파일을 실제 업로드한다.
             //file DB에 넣기
@@ -45,6 +45,7 @@ public class ProjectFileService {
             projectFile.setChange_name(changeName);
             projectFile.setPath(savePath);
             projectFile.setBoard_no(board_no);
+            projectFile.setImg_path(isImage);
 
         } catch (IllegalStateException | IOException e) {
             // TODO Auto-generated catch block
@@ -55,9 +56,9 @@ public class ProjectFileService {
         return projectFile;
     }
 
-    public void uploadFile(MultipartFile file, HttpServletRequest request, int board_no) throws Exception {
+    public void uploadFile(MultipartFile file, HttpServletRequest request, int board_no, String isImage) throws Exception {
 
-        ProjectFile projectFile = saveFile(file, request, board_no);
+        ProjectFile projectFile = saveFile(file, request, board_no, isImage);
 
         if(projectFile != null) {
             log.info("파일이 성공적으로 업로드 됐습니다. {}", projectFile);
@@ -91,7 +92,11 @@ public class ProjectFileService {
         }
     }
 
-    public ProjectFile getFile(int board_no) {
-        return projectFileMapper.getFile(board_no);
+    public ProjectFile getFileByBoardNo(int board_no) {
+        return projectFileMapper.getFileByBoardNo(board_no);
+    }
+
+    public ProjectFile getFileByFileNo(int board_no) {
+        return projectFileMapper.getFileByFileNo(board_no);
     }
 }

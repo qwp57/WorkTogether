@@ -1,5 +1,6 @@
 package com.uni.wt.project.boardAll.model.service;
 
+import com.uni.wt.common.commonFile.SearchDto;
 import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.project.boardAll.model.dao.BoardAllMapper;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
@@ -70,20 +71,25 @@ public class BoardAllServiceImpl implements BoardAllService {
     }
 
     @Override
-    public int getListCount(int pj_no, String boardType) throws Exception {
-        paramMap.put("boardType", boardType);
+    public int getListCount(int pj_no, String board_type, int emp_no, SearchDto sd) throws Exception {
+        log.info("글타입: " + board_type);
+        paramMap.put("board_type", board_type);
         paramMap.put("pj_no", pj_no);
+        paramMap.put("emp_no", emp_no);
+        paramMap.put("sd", sd);
         int result = boardAllMapper.getListCount(paramMap);
         paramMap.clear();
         return result;
     }
 
     @Override
-    public ArrayList<BoardAll> selectPjBoardList(int pj_no,PageInfo pi, String boardType) throws Exception {
+    public ArrayList<BoardAll> selectPjBoardList(int pj_no, PageInfo pi, String board_type, int emp_no, SearchDto sd) throws Exception {
         int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
         RowBounds rwB = new RowBounds(offset, pi.getBoardLimit());
-        paramMap.put("boardType", boardType);
+        paramMap.put("board_type", board_type);
         paramMap.put("pj_no", pj_no);
+        paramMap.put("emp_no", emp_no);
+        paramMap.put("sd", sd);
         ArrayList<BoardAll> list = boardAllMapper.selectPjBoardList(paramMap, rwB);
         paramMap.clear();
         return  list;
