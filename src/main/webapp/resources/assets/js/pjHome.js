@@ -87,7 +87,9 @@ function setList(list, myBoard) {
             content +=  '<th style="width: 40%;">' + obj.sch_title + '</th>'
             content +=  '<td style="width: 12%;">' + obj.name + '</td>'
             content +=  '<td style="width: 22%;">' + obj.create_date + '</td>'
-            content +=  '<td><b>' + moment(obj.sch_start).format('MM/DD') + '</b></td>'
+            content +=  '<td><b>' + moment(obj.sch_start).format('MM/DD') + '</b>'
+            content += '<br>\<a style="font-size: smaller">' + moment(obj.sch_start).format('LT') + '</a>'
+            content += '</td>'
             content +=   '</tr>'
             $(".boardTable").append(content)
         } else if (obj.board_type == 'todo') {

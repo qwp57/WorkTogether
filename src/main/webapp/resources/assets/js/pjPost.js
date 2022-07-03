@@ -89,6 +89,7 @@ $(document).on('click', '#postEditBtn', function () {
             })
 
         }
+
         $(".boardUploadForm").attr("id", "editPost");
         $(".boardUploadForm").attr("action", "/post/editPost.do");
         $("#boardPost").modal("show")

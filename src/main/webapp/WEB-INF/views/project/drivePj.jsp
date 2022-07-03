@@ -464,9 +464,10 @@
 
     // 다중파일 다운로드
     $(document).on("click", "#downloadBtn", function () {
-        if (confirm("선택한 파일을 다운받으시겠습니까?")) {
-            var checkedinput = $("input:checked").length
-            if (checkedinput != 0) {
+
+        var checkedinput = $("input:checked").length
+        if (checkedinput != 0) {
+            if (confirm("선택한 파일을 다운받으시겠습니까?")) {
                 var check = $("input[name=file_no]:checked");
 
                 $(check).each(function () {
@@ -478,6 +479,8 @@
                 $("input[name=file_no]").prop("checked", false)
                 $(".file").css("background-color", "white")
             }
+        } else {
+            alert("파일을 선택해주세요.")
         }
     })
 
@@ -495,30 +498,33 @@
 
     // 파일 삭제
     $(document).on("click", "#deleteBtn", function (e) {
-        if (confirm("선택한 파일을 삭제하시겠습니까?")) {
-            // 파일번호를 배열에 저장
-            var check = $("input[name=file_no]:checked")
-            var arr = []
-            $(check).each(function (index) {
-                arr.push($(this).val())
-            })
-            console.log(arr)
-            if (arr.length > 0) {
-                $.ajax({
-                    url: "/project/deleteFile.do",
-                    type: "post",
-                    data: {
-                        "file_no": arr
-                    },
-                    success: function (data) {
-                        check.parents(".file").remove()
-                        checkFileList()
-                        alert("삭제되었습니다.")
-                    }
+        var checkedinput = $("input:checked").length
+        if (checkedinput != 0) {
+            if (confirm("선택한 파일을 삭제하시겠습니까?")) {
+                // 파일번호를 배열에 저장
+                var check = $("input[name=file_no]:checked")
+                var arr = []
+                $(check).each(function (index) {
+                    arr.push($(this).val())
                 })
-            } else {
-                alert("파일을 선택해주세요.")
+                console.log(arr)
+                if (arr.length > 0) {
+                    $.ajax({
+                        url: "/project/deleteFile.do",
+                        type: "post",
+                        data: {
+                            "file_no": arr
+                        },
+                        success: function (data) {
+                            check.parents(".file").remove()
+                            checkFileList()
+                            alert("삭제되었습니다.")
+                        }
+                    })
+                }
             }
+        } else {
+            alert("파일을 선택해주세요.")
         }
     })
 
@@ -657,6 +663,7 @@
         $(".calendar").removeClass("clicked")
         $(".home").removeClass("clicked")
         $(".drive").addClass("clicked")
+        $("#editPj").find("input[name=type]").val("drive")
         checkFileList()
         $(".sortDate").addClass("sortNow")
     })
@@ -745,7 +752,7 @@
             $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
         }
         $("#editPj").find("#pj_no").val("${pj.pj_no}")
-        $("#editPj").find("input[name=type]").val("drive")
+
         $("#editPjModal").modal("show")
     })
 

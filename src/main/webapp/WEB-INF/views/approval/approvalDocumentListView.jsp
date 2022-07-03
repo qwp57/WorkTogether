@@ -52,7 +52,7 @@
 			</div>			
 			<div class="row">
 				<div class="statusList ml-4 mt-3">
-					<span id="all"><a href="approvalDocument.do">전체</a></span>
+					<span id="all"><a href="/approvalDocument.do">전체</a></span>
 					<span class="ml-3" id="waiting"><a href="#">대기</a></span>
 					<span class="ml-3" id="proceeding"><a href="#">진행</a></span>
 					<span class="ml-3" id="completion"><a href="#">완료</a></span>
@@ -136,11 +136,11 @@
 	          		<c:when test="${ pi.currentPage ne 1 }">
 	          			<!-- 검색하지 않는 경우 -->
 	          			<c:if test="${ empty keyword }">
-	          				<li class="page-item"><a class="page-link" href="approvalDocument.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+	          				<li class="page-item"><a class="page-link" href="/approvalDocument.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
 	          			</c:if>
 	          			<!-- 검색하는 경우 -->
 	          			<c:if test="${ !empty keyword }">
-	          				<c:url var="searchUrl" value="searchApp.do">
+	          				<c:url var="searchUrl" value="/searchApp.do">
 							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
 							<c:param name="condition" value="${ condition }"/>
 							<c:param name="keyword" value="${ keyword }"/>							
@@ -159,11 +159,11 @@
 		           		<c:when test="${ pi.currentPage ne p }">
 		           			<%-- keyword가 empty -> 검색하지 않는 경우 --%>
 							<c:if test="${ empty keyword }">
-								<li class="page-item"><a class="page-link" href="approvalDocument.do?currentPage=${ p }">${ p }</a></li>
+								<li class="page-item"><a class="page-link" href="/approvalDocument.do?currentPage=${ p }">${ p }</a></li>
 							</c:if>
 		              		<%-- keyword가 empty아님 -> 검색하는 경우 --%>
 							<c:if test="${ !empty keyword }">
-								<c:url var="searchUrl" value="searchApp.do">
+								<c:url var="searchUrl" value="/searchApp.do">
 									<c:param name="currentPage" value="${ p }"/>
 									<c:param name="condition" value="${ condition }"/>
 									<c:param name="keyword" value="${ keyword }"/>							
@@ -182,12 +182,12 @@
 	          		<c:when test="${ pi.currentPage ne pi.maxPage }">
 	          			<!-- 검색하지 않는 경우 -->
 	          			<c:if test="${ empty keyword }">
-	          				<li class="page-item"><a class="page-link" href="approvalDocument.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          				<li class="page-item"><a class="page-link" href="/approvalDocument.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
 	          			</c:if>
 	          			<!-- 검색 하는 경우 -->
 	          			<c:if test="${ !empty keyword }">
 	          				<c:if test="${ !empty keyword }">
-								<c:url var="searchUrl" value="searchApp.do">
+								<c:url var="searchUrl" value="/searchApp.do">
 									<c:param name="currentPage" value="${pi.currentPage+1  }"/>
 									<c:param name="condition" value="${ condition }"/>
 									<c:param name="keyword" value="${ keyword }"/>
@@ -197,14 +197,14 @@
 	          			</c:if>
 	          		</c:when>
 	          		<c:otherwise>
-	          			<li class="page-item disabled"><a class="page-link" href="approvalDocument.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          			<li class="page-item disabled"><a class="page-link" href="/approvalDocument.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
 	          		</c:otherwise>
 	          	</c:choose>
 	          </ul>
 	    	</div>	    	
 	    	<!-- 검색 영역 -->
 	    	<div id="search">
-	    		<form method="get" action="searchApp.do">
+	    		<form method="get" action="/searchApp.do">
 	    			<div class="input-group mt-3 mb-3">
 	    				<div class="input-group-prepend">
 	    					<select class="form-control rounded-1" name="condition">
@@ -234,7 +234,7 @@
 				console.log(docNo);
 				
 				//결재 양식 번호와 문서 번호를 가지고 간다.
-				location.href="detailApproval.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
+				location.href="/detailApproval.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
 			});
 					
 		});

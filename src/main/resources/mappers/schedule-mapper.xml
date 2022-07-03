@@ -35,30 +35,31 @@
     </select>
     <insert id="insertSch" parameterType="Schedule">
         INSERT INTO BOARD_SCHEDULE
-        VALUES (#{board_no}, #{sch_title}, #{sch_attendee}, #{sch_start}, #{sch_end}, #{sch_place}, #{sch_content})
+        VALUES (#{board_no}, #{sch_title}, #{sch_attendee}, TO_DATE(#{sch_start}, 'YYYY/MM/DD HH24:MI'),
+                TO_DATE(#{sch_end}, 'YYYY/MM/DD HH24:MI'), #{sch_place}, #{sch_content})
     </insert>
     <update id="editSch" parameterType="Schedule">
         UPDATE BOARD_SCHEDULE
         SET SCH_TITLE    = #{sch_title},
             SCH_ATTENDEE = #{sch_attendee},
-            SCH_START    = #{sch_start},
-            SCH_END      = #{sch_end},
+            SCH_START    = TO_DATE(#{sch_start}, 'YYYY/MM/DD HH24:MI'),
+            SCH_END      = TO_DATE(#{sch_end}, 'YYYY/MM/DD HH24:MI'),
             SCH_PLACE    = #{sch_place},
             SCH_CONTENT  = #{sch_content}
         WHERE BOARD_NO = #{board_no}
     </update>
     <update id="schJoin" parameterType="Schedule">
         MERGE INTO SCH_ATTENDEE
-            USING DUAL
-            ON (EMP_NO = #{emp_no}
-                AND BOARD_NO = #{board_no})
-            WHEN MATCHED THEN
-                UPDATE SET
-                    STATUS = #{status}
-            WHEN NOT MATCHED THEN
-                INSERT
-                    (BOARD_NO, EMP_NO, STATUS)
-                    VALUES (#{board_no}, #{emp_no}, #{status})
+        USING DUAL
+        ON (EMP_NO = #{emp_no}
+            AND BOARD_NO = #{board_no})
+        WHEN MATCHED THEN
+            UPDATE
+            SET STATUS = #{status}
+        WHEN NOT MATCHED THEN
+            INSERT
+                (BOARD_NO, EMP_NO, STATUS)
+            VALUES (#{board_no}, #{emp_no}, #{status})
     </update>
     <select id="loadSchAttendee" parameterType="Schedule" resultType="int">
         SELECT COUNT(*)
@@ -86,8 +87,8 @@
         ON B.WRITER = C.EMP_NO
         WHERE B.PJ_NO = #{pj_no}
         <if test="date != null">
-            AND (TO_CHAR(SCH_START, 'YYYY-MM') = #{date}
-            OR TO_CHAR(SCH_END, 'YYY-MM') = #{date})
+            AND (TO_CHAR(SCH_START, 'YYYY-MM HH24:MI') = #{date}
+            OR TO_CHAR(SCH_END, 'YYY-MM HH24:MI') = #{date})
         </if>
     </select>
     <select id="getCalendarByEmp" parameterType="int" resultMap="scheduleSet">
@@ -99,8 +100,12 @@
                       ON B.WRITER = C.EMP_NO
                  JOIN SCH_ATTENDEE D
                       ON B.BOARD_NO = D.BOARD_NO
+                 JOIN PROJECT E
+                      ON B.PJ_NO = E.PJ_NO
         WHERE D.EMP_NO = #{emp_no}
           AND D.STATUS = 'Y'
+          AND E.STATUS = 'Y'
+
     </select>
 
 </mapper>

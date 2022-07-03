@@ -55,7 +55,7 @@ justify-content: center;}
          		</button>
          	</div>
          	
-		<form role="form" action="insertRequestWork.do" method="post" enctype="multipart/form-data">
+		<form role="form" action="/insertRequestWork.do" method="post" enctype="multipart/form-data">
          	<div class="modal-body">
          			<table class="table table-bordered">
          				<tbody class="tbody">

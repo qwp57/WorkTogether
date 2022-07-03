@@ -51,7 +51,7 @@
 			<div class="float-right">
 				<c:choose>
 					<c:when test="${ map['app'].progress eq 'W'}"> <!-- 결재 상태가 대기일 때만 수정 가능 -->
-						<button type="button" class="btn btn-primary" onclick="location.href='updateMyTheMinutesOfAMeetingForm.do?approvalNo=' + ${map['app'].approvalNo}">수정</button>
+						<button type="button" class="btn btn-primary" onclick="location.href='/updateMyTheMinutesOfAMeetingForm.do?approvalNo=' + ${map['app'].approvalNo}">수정</button>
 						<button type="button" class="btn btn-danger" onclick="deleteDocument()">삭제</button>
 					</c:when>
 					<c:otherwise>
@@ -177,7 +177,7 @@
 					</c:if>
 				</div>					
 				<div class="float-right mt-3">						
-					<button type="button" class="btn btn-primary" onclick="location.href='draftDocument.do'">목록</button>
+					<button type="button" class="btn btn-primary" onclick="location.href='/draftDocument.do'">목록</button>
 				</div>	
 			</section>
 		</div>
@@ -185,7 +185,7 @@
 	<script>
 		function deleteDocument(){
 			if(confirm("정말 삭제하시겠습니까?") == true){
-				location.href = "deleteApproval.do?approvalNo=" + "${ map['app'].approvalNo }" + "&docNo=" + "${map['app'].docNo}" + "&fileNo=" + "${map['app'].fileNo}";
+				location.href = "/deleteApproval.do?approvalNo=" + "${ map['app'].approvalNo }" + "&docNo=" + "${map['app'].docNo}" + "&fileNo=" + "${map['app'].fileNo}";
 			}else {
 				return false;
 			}

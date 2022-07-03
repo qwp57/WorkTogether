@@ -67,10 +67,10 @@
 	SET NAME = #{name},
 		DEPT_CODE = #{dept_code},
 		JOB_CODE = #{job_code},
-		BIRTH = #{birth},
+		BIRTH = TO_DATE(#{birth}, 'YYYY/MM/DD'),
 		PHONE = #{phone},
 		EMAIL = #{email},
-		JOIN_DATE = #{join_date},
+		JOIN_DATE = TO_DATE(#{join_date}, 'YYYY/MM/DD'),
 		FILE_NO = #{file_no}
 	WHERE EMP_NO = #{emp_no}
 	</update>

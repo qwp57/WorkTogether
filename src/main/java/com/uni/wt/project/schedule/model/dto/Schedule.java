@@ -17,9 +17,9 @@ public class Schedule {
 
     private String sch_attendee;
 
-    private Date sch_start;
+    private String sch_start;
 
-    private Date sch_end;
+    private String sch_end;
 
     private String sch_place;
 

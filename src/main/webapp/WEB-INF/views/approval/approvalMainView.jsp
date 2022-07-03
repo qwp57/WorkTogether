@@ -94,7 +94,7 @@
 							<div class="card-body text-center">
 								<p class="card-text"><h3 style="color: rgb(111, 118, 237)">새 결재 문서</h3></p>
 								<p class="card-text"><h2 class="pb-2" id="newApprovalCount">${newApprovalCount}</h2></p>
-								<a href="approvalDocument.do"><h5>결재하기</h5></a>
+								<a href="/approvalDocument.do"><h5>결재하기</h5></a>
 							</div>
 						</div>
 					</div>
@@ -106,7 +106,7 @@
 					<h4 class="ml-3">기안 문서</h4>
 				</div>
 				<!-- 인기글 5개를 보여주는 것 처럼 ajax로 최신 게시글 5개를 보여준다. -->
-				<table class="table" id="draftDocumentTable">
+				<table class="table" id="/draftDocumentTable">
 					<thead>
 						<tr>
 							<th style="width:12%">기안일</th>
@@ -177,7 +177,7 @@
 					<h4 class="ml-3">결재 문서</h4>
 				</div>
 				<!-- 인기글 5개를 보여주는 것 처럼 ajax로 최신 게시글 5개를 보여준다. -->
-				<table class="table" id="approvalDocumentTable">
+				<table class="table" id="/approvalDocumentTable">
 					<thead>
 						<tr>
 							<th style="width:12%">기안일</th>
@@ -256,7 +256,7 @@
 				console.log(docNo);
 				
 				//결재 양식 번호와 문서 번호를 가지고 간다.
-				location.href="detailDraftDocument.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
+				location.href="/detailDraftDocument.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
 			});
 			
 			$("#approvalDocumentTable tbody tr").click(function(){
@@ -267,7 +267,7 @@
 				console.log(docNo);
 				
 				//결재 양식 번호와 문서 번호를 가지고 간다.
-				location.href="detailApproval.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
+				location.href="/detailApproval.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
 			});
 			
 		});

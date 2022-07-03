@@ -12,12 +12,6 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
             rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"
-            integrity="sha512-x/vqovXY/Q4b+rNjgiheBsA/vbWA3IVvsS8lkQSX1gQ4ggSJx38oI2vREZXpTzhAv6tNUaX81E7QBBzkpDQayA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"
-            integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales-all.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
@@ -301,7 +295,6 @@
                     return false
                 }
                 if (checkStored()) {
-                    $("#postSch").find("input[name=type]").val("calendar")
                     $("textarea[name=sch_content]").val('')
                     $("textarea[name=sch_content]").text('')
                     $("input[name=sch_attendee]").parent().parent().remove()
@@ -312,7 +305,7 @@
                     var d = arg.endStr.substr(8, 2);
                     console.log(y, m, d)
                     var endDate = new Date(y, m - 1, d);
-                    $("input[name=sch_end]").val(moment(endDate.setDate(endDate.getDate() - 1)).format('YYYY-MM-DD'))
+                    $("input[name=sch_end]").val(moment(endDate.setDate(endDate.getDate() - 1)).format('YYYY-MM-DD h:mm'))
                     $("#addPeople").css("display", "block")
                     $("#postForm").css("display", "none")
                     $("#postSch").css("display", "block")
@@ -348,13 +341,19 @@
                         $("#schWriter").html(list.sch.name)
                         $("#schUploadDate").html(list.sch.create_date)
                         $(".detailViewBoard_no").val(list.sch.board_no)
-                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD LT') == moment(list.sch.sch_end).format('YYYY-MM-DD LT')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
+                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD ')
+                                + moment(list.sch.sch_start).format('LT') + ' ~ '
+                                + moment(list.sch.sch_end).format('LT (ddd)')
+                            )
                         } else {
                             $("#schDate").html(
-                                moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
+                                moment(list.sch.sch_start).format('YYYY-MM-DD LT (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD LT (ddd)')
                             )
                         }
 
@@ -405,8 +404,7 @@
                     title: '${sch.sch_title}',
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
-                    groupId: ${sch.board_no},
-                    allDay: true
+                    groupId: ${sch.board_no}
                 }
                 </c:when>
                 <c:otherwise>
@@ -415,7 +413,6 @@
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
                     groupId: ${sch.board_no},
-                    allDay: true
                 },
                 </c:otherwise>
                 </c:choose>
@@ -435,6 +432,8 @@
         $(".calendar").addClass("clicked")
         $(".home").removeClass("clicked")
         $(".drive").removeClass("clicked")
+        $("#editPj").find("input[name=type]").val("calendar")
+        $("#boardPost").find("input[name=type]").val("calendar")
     })
     $(document).on('click', '.home', function () {
 
@@ -529,11 +528,6 @@
         }
     })
 
-    $(document).on('click', '#schEditBtn', function () {
-        if (checkStored()) {
-            editSch()
-        }
-    })
 
     $(document).on('click', '.boardDeleteBtn', function () {
         if (checkStored()) {
@@ -626,7 +620,6 @@
             $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
         }
         $("#editPj").find("#pj_no").val("${pj.pj_no}")
-        $("#editPj").find("input[name=type]").val("calendar")
         $("#editPjModal").modal("show")
     })
 
@@ -894,10 +887,5 @@
         $("input:radio[name='customRadio']").prop("checked", false)
     }
 
-</script>
-<script>
-    $(document).on('click', '#schEditBtn', function () {
-        $("#postSch").find("input[name=type]").val("calendar")
-    })
 </script>
 </html>

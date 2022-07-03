@@ -140,7 +140,7 @@ public class EmployeeController {
 	
 	
 	
-	@RequestMapping(value="enrollForm.do")
+	@RequestMapping(value="/enrollForm.do")
 	public String enrollForm() {
 		
 		return "employee/register";
@@ -250,7 +250,7 @@ public class EmployeeController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("myProfileUpdate.do")
+	@RequestMapping("/myProfileUpdate.do")
 	public String myProfileUpdate(HttpServletRequest request, Employee emp, String ex_file, MultipartFile new_file, Model m) throws Exception {
 		log.info("개인정보 수정");
 	//	Employee loginEmp = (Employee) request.getSession().getAttribute("loginEmp");

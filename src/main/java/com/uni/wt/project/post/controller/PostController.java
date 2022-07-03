@@ -88,11 +88,11 @@ public class PostController {
             projectFileService.uploadFile(file, request, post.getBoard_no(), isImage);
         }
 
-
+        log.info("글리턴 : " + type);
         msgMap.put("msg", "게시물 수정 완료.");
         redirect.addFlashAttribute("msg", msgMap);
 
-        if (type == null){
+        if (type.equals("")){
             return "redirect:/project/detailPj.do?pj_no=" + pj_no;
         }else if(type.equals("myBoard")){
             return "redirect:/project/myBoard.do";

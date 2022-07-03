@@ -279,6 +279,7 @@
 <script>
     $(function () {
         changePage(1)
+        $("#boardPost").find("input[name=type]").val('myBoard')
     })
 
 
@@ -339,7 +340,7 @@
                 $("#boardView").find(".colors").addClass(list.pjMember.pj_color).addClass("ml-2")
                 $("#boardView").find(".pjTitle").html(list.pj.pj_title)
                 $("#boardPost").find("input[name=pj_no]").val(list.pj.pj_no)
-                $("#boardPost").find("input[name=type]").val('myBoard')
+
             }
         })
     }
@@ -421,11 +422,17 @@
                         $("#schWriter").html(list.sch.name)
                         $("#schUploadDate").html(list.sch.create_date)
                         $(".detailViewBoard_no").val(list.sch.board_no)
-                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD LT') == moment(list.sch.sch_end).format('YYYY-MM-DD LT')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
-                        } else {
+                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD ')
+                                + moment(list.sch.sch_start).format('LT') + ' ~ '
+                                + moment(list.sch.sch_end).format('LT (ddd)')
+                            )
+                        }  else {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
                             )

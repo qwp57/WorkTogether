@@ -74,11 +74,12 @@
         ON A.BOARD_NO = D.BOARD_NO
         JOIN EMPLOYEE E
         ON A.WRITER = E.EMP_NO
+        <where>
         <if test="pj_no != 0 &amp;&amp; !pj_no.equals('0')">
-            WHERE A.PJ_NO = #{pj_no}
+            AND A.PJ_NO = #{pj_no}
         </if>
         <if test="pj_no == 0 || pj_no.equals('0')">
-            WHERE E.EMP_NO = #{emp_no}
+            AND E.EMP_NO = #{emp_no}
         </if>
         <if test="board_type != null &amp;&amp; board_type != ''">
             AND A.BOARD_TYPE = #{board_type}
@@ -100,6 +101,7 @@
             OR C.SCH_PLACE LIKE '%'||#{sd.searchKeyword}||'%'
             OR D.TODO_CONTENT LIKE '%'||#{sd.searchKeyword}||'%')
         </if>
+        </where>
         ORDER BY A.BOARD_NO DESC
     </select>
 

@@ -481,7 +481,7 @@ public class ProjectController {
         projectService.keepProject(pj_no);
         msgMap.put("msg", "프로젝트 보관 완료.");
         redirect.addFlashAttribute("msg", msgMap);
-        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        return "redirect:/project/storedPj.do";
     }
     @RequestMapping("/restoreProject.do")
     public String restoreProject(@RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {

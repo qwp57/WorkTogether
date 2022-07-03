@@ -301,9 +301,16 @@
                         $("#schWriter").html(list.sch.name)
                         $("#schUploadDate").html(list.sch.create_date)
                         $(".detailViewBoard_no").val(list.sch.board_no)
-                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD LT') == moment(list.sch.sch_end).format('YYYY-MM-DD LT')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
+                            )
+                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD ')
+                                + moment(list.sch.sch_start).format('LT') + ' ~ '
+                                + moment(list.sch.sch_end).format('LT (ddd)')
                             )
                         } else {
                             $("#schDate").html(
@@ -358,8 +365,7 @@
                     title: '${sch.sch_title}',
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
-                    groupId: ${sch.board_no},
-                    allDay: true
+                    groupId: ${sch.board_no}
                 }
                 </c:when>
                 <c:otherwise>
@@ -368,7 +374,6 @@
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
                     groupId: ${sch.board_no},
-                    allDay: true
                 },
                 </c:otherwise>
                 </c:choose>
@@ -383,6 +388,9 @@
 
 </script>
 <script>
+    $(function (){
+        $("#boardPost").find("input[name=type]").val("allCalendar")
+    })
     $(document).on('click', '#schJoin', function (){
 
     })
@@ -465,11 +473,6 @@
         }
     })
 
-    $(document).on('click', '#schEditBtn', function () {
-        if (checkStored()) {
-            editSch()
-        }
-    })
 
     $(document).on('click', '.boardDeleteBtn', function () {
         if (checkStored()) {

@@ -19,12 +19,7 @@
             rel="stylesheet">
     <script
             src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"
-            integrity="sha512-x/vqovXY/Q4b+rNjgiheBsA/vbWA3IVvsS8lkQSX1gQ4ggSJx38oI2vREZXpTzhAv6tNUaX81E7QBBzkpDQayA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"
-            integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
             integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
@@ -46,7 +41,7 @@
         color: black;
     }
 
-    .datepicker {
+    datepicker > datepicker-days {
         width: 275px;
     }
 
@@ -491,7 +486,7 @@
             async: false,
             success: function (list) {
                 list = $.parseJSON(list)
-                console.log(list)
+                // console.log(list)
                 $.each(list, function (i, obj) {
                     if (obj.status == 'P') {
                         pCount++
@@ -531,10 +526,11 @@
     }
 
     $(function () {
-
         $(".calendar").removeClass("clicked")
         $(".home").addClass("clicked")
         $(".drive").removeClass("clicked")
+        $("#boardPost").find("input[name=type]").val("home")
+        $("#editPj").find("input[name=type]").val("calendar")
         loadRw()
         datepickerLoad()
         changePage(1)
@@ -653,13 +649,19 @@
                         $("#schWriter").html(list.sch.name)
                         $("#schUploadDate").html(list.sch.create_date)
                         $(".detailViewBoard_no").val(list.sch.board_no)
-                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD LT') == moment(list.sch.sch_end).format('YYYY-MM-DD LT')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
-                        } else {
+                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
                             $("#schDate").html(
-                                moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
+                                moment(list.sch.sch_start).format('YYYY-MM-DD ')
+                                + moment(list.sch.sch_start).format('LT') + ' ~ '
+                                + moment(list.sch.sch_end).format('LT (ddd)')
+                            )
+                        }  else {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD LT (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD LT (ddd)')
                             )
                         }
 
@@ -951,9 +953,9 @@
         $("#editPj").find("input[name=pj_title]").val("${pj.pj_title}")
         $("#editPj").find("input[name=pj_content]").val("${pj.pj_content}")
         $("#editPj").find("input[name=pj_content]").text("${pj.pj_content}")
-        console.log("${pj.board_power}")
-        console.log("${pj.reply_power}")
-        console.log("${pj.file_power}")
+        <%--console.log("${pj.board_power}")--%>
+        <%--console.log("${pj.reply_power}")--%>
+        <%--console.log("${pj.file_power}")--%>
         if ("${pj.board_power}" == 'Y') {
             $("#editPj").find("select[name=board_power]").find(".all").removeAttr("selected")
             $("#editPj").find("select[name=board_power]").find(".admin").attr("selected", true)
@@ -976,7 +978,6 @@
             $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
         }
         $("#editPj").find("#pj_no").val("${pj.pj_no}")
-        $("#editPj").find("input[name=type]").val("home")
         $("#editPjModal").modal("show")
     })
 
@@ -1349,6 +1350,7 @@
             }
         })
     })
+
 </script>
 <%--일정글--%>
 <script>
@@ -1360,7 +1362,6 @@
             return false
         }
         if (checkStored()) {
-            $("#postSch").find("input[name=type]").val("home")
             $("textarea[name=sch_content]").val('')
             $("textarea[name=sch_content]").text('')
             $("input[name=sch_attendee]").parent().parent().remove()
@@ -1376,9 +1377,6 @@
             $("#boardPost").modal("show")
         }
 
-    })
-    $(document).on('click', '#schEditBtn', function () {
-        $("#postSch").find("input[name=type]").val("home")
     })
 </script>
 <%--할일글--%>
@@ -1467,7 +1465,7 @@
 </script>
 <script>
     var sum = loadRw()
-    console.log(sum)
+    //console.log(sum)
     // Pie Chart Example
     var ctx = document.getElementById("taskChart");
     var myPieChart = new Chart(ctx, {
