@@ -50,14 +50,14 @@
 			</div>
 			<div class="float-right">
 				<c:choose>
-				<c:when test="${ map['app'].progress eq 'W' || map['app'].progress eq 'R' }"> <!-- 결재 상태가 대기이거나 반려일 때만 수정 가능 -->
-					<button type="button" class="btn btn-primary" onclick="location.href='updateMyLetterOfApproval.do'">수정</button>
-					<button type="button" class="btn btn-danger" onclick="location.href='deleteMyLetterOfApproval.do'">삭제</button>
-				</c:when>
-				<c:otherwise>
-					<button type="button" class="btn btn-primary" disabled>수정</button>
-					<button type="button" class="btn btn-danger" disabled>삭제</button>
-				</c:otherwise>
+					<c:when test="${ map['app'].progress eq 'W'}"> <!-- 결재 상태가 대기일 때만 수정 가능 -->
+						<button type="button" class="btn btn-primary" onclick="location.href='updateMyTheMinutesOfAMeetingForm.do?approvalNo=' + ${map['app'].approvalNo}">수정</button>
+						<button type="button" class="btn btn-danger" onclick="deleteDocument()">삭제</button>
+					</c:when>
+					<c:otherwise>
+						<button type="button" class="btn btn-primary" disabled>수정</button>
+						<button type="button" class="btn btn-danger" disabled>삭제</button>
+					</c:otherwise>
 				</c:choose>
 			</div>	
 			<section class="section-body mt-5">
@@ -72,6 +72,16 @@
 							<tr>
 								<td>${ map['appL'].finalApproverName }</td>								
 							</tr>
+							<tr>
+								<c:choose>								
+									<c:when test="${ map['appL'].finalApprovalResult == 'C' }">
+										<td colspan="2" class="text-center" style="color:blue"><strong>승인 완료</strong></td>
+									</c:when>	
+									<c:when test="${  map['appL'].finalApprovalResult == 'R' }">
+										<td colspan="2" class="text-center" style="color:red"><strong>반려</strong></td>				
+									</c:when>
+								</c:choose>
+							</tr>
 						</table>
 					</c:if>
 					<table class="table table-bordered float-right" id="approvalLine1">
@@ -82,7 +92,25 @@
 						<tr>
 							<td>${ map['appL'].firstApproverName }</td>								
 						</tr>
+						<tr>
+							<c:choose>								
+								<c:when test="${ map['appL'].firstApprovalResult == 'C' }">
+									<td colspan="2" class="text-center" style="color:blue"><strong>승인 완료</strong></td>
+								</c:when>	
+								<c:when test="${  map['appL'].firstApprovalResult == 'R' }">
+									<td colspan="2" class="text-center" style="color:red"><strong>반려</strong></td>				
+								</c:when>
+							</c:choose>
+						</tr>
 					</table>
+					<c:if test="${ map['appL'].progress == 'R' }">
+					<table class="table table-bordered mt-3">
+						<tr>
+							<th style="width: 15%">반려 사유</th>
+							<td>${ map['appL'].rejectionReason }</td>
+						</tr>
+					</table>
+					</c:if>
 					<table class="table table-bordered mt-3">							
 						<tr>
 							<th style="width: 15%">기안부서</th>
@@ -154,8 +182,15 @@
 			</section>
 		</div>
 	</div>
-	
-	
+	<script>
+		function deleteDocument(){
+			if(confirm("정말 삭제하시겠습니까?") == true){
+				location.href = "deleteApproval.do?approvalNo=" + "${ map['app'].approvalNo }" + "&docNo=" + "${map['app'].docNo}" + "&fileNo=" + "${map['app'].fileNo}";
+			}else {
+				return false;
+			}
+		};
+	</script>
 <jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

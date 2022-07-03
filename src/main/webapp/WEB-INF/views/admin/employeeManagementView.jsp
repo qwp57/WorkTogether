@@ -413,6 +413,8 @@
 			$("#employeeList tbody tr").click(function(){
 				location.href = "updateView.do?eno=" + $(this).children().eq(0).text();		
 			});
+			
+			$
 		});
 	</script>
 

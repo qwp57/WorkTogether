@@ -13,11 +13,25 @@ import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
 
 public interface ApprovalService {
-
+	
+	ArrayList<Approval> mainApprovalWaitingList(int empNo);
+	
 	ArrayList<Department> selectDeptList() throws Exception;
 
 	ArrayList<Employee> selectEmpList() throws Exception;
 
+	int approvalWaitCount(int empNo) throws Exception;
+	
+	int approvalCompleteCount(int empNo) throws Exception;
+	
+	int approvalProceedingCount(int empNo) throws Exception;
+	
+	int approvalNewCount(int empNo) throws Exception;
+	
+	ArrayList<Approval> mainDraftList(int empNo) throws Exception;
+	
+	ArrayList<Approval> mainAppList(int empNo) throws Exception;
+	
 	void insertApproval(Approval app) throws Exception;
 	
 	void insertApprovalLine1(ApprovalLine appL) throws Exception;
@@ -55,19 +69,57 @@ public interface ApprovalService {
 	int searchAppListCount(Map<String, Object> map) throws Exception;
 
 	ArrayList<Approval> searchAppList(Map<String, Object> map, PageInfo pi) throws Exception;
-
-	void updateAppLLevelOneFirstApprover(Map<String, Object> map) throws Exception;
+	
+	//결재하기
+	void updateAppLineLevelOneFirstApprover(Map<String, Object> map) throws Exception;
 
 	void updateAppLevelOneFirstApprover(int arppvoalNo) throws Exception;
 
-	void updateAppLLevelTwoFirstApprover(Map<String, Object> map) throws Exception;
+	void updateAppLineLevelTwoFirstApprover(Map<String, Object> map) throws Exception;
 
 	void updateAppLevelTwoFirstApprover(int arppvoalNo) throws Exception;
 
-	void updateAppLLevelTwoFinalApprover(Map<String, Object> map) throws Exception;
+	void updateAppLineLevelTwoFinalApprover(Map<String, Object> map) throws Exception;
 
 	void updateAppLevelTwoFinalApprover(int arppvoalNo) throws Exception;
 
+	void updateRejectLineFirstApprover(Map<String, Object> map) throws Exception;
 
+	void updateRejectFirstApprover(int arppvoalNo) throws Exception;
+
+	void updateRejectLineFinalApprover(Map<String, Object> map) throws Exception;
+
+	void updateRejectFinalApprover(int arppvoalNo) throws Exception;
+	
+	//업데이트
+	ApprovalLoa selectUpdateLoa(int parseInt) throws Exception;
+
+	void updateApproval(Approval app) throws Exception;
+
+	void updateApprovalLineLevel(Map<String, Object> map) throws Exception;
+
+	//void updateApprovalLine(Map<String, Object> map) throws Exception;
+
+	void updateLetterOfApproval(ApprovalLoa loa) throws Exception;
+
+	ApprovalExpenditure selectUpdateAppEx(int approvalNo) throws Exception;
+
+	void updateExpenditure(ApprovalExpenditure appEx) throws Exception;
+
+	ApprovalMMinutes selectUpdateAppMm(int approvalNo) throws Exception;
+
+	void updateTheMinutesOfAMeeting(ApprovalMMinutes appMm) throws Exception;
+
+	void deleteApproval(int approavalNo) throws Exception;
+
+	void deleteApprovalLine(int approvalNo) throws Exception;
+
+	void deleteDocument(Map<String, Object> map) throws Exception;
+
+	int draftWaitingListCount(int emp_no) throws Exception;
+
+	ArrayList<Approval> selectDraftWaitingList(int emp_no, PageInfo pi);
+
+	
 
 }

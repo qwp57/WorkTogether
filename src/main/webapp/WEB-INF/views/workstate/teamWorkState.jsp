@@ -92,9 +92,19 @@ width: auto;
                             <c:forEach items="${empList}" var="emp" varStatus="e">
 								<tr>
 									<td>
-									<img alt="image"
-                                         src="resources/assets/img/profile/${emp.CHANGE_NAME }"
-                                         id="profileImg" class="img-fluid rounded-circle"><span>${emp.NAME} ${emp.JOB_NAME}</span>
+									<c:choose>
+										<c:when test="${empty emp.CHANGE_NAME}">
+										<img alt="image"
+                                         src="resources/assets/img/profile/avatar-1.png"
+                                         id="profileImg" class="img-fluid rounded-circle">
+										</c:when>
+										<c:otherwise>
+										<img alt="image"
+                                         src="resources/upload_files/${emp.CHANGE_NAME }"
+                                         id="profileImg" class="img-fluid rounded-circle">
+										</c:otherwise>
+									</c:choose>
+									<span>${emp.NAME} ${emp.JOB_NAME}</span>
 									</td>
 									<td>
 										<p>누적 시간 : ${emp.TOTALTIME}h</p>

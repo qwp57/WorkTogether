@@ -237,6 +237,7 @@ public class AdminController {
 	@RequestMapping("searchEmp.do")
 	public ModelAndView searchEmp(EmployeeSearchCondition sc, String condition, String keyword, ModelAndView mv, @RequestParam(value="statusList" )List<String> statusList,
 								@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage) throws Exception {
+		log.info("sc : " + sc);
 		log.info("condition : " + condition);
 		log.info("keyword : " + keyword);
 		log.info("statusList : " + statusList);

@@ -200,7 +200,6 @@ $(function(){
            
             <div class="d-sm-none d-lg-inline-block">Hi, ${sessionScope.loginEmp.name}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
-              <div class="dropdown-title">Logged in 5 min ago</div>
               <a href="#" class="dropdown-item has-icon" id="profile">
                 <i class="far fa-user"></i> 내 정보
               </a>
@@ -402,14 +401,14 @@ function deleteAllNotice(){
 	      					<tr>
 	      						<th>&nbsp;부서</th>
 	      						<td><select class="form-control" name="dept_code" id="dept" >
-	      								<c:forEach items="${deptList}" var="d">
+	      								<c:forEach items="${dList}" var="d">
 											<option value="${d.DEPT_CODE}">${d.DEPT_NAME}</option>      						
 	      								</c:forEach>
 	      							</select>
 	      						</td>
 	      						<th>&nbsp;직위</th>
 	      						<td><select class="form-control" name="job_code" id="job" >
-	      							<c:forEach items="${jobList}" var="j">
+	      							<c:forEach items="${jList}" var="j">
 	      								<option value="${j.JOB_CODE}">${j.JOB_NAME}</option>
 	      							</c:forEach>
 	      							</select>

@@ -36,6 +36,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 	private ApprovalMapper approvalMapper;
 	
 	@Override
+	public ArrayList<Approval> mainApprovalWaitingList(int empNo) {
+		
+		ArrayList<Approval> appList = approvalMapper.mainApprovalWaitingList(empNo);
+		
+		return appList;
+	}
+		
+	@Override
 	public ArrayList<Department> selectDeptList() throws Exception {
 		
 		return approvalMapper.selectDeptList();
@@ -46,7 +54,55 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return approvalMapper.selectEmpList();
 	}
+	
+	@Override
+	public int approvalWaitCount(int empNo) throws Exception {
+		
+		int waitCount = approvalMapper.approvalWaitCount(empNo);
+		
+		return waitCount;
+	}
+	
+	@Override
+	public int approvalCompleteCount(int empNo) throws Exception {
 
+		int completeCount = approvalMapper.approvalCompleteCount(empNo);
+		
+		return completeCount;
+	}
+	
+	@Override
+	public int approvalProceedingCount(int empNo) throws Exception {
+		
+		int proceedingCount = approvalMapper.approvalProceedingCount(empNo);
+		
+		return proceedingCount;
+	}
+	
+	@Override
+	public int approvalNewCount(int empNo) throws Exception {
+		
+		int newApprovalCount = approvalMapper.approvalNewCount(empNo);
+		
+		return newApprovalCount;
+	}
+	
+	@Override
+	public ArrayList<Approval> mainDraftList(int empNo) throws Exception {
+
+		ArrayList<Approval> draftList = approvalMapper.mainDraftList(empNo);
+		
+		return draftList;
+	}
+	
+	@Override
+	public ArrayList<Approval> mainAppList(int empNo) throws Exception {
+		
+		ArrayList<Approval> appList = approvalMapper.mainAppList(empNo);
+		
+		return appList;
+	}
+	
 	@Override
 	public void insertApproval(Approval app) throws Exception {
 		
@@ -243,12 +299,12 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 
 	@Override
-	public void updateAppLLevelOneFirstApprover(Map<String, Object> map) throws Exception {
+	public void updateAppLineLevelOneFirstApprover(Map<String, Object> map) throws Exception {
 		
-		int result = approvalMapper.updateAppLLevelOneFirstApprover(map);
+		int result = approvalMapper.updateAppLineLevelOneFirstApprover(map);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
 	}
@@ -259,17 +315,17 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.updateAppLevelOneFirstApprover(arppvoalNo);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 	}
 
 	@Override
-	public void updateAppLLevelTwoFirstApprover(Map<String, Object> map) throws Exception {
+	public void updateAppLineLevelTwoFirstApprover(Map<String, Object> map) throws Exception {
 		
-		int result = approvalMapper.updateAppLLevelTwoFirstApprover(map);
+		int result = approvalMapper.updateAppLineLevelTwoFirstApprover(map);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
 	}
@@ -280,18 +336,18 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.updateAppLevelTwoFirstApprover(arppvoalNo);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
 	}
 
 	@Override
-	public void updateAppLLevelTwoFinalApprover(Map<String, Object> map) throws Exception {
+	public void updateAppLineLevelTwoFinalApprover(Map<String, Object> map) throws Exception {
 		
-		int result = approvalMapper.updateAppLLevelTwoFinalApprover(map);
+		int result = approvalMapper.updateAppLineLevelTwoFinalApprover(map);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
 	}
@@ -302,10 +358,197 @@ public class ApprovalServiceImpl implements ApprovalService {
 		int result = approvalMapper.updateAppLevelTwoFinalApprover(arppvoalNo);
 		
 		if(result < 0) {
-			new Exception("결재 처리에 실패하였습니다.");
+			new Exception("결재 승인에 실패하였습니다.");
 		}
 		
 	}
+
+	@Override
+	public void updateRejectLineFirstApprover(Map<String, Object> map) throws Exception {
+		
+		int result = approvalMapper.updateRejectLineFirstApprover(map);
+		
+		if(result < 0) {
+			new Exception("결재 반려에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public void updateRejectFirstApprover(int arppvoalNo) throws Exception {
+		
+		int result = approvalMapper.updateRejectFirstApprover(arppvoalNo);
+		
+		if(result < 0) {
+			new Exception("결재 반려에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public void updateRejectLineFinalApprover(Map<String, Object> map) throws Exception {
+		
+		int result = approvalMapper.updateRejectLineFinalApprover(map);
+		
+		if(result < 0) {
+			new Exception("결재 반려에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public void updateRejectFinalApprover(int arppvoalNo) throws Exception {
+		
+		int result = approvalMapper.updateRejectFinalApprover(arppvoalNo);
+		
+		if(result < 0) {
+			new Exception("결재 반려에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public ApprovalLoa selectUpdateLoa(int approvalNo) throws Exception {
+		
+		ApprovalLoa loa = approvalMapper.selectApprovalLoa(approvalNo);
+		
+		if(loa == null) {
+			new Exception("수정할 품의서를 조회하는데 실패하였습니다.");
+		}
+		
+		return loa;
+	}
+
+	@Override
+	public void updateApproval(Approval app) throws Exception {
+		
+		int result = approvalMapper.updateApproval(app);
+		
+		if(result < 0) {
+			new Exception("결재 문서 업데이트에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public void updateApprovalLineLevel(Map<String, Object> map) throws Exception {
+		
+		int result = approvalMapper.updateApprovalLineLevel(map);
+		
+		if(result < 0) {
+			new Exception("결재선 업데이트에 실패하였습니다.");
+		}
+		
+	}
+	/*
+	@Override
+	public void updateApprovalLine(Map<String, Object> map) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}*/
+
+	@Override
+	public void updateLetterOfApproval(ApprovalLoa loa) throws Exception {
+		
+		int result = approvalMapper.updateLetterOfApproval(loa);
+		
+		if(result < 0) {
+			new Exception("품의서 업데이트에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public ApprovalExpenditure selectUpdateAppEx(int approvalNo) throws Exception {
+
+		ApprovalExpenditure appEx = approvalMapper.selectApprovalExpenditure(approvalNo);
+		
+		if(appEx == null) {
+			new Exception("수정할 지출결의서 조회에 실패하였습니다.");
+		}
+		
+		return appEx;
+	}
+
+	@Override
+	public void updateExpenditure(ApprovalExpenditure appEx) throws Exception {
+		
+		int result = approvalMapper.updateExpenditure(appEx);
+		
+		if(result < 0) {
+			new Exception("지출 결재서 업데이트에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public ApprovalMMinutes selectUpdateAppMm(int approvalNo) throws Exception {
+		
+		ApprovalMMinutes appMm = approvalMapper.selectApprovaltheMinutesOfAMeeting(approvalNo);
+		
+		if(appMm == null) {
+			new Exception("수정할 회의록 조회에 실패하였습니다.");
+		}
+		
+		return appMm;
+	}
+
+	@Override
+	public void updateTheMinutesOfAMeeting(ApprovalMMinutes appMm) throws Exception {
+		
+		int result = approvalMapper.updateTheMinutesOfAMeeting(appMm);
+		
+		if(result < 0) {
+			new Exception("회의록 업데이트에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public void deleteApproval(int approavalNo) throws Exception {
+		
+		int result = approvalMapper.deleteApproval(approavalNo);
+		
+		if(result < 0) {
+			new Exception("기안서 삭제에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public void deleteApprovalLine(int approvalNo) throws Exception {
+		
+		int result = approvalMapper.deleteApprovalLine(approvalNo);
+		
+		if(result < 0) {
+			new Exception("기안서 삭제에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public void deleteDocument(Map<String, Object> map) throws Exception {
+		
+		int result = approvalMapper.deleteDocument(map);
+		
+		if(result < 0) {
+			new Exception("기안서 삭제에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public int draftWaitingListCount(int emp_no) throws Exception {
+		
+		return  approvalMapper.draftWaitingListCount(emp_no);
+	}
+
+	@Override
+	public ArrayList<Approval> selectDraftWaitingList(int emp_no, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Approval> draftList = approvalMapper.selectDraftWaitingList(emp_no, rowBounds);
+				
+		return draftList;
+	}
+
 
 
 }
