@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <jsp:include page="../common/header.jsp"/>
@@ -18,8 +19,8 @@
 	}
 	
 	.card{
-		width: 300px;
-		height: 300px;
+		width: 250px;
+		height: 250px;
 	}
 	
 	.card-deck>.card{
@@ -27,11 +28,15 @@
 	}
 	
 	.card-body{
-		margin-top: 70px;
+		margin-top: 50px;
 	}
 	
 	#newApprovalCount{
 		border-bottom: 1px solid lightgray;
+	}
+	
+	#approvalNow{
+		margin-left: 80px;
 	}
 	
 	.table{
@@ -59,30 +64,37 @@
 				<div class="title mt-4 mb-3 col-lg-8">
 					<h4 class="ml-3">기안 현황</h4>
 				</div>
-				<div class="title mt-4 mb-3 col-lg-4">
+				<div class="title mt-4 mb-3 col-lg-3" id="approvalNow">
 					<h4>결재문서 현황</h4>
 				</div>				
 				<div>
 					<div class="card-deck">
-						<div class="card mt-3 ml-5">
+						<div class="card mt-3 ml-3">
 							<div class="card-body text-center">
-								<p class="card-text"><h2 style="color: rgb(111, 118, 237)">결재 대기</h2></p>
-								<p class="card-text"><h2>3</h2></p>
+								<p class="card-text"><h3 style="color: rgb(111, 118, 237)">결재 대기</h3></p>
+								<p class="card-text"><h2>${waitCount}</h2></p>
 							</div>
 						</div>
 						
-						<div class="card mt-3 ml-5">
+						<div class="card mt-3 ml-3">
 							<div class="card-body text-center">
-								<p class="card-text"><h2 style="color: rgb(111, 118, 237)">결재 완료</h2></p>
-								<p class="card-text"><h2>5</h2></p>
+								<p class="card-text"><h3 style="color: rgb(111, 118, 237)">결재 진행 중</h3></p>
+								<p class="card-text"><h2>${proceedingCount}</h2></p>
 							</div>
 						</div>
 						
-						<div class="card mt-3 ml-5">
+						<div class="card mt-3 ml-3">
 							<div class="card-body text-center">
-								<p class="card-text"><h2 style="color: rgb(111, 118, 237)">새 결재 문서</h2></p>
-								<p class="card-text"><h2 class="pb-2" id="newApprovalCount">2</h2></p>
-								<a href="#"><h5>결재하기</h5></a>
+								<p class="card-text"><h3 style="color: rgb(111, 118, 237)">결재 완료</h3></p>
+								<p class="card-text"><h2>${completeCount}</h2></p>
+							</div>
+						</div>
+						
+						<div class="card mt-3 ml-3">
+							<div class="card-body text-center">
+								<p class="card-text"><h3 style="color: rgb(111, 118, 237)">새 결재 문서</h3></p>
+								<p class="card-text"><h2 class="pb-2" id="newApprovalCount">${newApprovalCount}</h2></p>
+								<a href="approvalDocument.do"><h5>결재하기</h5></a>
 							</div>
 						</div>
 					</div>
@@ -108,65 +120,54 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<!-- <td class="empNo">사번</td>을 숨겨놓는다. -->
-							<td>2022-05-28</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00020</td>
-							<td><span class="status">결재 대기</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-28</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00019</td>
-							<td><span class="status">결재 대기</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-25</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>-</td>
-							<td>2022_00018</td>
-							<td><span class="status">진행중</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-22</td>
-							<td>2022-05-24</td>
-							<td>지출 결의서</td>
-							<!-- if를 사용해서 만약 긴급 상태이면 긴급이라는 글자가 빨간색으로 나오도록 아니면 '-'이 나오도록 하낟. -->
-							<td style="color:red">긴급</td>
-							<td>2022-05-20 법인카드 사용</td>
-							<!-- 첨부 파일이 있으면 클립 아이콘과 함께 첨부파일 개수가 나온다.(if 사용) -->
-							<td>
-								<i class="bi bi-paperclip"></i>1
-							</td>
-							<td>2022_00017</td>
-							<td><span class="status">완료</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-18</td>
-							<td>2022-05-20</td>
-							<td>회의록</td>
-							<td>-</td>
-							<td>2022-05-01 회의록</td>
-							<td>-</td>
-							<td>2022_00016</td>
-							<td><span class="status">완료</span></td>
-						</tr>										
+						<c:forEach items="${ draftList }" var="dl">
+							<tr>
+								<td class="d-none">${ dl.approvalNo }</td>
+								<td class="d-none">${ dl.docNo }</td>
+								<td>${ dl.createDate }</td>
+								<c:choose>
+									<c:when test="${ dl.approvalDate eq null }">
+										<td>-</td>
+									</c:when>
+									<c:otherwise>
+										<td>${ dl.approvalDate }</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${ dl.docName }</td>
+								<c:choose>
+									<c:when test="${ dl.emergency eq 'N' }">
+										<td>-</td>
+									</c:when>
+									<c:otherwise>
+										<td style="color: red">긴급</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${ dl.title }</td>
+								<c:choose>
+									<c:when test="${ dl.fileNo eq 0 }">
+										<td>-</td>
+									</c:when>
+									<c:otherwise>
+										<td><i class="bi bi-paperclip"></i>1</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${ dl.approvalNo }</td>
+								<c:choose>
+									<c:when test="${ dl.progress eq 'W' }">
+										<td><span class="p-2" style="color: white; background-color: skyblue; border-radius: 5px;">대기</span></td>
+									</c:when>
+									<c:when test="${ dl.progress eq 'P' }">
+										<td><span class="p-2" style="color: white; background-color: green; border-radius: 5px;">진행중</span></td>
+									</c:when>
+									<c:when test="${ dl.progress eq 'C' }">
+										<td><span class="p-2" style="color: white; background-color: darkgray; border-radius: 5px;">완료</span></td>
+									</c:when>
+									<c:when test="${ dl.progress eq 'R' }">
+										<td><span class="p-2" style="color: white; background-color: Firebrick; border-radius: 5px;">반려</span></td>
+									</c:when>
+								</c:choose>
+							</tr>
+						</c:forEach>										
 					</tbody>
 				</table>
 			</div>	
@@ -191,75 +192,86 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>2022-05-28</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>배주임</td>
-							<td>-</td>
-							<td>2022_00020</td>
-							<td><span class="status">결재 대기</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-28</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>강사원</td>
-							<td>-</td>
-							<td>2022_00019</td>
-							<td><span class="status">결재 대기</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-25</td>
-							<td>-</td>
-							<td>일반 품의서</td>
-							<td>-</td>
-							<td>기안서- 업무 협조</td>
-							<td>안대리</td>
-							<td>-</td>
-							<td>2022_00018</td>
-							<td><span class="status">진행중</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-22</td>
-							<td>2022-05-24</td>
-							<td>지출 결의서</td>
-							<!-- if를 사용해서 만약 긴급 상태이면 긴급이라는 글자가 빨간색으로 나오도록 아니면 '-'이 나오도록 하낟. -->
-							<td style="color:red">긴급</td>
-							<td>2022-05-20 법인카드 사용</td>
-							<td>이부장</td>
-							<!-- 첨부 파일이 있으면 클립 아이콘과 함께 첨부파일 개수가 나온다.(if 사용) -->
-							<td>
-								<i class="bi bi-paperclip"></i>1
-							</td>
-							<td>2022_00017</td>
-							<td><span class="status">완료</span></td>
-						</tr>
-						
-						<tr>
-							<td>2022-05-18</td>
-							<td>2022-05-20</td>
-							<td>회의록</td>
-							<td>-</td>
-							<td>2022-05-01 회의록</td>
-							<td>배주임</td>
-							<td>-</td>
-							<td>2022_00016</td>
-							<td><span class="status">완료</span></td>
-						</tr>										
+						<c:forEach items="${ appList }" var="al">
+							<tr>
+								<td class="d-none">${ al.approvalNo }</td>
+								<td class="d-none">${ al.docNo }</td>
+								<td>${ al.createDate }</td>
+								<c:choose>
+									<c:when test="${ al.approvalDate eq null }">
+										<td>-</td>
+									</c:when>
+									<c:otherwise>
+										<td>${ al.approvalDate }</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${ al.docName }</td>
+								<c:choose>
+									<c:when test="${ al.emergency eq 'N' }">
+										<td>-</td>
+									</c:when>
+									<c:otherwise>
+										<td style="color: red">긴급</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${ al.title }</td>
+								<td>${ al.name }</td>
+								<c:choose>
+									<c:when test="${ al.fileNo eq 0 }">
+										<td>-</td>
+									</c:when>
+									<c:otherwise>
+										<td><i class="bi bi-paperclip"></i>1</td>
+									</c:otherwise>
+								</c:choose>
+								<td>${ al.approvalNo }</td>
+								<c:choose>
+									<c:when test="${ al.progress eq 'W' }">
+										<td><span class="p-2" style="color: white; background-color: skyblue; border-radius: 5px;">대기</span></td>
+									</c:when>
+									<c:when test="${ al.progress eq 'P' }">
+										<td><span class="p-2" style="color: white; background-color: green; border-radius: 5px;">진행중</span></td>
+									</c:when>
+									<c:when test="${ al.progress eq 'C' }">
+										<td><span class="p-2" style="color: white; background-color: darkgray; border-radius: 5px;">완료</span></td>
+									</c:when>
+									<c:when test="${ al.progress eq 'R' }">
+										<td><span class="p-2" style="color: white; background-color: Firebrick; border-radius: 5px;">반려</span></td>
+									</c:when>
+								</c:choose>
+							</tr>						
+						</c:forEach>										
 					</tbody>
 				</table>
 			</section>
 		</div>		
 	</div>
-	
+	<script>
+		$(function(){
+			$("#draftDocumentTable tbody tr").click(function(){
+				var approvalNo = $(this).children().eq(0).text();
+				var docNo = $(this).children().eq(1).text();
+				
+				console.log(approvalNo);
+				console.log(docNo);
+				
+				//결재 양식 번호와 문서 번호를 가지고 간다.
+				location.href="detailDraftDocument.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
+			});
+			
+			$("#approvalDocumentTable tbody tr").click(function(){
+				var approvalNo = $(this).children().eq(0).text();
+				var docNo = $(this).children().eq(1).text();
+				
+				console.log(approvalNo);
+				console.log(docNo);
+				
+				//결재 양식 번호와 문서 번호를 가지고 간다.
+				location.href="detailApproval.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
+			});
+			
+		});
+	</script>
 	<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

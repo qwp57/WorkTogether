@@ -1,10 +1,9 @@
 package com.uni.wt.project.model.service;
 
-import com.uni.wt.common.dto.PageInfo;
 import com.uni.wt.employee.model.dto.Employee;
-import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
 import com.uni.wt.project.model.dto.Project;
+import com.uni.wt.project.model.dto.ProjectFile;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.requestWork.model.dto.RequestWork;
 
@@ -20,9 +19,9 @@ public interface ProjectService {
 
     int nextPjNo() throws Exception;
 
-    ArrayList<Project> selectMyProject(int loginEmp) throws Exception;
+    ArrayList<Project> selectMyProject(int loginEmp, String type) throws Exception;
 
-    ArrayList<Project> selectMyBookmarkProject(int loginEmp) throws Exception;
+    ArrayList<Project> selectMyBookmarkProject(int loginEmp, String type) throws Exception;
 
     int getProjectMemberCount(int pj_no) throws Exception;
 
@@ -50,4 +49,7 @@ public interface ProjectService {
 
     ArrayList<RequestWork> loadRw(int pj_no) throws Exception;
 
+    void restoreProject(int pj_no) throws Exception;
+
+    ArrayList<ProjectFile> getPjFiles(int pj_no, String sort) throws Exception;
 }

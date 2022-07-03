@@ -123,7 +123,7 @@ td:last-child {
 	-text: white;
 	margin: 20px;
 	padding: 20px;
-	margin-left: 40px;
+	margin-left: 10px;
 	width: 50px;
 	height: 50px;
 	border-radius: 10px;
@@ -165,7 +165,12 @@ td:last-child {
 .color-8 {
 	background: gray;
 }
-
+ .favoYellow {
+     color: #f3da35;
+ }
+ .listViewTable tr{
+     cursor: pointer;
+ }
 
 </style>
 </head>
@@ -198,7 +203,7 @@ td:last-child {
                                             
                                             <div class="user-details" style="margin-top:40px;">
                                                 <div class="user-name"><h3>${sessionScope.loginEmp.name}</h3></div>
-                                                <div class="text-job text-muted"><h4>${sessionScope.loginEmp.dept_name}소속 ${sessionScope.loginEmp.job_name}</h4></div>
+                                                <div class="text-job text-muted mt-3"><h5 style="color:black">${sessionScope.loginEmp.dept_name}소속 ${sessionScope.loginEmp.job_name}</h5></div>
                                                 <input type="text" id="empno" value="${sessionScope.loginEmp.emp_no}" hidden>
                                                 <div class="user-cta">
                                                     <button class="btn btn-primary follow-btn"
@@ -296,21 +301,28 @@ td:last-child {
                             <div class="card-body text-center h-100">
                                 <h4 class="text-left">즐겨찾기</h4>
                                 <hr>
-								<table class="listViewTable">
-									<c:forEach var="index" begin="1" end="5">
-										<tr style="width: 100%">
-											<td style="width: 3%;"></td>
-											<td><div class="colors color-${index }"></div></td>
-											<td style="width: 10%;"><i
-												class='icon fa fa-star fa-lg favoYellow'></i></td>
-											<th style="width: 40%;">테스트</th>
-											<td style="width: 20%;"><i
-													class='fa fa-user'></i>&nbsp;7</td>
-											<td style="width: 30%;"><i
-													class='	fa fa-flag'></i>&nbsp;2022-06-02</td>
-										</tr>
-										</c:forEach>
-									</table>
+                                <h3 id="pjInfo" style="margin-top: 180px; display: block">즐겨찾기한 프로젝트가 없습니다.</h3>
+                                <c:if test="${pjList ne null}">
+                                    <table class="listViewTable">
+                                        <c:forEach items="${pjList}" var="pj" begin="0" end="4">
+                                            <tr style="width: 100%">
+                                                <td>
+                                               <div class="colors" style="margin: 10px">
+                                                    <input name="pj_no" class="pj_no${pj.pj_no}" type="hidden" value="${pj.pj_no}">
+                                                   </div>
+                                                </td>
+                                                <td style="width: 10%;">
+                                                    <i class="icon fa fa-star fa-2x favoYellow listView favoBtn"></i></td>
+                                                <th style="width: 40%; text-align: left;">${pj.pj_title}</th>
+                                                <td style="width: 20%">
+                                                    <i class="fa fa-user">&nbsp;${pj.count}</i>
+                                                   </td>
+                                                <td style="width: 30%;">
+                                                  <i class="fa fa-flag">&nbsp;${pj.create_date}</i>
+                                                   </td>
+                                        </c:forEach>
+                                    </table>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -326,28 +338,72 @@ td:last-child {
 
                                 <h4 class="text-left">결재 대기 문서</h4>
                                 <hr>
-								<table class="table">
-									<thead class="thead-light">
+								<table class="table" id="approvalDocumentTable">
+									<thead>
 										<tr>
-											<th style="width:15%">기안일</th>
-											<th style="width:15%">결재양식</th>
-											<th style="width:10%">긴급</th>
-											<th style="width:35%">제목</th>
-											<th style="width:10%">첨부</th>
-											<th style="width:15%">결재상태</th>
+											<th style="width:13%">기안일</th>
+											<th style="width:13%">완료일</th>
+											<th style="width:12%">결재양식</th>
+											<th style="width:8%">긴급</th>
+											<th style="width:15%">제목</th>
+											<th style="width:9%">기안자</th>
+											<th style="width:8%">첨부</th>
+											<th style="width:10%">문서번호</th>
+											<th style="width:12%">결재상태</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>2022-06-07</td>
-											<td>일반품의서</td>
-											<td>-</td>
-											<td>기안서-업무협조</td>
-											<td>1</td>
-											<td><button type="button" class="btn btn-primary">결재완료</button></td>
-										</tr>
+										<c:forEach items="${ appList }" var="al">
+											<tr>
+												<td class="d-none">${ al.approvalNo }</td>
+												<td class="d-none">${ al.docNo }</td>
+												<td>${ al.createDate }</td>
+												<c:choose>
+													<c:when test="${ al.approvalDate eq null }">
+														<td>-</td>
+													</c:when>
+													<c:otherwise>
+														<td>${ al.approvalDate }</td>
+													</c:otherwise>
+												</c:choose>
+												<td>${ al.docName }</td>
+												<c:choose>
+													<c:when test="${ al.emergency eq 'N' }">
+														<td>-</td>
+													</c:when>
+													<c:otherwise>
+														<td style="color: red">긴급</td>
+													</c:otherwise>
+												</c:choose>
+												<td>${ al.title }</td>
+												<td>${ al.name }</td>
+												<c:choose>
+													<c:when test="${ al.fileNo eq 0 }">
+														<td>-</td>
+													</c:when>
+													<c:otherwise>
+														<td><i class="bi bi-paperclip"></i>1</td>
+													</c:otherwise>
+												</c:choose>
+												<td>${ al.approvalNo }</td>
+												<c:choose>
+													<c:when test="${ al.progress eq 'W' }">
+														<td><span class="p-2" style="color: white; background-color: skyblue; border-radius: 5px;">대기</span></td>
+													</c:when>
+													<c:when test="${ al.progress eq 'P' }">
+														<td><span class="p-2" style="color: white; background-color: green; border-radius: 5px;">진행중</span></td>
+													</c:when>
+													<c:when test="${ al.progress eq 'C' }">
+														<td><span class="p-2" style="color: white; background-color: darkgray; border-radius: 5px;">완료</span></td>
+													</c:when>
+													<c:when test="${ al.progress eq 'R' }">
+														<td><span class="p-2" style="color: white; background-color: Firebrick; border-radius: 5px;">반려</span></td>
+													</c:when>
+												</c:choose>
+											</tr>						
+										</c:forEach>										
 									</tbody>
-								</table>                              
+								</table>                           
                             </div>
                         </div>
                     </div>
@@ -359,5 +415,31 @@ td:last-child {
 </div>
 <jsp:include page="../common/footer.jsp"/>
 <script src="resources/assets/js/workTimecheck_main.js?ver=1"></script>
+<script>
+
+    $(function (){
+        if($("input[name='pj_no']").length == 0){
+            $("#pjInfo").css("display", "block")
+        }else {
+            $("#pjInfo").css("display", "none")
+            $.ajax({
+                url: '/project/selectProjectColor.do',
+                success: function (list) {
+                    console.log(list)
+                    $.each(list, function (i, obj) {
+                        $(".pj_no" + obj.pj_no).parent(".project").addClass(obj.pj_color)
+                        $(".pj_no" + obj.pj_no).parent(".colors").addClass(obj.pj_color)
+                    })
+                }
+            })
+        }
+    })
+    $(document).on("click", ".listViewTable tr", function () {
+        //console.log($(this).find("input[name='pj_no']").val())
+        var $pj_no = $(this).find("input[name='pj_no']").val()
+        location.href = "/project/detailPj.do?pj_no=" + $pj_no;
+    })
+
+</script>
 </body>
 </html>

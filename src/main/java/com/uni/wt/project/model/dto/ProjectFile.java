@@ -15,5 +15,6 @@ public class ProjectFile {
     private String change_name;
     private String path;
     private String img_path;
+    private String name;
 
 }

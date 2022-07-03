@@ -56,26 +56,49 @@
 
     <select id="selectPjBoardList" parameterType="map" resultMap="boardAllSet">
         SELECT DISTINCT A.BOARD_NO,
-                        A.PJ_NO,
-                        A.BOARD_TYPE,
-                        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE,
-                        E.NAME,
-                        B.POST_TITLE,
-                        C.SCH_TITLE,
-                        C.SCH_START,
-                        D.TODO_TITLE
+        A.PJ_NO,
+        A.BOARD_TYPE,
+        TO_CHAR(A.CREATE_DATE, 'YYYY-MM-DD HH24:MI') AS CREATE_DATE,
+        E.NAME,
+        A.WRITER,
+        B.POST_TITLE,
+        C.SCH_TITLE,
+        C.SCH_START,
+        D.TODO_TITLE
         FROM PJ_BOARD A
-                 LEFT JOIN BOARD_POST B
-                           ON A.BOARD_NO = B.BOARD_NO
-                 LEFT JOIN BOARD_SCHEDULE C
-                           ON A.BOARD_NO = C.BOARD_NO
-                 LEFT JOIN BOARD_TODO D
-                           ON A.BOARD_NO = D.BOARD_NO
-                 JOIN EMPLOYEE E
-                      ON A.WRITER = E.EMP_NO
-        WHERE PJ_NO = #{pj_no}
+        LEFT JOIN BOARD_POST B
+        ON A.BOARD_NO = B.BOARD_NO
+        LEFT JOIN BOARD_SCHEDULE C
+        ON A.BOARD_NO = C.BOARD_NO
+        LEFT JOIN BOARD_TODO D
+        ON A.BOARD_NO = D.BOARD_NO
+        JOIN EMPLOYEE E
+        ON A.WRITER = E.EMP_NO
+        <if test="pj_no != 0 &amp;&amp; !pj_no.equals('0')">
+            WHERE A.PJ_NO = #{pj_no}
+        </if>
+        <if test="pj_no == 0 || pj_no.equals('0')">
+            WHERE E.EMP_NO = #{emp_no}
+        </if>
         <if test="board_type != null &amp;&amp; board_type != ''">
             AND A.BOARD_TYPE = #{board_type}
+        </if>
+        <if test="pj_no == 0 || pj_no.equals('0')">
+            AND E.EMP_NO = #{emp_no}
+        </if>
+        <if test="sd.searchTarget.equals('name') &amp;&amp; sd.searchKeyword != null &amp;&amp; !sd.searchKeyword.equals('')">
+            AND E.NAME LIKE '%'||#{sd.searchKeyword}||'%'
+        </if>
+        <if test="sd.searchTarget.equals('title') &amp;&amp; sd.searchKeyword != null &amp;&amp; !sd.searchKeyword.equals('')">
+            AND (B.POST_TITLE LIKE '%'||#{sd.searchKeyword}||'%'
+            OR C.SCH_TITLE LIKE '%'||#{sd.searchKeyword}||'%'
+            OR D.TODO_TITLE LIKE '%'||#{sd.searchKeyword}||'%')
+        </if>
+        <if test="sd.searchTarget.equals('content') &amp;&amp; sd.searchKeyword != null &amp;&amp; !sd.searchKeyword.equals('')">
+            AND (B.POST_CONTENT LIKE '%'||#{sd.searchKeyword}||'%'
+            OR C.SCH_CONTENT LIKE '%'||#{sd.searchKeyword}||'%'
+            OR C.SCH_PLACE LIKE '%'||#{sd.searchKeyword}||'%'
+            OR D.TODO_CONTENT LIKE '%'||#{sd.searchKeyword}||'%')
         </if>
         ORDER BY A.BOARD_NO DESC
     </select>
@@ -83,12 +106,41 @@
 
     <select id="getListCount" parameterType="map" resultType="_int">
         SELECT
-        COUNT(*)
-        FROM PJ_BOARD
-        WHERE PJ_NO = #{pj_no}
-        <if test="board_type != null &amp;&amp; board_type != ''">
-            AND BOARD_TYPE = #{board_type}
-        </if>
+        COUNT(DISTINCT A.BOARD_NO)
+        FROM PJ_BOARD A
+        JOIN EMPLOYEE E
+        ON A.WRITER = E.EMP_NO
+        LEFT JOIN BOARD_POST B
+        ON A.BOARD_NO = B.BOARD_NO
+        LEFT JOIN BOARD_SCHEDULE C
+        ON A.BOARD_NO = C.BOARD_NO
+        LEFT JOIN BOARD_TODO D
+        ON A.BOARD_NO = D.BOARD_NO
+        <where>
+            <if test="pj_no == 0 || pj_no.equals('0')">
+                AND E.EMP_NO = #{emp_no}
+            </if>
+            <if test="sd.searchTarget.equals('name') &amp;&amp; sd.searchKeyword != null &amp;&amp; !sd.searchKeyword.equals('')">
+                AND E.NAME LIKE '%'||#{sd.searchKeyword}||'%'
+            </if>
+            <if test="sd.searchTarget.equals('title') &amp;&amp; sd.searchKeyword != null &amp;&amp; !sd.searchKeyword.equals('')">
+                AND (B.POST_TITLE LIKE '%'||#{sd.searchKeyword}||'%'
+                OR C.SCH_TITLE LIKE '%'||#{sd.searchKeyword}||'%'
+                OR D.TODO_TITLE LIKE '%'||#{sd.searchKeyword}||'%')
+            </if>
+            <if test="sd.searchTarget.equals('content') &amp;&amp; sd.searchKeyword != null &amp;&amp; !sd.searchKeyword.equals('')">
+                AND (B.POST_CONTENT LIKE '%'||#{sd.searchKeyword}||'%'
+                OR C.SCH_CONTENT LIKE '%'||#{sd.searchKeyword}||'%'
+                OR C.SCH_PLACE LIKE '%'||#{sd.searchKeyword}||'%'
+                OR D.TODO_CONTENT LIKE '%'||#{sd.searchKeyword}||'%')
+            </if>
+            <if test="pj_no != 0 &amp;&amp; !pj_no.equals('0')">
+                AND A.PJ_NO = #{pj_no}
+            </if>
+            <if test="board_type != null &amp;&amp; board_type != ''">
+                AND A.BOARD_TYPE = #{board_type}
+            </if>
+        </where>
     </select>
 
 

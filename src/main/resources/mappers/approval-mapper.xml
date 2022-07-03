@@ -84,6 +84,23 @@
 		<result property="meetingDate" column="MEETING_DATE"/>
 		<result property="meetingContent" column="MEETING_CONTENT"/>
 	</resultMap>
+	
+	<!-- 홈 main 결재 대기 문서 list -->
+	<select id="mainApprovalWaitingList" parameterType="int" resultMap="approvalResultSet">
+		<![CDATA[
+		SELECT *
+		FROM(SELECT A.*,
+		           NAME
+		    FROM APPROVAL A
+		    JOIN EMPLOYEE B ON A.WRITER=B.EMP_NO
+		    JOIN APPROVAL_LINE C ON A.APPROVAL_NO=C.APPROVAL_NO
+		    WHERE (C.FIRST_APPROVER_NO=#{empNo}
+		    OR C.FINAL_APPROVER_NO=#{empNo})
+		    AND A.PROGRESS='W'
+		    ORDER BY A.CREATE_DATE DESC)
+		WHERE ROWNUM <= 5
+		]]>	
+	</select>
 
 	<!-- 부서 조회 -->
 	<select id="selectDeptList" resultMap="departmenteResultSet">
@@ -103,6 +120,70 @@
 		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
 		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
 		WHERE STATUS='I'
+	</select>
+	
+	<!-- 결재 홈 -->
+	<!-- 기안한 문서 중에 결재 대기 중인 문서 개수 -->
+	<select id="approvalWaitCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL
+		WHERE WRITER=#{empNo}
+		AND PROGRESS='W'
+	</select>
+	
+	<!-- 기안한 문서 중에 결재 완료된 문서 개수 -->
+	<select id="approvalCompleteCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL
+		WHERE WRITER=#{empNo}
+		AND PROGRESS='C'
+	</select>
+	
+	<!-- 기안한 문서 중에 결재 진행 중인 문서 개수 -->
+	<select id="approvalProceedingCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL
+		WHERE WRITER=#{empNo}
+		AND PROGRESS='P'
+	</select>
+	
+	<!-- 나에게 온  새 결재 문서 -->
+	<select id="approvalNewCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL A
+		JOIN APPROVAL_LINE B ON A.APPROVAL_NO = B.APPROVAL_NO
+		WHERE (B.FIRST_APPROVER_NO=#{empNo}
+		OR B.FINAL_APPROVER_NO=#{empNo})
+		AND (A.PROGRESS='W'
+		OR A.PROGRESS='P')
+	</select>
+	
+	<!-- 기안 문서 list -->
+	<select id="mainDraftList" parameterType="int" resultMap="approvalResultSet">
+		<![CDATA[
+		SELECT *
+		FROM (SELECT *
+		        FROM APPROVAL
+		        WHERE WRITER=#{empNo}
+		        ORDER BY CREATE_DATE DESC)
+		WHERE ROWNUM <= 5		
+		]]>		
+	</select>
+	
+	<!-- 나에게 온 결재 문서 -->
+	<select id="mainAppList" parameterType="int" resultMap="approvalResultSet">
+		<![CDATA[
+		SELECT *
+		FROM (SELECT A.*,
+		               NAME
+		        FROM APPROVAL A
+		        JOIN EMPLOYEE B ON A.WRITER=B.EMP_NO
+		        JOIN APPROVAL_LINE C ON A.APPROVAL_NO=C.APPROVAL_NO
+		        WHERE C.FIRST_APPROVER_NO=#{empNo}
+		        OR C.FINAL_APPROVER_NO=#{empNo}
+		        ORDER BY A.CREATE_DATE DESC)
+		WHERE ROWNUM <= 5
+		]]>	
 	</select>
 	
 	<!-- 공통 문서 insert -->
@@ -445,4 +526,65 @@
 		SET CONTENT=#{content}
 		WHERE APPROVAL_NO=#{approvalNo}
 	</update>
+	
+	<!-- 지출결의서 업데이트 -->
+	<update id="updateExpenditure" parameterType="ApprovalExpenditure">
+		UPDATE DOC_EXPENDITURE
+		SET EX_DIVISION=#{exDivision}, ACCOUNTING_MONTH=#{accountingMonth}, SPENDER=#{spender}, ACCOUNT=#{account}, EX_CONTENT=#{exContent}, 
+		    EX_DATE=#{exDate}, EX_CLASSIFICATION=#{exClassification}, AMOUNT=#{amount}, EX_HISTORY=#{exHistory}, NOTE=#{note}
+		WHERE APPROVAL_NO=#{approvalNo}
+	</update>
+	
+	<!-- 회의록 업데이트 -->
+	<update id="updateTheMinutesOfAMeeting" parameterType="ApprovalMMinutes">
+		UPDATE DOC_M_MINUTES
+		SET ATTENDEES=#{attendees}, MEETING_PURPOSE=#{meetingPurpose}, MEETING_DATE=#{meetingDate}, MEETING_CONTENT=#{meetingContent}
+		WHERE APPROVAL_NO=#{approvalNo}
+	</update>
+	
+	<!-- 삭제 -->
+	<!-- approval 테이블 삭제 -->
+	<delete id="deleteApproval" parameterType="int">
+		DELETE FROM APPROVAL
+		WHERE APPROVAL_NO=#{approvalNo}
+	</delete>
+	
+	<!-- 결재 라인 삭제 -->
+	<delete id="deleteApprovalLine" parameterType="int">
+		DELETE FROM APPROVAL_LINE
+		WHERE APPROVAL_NO=#{approvalNo}
+	</delete>
+	
+	<!-- 문서 삭제 -->
+	<delete id="deleteDocument" parameterType="Map">
+		DELETE 
+		<if test="docNo == 1">
+		FROM DOC_LOA
+		</if>
+		<if test="docNo == 2">
+		FROM DOC_EXPENDITURE
+		</if>
+		<if test="docNo == 3">
+		FROM DOC_M_MINUTES
+		</if>
+		WHERE APPROVAL_NO=#{approvalNo}
+	</delete>
+	
+	<!-- 정렬 -->
+	<!-- 기안문서함 listcount -->
+	<select id="draftWaitingListCount" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM APPROVAL
+		WHERE WRITER=${emp_no}
+		AND PROGRESS='W'
+	</select>
+	
+	<!-- 기안문서함 list -->
+	<select id="selectDraftWaitingList" parameterType="int" resultMap="approvalResultSet">
+		SELECT *
+		FROM APPROVAL
+		WHERE WRITER=${emp_no}
+		AND PROGRESS='W'
+		ORDER BY CREATE_DATE DESC
+	</select>
 </mapper> 

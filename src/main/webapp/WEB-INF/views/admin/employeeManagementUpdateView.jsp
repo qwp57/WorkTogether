@@ -65,7 +65,7 @@
 							<div class="inputRequired mt-3 ml-4 mr-4 row">									
 								<div class="col-lg-6 form-group">
 									<label>생년월일*</label> 
-									<input type="date" class="form-control" name="birth" value="${ selectEmp.birth }" tabindex="7">			                              									        
+									<input type="date" class="form-control" name="birth" value="${ selectEmp.birth }" tabindex="8">			                              									        
 								</div>
 								<div class="col-lg-6 form-group">
 									<label>입사일*</label>

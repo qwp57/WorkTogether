@@ -19,6 +19,7 @@
 		<typeAlias type="com.uni.wt.project.projectMember.model.dto.ProjectTag" alias="ProjectTag"/>
 		<typeAlias type="com.uni.wt.project.boardAll.model.dto.BoardAll" alias="BoardAll"/>
 		<typeAlias type="com.uni.wt.project.boardAll.model.dto.Reply" alias="Reply"/>
+		<typeAlias type="com.uni.wt.project.model.dto.ProjectFile" alias="ProjectFile"/>
 		<typeAlias type="com.uni.wt.project.post.model.dto.Post" alias="Post"/>
 		<typeAlias type="com.uni.wt.project.schedule.model.dto.Schedule" alias="Schedule"/>
 		<typeAlias type="com.uni.wt.project.todo.model.dto.Todo" alias="Todo"/>
