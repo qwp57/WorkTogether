@@ -37,22 +37,28 @@ width: 50px;
 text-align: center;
 background-color: #EAEAEA;
 height: 20px;
+
 }
+
 .DT{
 width: 100px;
 text-align: center;
 }
+
 .workTime{
 background-color: green;
+border: 0px;
+border-bottom: 1px solid white;
 }
 .workTimeinHoliday{
-background-color: red;
+background-color: #DB0000;
+border: 0px;
+border-bottom: 1px solid white;
 }
 #beforeWeek, #afterWeek{
 cursor: pointer;
 
 }
-
 
 
 </style>
@@ -114,8 +120,8 @@ cursor: pointer;
                                                  src="resources/assets/img/avatar/avatar-1.png"
                                                  id="profileImg" class="img-fluid">
                                             <div class="user-details">
-                                                <div class="user-name"><h3>${loginEmp.name}</h3></div>
-                                                <div class="text-job text-muted"><h6>${loginEmp.job_code}</h6></div>
+                                                <div class="user-name"><h3>${loginEmp.name} ${loginEmp.job_name}</h3></div>
+                                                <div class="text-job text-muted"><h6>${loginEmp.dept_name }소속</h6></div>
                                             </div>
                                         </div>
                                     </div>
@@ -208,7 +214,7 @@ cursor: pointer;
 		                                		<th class="TLtablecss DT">총 근무시간</th>
 		                                	</tr>
 	                                	</thead>
-	                                	<tbody id = "timelineTableData">
+	                                	<tbody id = "timelineTableData" class="timelineTable">
 		                                	
 	                                	</tbody>
 	                                </table>

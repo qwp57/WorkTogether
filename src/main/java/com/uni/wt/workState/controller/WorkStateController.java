@@ -270,6 +270,11 @@ public class WorkStateController {
 	@RequestMapping("/workStatistics.do")
 	public String workStatistics() {
 		
+		
+		
+		
+		
+		
 		return "workstate/workStatistics";
 	}
 	

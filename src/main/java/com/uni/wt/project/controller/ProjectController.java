@@ -256,13 +256,8 @@ public class ProjectController {
     }
     @ResponseBody
     @RequestMapping(value = "/deportEmp.do", produces = "application/json; charset=utf-8")
-    public String deportEmp(@RequestParam(value = "pj_no" ,required = false) int pj_no, @RequestParam("emp_no") int emp_no) throws Exception {
-        log.info("프로젝트 번호 : " + pj_no);
-        log.info("사원 번호 : " + emp_no);
-        ProjectMember pjMember = new ProjectMember();
-        pjMember.setPj_no(pj_no);
-        pjMember.setEmp_no(emp_no);
-        //projectMemberService.quitProject(pjMember);
+    public String deportEmp() throws Exception {
+      
         return "test";
     }
 
