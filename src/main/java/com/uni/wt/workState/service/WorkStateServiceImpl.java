@@ -334,6 +334,34 @@ public class WorkStateServiceImpl implements WorkStateService{
 	}
 
 
+	@Override
+	public ArrayList<Map<String, String>> empOfTheMonth(int month) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public ArrayList<Map<String, String>> statsOfTheMonth(int month) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public ArrayList<Map<String, String>> empOfTheYear(int month) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public ArrayList<Map<String, String>> statsfTheYear(int month) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 	
 
 
