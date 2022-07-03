@@ -104,7 +104,7 @@
 <script type="text/javascript">
 
 $(function(){
-	let msg = "${msg}";
+	let msg = "${msg.msg}";
 	if(msg != ""){
 		alert(msg);
 
@@ -198,7 +198,6 @@ $(function(){
            
             <div class="d-sm-none d-lg-inline-block">Hi, ${sessionScope.loginEmp.name}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
-              <div class="dropdown-title">Logged in 5 min ago</div>
               <a href="#" class="dropdown-item has-icon" id="profile">
                 <i class="far fa-user"></i> 내 정보
               </a>

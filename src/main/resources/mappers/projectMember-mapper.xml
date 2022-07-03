@@ -56,10 +56,17 @@
         WHERE PJ_NO = #{pj_no}
           AND EMP_NO = #{emp_no}
     </update>
+
     <insert id="setProjectTag" parameterType="ProjectTag">
         INSERT INTO PROJECT_TAG
         VALUES (#{tag_no}, #{pj_no})
     </insert>
+    <update id="setAdmin" parameterType="ProjectMember">
+        UPDATE PROJECT_MEMBER
+        SET ADMIN = 'Y'
+        WHERE PJ_NO = #{pj_no}
+          AND EMP_NO = #{emp_no}
+    </update>
     <select id="loadTag" parameterType="int" resultMap="ProjectTagSet">
         SELECT *
         FROM MB_PJ_TAG

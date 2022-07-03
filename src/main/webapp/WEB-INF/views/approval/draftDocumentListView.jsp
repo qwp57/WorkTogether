@@ -52,8 +52,9 @@
 			</div>			
 			<div class="row">
 				<div class="statusList ml-4 mt-3">
-					<span id="all"><a href="#">전체</a></span>
-					<span class="ml-3" id="waiting"><a href="#">진행</a></span>
+					<span id="all"><a href="draftDocument.do">전체</a></span>
+					<span class="ml-3" id="waiting"><a href="draftWaitingList.do">대기</a></span>
+					<span class="ml-3" id="proceeding"><a href="#">진행</a></span>
 					<span class="ml-3" id="completion"><a href="#">완료</a></span>
 					<span class="ml-3" id="rejection"><a href="#">반려</a></span>
 				</div>

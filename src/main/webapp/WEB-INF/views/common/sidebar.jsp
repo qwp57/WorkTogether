@@ -66,10 +66,6 @@
                 </ul>
               </li>
               <li class="nav-item">
-                <a href="/project/mentionedBoard.do" class="nav-link "><i class="bi bi-at fa-lg"></i> <span>나를 멘션</span></a>
-                
-              </li>
-              <li class="nav-item">
                 <a href="/project/myBoard.do" class="nav-link "><i class="bi bi-file-earmark-person-fill"></i>
  <span>내가 쓴 게시글</span></a>
               </li>

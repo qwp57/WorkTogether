@@ -2,6 +2,7 @@ package com.uni.wt.project.model.dao;
 
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.Reply;
+import com.uni.wt.project.model.dto.ProjectFile;
 import com.uni.wt.project.projectMember.model.dto.ProjectTag;
 import com.uni.wt.requestWork.model.dto.RequestWork;
 import org.apache.ibatis.annotations.Mapper;
@@ -9,14 +10,15 @@ import com.uni.wt.project.model.dto.Project;
 import org.apache.ibatis.session.RowBounds;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Mapper
 public interface ProjectMapper {
 
     public int insertProject(Project pj);
 
-    public ArrayList<Project> selectMyProject(int loginEmp);
-    ArrayList<Project> selectMyBookmarkProject(int loginEmp);
+    public ArrayList<Project> selectMyProject(Map<String, Object> paramMap);
+    ArrayList<Project> selectMyBookmarkProject(Map<String, Object> paramMap);
 
     Project selectOneProject(int pj_no);
 
@@ -45,5 +47,7 @@ public interface ProjectMapper {
     int deleteProject(int pj_no);
 
     int keepProject(int pj_no);
+
+    int restoreProject(int pj_no);
 
 }

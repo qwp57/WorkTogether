@@ -507,10 +507,10 @@
 			$("#delExBtn").click(function(){				
 				var tableData = document.getElementById("exTable");
 				
-				if(tableData.rows.length < 3){ //추가된 행이 없음 -> 맨 아래의 합계 삭제 불가
+				if(tableData.rows.length < 3){ //추가된 행이 없음 
 					return;
 				}else {
-					tableData.deleteRow(tableData.rows.length-2); //맨 아래 행은 합계, 맨 아래에서 두번째 행 삭제
+					tableData.deleteRow(tableData.rows.length-1); //맨 아래 행은 합계, 맨 아래에서 두번째 행 삭제
 				}
 			});
 			
@@ -520,10 +520,14 @@
 				console.log(accountInfo === '법인');
 				if(accountInfo === '법인'){
 					$("#indAccount").attr("style", "display:none");
+					$("#indAccount").attr("disabled", "true"); //데이터가 전송되지 않도록 한다.
 					$("#corAccount").removeAttr("style", "display:none");
+					$("#corAccount").removeAttr("disabled", "true"); 
 				}else {
 					$("#corAccount").attr("style", "display:none");
+					$("#corAccount").attr("disabled", "true");
 					$("#indAccount").removeAttr("style", "display:none");
+					$("#indAccount").removeAttr("disabled", "true");
 				}
 			});			
 			

@@ -5,6 +5,7 @@ import com.uni.wt.project.schedule.model.dto.Schedule;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Mapper
 public interface ScheduleMapper {
@@ -21,4 +22,8 @@ public interface ScheduleMapper {
     int loadSchAttendee(Schedule schedule);
 
     ArrayList<Employee> selectSchAttendee(int board_no);
+
+    ArrayList<Schedule> getCalendarByMonth(Map<String, Object> paramMap);
+
+    ArrayList<Schedule> getCalendarByEmp(int emp_no);
 }
