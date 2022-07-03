@@ -24,7 +24,16 @@ $(document).on('click', '#file-label', function () {
     $("#file-label").css("display", "none")
     $(".fileUploadBtn").css("display", "inline-block")
 })
-
+$(document).on('click', '.switchPost', function () {
+    $(".switchSch").css("color", "black")
+    $(".switchTodo").css("color", "black")
+    $(".switchPost").css("color", "#6777ef")
+    $("#postForm").css("display", "block")
+    $("#postSch").css("display", "none")
+    $("#postTodo").css("display", "none")
+    $(".boardUploadForm").attr("id", "enrollPost");
+    $(".boardUploadForm").attr("action", "/post/insertPost.do");
+})
 $(document).on('change', '#upload-file', function () {
     if (window.FileReader) {  // modern browser
         var filename = $(this)[0].files[0].name;

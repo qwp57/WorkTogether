@@ -16,8 +16,9 @@
                              style="margin: 0px; width:20px; height:20px;">
                         </div>
                     </div>
-                    <div class="col-lg-3" >
-                        <div><h5 class="pjTitle" style="margin-top: 10px; cursor: pointer;" id="boardViewTitle">${pj.pj_title}</h5></div>
+                    <div class="col-lg-3">
+                        <div><h5 class="pjTitle" style="margin-top: 10px; cursor: pointer;"
+                                 id="boardViewTitle">${pj.pj_title}</h5></div>
                     </div>
                     <div class="col-lg-8"></div>
                 </div>
@@ -32,7 +33,18 @@
                         <div class="form-group">
                             <div class="row ml-5 mr-5 boardBody">
                                 <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg' id="postWriter"></span>
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.loginEmp.change_name}">
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/assets/img/avatar/avatar-1.png"
+                                                 class="rounded-circle mr-1"></c:when>
+                                        <c:otherwise>
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/upload_files/${loginEmp.change_name }"
+                                                 class="rounded-circle mr-1">
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <span id="postWriter" style="margin-right: 10px;"></span>
                                     <span style="color: gray" id="postUploadDate"></span>
                                 </div>
                                 <div class="col-lg-2 text-right">
@@ -41,9 +53,8 @@
                                     <a class="boardDeleteBtn">&nbsp;삭제</a>
                                 </div>
 
-                                <br><br>
 
-                                <div class="col-12">
+                                <div class="col-12" style="margin-top: 20px;">
                                     <h3 id="postTitle"></h3>
                                     <hr>
                                 </div>
@@ -69,7 +80,17 @@
 
                                 <label
                                         class="col-form-label col-lg-1 pt-0">
-                                    <span class='bi bi-person-circle fa-2x'></span>
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.loginEmp.change_name}">
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/assets/img/avatar/avatar-1.png"
+                                                 class="rounded-circle mr-1"></c:when>
+                                        <c:otherwise>
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/upload_files/${loginEmp.change_name }"
+                                                 class="rounded-circle mr-1">
+                                        </c:otherwise>
+                                    </c:choose>
                                 </label>
                                 <div class="col-lg-9 text-center">
                                     <input type="text" class="form-control replyContentEnroll">
@@ -92,7 +113,18 @@
                         <div class="form-group">
                             <div class="row ml-5 mr-5 boardBody">
                                 <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg' id="schWriter"></span>
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.loginEmp.change_name}">
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/assets/img/avatar/avatar-1.png"
+                                                 class="rounded-circle mr-1"></c:when>
+                                        <c:otherwise>
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/upload_files/${loginEmp.change_name }"
+                                                 class="rounded-circle mr-1">
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <span id="schWriter"></span>
                                     <span style="color: gray" id="schUploadDate"></span>
                                 </div>
                                 <div class="col-lg-2 text-right">
@@ -101,9 +133,7 @@
                                     <a class="boardDeleteBtn">&nbsp;삭제</a>
                                 </div>
 
-                                <br><br>
-
-                                <div class="col-12">
+                                <div class="col-12" style="margin-top: 20px;">
                                     <h3 id="schTitle"></h3>
                                     <br>
                                     <span class='bi bi-calendar fa-lg ml-3' id="schDate"></span>
@@ -146,7 +176,17 @@
                                 </div>
                                 <label
                                         class="col-form-label col-lg-1 pt-0">
-                                    <span class='bi bi-person-circle fa-2x'></span>
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.loginEmp.change_name}">
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/assets/img/avatar/avatar-1.png"
+                                                 class="rounded-circle mr-1"></c:when>
+                                        <c:otherwise>
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/upload_files/${loginEmp.change_name }"
+                                                 class="rounded-circle mr-1">
+                                        </c:otherwise>
+                                    </c:choose>
                                 </label>
                                 <div class="col-lg-9 text-center">
                                     <input type="text" class="form-control replyContentEnroll">
@@ -169,7 +209,18 @@
                         <div class="form-group">
                             <div class="row ml-5 mr-5 boardBody">
                                 <div class="col-lg-10">
-                                    <span class='bi bi-person-circle fa-lg' id="todoWriter"></span>
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.loginEmp.change_name}">
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/assets/img/avatar/avatar-1.png"
+                                                 class="rounded-circle mr-1"></c:when>
+                                        <c:otherwise>
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/upload_files/${loginEmp.change_name }"
+                                                 class="rounded-circle mr-1">
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <span id="todoWriter"></span>
                                     <span style="color: gray" id="todoUploadDate"></span>
                                 </div>
                                 <div class="col-lg-2 text-right">
@@ -178,9 +229,8 @@
                                     <a class="boardDeleteBtn">&nbsp;삭제</a>
                                 </div>
 
-                                <br><br>
 
-                                <div class="col-12">
+                                <div class="col-12" style="margin-top: 20px;">
                                     <h3 id="todoTitle"></h3>
                                     <hr>
                                 </div>
@@ -221,7 +271,17 @@
 
                                 <label
                                         class="col-form-label col-lg-1 pt-0">
-                                    <span class='bi bi-person-circle fa-2x'></span>
+                                    <c:choose>
+                                        <c:when test="${empty sessionScope.loginEmp.change_name}">
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/assets/img/avatar/avatar-1.png"
+                                                 class="rounded-circle mr-1"></c:when>
+                                        <c:otherwise>
+                                            <img alt="image" style="height: 40px;"
+                                                 src="/resources/upload_files/${loginEmp.change_name }"
+                                                 class="rounded-circle mr-1">
+                                        </c:otherwise>
+                                    </c:choose>
                                 </label>
                                 <div class="col-lg-9 text-center">
                                     <input type="text" class="form-control replyContentEnroll">

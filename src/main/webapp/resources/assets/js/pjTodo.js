@@ -33,6 +33,7 @@ $(document).on('click', '.ckedInput', function () {
             })
             $(this).parent().next().children(".ckedTodo").removeClass("underline")
         }
+        loadBoards()
         var percent = $(".ckedInput:checked").length / $(".ckedInput").length * 100
         $("#todoCompletePercent").html(Math.floor(percent) + '%')
         $("#todoBar").attr("data-width", percent + '%;')

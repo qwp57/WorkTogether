@@ -326,7 +326,9 @@
                         $.each(list.schAttendeeList, function (i, obj) {
                             if (obj.emp_no != ${emp_no}) {
                                 var content = '<tr>'
-                                content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                                content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                                content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                                content += 'id="profileImg_Sch" class="img-fluid m-3 rounded-circle"></span>'
                                 content += '</td>'
                                 content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                                 content += '<td rowspan="2" style="width: 20%; text-align: right;">'

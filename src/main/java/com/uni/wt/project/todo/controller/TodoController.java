@@ -84,8 +84,7 @@ public class TodoController {
             }
         }
 
-        msgMap.put("msg", "게시물 등록 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        redirect.addFlashAttribute("msg", "게시물 등록 완료.");
 
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
@@ -184,8 +183,7 @@ public class TodoController {
                 noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");
             }
         }
-        msgMap.put("msg", "게시물 수정 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        redirect.addFlashAttribute("msg", "게시물 수정 완료.");
 
         if (type.equals("home")){
             return "redirect:/project/detailPj.do?pj_no=" + pj_no;

@@ -9,6 +9,7 @@
 <head>
     <meta charset="UTF-8">
 
+
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <link
@@ -240,7 +241,8 @@
         text-align: center;
         margin-top: 13%;
     }
-    .bi-circle-fill{
+
+    .bi-circle-fill {
         margin-right: 20px;
     }
 
@@ -630,13 +632,13 @@
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
-                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        } else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD ')
                                 + moment(list.sch.sch_start).format('LT') + ' ~ '
                                 + moment(list.sch.sch_end).format('LT (ddd)')
                             )
-                        }  else {
+                        } else {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD LT (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD LT (ddd)')
                             )
@@ -654,7 +656,9 @@
                         $.each(list.schAttendeeList, function (i, obj) {
                             if (obj.emp_no != ${pjMember.emp_no}) {
                                 var content = '<tr>'
-                                content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                                content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                                content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                                content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                                 content += '</td>'
                                 content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                                 content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -752,45 +756,45 @@
         }
     )
 
-
-    $("#close").click(function () {
-        //console.log("진입확인")
-        $("#fileAndMentionArea").html(
-            '<input type="text" class="form-control" id="file-label"' +
-            'style="display: none; border: 0px white;">' +
-            '<input type="file" name="upload_file" id="upload-file" hidden>' +
-            '<i class="bi bi-paperclip fa-2x fileUploadBtn"></i>' +
-            '<i class="bi bi-person fa-2x postFor"></i>'
-        )
-        $("#postForArea").html('')
-        $('#summernote').summernote('reset');
-        $(".todos").html(
-            '<div class="form-group row">' +
-            '<div class="col-lg-1 pr-0 text-right">' +
-            '</div>' +
-            '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
-            '<input type="text" class="form-control"' +
-            'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
-            '</div>' +
-            '<div class="col-sm-12 col-md-3 col-lg-1">' +
-            '<div class="input-group todoInput date" style="width: 100px;">' +
-            '<input type="text" style="display: none; width:25px;"' +
-            'class="form-control bg-white border-0 small todoDue">' +
-            '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-lg-1">' +
-            '<i class="bi bi-person fa-2x todoPerson"></i>' +
-            '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
-            '<input type="hidden" name="todo_for">' +
-            '</p>' +
-            '</div>' +
-            '<input type="hidden" name="status" value="N">' +
-            '</div>'
-        )
-        datepickerLoad()
-        loadBoards()
-    })
+    //
+    // $("#close").click(function () {
+    //     //console.log("진입확인")
+    //     $("#fileAndMentionArea").html(
+    //         '<input type="text" class="form-control" id="file-label"' +
+    //         'style="display: none; border: 0px white;">' +
+    //         '<input type="file" name="upload_file" id="upload-file" hidden>' +
+    //         '<i class="bi bi-paperclip fa-2x fileUploadBtn"></i>' +
+    //         '<i class="bi bi-person fa-2x postFor"></i>'
+    //     )
+    //     $("#postForArea").html('')
+    //     $('#summernote').summernote('reset');
+    //     $(".todos").html(
+    //         '<div class="form-group row">' +
+    //         '<div class="col-lg-1 pr-0 text-right">' +
+    //         '</div>' +
+    //         '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
+    //         '<input type="text" class="form-control"' +
+    //         'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
+    //         '</div>' +
+    //         '<div class="col-sm-12 col-md-3 col-lg-1">' +
+    //         '<div class="input-group todoInput date" style="width: 100px;">' +
+    //         '<input type="text" style="display: none; width:25px;"' +
+    //         'class="form-control bg-white border-0 small todoDue">' +
+    //         '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
+    //         '</div>' +
+    //         '</div>' +
+    //         '<div class="col-lg-1">' +
+    //         '<i class="bi bi-person fa-2x todoPerson"></i>' +
+    //         '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
+    //         '<input type="hidden" name="todo_for">' +
+    //         '</p>' +
+    //         '</div>' +
+    //         '<input type="hidden" name="status" value="N">' +
+    //         '</div>'
+    //     )
+    //     datepickerLoad()
+    //     loadBoards()
+    // })
 </script>
 
 <%-- 프로젝트 헤드 --%>
@@ -869,7 +873,9 @@
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
                     var content = '<tr>'
-                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                    content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                    content += 'id="profileImg_pjEmp" class="img-fluid m-3 rounded-circle"></span>'
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
                     content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
@@ -1041,7 +1047,9 @@
                     if (list.length > 0) {
                         $.each(list, function (i, obj) {
                             var content = '<tr>'
-                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                            content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                            content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                             content += '</td>'
                             content += '<th style="width: 50%">' + obj.name + '</th>'
                             content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -1138,7 +1146,9 @@
                 $.each(list, function (i, obj) {
                     if (obj.emp_no != ${pjMember.emp_no}) {
                         var content = '<tr>'
-                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                        content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                        content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                        content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                         content += '</td>'
                         content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                         content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -1199,7 +1209,9 @@
                 $.each(list, function (i, obj) {
                     if (obj.emp_no != ${pjMember.emp_no}) {
                         var content = '<tr>'
-                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                        content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                        content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                        content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                         content += '</td>'
                         content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                         content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -1254,6 +1266,7 @@
 
     })
 </script>
+
 <%--할일글--%>
 <script>
     $(document).on('click', '#todoBtn', function () {
@@ -1293,7 +1306,9 @@
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
                     var content = '<tr class="selectTodoFor">'
-                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                    content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                    content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
                     content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'

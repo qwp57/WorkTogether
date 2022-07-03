@@ -9,6 +9,9 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>Ecommerce Dashboard &mdash; Stisla</title>
 
+    <%-- 카카오맵 api--%>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=06989ef7025ad30be2fddb6e0d28320b&libraries=services"></script>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- General CSS Files -->
@@ -540,7 +543,9 @@
                     $.each(list.schAttendeeList, function (i, obj) {
                         if (obj.emp_no != '${sessionScope.loginEmp.emp_no}') {
                             var content = '<tr>'
-                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                            content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                            content += 'id="profileImg_Sch" class="img-fluid m-3 rounded-circle"></span>'
                             content += '</td>'
                             content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                             content += '<td rowspan="2" style="width: 20%; text-align: right;">'

@@ -103,7 +103,7 @@
                             <div class="col-sm-12 col-md-7">
                                 <!-- <input type="text" id="datepicker" class="form-control"> -->
 
-                                <div class="form-group" style="width: 49%; display: inline-block;">
+                                <div class="form-group" style="width: 48%; display: inline-block;">
                                     <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
                                         <input type="text" class="form-control datetimepicker-input"
                                                data-target="#datetimepicker7" name="sch_start"/>
@@ -113,8 +113,8 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="form-group" style="width: 49%; display: inline-block;">
+                                <span>~</span>
+                                <div class="form-group" style="width: 48%; display: inline-block;">
                                     <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
                                         <input type="text" class="form-control datetimepicker-input"
                                                data-target="#datetimepicker8" name="sch_end"/>
@@ -134,7 +134,7 @@
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
                                     class="bi bi-person fa-2x"></i></label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가">
+                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가" readonly style="background-color: white; border: 0px white;">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -142,8 +142,11 @@
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
                                     class="bi bi-geo-alt-fill fa-2x"></i> </label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" class="form-control bg-white border-0 small" name="sch_place"
-                                       placeholder="장소를 입력하세요">
+
+                                <input type="text" class="form-control bg-white border-0 small" id="kakaoMapSearch"
+                                       placeholder="장소 검색하세요">
+                                <input type="text" class="form-control bg-white border-0 small" name="sch_place">
+                                <div id="map" style="width:425px;height:250px;"></div>
                             </div>
                         </div>
                         <div class="form-group row mb-4">
