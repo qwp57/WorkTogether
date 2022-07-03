@@ -103,6 +103,14 @@
 							</c:choose>
 						</tr>
 					</table>
+					<c:if test="${ map['appL'].progress == 'R' }">
+					<table class="table table-bordered mt-3">
+						<tr>
+							<th style="width: 15%">반려 사유</th>
+							<td>${ map['appL'].rejectionReason }</td>
+						</tr>
+					</table>
+					</c:if>
 					<table class="table table-bordered mt-3">							
 						<tr>
 							<th style="width: 15%">기안부서</th>
@@ -218,18 +226,20 @@
 			console.log(progress);
 			console.log(lineLevel);
 			
-			alert("결재를 승인하시겠습니까?");
-			
-			//첫번째 결재자와 같으면 결재 순서를 확인하지 않아도 된다.
-			if(emp_no == firstApproverNo){ 
-				location.href="approvalUpdate.do?firstApproverNo=" + firstApproverNo +"&approvalNo=" +approvalNo + "&lineLevel=" + lineLevel;
-			}else if(emp_no == finalApproverNo){
-				if(progress == 'W') { //아직 첫번째 결재자가 결재하지 않은 상태
-					alert("결재 순서가 아닙니다."); return false;											
-				}else if(progress == 'P'){
-					location.href="approvalUpdate.do?finalApproverNo=" + finalApproverNo +"&approvalNo=" +approvalNo + "&lineLevel=" + lineLevel;
+			if(confirm("결재를 승인하시겠습니까?") == true){
+				//첫번째 결재자와 같으면 결재 순서를 확인하지 않아도 된다.
+				if(emp_no == firstApproverNo){ 
+					location.href="approvalUpdate.do?firstApproverNo=" + firstApproverNo +"&approvalNo=" +approvalNo + "&lineLevel=" + lineLevel;
+				}else if(emp_no == finalApproverNo){
+					if(progress == 'W') { //아직 첫번째 결재자가 결재하지 않은 상태
+						alert("결재 순서가 아닙니다."); return false;						
+					}else if(progress == 'P'){
+						location.href="approvalUpdate.do?finalApproverNo=" + finalApproverNo + "&approvalNo=" + approvalNo + "&lineLevel=" + lineLevel;
+					}
 				}
-			}		
+			}else {
+				return false;
+			}			
 		};
 		
 		function rejectFunction(){

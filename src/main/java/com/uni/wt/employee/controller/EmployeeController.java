@@ -26,6 +26,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.uni.wt.approval.model.dto.Approval;
+import com.uni.wt.approval.model.service.ApprovalService;
 import com.uni.wt.common.commonFile.FileService;
 import com.uni.wt.common.notice.dto.Notice;
 import com.uni.wt.common.notice.service.NoticeService;
@@ -57,6 +59,9 @@ public class EmployeeController {
 	
 	@Autowired
 	private FileService fileService;
+	
+	@Autowired
+	private ApprovalService approvalService;
 	
 	private Map<String, String> msgMap = new HashMap<String, String>(); 
 	
@@ -107,6 +112,11 @@ public class EmployeeController {
 		ArrayList<Map<String, String>> jobList = empService.getJobList();
 		m.addAttribute("jList", jobList);
 		m.addAttribute("dList", deptList);
+		
+		//결재 대기 문서
+		int empNo = emp.getEmp_no();
+		ArrayList<Approval> appList = approvalService.mainApprovalWaitingList(empNo);
+		m.addAttribute("appList", appList);
 		
 		return "common/main";
 	}

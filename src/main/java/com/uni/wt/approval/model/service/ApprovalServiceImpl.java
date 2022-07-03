@@ -36,6 +36,14 @@ public class ApprovalServiceImpl implements ApprovalService {
 	private ApprovalMapper approvalMapper;
 	
 	@Override
+	public ArrayList<Approval> mainApprovalWaitingList(int empNo) {
+		
+		ArrayList<Approval> appList = approvalMapper.mainApprovalWaitingList(empNo);
+		
+		return appList;
+	}
+		
+	@Override
 	public ArrayList<Department> selectDeptList() throws Exception {
 		
 		return approvalMapper.selectDeptList();
@@ -46,7 +54,55 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return approvalMapper.selectEmpList();
 	}
+	
+	@Override
+	public int approvalWaitCount(int empNo) throws Exception {
+		
+		int waitCount = approvalMapper.approvalWaitCount(empNo);
+		
+		return waitCount;
+	}
+	
+	@Override
+	public int approvalCompleteCount(int empNo) throws Exception {
 
+		int completeCount = approvalMapper.approvalCompleteCount(empNo);
+		
+		return completeCount;
+	}
+	
+	@Override
+	public int approvalProceedingCount(int empNo) throws Exception {
+		
+		int proceedingCount = approvalMapper.approvalProceedingCount(empNo);
+		
+		return proceedingCount;
+	}
+	
+	@Override
+	public int approvalNewCount(int empNo) throws Exception {
+		
+		int newApprovalCount = approvalMapper.approvalNewCount(empNo);
+		
+		return newApprovalCount;
+	}
+	
+	@Override
+	public ArrayList<Approval> mainDraftList(int empNo) throws Exception {
+
+		ArrayList<Approval> draftList = approvalMapper.mainDraftList(empNo);
+		
+		return draftList;
+	}
+	
+	@Override
+	public ArrayList<Approval> mainAppList(int empNo) throws Exception {
+		
+		ArrayList<Approval> appList = approvalMapper.mainAppList(empNo);
+		
+		return appList;
+	}
+	
 	@Override
 	public void insertApproval(Approval app) throws Exception {
 		
@@ -409,6 +465,90 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 		return appEx;
 	}
+
+	@Override
+	public void updateExpenditure(ApprovalExpenditure appEx) throws Exception {
+		
+		int result = approvalMapper.updateExpenditure(appEx);
+		
+		if(result < 0) {
+			new Exception("지출 결재서 업데이트에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public ApprovalMMinutes selectUpdateAppMm(int approvalNo) throws Exception {
+		
+		ApprovalMMinutes appMm = approvalMapper.selectApprovaltheMinutesOfAMeeting(approvalNo);
+		
+		if(appMm == null) {
+			new Exception("수정할 회의록 조회에 실패하였습니다.");
+		}
+		
+		return appMm;
+	}
+
+	@Override
+	public void updateTheMinutesOfAMeeting(ApprovalMMinutes appMm) throws Exception {
+		
+		int result = approvalMapper.updateTheMinutesOfAMeeting(appMm);
+		
+		if(result < 0) {
+			new Exception("회의록 업데이트에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public void deleteApproval(int approavalNo) throws Exception {
+		
+		int result = approvalMapper.deleteApproval(approavalNo);
+		
+		if(result < 0) {
+			new Exception("기안서 삭제에 실패하였습니다.");
+		}
+	}
+
+	@Override
+	public void deleteApprovalLine(int approvalNo) throws Exception {
+		
+		int result = approvalMapper.deleteApprovalLine(approvalNo);
+		
+		if(result < 0) {
+			new Exception("기안서 삭제에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public void deleteDocument(Map<String, Object> map) throws Exception {
+		
+		int result = approvalMapper.deleteDocument(map);
+		
+		if(result < 0) {
+			new Exception("기안서 삭제에 실패하였습니다.");
+		}
+		
+	}
+
+	@Override
+	public int draftWaitingListCount(int emp_no) throws Exception {
+		
+		return  approvalMapper.draftWaitingListCount(emp_no);
+	}
+
+	@Override
+	public ArrayList<Approval> selectDraftWaitingList(int emp_no, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Approval> draftList = approvalMapper.selectDraftWaitingList(emp_no, rowBounds);
+				
+		return draftList;
+	}
+
 
 
 }

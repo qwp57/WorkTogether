@@ -50,9 +50,9 @@
 			</div>
 			<div class="float-right">
 				<c:choose>
-					<c:when test="${ map['app'].progress eq 'W' || map['app'].progress eq 'R' }"> <!-- 결재 상태가 대기이거나 반려일 때만 수정 가능 -->
-						<button type="button" class="btn btn-primary" onclick="location.href='?approvalNo=' + ${map['app'].approvalNo}">수정</button>
-						<button type="button" class="btn btn-danger" onclick="location.href='deleteMyLetterOfApproval.do'">삭제</button>
+					<c:when test="${ map['app'].progress eq 'W'}"> <!-- 결재 상태가 대기일 때만 수정 가능 -->
+						<button type="button" class="btn btn-primary" onclick="location.href='updateMyTheMinutesOfAMeetingForm.do?approvalNo=' + ${map['app'].approvalNo}">수정</button>
+						<button type="button" class="btn btn-danger" onclick="deleteDocument()">삭제</button>
 					</c:when>
 					<c:otherwise>
 						<button type="button" class="btn btn-primary" disabled>수정</button>
@@ -103,6 +103,14 @@
 							</c:choose>
 						</tr>
 					</table>
+					<c:if test="${ map['appL'].progress == 'R' }">
+					<table class="table table-bordered mt-3">
+						<tr>
+							<th style="width: 15%">반려 사유</th>
+							<td>${ map['appL'].rejectionReason }</td>
+						</tr>
+					</table>
+					</c:if>
 					<table class="table table-bordered mt-3">							
 						<tr>
 							<th style="width: 15%">기안부서</th>
@@ -174,8 +182,15 @@
 			</section>
 		</div>
 	</div>
-	
-	
+	<script>
+		function deleteDocument(){
+			if(confirm("정말 삭제하시겠습니까?") == true){
+				location.href = "deleteApproval.do?approvalNo=" + "${ map['app'].approvalNo }" + "&docNo=" + "${map['app'].docNo}" + "&fileNo=" + "${map['app'].fileNo}";
+			}else {
+				return false;
+			}
+		};
+	</script>
 <jsp:include page="../common/footer.jsp"/>
 </body>
 </html>
