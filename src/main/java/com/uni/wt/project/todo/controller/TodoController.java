@@ -135,9 +135,8 @@ public class TodoController {
 
         return new GsonBuilder().setDateFormat("MM-dd").create().toJson(todos);
     }
-
     @RequestMapping("/editTodo.do")
-    public String editTodo(Todo todo, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
+    public String editTodo(Todo todo, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect, String type) throws Exception {
 //        log.info("할일 : " + todo.getStatus());
 //        log.info("할일 : " + todo);
         String[] todoContents = todo.getTodo_content().split(",", -1);
@@ -169,7 +168,13 @@ public class TodoController {
         msgMap.put("msg", "게시물 수정 완료.");
         redirect.addFlashAttribute("msg", msgMap);
 
-        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        if (type.equals("home")){
+            return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        }else if(type.equals("myBoard")){
+            return "redirect:/project/myBoard.do";
+        }else {
+            return "redirect:/project/";
+        }
     }
 
     @ResponseBody

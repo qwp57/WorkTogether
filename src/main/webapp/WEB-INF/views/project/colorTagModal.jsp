@@ -370,7 +370,5 @@
     </div>
 </div>
 </body>
-<script>
-
-</script>
+<script src="/resources/assets/js/pjColorTag.js"></script>
 </html>

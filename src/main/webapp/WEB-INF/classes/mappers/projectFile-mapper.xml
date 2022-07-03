@@ -11,21 +11,47 @@
 	<result property="change_name" column="CHANGE_NAME"/>
 	<result property="path" column="PATH"/>
 	<result property="img_path" column="IMG_PATH"/>
+	<result property="name" column="NAME"/>
 </resultMap>
-	
 
 <insert id="insertFile" parameterType="ProjectFile">
 	INSERT INTO PJ_FILE
 	VALUES(PJFILE_SEQ.NEXTVAL ,#{board_no}, SYSDATE, #{path}, #{img_path}, #{origin_name}, #{change_name})
 </insert>
-<select id="getFile" parameterType="int" resultMap="projectFileSet">
+<select id="getFileByBoardNo" parameterType="int" resultMap="projectFileSet">
 	SELECT *
 	FROM PJ_FILE
 	WHERE BOARD_NO = #{board_no}
 </select>
+	<select id="getFileByFileNo" parameterType="int" resultMap="projectFileSet">
+		SELECT *
+		FROM PJ_FILE
+		WHERE FILE_NO = #{file_no}
+	</select>
 	<delete id="deleteFile" parameterType="int">
 		DELETE FROM PJ_FILE
 		WHERE FILE_NO = #{file_no}
 	</delete>
-  
+	<select id="getPjFiles" parameterType="map" resultMap="projectFileSet">
+		SELECT A.*, D.NAME
+		FROM PJ_FILE A
+				 JOIN PJ_BOARD B on A.BOARD_NO = B.BOARD_NO
+				 JOIN PROJECT C on B.PJ_NO = C.PJ_NO
+				 JOIN EMPLOYEE D on B.WRITER = D.EMP_NO
+		WHERE C.PJ_NO = #{pj_no}
+		<choose>
+			<when test="sort.equals('nameAsc')">
+				ORDER BY A.ORIGIN_NAME
+			</when>
+			<when test="sort.equals('nameDesc')">
+				ORDER BY A.ORIGIN_NAME DESC
+			</when>
+			<when test="sort.equals('dateAsc')">
+				ORDER BY A.UPLOAD_DATE
+			</when>
+			<when test="sort.equals('dateDesc')">
+				ORDER BY A.UPLOAD_DATE DESC
+			</when>
+		</choose>
+	</select>
 </mapper>

@@ -379,9 +379,9 @@
     </div>
 </div>
 
-
+<jsp:include page="../common/footer.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
-<jsp:include page="pjForm.jsp"/>
+<jsp:include page="pjFormModal.jsp"/>
 <script>
     $(function () {
 

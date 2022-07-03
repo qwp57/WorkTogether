@@ -249,9 +249,9 @@
     </div>
 </div>
 </body>
-
+<jsp:include page="../common/footer.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
-<jsp:include page="pjForm.jsp"/>
+<jsp:include page="pjFormModal.jsp"/>
 <script>
     $(function () {
         loadTag()
@@ -292,7 +292,6 @@
                 console.log($tag_no)
                 removeTag($tag_no)
             }
-
         })
 
         function loadTag() {
@@ -308,14 +307,14 @@
                         $("#tagTable").css("display", "none")
                     } else {
                         $("#tagNullInfo").css("display", "none")
-                        $("#tagTable").css("display", "block")
+                        $("#tagTable").css("display", "table")
                         $.each(list, function (i, obj) {
                             $("#tagTable").append(
                                 '<tr style="width: 100%">' +
-                                '<td class="moveTrigger"><i class="fa fa-tag fa-lg"><input type="text" value="' + obj.tag_no + '" style="display: none;" class="tag_no"></i>' +
+                                '<td class="moveTrigger" style="width: 15%;"><i class="fa fa-tag fa-lg"><input type="text" value="' + obj.tag_no + '" style="display: none;" class="tag_no"></i>' +
                                 '</td>' +
                                 '<th class="tagName moveTrigger" style="width: 50%">' + obj.tag_name + '</th>' +
-                                '<td style="width: 15%; text-align: right;">' +
+                                '<td style="width: 15%; text-align: center;">' +
                                 '<div class="btn-group sidemenu dropright">' +
                                 '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
                                 '<div class="dropdown-menu dropright">' +

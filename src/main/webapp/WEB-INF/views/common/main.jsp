@@ -123,7 +123,7 @@ td:last-child {
 	-text: white;
 	margin: 20px;
 	padding: 20px;
-	margin-left: 40px;
+	margin-left: 10px;
 	width: 50px;
 	height: 50px;
 	border-radius: 10px;
@@ -165,7 +165,12 @@ td:last-child {
 .color-8 {
 	background: gray;
 }
-
+ .favoYellow {
+     color: #f3da35;
+ }
+ .listViewTable tr{
+     cursor: pointer;
+ }
 
 </style>
 </head>
@@ -296,21 +301,28 @@ td:last-child {
                             <div class="card-body text-center h-100">
                                 <h4 class="text-left">즐겨찾기</h4>
                                 <hr>
-								<table class="listViewTable">
-									<c:forEach var="index" begin="1" end="5">
-										<tr style="width: 100%">
-											<td style="width: 3%;"></td>
-											<td><div class="colors color-${index }"></div></td>
-											<td style="width: 10%;"><i
-												class='icon fa fa-star fa-lg favoYellow'></i></td>
-											<th style="width: 40%;">테스트</th>
-											<td style="width: 20%;"><i
-													class='fa fa-user'></i>&nbsp;7</td>
-											<td style="width: 30%;"><i
-													class='	fa fa-flag'></i>&nbsp;2022-06-02</td>
-										</tr>
-										</c:forEach>
-									</table>
+                                <h3 id="pjInfo" style="margin-top: 180px; display: block">즐겨찾기한 프로젝트가 없습니다.</h3>
+                                <c:if test="${pjList ne null}">
+                                    <table class="listViewTable">
+                                        <c:forEach items="${pjList}" var="pj" begin="0" end="4">
+                                            <tr style="width: 100%">
+                                                <td>
+                                               <div class="colors" style="margin: 10px">
+                                                    <input name="pj_no" class="pj_no${pj.pj_no}" type="hidden" value="${pj.pj_no}">
+                                                   </div>
+                                                </td>
+                                                <td style="width: 10%;">
+                                                    <i class="icon fa fa-star fa-2x favoYellow listView favoBtn"></i></td>
+                                                <th style="width: 40%; text-align: left;">${pj.pj_title}</th>
+                                                <td style="width: 20%">
+                                                    <i class="fa fa-user">&nbsp;${pj.count}</i>
+                                                   </td>
+                                                <td style="width: 30%;">
+                                                  <i class="fa fa-flag">&nbsp;${pj.create_date}</i>
+                                                   </td>
+                                        </c:forEach>
+                                    </table>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -359,5 +371,31 @@ td:last-child {
 </div>
 <jsp:include page="../common/footer.jsp"/>
 <script src="resources/assets/js/workTimecheck_main.js?ver=1"></script>
+<script>
+
+    $(function (){
+        if($("input[name='pj_no']").length == 0){
+            $("#pjInfo").css("display", "block")
+        }else {
+            $("#pjInfo").css("display", "none")
+            $.ajax({
+                url: '/project/selectProjectColor.do',
+                success: function (list) {
+                    console.log(list)
+                    $.each(list, function (i, obj) {
+                        $(".pj_no" + obj.pj_no).parent(".project").addClass(obj.pj_color)
+                        $(".pj_no" + obj.pj_no).parent(".colors").addClass(obj.pj_color)
+                    })
+                }
+            })
+        }
+    })
+    $(document).on("click", ".listViewTable tr", function () {
+        //console.log($(this).find("input[name='pj_no']").val())
+        var $pj_no = $(this).find("input[name='pj_no']").val()
+        location.href = "/project/detailPj.do?pj_no=" + $pj_no;
+    })
+
+</script>
 </body>
 </html>
