@@ -183,13 +183,16 @@
 						<div class="mb-2"><strong>회의 내용</strong></div>
 						<textarea class="" id="summernote" name="meetingContent"></textarea>	
 						
-						<div class="" >
+						<div>
 							<div class="mt-5" style="font-size:15px"><strong>첨부파일</strong></div>
-							<div id="fileUpload" class="text-center mt-2 pt-5">클릭하여 파일을 추가하세요.</div>
-							<div id="fileArea">
-								<input type="file" class="" id="upfile" name="upfile" style="display:none"/>									
+							<div id="fileUpload" class="mt-2 pt-5">
+								<span id="file_text" class="ml-2">클릭하여 파일을 추가하세요.</span>
+								<span id="file_name" class="ml-2"></span>
 							</div>
-						</div>	
+							<div id="fileArea">
+								<input type="file" class="" id="upfile" name="upfile" style="display:none"/>								
+							</div>
+						</div>
 					</div>
 					<div class="float-right mt-3">
 						<button type="submit" class="btn btn-primary">기안하기</button>

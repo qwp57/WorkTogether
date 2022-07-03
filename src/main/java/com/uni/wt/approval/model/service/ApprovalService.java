@@ -14,10 +14,24 @@ import com.uni.wt.employee.model.dto.Employee;
 
 public interface ApprovalService {
 	
+	ArrayList<Approval> mainApprovalWaitingList(int empNo);
+	
 	ArrayList<Department> selectDeptList() throws Exception;
 
 	ArrayList<Employee> selectEmpList() throws Exception;
 
+	int approvalWaitCount(int empNo) throws Exception;
+	
+	int approvalCompleteCount(int empNo) throws Exception;
+	
+	int approvalProceedingCount(int empNo) throws Exception;
+	
+	int approvalNewCount(int empNo) throws Exception;
+	
+	ArrayList<Approval> mainDraftList(int empNo) throws Exception;
+	
+	ArrayList<Approval> mainAppList(int empNo) throws Exception;
+	
 	void insertApproval(Approval app) throws Exception;
 	
 	void insertApprovalLine1(ApprovalLine appL) throws Exception;
@@ -90,8 +104,22 @@ public interface ApprovalService {
 
 	ApprovalExpenditure selectUpdateAppEx(int approvalNo) throws Exception;
 
+	void updateExpenditure(ApprovalExpenditure appEx) throws Exception;
 
+	ApprovalMMinutes selectUpdateAppMm(int approvalNo) throws Exception;
 
+	void updateTheMinutesOfAMeeting(ApprovalMMinutes appMm) throws Exception;
 
+	void deleteApproval(int approavalNo) throws Exception;
+
+	void deleteApprovalLine(int approvalNo) throws Exception;
+
+	void deleteDocument(Map<String, Object> map) throws Exception;
+
+	int draftWaitingListCount(int emp_no) throws Exception;
+
+	ArrayList<Approval> selectDraftWaitingList(int emp_no, PageInfo pi);
+
+	
 
 }

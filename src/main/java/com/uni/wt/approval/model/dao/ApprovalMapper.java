@@ -17,10 +17,24 @@ import com.uni.wt.employee.model.dto.Employee;
 @Mapper
 public interface ApprovalMapper {
 
+	ArrayList<Approval> mainApprovalWaitingList(int empNo);
+	
 	ArrayList<Department> selectDeptList();
 
 	ArrayList<Employee> selectEmpList();
 
+	int approvalWaitCount(int empNo);
+	
+	int approvalCompleteCount(int empNo);
+	
+	int approvalProceedingCount(int empNo);
+	
+	int approvalNewCount(int empNo);
+	
+	ArrayList<Approval> mainDraftList(int empNo);
+	
+	ArrayList<Approval> mainAppList(int empNo);
+	
 	int insertApproval(Approval app);
 
 	int insertApprovalLine1(ApprovalLine appL);
@@ -84,5 +98,20 @@ public interface ApprovalMapper {
 	int updateApprovalLineLevel(Map<String, Object> map);
 
 	int updateLetterOfApproval(ApprovalLoa loa);
+
+	int updateExpenditure(ApprovalExpenditure appEx);
+
+	int updateTheMinutesOfAMeeting(ApprovalMMinutes appMm);
+
+	int deleteApproval(int approavalNo);
+
+	int deleteApprovalLine(int approvalNo);
+
+	int deleteDocument(Map<String, Object> map);
+
+	int draftWaitingListCount(int emp_no);
+
+	ArrayList<Approval> selectDraftWaitingList(int emp_no, RowBounds rowBounds);
+
 
 }

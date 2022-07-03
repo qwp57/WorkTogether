@@ -43,7 +43,35 @@ public class ApprovalController {
 	
 	//전자결재 홈으로 이동
 	@RequestMapping("approvalMain.do")
-	public String approvalMainPage() {
+	public String approvalMainPage(HttpServletRequest request, Model model) throws Exception {
+		//로그인한 사람의 emp 정보를 가지고 온다.
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		int empNo = emp.getEmp_no();
+		//기안 현황 
+		//결재 대기
+		int waitCount = approvalService.approvalWaitCount(empNo);
+		//결재 완료
+		int completeCount = approvalService.approvalCompleteCount(empNo);
+		//결재 진행 중
+		int proceedingCount = approvalService.approvalProceedingCount(empNo);
+		
+		//결재 문서 현황
+		//새 결재 문서
+		int newApprovalCount = approvalService.approvalNewCount(empNo);
+		
+		//내가 기안한 문서
+		ArrayList<Approval> draftList = approvalService.mainDraftList(empNo);
+		
+		//나에게 온 결재 문서
+		ArrayList<Approval> appList = approvalService.mainAppList(empNo);
+		
+		model.addAttribute("waitCount", waitCount);
+		model.addAttribute("completeCount", completeCount);
+		model.addAttribute("proceedingCount", proceedingCount);
+		model.addAttribute("newApprovalCount", newApprovalCount);
+		model.addAttribute("draftList", draftList);
+		model.addAttribute("appList", appList);
+		
 		return "approval/approvalMainView";
 	}
 	
@@ -592,10 +620,133 @@ public class ApprovalController {
 		return "approval/myExpenditureUpdateForm";
 	}
 	
-	//회의록 수정으로 이동
-	@RequestMapping("updateMyTheMinutesOfAMeeting.do")
-	public String updateMyTheMinutesOfAMeetingForm() {
+	//지출 결의서 수정
+	@RequestMapping("updateMyExpenditure.do")
+	public ModelAndView updateMyExpenditure(Approval app, ApprovalExpenditure appEx, @RequestParam(name="firstApproverNo") int firstApproverNo, @RequestParam(name="finalApp", required = false) String finalApp, @RequestParam(name="reUpfile" ,required=false) MultipartFile file, 
+											@RequestParam(value="exDateList", required = false)List<String> exDateList, @RequestParam(value="exClassificationList", required = false)List<String> exClassificationList, @RequestParam(value="amountList", required = false) List<String> amountList, 
+											@RequestParam(value="exHistoryList", required = false)List<String> exHistoryList, @RequestParam(value="noteList", required = false)List<String> noteList, ModelAndView mv, HttpServletRequest request) throws Exception	{
+		log.info("업데이트 app : " + app);
+		log.info("업데이트 appEx : " + appEx);
+		log.info("업데이트 firstApproverNo : " + firstApproverNo);
+		log.info("업데이트 finalApp : " + finalApp);
+		log.info("업데이트 file : " + file);
+		log.info("exDateList : " + exDateList);
+		log.info("exClassificationList : " + exClassificationList);
+		log.info("amountList : " + amountList);
+		log.info("exHistoryList : " + exHistoryList);
+		log.info("noteList : " + noteList);
+		//첨부파일 -> 기존 첨부파일이 있으면 넘어온다.
+		String orgChangeName = app.getChange_name();
+		int orgFileNo = app.getFileNo();
+		
+		//새로 넘어온 reUploadFile의 originalFileName이 빈 문자열이 아닌 경우 -> 새로 등록된 파일이 있는 경우 
+		String fileNo = null;
+		if(!file.getOriginalFilename().equals("")) {
+			fileNo = String.valueOf(fileService.uploadFile(file, request, "AP"));
+			
+			app.setFileNo(Integer.parseInt(fileNo));
+		}
+		
+		if(app.getEmergency() == null) {
+			app.setEmergency("N");
+		}
+		
+		//공통 결재 업데이트
+		updateApproval(app);
+		
+		//결재선 업데이트
+		updateApprovalLine(app.getApprovalNo(), firstApproverNo, finalApp);
+		
+		//지출 결의서 업데이트
+		String exDate = String.join(",", exDateList);
+		appEx.setExDate(exDate);
+		
+		String exClassification = String.join(",", exClassificationList);
+		appEx.setExClassification(exClassification);
+		
+		String amount = String.join(",", amountList);
+		appEx.setAmount(amount); 
+		
+		String exHistory = String.join(",", exHistoryList);
+		appEx.setExHistory(exHistory);
+		
+		String note = String.join(",", noteList);
+		appEx.setNote(note);
+		
+		approvalService.updateExpenditure(appEx);
+		
+		//파일 삭제
+		if(orgChangeName != null && !file.getOriginalFilename().equals("")) {
+			fileService.deleteFile(String.valueOf(orgFileNo));
+		}
+		
+		mv.addObject("approvalNo", app.getApprovalNo()).addObject("docNo", 2).setViewName("redirect:detailDraftDocument.do");
+		return mv;
+	}
+		
+	//회의록 수정폼으로 이동
+	@RequestMapping("updateMyTheMinutesOfAMeetingForm.do")
+	public String updateMyTheMinutesOfAMeetingForm(String approvalNo, Approval app, ApprovalLine appL, ApprovalMMinutes appMm, Model model) throws Exception {
+		//디테일 조회할 때 사용한 공통 문서 조회 메소드 사용
+		app = selectApproval(Integer.parseInt(approvalNo), app);
+		//디테일 조회할 때 사용한 공통 결재선 조회 메소드 사용
+		appL = selectApprovalLine(Integer.parseInt(approvalNo), appL);
+		//일반품의서 조회
+		appMm = approvalService.selectUpdateAppMm(Integer.parseInt(approvalNo));
+		//부서 조회
+		ArrayList<Department> deptList = approvalService.selectDeptList();		
+		//사원 조회
+		ArrayList<Employee> empList= approvalService.selectEmpList();	 
+		
+		model.addAttribute("app", app);
+		model.addAttribute("appL", appL);
+		model.addAttribute("appMm", appMm);
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("empList", empList);
+				
 		return "approval/myTheMinutesOfAMeetingUpdateForm";
+	}
+	
+	@RequestMapping("updateMyTheMinutesOfAMeeting.do")
+	public ModelAndView updateMyTheMinutesOfAMeeting(Approval app, ApprovalMMinutes appMm, @RequestParam(name="firstApproverNo") int firstApproverNo, @RequestParam(name="finalApp", required = false) String finalApp,
+													@RequestParam(name="reUpfile" ,required=false) MultipartFile file, ModelAndView mv, HttpServletRequest request) throws Exception {
+		log.info("업데이트 app : " + app);
+		log.info("업데이트 appEx : " + appMm);
+		log.info("업데이트 firstApproverNo : " + firstApproverNo);
+		log.info("업데이트 finalApp : " + finalApp);
+		log.info("업데이트 file : " + file);
+		
+		String orgChangeName = app.getChange_name();
+		int orgFileNo = app.getFileNo();
+		
+		//새로 넘어온 reUploadFile의 originalFileName이 빈 문자열이 아닌 경우 -> 새로 등록된 파일이 있는 경우 
+		String fileNo = null;
+		if(!file.getOriginalFilename().equals("")) {
+			fileNo = String.valueOf(fileService.uploadFile(file, request, "AP"));
+			
+			app.setFileNo(Integer.parseInt(fileNo));
+		}
+		
+		if(app.getEmergency() == null) {
+			app.setEmergency("N");
+		}
+		
+		//공통 결재 업데이트
+		updateApproval(app);
+		
+		//결재선 업데이트
+		updateApprovalLine(app.getApprovalNo(), firstApproverNo, finalApp);
+		
+		//회의록 업데이트
+		approvalService.updateTheMinutesOfAMeeting(appMm);
+		
+		//첨부파일 삭제
+		if(orgChangeName != null && !file.getOriginalFilename().equals("")) {
+			fileService.deleteFile(String.valueOf(orgFileNo));
+		}
+		
+		mv.addObject("approvalNo", app.getApprovalNo()).addObject("docNo", 3).setViewName("redirect:detailDraftDocument.do");
+		return mv;
 	}
 	
 	//공통 결재 디테일 조회
@@ -750,25 +901,16 @@ public class ApprovalController {
 		if(firstApproverNo != null && finalApproverNo == null) { //최초 결재자인 경우
 			//최초 결재자 번호
 			int firstApprover_no = Integer.parseInt(firstApproverNo);	
-			//if(Integer.parseInt(lineLevel) == 1) { //최초 결재자가 최종 결재자
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("arppvoalNo", approval_no); //문서 번호
-				map.put("firstApproverNo", firstApprover_no); //첫번째 결재자
-				map.put("rejectionReason", rejectionReason); 
-				//결재선 업데이트
-				approvalService.updateRejectLineFirstApprover(map);
-				//결재 문서 업데이트
-				approvalService.updateRejectFirstApprover(approval_no);
-			//}else { //lineLevel이 2인 경우 -> 최초 결재자가 최종 결재자가 아님
-				/*Map<String, Object> map = new HashMap<String, Object>();
-				map.put("arppvoalNo", approval_no); //문서 번호
-				map.put("firstApproverNo", firstApprover_no); //첫번째 결재자
-				map.put("rejectionReason", rejectionReason);  
-				//결재선 업데이트
-				approvalService.updateRejectLineLevelTwoFirstApprover(map);
-				//결재 문서 업데이트
-				approvalService.updateRejectLevelTwoFirstApprover(approval_no);*/
-			//}
+			
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("arppvoalNo", approval_no); //문서 번호
+			map.put("firstApproverNo", firstApprover_no); //첫번째 결재자
+			map.put("rejectionReason", rejectionReason); 
+			//결재선 업데이트
+			approvalService.updateRejectLineFirstApprover(map);
+			//결재 문서 업데이트
+			approvalService.updateRejectFirstApprover(approval_no);
+			
 		}else if(finalApproverNo != null && firstApproverNo == null) {
 			int finalApprover_no = Integer.parseInt(finalApproverNo);
 			
@@ -783,5 +925,50 @@ public class ApprovalController {
 		}
 		
 		return "redirect:approvalDocument.do";
+	}
+	
+	@RequestMapping("deleteApproval.do")
+	public String deleteApproval(String approvalNo, String docNo, @RequestParam(value="fileNo", required=false) String fileNo) throws Exception {
+		//첨부파일 삭제
+		if(fileNo != null) {
+			fileService.deleteFile(fileNo);
+		}
+		
+		//문서 삭제
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("docNo", Integer.parseInt(docNo));
+		map.put("approvalNo", Integer.parseInt(approvalNo));
+		approvalService.deleteDocument(map);
+		
+		//결재 라인 삭제
+		approvalService.deleteApprovalLine(Integer.parseInt(approvalNo));
+		
+		//기안서 삭제
+		approvalService.deleteApproval(Integer.parseInt(approvalNo));			
+		
+		return "redirect:draftDocument.do";
+	}
+	
+	//정렬
+	//기안 문서함 진행 list
+	@RequestMapping("draftWaitingList.do")
+	public String draftWaitingList(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model) throws Exception {
+		//로그인한 사람의 emp 정보를 가지고 온다.
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		
+		int listCount = approvalService.draftWaitingListCount(emp.getEmp_no());
+		log.info("글 개수 : " + listCount);
+		
+		//페이지 정보를 가지고 있는 객체 생성
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		log.info("페이지 정보 : " + pi);
+		
+		//list 조회해오기
+		ArrayList<Approval> draftList = approvalService.selectDraftWaitingList(emp.getEmp_no(), pi);
+		
+		model.addAttribute("draftList", draftList);
+		model.addAttribute("pi", pi);
+		
+		return "approval/draftDocumentListView"; 
 	}
 }
