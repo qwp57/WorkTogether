@@ -60,8 +60,8 @@ width: auto;
 <jsp:include page="../common/sidebar.jsp"/>
 <div class="main-content">
 <div style="height: 100px"></div>
-	<a href="workStateMain.do"><h2 style="color: gray">내 근무</h2></a>
-	<a href="teamWorkState.do"><h2 >구성원 근무</h2></a>
+	<a href="/workStateMain.do"><h2 style="color: gray">내 근무</h2></a>
+	<a href="/teamWorkState.do"><h2 >구성원 근무</h2></a>
 	<span id="beforeWeek">◀</span>
 	<select class="form-control" id="selectweek" name = "selectedWeek">
 	 
@@ -169,7 +169,7 @@ width: auto;
              
 
 </div>
-<form action="teamWorkState.do" method="post" id="teamForm">
+<form action="/teamWorkState.do" method="post" id="teamForm">
 	<input class="nonvisible" type="text" value="${startday}" name="startday" id="startdayId">
 	<input class="nonvisible" type="text" value="${pi.currentPage}" name="currentPage" id="currantPageId">
 </form>

@@ -127,7 +127,7 @@
                         <h5>프로젝트 설정</h5>
                         <div class="col-lg-5 text-left">
                             <c:choose>
-                                <c:when test="${pj.status == 'Y'}}">
+                                <c:when test="${pj.status == 'Y'}">
                                     <a id="keepPjBtn" href="#" class="btn btn-outline-warning mr-5">프로젝트 보관</a>
                                 </c:when>
                                 <c:otherwise>
@@ -149,5 +149,3 @@
         </div>
     </div>
 </div>
-<script>
-</script>

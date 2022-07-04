@@ -38,7 +38,7 @@ public class AdminController {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	//부서 조회 -> 조직도
-	@RequestMapping("organizationChart.do")
+	@RequestMapping("/organizationChart.do")
 	public String organizationChart(Model model) throws Exception {
 		//부서 조회
 		ArrayList<Department> deptList = adminService.selectDeptList();		
@@ -52,7 +52,7 @@ public class AdminController {
 	}
 	
 	//가입 승인 리스트 조회
-	@RequestMapping("adminApprovalList.do")
+	@RequestMapping("/adminApprovalList.do")
 	public String adminApprovalPage(@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage, Model model) {
 		
 		//총 페이지 개수
@@ -72,7 +72,7 @@ public class AdminController {
 	
 	//가입 승인 버튼 클릭 -> 사원 상태 값 w -> i
 	@ResponseBody
-	@RequestMapping(value="adminApproval.do")
+	@RequestMapping(value="/adminApproval.do")
 	public String adminApproval(int empNo) {
 		log.info("empNo:" + empNo);
 		int result = adminService.adminApproval(empNo);
@@ -83,7 +83,7 @@ public class AdminController {
 	
 	//가입 거부
 	@ResponseBody
-	@RequestMapping("adminReject.do")
+	@RequestMapping("/adminReject.do")
 	public String adminReject(int empNo, String rComment) throws Exception {
 		//파라미터를 2개 넘기기 위해서 HashMap 사용
 		Map<String,Object> map = new HashMap<String,Object>();		
@@ -99,7 +99,7 @@ public class AdminController {
 	
 	//관리자 - 부서 관리 
 	//조회
-	@RequestMapping("departmentManagement.do")
+	@RequestMapping("/departmentManagement.do")
 	public String departmentManagementPage(Model model) throws Exception {
 		
 		ArrayList<Department> upperList = adminService.selectUpperList();
@@ -111,7 +111,7 @@ public class AdminController {
 	
 	//부서 추가
 	@ResponseBody
-	@RequestMapping("addDeptList.do")
+	@RequestMapping("/addDeptList.do")
 	public String addDeptList(int upperDeptName, String addDeptName) {		
 		//파라미터를 2개 넘기기 위해서 HashMap 사용
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -128,7 +128,7 @@ public class AdminController {
 	
 	//부서 삭제
 	@ResponseBody
-	@RequestMapping("deleteDeptList.do")
+	@RequestMapping("/deleteDeptList.do")
 	public String deleteDeptList(@RequestParam(value="checkBoxArr[]") List<Integer> checkBoxArr) { //@RequestParam(value="parameter이름[]")List<String> 형으로 받아와야 한다.
 		//ajax에 보낼 result 선언
 		int result=0;
@@ -143,7 +143,7 @@ public class AdminController {
 	
 	//부서 수정
 	@ResponseBody
-	@RequestMapping("updateDept.do")
+	@RequestMapping("/updateDept.do")
 	public String updateDeptList(@RequestParam(value="checkBoxArr[]") List<Integer> checkBoxArr, @RequestParam(value="updateList[]") List<String> updateList) {
 		//ajax에 보낼 result 선언
 		int result=0;
@@ -164,7 +164,7 @@ public class AdminController {
 	}
 	
 	//인사 관리 리스트 조회
-	@RequestMapping("employeeManagement.do")
+	@RequestMapping("/employeeManagement.do")
 	public String employeeManagementPage(@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage, Model model) throws Exception {
 		
 		//총 게시글 개수
@@ -184,7 +184,7 @@ public class AdminController {
 	}
 	
 	//사원 추가
-	@RequestMapping("addEmployee.do")
+	@RequestMapping("/addEmployee.do")
 	public String addEmployee(Employee emp, RedirectAttributes redirect) throws Exception {
 		//비밀번호 암호화
 		log.info("암호화 전 : " + emp.getPassword());
@@ -202,7 +202,7 @@ public class AdminController {
 	}
 	
 	//사원 정보 업데이트 뷰 이동
-	@RequestMapping("updateView.do")
+	@RequestMapping("/updateView.do")
 	public ModelAndView updateView(int eno, ModelAndView mv) throws Exception {
 		
 		Employee selectEmp = adminService.updateView(eno);
@@ -215,7 +215,7 @@ public class AdminController {
 	}
 	
 	//사원 정보 업데이트
-	@RequestMapping("updateEmployeeInfo.do")
+	@RequestMapping("/updateEmployeeInfo.do")
 	public ModelAndView updateEployee(Employee emp, @RequestParam(value="resignationDate", required = false) String resignationDate, ModelAndView mv) throws Exception {
 		log.info("resignationDate : " + resignationDate);
 		//퇴직일이 있을 수도 있고 없을 수도 있다. -> 없는 경우에는 그냥 정보 업데이트, 있는 경우에는 상태까지 변경	
@@ -241,7 +241,7 @@ public class AdminController {
 	}
 	
 	//사원 검색
-	@RequestMapping("searchEmp.do")
+	@RequestMapping("/searchEmp.do")
 	public ModelAndView searchEmp(EmployeeSearchCondition sc, String condition, String keyword, ModelAndView mv, @RequestParam(value="statusList" )List<String> statusList,
 								@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage) throws Exception {
 		log.info("sc : " + sc);

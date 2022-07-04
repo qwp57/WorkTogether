@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +33,7 @@ border-radius: 5px;
 		<hr>
 			<div class="row">
 				<div class="col-12 col-lg-6">
-					<h5>이번 달 근무왕</h5>
+					<h5>월별 근무왕</h5>
 					<table class="table text-center">
 						<thead class="thead">
 							<tr>
@@ -41,31 +42,17 @@ border-radius: 5px;
 							</tr>
 						</thead>
 						<tbody class="tbody">
-							<tr>
-								<td>인사부</td>
-								<td>홍길동 대리</td>
-							</tr>
-							<tr>
-								<td>영업부</td>
-								<td>남우재 대리</td>
-							</tr>
-							<tr>
-								<td>회계부</td>
-								<td>유재석 대리</td>
-							</tr>
-							<tr>
-								<td>자재관리부</td>
-								<td>방명수 대리</td>
-							</tr>
-							<tr>
-								<td>홍보부</td>
-								<td>하하하 대리</td>
-							</tr>
+							<c:forEach items="${empOfTheMonthList}" var="i">
+								<tr>
+								<th>${i.dept_name}</th>
+								<th>${i.name} ${i.job_name}님</th>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
 				<div class="col-12 col-lg-6">
-					<h5>OO달 부서별 전체 & 평균 근무시간</h5>
+					<h5>월별 부서별 전체 & 평균 근무시간</h5>
 					<table class="table text-center">
 						<thead class="thead">
 							<tr>
@@ -75,31 +62,13 @@ border-radius: 5px;
 							</tr>
 						</thead>
 						<tbody class="tbody">
-							<tr>
-								<td>인사부</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>영업부</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>회계부</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>자재관리부</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>홍보부</td>
-								<td></td>
-								<td></td>
-							</tr>
+							<c:forEach items="${statsOfTheMonthList}" var="i">
+								<tr>
+									<th>${i.DEPT_NAME}</th>
+									<th>${i.SUM} HOUR</th>
+									<th>${i.AVG} HOUR</th>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
@@ -115,7 +84,7 @@ border-radius: 5px;
 			<hr>
 			<div class="row">
 				<div class="col-12 col-lg-6">
-					<h5>2000년  근무왕</h5>
+					<h5>연도별  근무왕</h5>
 					<table class="table text-center">
 						<thead class="thead">
 							<tr>
@@ -124,31 +93,17 @@ border-radius: 5px;
 							</tr>
 						</thead>
 						<tbody class="tbody">
+							<c:forEach items="${empOfTheYearList}" var="i">
 							<tr>
-								<td>인사부</td>
-								<td>홍길동 대리</td>
+								<th>${i.dept_name}</th>
+								<th>${i.name} ${i.job_name}님</th>
 							</tr>
-							<tr>
-								<td>영업부</td>
-								<td>남우재 대리</td>
-							</tr>
-							<tr>
-								<td>회계부</td>
-								<td>유재석 대리</td>
-							</tr>
-							<tr>
-								<td>자재관리부</td>
-								<td>방명수 대리</td>
-							</tr>
-							<tr>
-								<td>홍보부</td>
-								<td>하하하 대리</td>
-							</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
 				<div class="col-12 col-lg-6">
-					<h5>2000년 부서별 전체 & 평균 근무시간</h5>
+					<h5>연도별 부서별 전체 & 평균 근무시간</h5>
 					<table class="table text-center">
 						<thead class="thead">
 							<tr>
@@ -158,31 +113,13 @@ border-radius: 5px;
 							</tr>
 						</thead>
 						<tbody class="tbody">
+							<c:forEach items="${statsOfTheYearList}" var="i">
 							<tr>
-								<td>인사부</td>
-								<td></td>
-								<td></td>
+								<th>${i.DEPT_NAME}</th>
+								<th>${i.SUM} HOUR</th>
+								<th>${i.AVG} HOUR</th>
 							</tr>
-							<tr>
-								<td>영업부</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>회계부</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>자재관리부</td>
-								<td></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td>홍보부</td>
-								<td></td>
-								<td></td>
-							</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 				</div>
@@ -190,6 +127,6 @@ border-radius: 5px;
 		</div>
 	</section>
 </div>
-<script src="/resources/assets/js/Statistics_ws.js"></script>
+<script src="/resources/assets/js/Statistics_ws.js?ver=3"></script>
 </body>
 </html>

@@ -74,7 +74,7 @@
 				<span><h3>지출 결의서</h3></span> 
 			</div>
 			<section class="section-body">
-				<form id="expenditureForm"  method="post" action="updateMyExpenditure.do" enctype="multipart/form-data">
+				<form id="expenditureForm"  method="post" action="/updateMyExpenditure.do" enctype="multipart/form-data">
 					<div id="expenditure">
 						<input type="hidden" name="approvalNo" value="${ app.approvalNo }"/>
 						<div><h2 class="text-center pt-3">지출 결의서</h2></div>							

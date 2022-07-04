@@ -268,22 +268,82 @@ public class WorkStateController {
 	}
 	
 	@RequestMapping("/workStatistics.do")
-	public String workStatistics() throws Exception {
+	public String workStatistics(Model m) throws Exception {
 		
 		LocalDate ld = LocalDate.now();
 		
 		int month = ld.getMonthValue();
 		int year = ld.getYear();
 		
-		ArrayList<Map<String, String>> empOfTheMonthList = wsService.empOfTheMonth(month);
-		ArrayList<Map<String, String>> statsOfTheMonthList= wsService.statsOfTheMonth(month);
-		ArrayList<Map<String, String>> empOfTheYearList = wsService.empOfTheYear(month);
-		ArrayList<Map<String, String>> statsOfTheYearList = wsService.statsfTheYear(month);
+//		ArrayList<Employee> empOfTheMonthList = bestEmployee(month, "month");
+		ArrayList<Employee> empOfTheYearList = bestEmployee(year, "year");
+//		
+//		ArrayList<Map<String, Object>> statsOfTheMonthList= departmentStats(month, "month");
+		ArrayList<Map<String, Object>> statsOfTheYearList = departmentStats(year, "year");
+		ArrayList<Employee> empOfTheMonthList = bestEmployee(6, "month");
+		
+		ArrayList<Map<String, Object>> statsOfTheMonthList= departmentStats(6, "month");
+		
+		log.info("[empOfTheMonthList] : {}",empOfTheMonthList.toString());
+		log.info("[empOfTheYearList] : {}",empOfTheYearList.toString());
+		log.info("[statsOfTheMonthList] : {}",statsOfTheMonthList.toString());
+		log.info("[statsOfTheYearList] : {}",statsOfTheYearList.toString());
+		
+		m.addAttribute("empOfTheMonthList", empOfTheMonthList);
+		m.addAttribute("empOfTheYearList", empOfTheYearList);
+		m.addAttribute("statsOfTheMonthList", statsOfTheMonthList);
+		m.addAttribute("statsOfTheYearList", statsOfTheYearList);
+		
 		
 		
 		
 		return "workstate/workStatistics";
 	}
+
+	private ArrayList<Map<String, Object>> departmentStats(int monthYear, String type) throws Exception {
+		// TODO Auto-generated method stub
+		return wsService.departmentStats(monthYear, type);
+	}
+
+	public ArrayList<Employee> bestEmployee(int monthYear, String type) throws Exception{
+		
+		return wsService.bestEmployee(monthYear, type);
+	}
+	
+	@ResponseBody
+	@RequestMapping("workstateStats_month.do")
+	public String wsStats_month(int month, String type) throws Exception {
+		ArrayList<Map<String, Object>> list1 = departmentStats(month, type);
+		ArrayList<Employee> list2 = bestEmployee(month, type);
+		log.info("월별 통계");
+		log.info("list1 : {}", list1.toString());
+		log.info("list2 : {}", list2.toString());
+		
+		return "";
+	}
+	
+	@ResponseBody
+	@RequestMapping("workstateStats_year.do")
+	public String workstateStats_year(int year, String type) throws Exception {
+		ArrayList<Map<String, Object>> list1 = departmentStats(year, type);
+		ArrayList<Employee> list2 = bestEmployee(year, type);
+		
+		log.info("연도별 통계 ");
+		log.info("list1 : {}", list1.toString());
+		log.info("list2 : {}", list2.toString());
+		
+		return "";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@ResponseBody
 	@RequestMapping("/insertInTime.do")//출근시간 등록
@@ -338,7 +398,7 @@ public class WorkStateController {
 		return name;
 	}
 	
-	@RequestMapping("deleteVacLog.do")
+	@RequestMapping("/deleteVacLog.do")
 	public String deleteVacationLog(int vac_no) throws Exception {
 	
 		wsService.deleteVacationLog(vac_no);
@@ -350,7 +410,7 @@ public class WorkStateController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "vacationDetail.do", produces = "application/text; charset =UTF-8")
+	@RequestMapping(value = "/vacationDetail.do", produces = "application/text; charset =UTF-8")
 	public String vacationDetail(int vac_no,HttpServletRequest request) throws Exception{
 		log.info("상세조회할 휴가 글 번호: {}", vac_no);
 		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
@@ -367,7 +427,7 @@ public class WorkStateController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "modifiedVacation.do", produces = "application/text; charset =UTF-8")
+	@RequestMapping(value = "/modifiedVacation.do", produces = "application/text; charset =UTF-8")
 	public String modifiedVacation(Vacation vac, MultipartFile newFile,HttpServletRequest request) throws Exception{
 		log.info("수정할 글: {}", vac.toString());
 		

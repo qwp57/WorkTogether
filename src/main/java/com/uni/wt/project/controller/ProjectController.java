@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.uni.wt.common.Pagination;
 import com.uni.wt.common.commonFile.SearchDto;
 import com.uni.wt.common.dto.PageInfo;
+import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.dto.Reply;
@@ -53,6 +54,7 @@ public class ProjectController {
     private ScheduleService scheduleService;
     @Autowired
     private BoardAllService boardAllService;
+
     private Map<String, String> msgMap = new HashMap<String, String>();
 
     @RequestMapping("")
@@ -109,8 +111,7 @@ public class ProjectController {
             log.info(pjm.toString());
             projectMemberService.insertProjectMember(pjm);
         }
-        msgMap.put("msg", "프로젝트 초대 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        redirect.addFlashAttribute("msg", "프로젝트 초대 완료.");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
 
@@ -175,8 +176,7 @@ public class ProjectController {
         pjMember.setPj_no(pj_no);
         pjMember.setEmp_no(loginEmp);
         projectMemberService.quitProject(pjMember);
-        msgMap.put("msg", "프로젝트 나가기 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        redirect.addFlashAttribute("msg", "프로젝트 나가기 완료.");
         return "redirect:/project";
     }
 
@@ -435,8 +435,7 @@ public class ProjectController {
             projectFileService.deleteFile(projectFile);
         }
 
-        msgMap.put("msg", "게시물 삭제 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        redirect.addFlashAttribute("msg", "게시물 삭제 완료.");
 
             if (type.equals("calendar")){
                 return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
@@ -453,8 +452,7 @@ public class ProjectController {
     public String editPj(RedirectAttributes redirect, Project project, String type) throws Exception {
         log.info("프로젝트 : " + project);
         projectService.editPj(project);
-        msgMap.put("msg", "프로젝트 수정 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        redirect.addFlashAttribute("msg", "프로젝트 수정 완료.");
 
         if (type.equals("calendar")){
             return "redirect:/project/detailCalendar.do?pj_no=" + project.getPj_no();
@@ -471,23 +469,20 @@ public class ProjectController {
     @RequestMapping("/deleteProject.do")
     public String deleteProject(@RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
         projectService.deleteProject(pj_no);
-        msgMap.put("msg", "프로젝트 삭제 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        redirect.addFlashAttribute("msg", "프로젝트 삭제 완료.");
         return "redirect:/project";
     }
 
     @RequestMapping("/keepProject.do")
     public String keepProject(@RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
         projectService.keepProject(pj_no);
-        msgMap.put("msg", "프로젝트 보관 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
-        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        redirect.addFlashAttribute("msg", "프로젝트 보관 완료.");
+        return "redirect:/project/storedPj.do";
     }
     @RequestMapping("/restoreProject.do")
     public String restoreProject(@RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
         projectService.restoreProject(pj_no);
-        msgMap.put("msg", "프로젝트 복구 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        redirect.addFlashAttribute("msg", "프로젝트 복구 완료.");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
     
@@ -625,8 +620,7 @@ public class ProjectController {
         pjm.setPj_no(pj_no);
         pjm.setAdmin("Y");
         projectMemberService.insertProjectMember(pjm);
-        msgMap.put("msg", "프로젝트 생성 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        redirect.addFlashAttribute("msg", "프로젝트 생성 완료.");
 
         return "redirect:/project";
     }

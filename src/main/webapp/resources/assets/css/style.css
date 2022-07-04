@@ -1761,7 +1761,8 @@ h6 .badge {
 .dropdown-menu {
   box-shadow: 0 10px 40px 0 rgba(51, 73, 94, 0.15);
   border: none;
-  width: 200px; }
+  /*width: 200px;*/
+}
   .dropdown-menu.show {
     display: block !important; }
   .dropdown-menu a {

@@ -33,6 +33,7 @@ $(document).on('click', '.ckedInput', function () {
             })
             $(this).parent().next().children(".ckedTodo").removeClass("underline")
         }
+        loadBoards()
         var percent = $(".ckedInput:checked").length / $(".ckedInput").length * 100
         $("#todoCompletePercent").html(Math.floor(percent) + '%')
         $("#todoBar").attr("data-width", percent + '%;')
@@ -118,13 +119,7 @@ function datepickerLoad() {
 
     })
 }
-$('.todoInput').datepicker().on("clearDate", function (e) {
-    console.log(e.currentTarget)
-    var $test = e.currentTarget;
-    $($test).children(".todoCalendar").css("display", "block")
-    $($test).children(".todoDue").css("display", "none")
 
-})
 $(document).on('click', '.selectTodoFor', function () {
     console.log($forRemove)
     console.log($(this))
@@ -206,6 +201,7 @@ $(document).on('click', '#todoEditBtn', function () {
         $(".boardUploadForm").append(
             '<input type="hidden" name="board_no" value="' + board_no + '">'
         )
+        $("#boardPost").modal("show")
         $(".boardUploadForm").attr("id", "editTodo");
         $(".boardUploadForm").attr("action", "/todo/editTodo.do");
         $("#boardPost").modal("show")

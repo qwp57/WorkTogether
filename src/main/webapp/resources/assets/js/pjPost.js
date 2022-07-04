@@ -24,7 +24,16 @@ $(document).on('click', '#file-label', function () {
     $("#file-label").css("display", "none")
     $(".fileUploadBtn").css("display", "inline-block")
 })
-
+$(document).on('click', '.switchPost', function () {
+    $(".switchSch").css("color", "black")
+    $(".switchTodo").css("color", "black")
+    $(".switchPost").css("color", "#6777ef")
+    $("#postForm").css("display", "block")
+    $("#postSch").css("display", "none")
+    $("#postTodo").css("display", "none")
+    $(".boardUploadForm").attr("id", "enrollPost");
+    $(".boardUploadForm").attr("action", "/post/insertPost.do");
+})
 $(document).on('change', '#upload-file', function () {
     if (window.FileReader) {  // modern browser
         var filename = $(this)[0].files[0].name;
@@ -89,6 +98,7 @@ $(document).on('click', '#postEditBtn', function () {
             })
 
         }
+
         $(".boardUploadForm").attr("id", "editPost");
         $(".boardUploadForm").attr("action", "/post/editPost.do");
         $("#boardPost").modal("show")
@@ -115,3 +125,23 @@ function checkImageType(fullName) {
     }
     return check;
 }
+$(document).on('click', '#PostAddEmpBtn', function () {
+    if ($(this).parents("#mentionForModal").find(".inviteEmpNo:checked").length == 0) {
+        alert("한명 이상 선택해주세요.")
+        return false
+    }
+    console.log($(this).parents("#mentionForModal").find(".emp_name"))
+    console.log($(this).parents("#mentionForModal").find(".inviteEmpNo"))
+    $(this).parents("#mentionForModal").find(".inviteEmpNo:checked").each(function (e) {
+        console.log($(this).val())
+        console.log($(this).parents("tr").find(".emp_name").text())
+        var content = $(this).parents("tr").find(".emp_name").text()
+        $("#postForArea").append('<span class="empName">' + content + '<span><input type="hidden" name="post_for" ' +
+            'value="' + $(this).val() + '">' +
+            '<i class="bi bi-x fa-2x removeEmp" style="color: red; padding-right: 0px;"></i></span></span>')
+    })
+    if ($("#postForArea").html() != '') {
+        $(".postFor").css("display", "none")
+    }
+    $("#mentionForModal").modal("hide")
+})

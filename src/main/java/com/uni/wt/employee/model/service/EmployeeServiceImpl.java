@@ -88,4 +88,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		
 	}
 
+	@Override
+	public String getUpperDeptCode(String dept_code) throws Exception {
+		
+		return empMapper.getUpperDeptCode(dept_code);
+	}
+
 }

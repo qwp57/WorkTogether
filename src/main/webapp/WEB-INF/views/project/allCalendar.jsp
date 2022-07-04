@@ -243,10 +243,6 @@
 
 <jsp:include page="../common/footer.jsp"/>
 <jsp:include page="invitePjModal.jsp"/>
-<jsp:include page="boardViewModal.jsp"/>
-<jsp:include page="attendeeViewModal.jsp"/>
-<script src="/resources/assets/js/pjSchedule.js"></script>
-<script src="/resources/assets/js/pjBoard.js"></script>
 
 </body>
 <script>
@@ -301,9 +297,16 @@
                         $("#schWriter").html(list.sch.name)
                         $("#schUploadDate").html(list.sch.create_date)
                         $(".detailViewBoard_no").val(list.sch.board_no)
-                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD LT') == moment(list.sch.sch_end).format('YYYY-MM-DD LT')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
+                            )
+                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD ')
+                                + moment(list.sch.sch_start).format('LT') + ' ~ '
+                                + moment(list.sch.sch_end).format('LT (ddd)')
                             )
                         } else {
                             $("#schDate").html(
@@ -323,7 +326,9 @@
                         $.each(list.schAttendeeList, function (i, obj) {
                             if (obj.emp_no != ${emp_no}) {
                                 var content = '<tr>'
-                                content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                                content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                                content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                                content += 'id="profileImg_Sch" class="img-fluid m-3 rounded-circle"></span>'
                                 content += '</td>'
                                 content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                                 content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -358,8 +363,7 @@
                     title: '${sch.sch_title}',
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
-                    groupId: ${sch.board_no},
-                    allDay: true
+                    groupId: ${sch.board_no}
                 }
                 </c:when>
                 <c:otherwise>
@@ -368,7 +372,6 @@
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
                     groupId: ${sch.board_no},
-                    allDay: true
                 },
                 </c:otherwise>
                 </c:choose>
@@ -383,6 +386,9 @@
 
 </script>
 <script>
+    $(function (){
+        $("#boardPost").find("input[name=type]").val("allCalendar")
+    })
     $(document).on('click', '#schJoin', function (){
 
     })
@@ -395,48 +401,7 @@
         }
     }
 
-    function loadReply(board_no) {
-        console.log(board_no)
-        $.ajax({
-            url: '/project/selectReply.do',
-            data: {
-                board_no: board_no
-            },
-            success: function (list) {
-                list = $.parseJSON(list)
-                console.log(list)
-                $(".replyArea").html('')
-                $(".replyCount").text("댓글 " + list.length)
-                if (list.length == 0) {
-                    $(".replyHrArea").css("display", "none")
-                    console.log('확인')
-                } else {
-                    $(".replyHrArea").css("display", "block")
-                    $.each(list, function (i, obj) {
-                        var content = '<div class="reply">'
-                        content += '<div class="col-lg-10" style="display: inline-block">'
-                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
-                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
-                        content += '</div>'
-                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
-                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
-                            content += '<a class="editReplyBtn">수정&nbsp </a>'
-                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
-                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
-                            content += '</div>'
-                        }
-                        content += '<br> <br>'
-                        content += '<div class="col-lg-10">'
-                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
-                        content += '</div>'
-                        content += '<br> <br>'
-                        content += '</div>'
-                        $(".replyArea").append(content)
-                    })
-                }
-            }
-        });
-    }
+
 
     $(document).on('click', '.addReplyBtn', function () {
         if (${pj.reply_power == 'Y'} &&
@@ -465,11 +430,6 @@
         }
     })
 
-    $(document).on('click', '#schEditBtn', function () {
-        if (checkStored()) {
-            editSch()
-        }
-    })
 
     $(document).on('click', '.boardDeleteBtn', function () {
         if (checkStored()) {

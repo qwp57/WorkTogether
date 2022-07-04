@@ -1,6 +1,7 @@
 package com.uni.wt.project.todo.controller;
 
 import com.google.gson.GsonBuilder;
+import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
 import com.uni.wt.project.boardAll.model.dto.BoardAll;
 import com.uni.wt.project.boardAll.model.service.BoardAllService;
@@ -36,6 +37,8 @@ public class TodoController {
     TodoService todoService;
     @Autowired
     BoardAllService boardAllService;
+    @Autowired
+    private NoticeService noticeService;
 
     private Map<String, String> msgMap = new HashMap<String, String>();
 
@@ -67,13 +70,21 @@ public class TodoController {
         boardAll.setBoard_type("todo");
         boardAll.setPj_no(pj_no);
 
-        log.info("로그인 유저 : " + session.getAttribute("loginEmp"));
-        boardAll.setWriter(((Employee) session.getAttribute("loginEmp")).getEmp_no());
+        Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+        log.info("로그인 유저 : " + emp);
+        boardAll.setWriter(emp.getEmp_no());
 
         todoService.insertTodo(todos, boardAll);
 
-        msgMap.put("msg", "게시물 등록 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        for(Todo todo1 : todos){
+            if(todo1.getTodo_for() != null){
+                HashMap<String, Object> content = new HashMap<String, Object>();
+                content.put("TODO", todo1);
+                noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");
+            }
+        }
+
+        redirect.addFlashAttribute("msg", "게시물 등록 완료.");
 
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
@@ -136,7 +147,7 @@ public class TodoController {
         return new GsonBuilder().setDateFormat("MM-dd").create().toJson(todos);
     }
     @RequestMapping("/editTodo.do")
-    public String editTodo(Todo todo, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect, String type) throws Exception {
+    public String editTodo(Todo todo, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect, String type, HttpSession session) throws Exception {
 //        log.info("할일 : " + todo.getStatus());
 //        log.info("할일 : " + todo);
         String[] todoContents = todo.getTodo_content().split(",", -1);
@@ -164,9 +175,15 @@ public class TodoController {
             todos.add(tempTodo);
         }
         todoService.editTodo(todos);
-
-        msgMap.put("msg", "게시물 수정 완료.");
-        redirect.addFlashAttribute("msg", msgMap);
+        Employee emp = (Employee) session.getAttribute("loginEmp");
+        for(Todo todo1 : todos){
+            if(todo1.getTodo_for() != null){
+                HashMap<String, Object> content = new HashMap<String, Object>();
+                content.put("TODO", todo1);
+                noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");
+            }
+        }
+        redirect.addFlashAttribute("msg", "게시물 수정 완료.");
 
         if (type.equals("home")){
             return "redirect:/project/detailPj.do?pj_no=" + pj_no;

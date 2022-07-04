@@ -125,7 +125,7 @@ font-family: 'Nanum Gothic', sans-serif;
 	<div class="section-body">
 		<div><span class="cmenu">전체</span><span class="cmenu">|</span><span class="cmenu">요청된 업무</span><span class="cmenu">|</span><span class="cmenu">요청한 업무</span></div>	
 		<div class="rw-list">
-		<form action="completedRequest.do" method="post" id="completeForm">
+		<form action="/completedRequest.do" method="post" id="completeForm">
 			<div class="menu2-title">
 				<c:choose>
 					<c:when test="${type eq 'RQ'}">요청한 업무</c:when>

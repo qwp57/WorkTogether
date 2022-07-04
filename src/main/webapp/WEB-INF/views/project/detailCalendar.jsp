@@ -12,12 +12,6 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
             rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"
-            integrity="sha512-x/vqovXY/Q4b+rNjgiheBsA/vbWA3IVvsS8lkQSX1gQ4ggSJx38oI2vREZXpTzhAv6tNUaX81E7QBBzkpDQayA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"
-            integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales-all.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
@@ -250,13 +244,9 @@
 <jsp:include page="invitePjModal.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
 <jsp:include page="pjFormModal.jsp"/>
-<jsp:include page="boardViewModal.jsp"/>
-<jsp:include page="attendeeViewModal.jsp"/>
 <jsp:include page="boardEnrollModal.jsp"/>
 </body>
 <script src="/resources/assets/js/pjHead.js"></script>
-<script src="/resources/assets/js/pjSchedule.js"></script>
-<script src="/resources/assets/js/pjBoard.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // calendar element 취득
@@ -301,7 +291,6 @@
                     return false
                 }
                 if (checkStored()) {
-                    $("#postSch").find("input[name=type]").val("calendar")
                     $("textarea[name=sch_content]").val('')
                     $("textarea[name=sch_content]").text('')
                     $("input[name=sch_attendee]").parent().parent().remove()
@@ -312,7 +301,7 @@
                     var d = arg.endStr.substr(8, 2);
                     console.log(y, m, d)
                     var endDate = new Date(y, m - 1, d);
-                    $("input[name=sch_end]").val(moment(endDate.setDate(endDate.getDate() - 1)).format('YYYY-MM-DD'))
+                    $("input[name=sch_end]").val(moment(endDate.setDate(endDate.getDate() - 1)).format('YYYY-MM-DD h:mm'))
                     $("#addPeople").css("display", "block")
                     $("#postForm").css("display", "none")
                     $("#postSch").css("display", "block")
@@ -348,13 +337,19 @@
                         $("#schWriter").html(list.sch.name)
                         $("#schUploadDate").html(list.sch.create_date)
                         $(".detailViewBoard_no").val(list.sch.board_no)
-                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD LT') == moment(list.sch.sch_end).format('YYYY-MM-DD LT')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
+                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD ')
+                                + moment(list.sch.sch_start).format('LT') + ' ~ '
+                                + moment(list.sch.sch_end).format('LT (ddd)')
+                            )
                         } else {
                             $("#schDate").html(
-                                moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
+                                moment(list.sch.sch_start).format('YYYY-MM-DD LT (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD LT (ddd)')
                             )
                         }
 
@@ -405,8 +400,7 @@
                     title: '${sch.sch_title}',
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
-                    groupId: ${sch.board_no},
-                    allDay: true
+                    groupId: ${sch.board_no}
                 }
                 </c:when>
                 <c:otherwise>
@@ -415,7 +409,6 @@
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
                     groupId: ${sch.board_no},
-                    allDay: true
                 },
                 </c:otherwise>
                 </c:choose>
@@ -435,6 +428,8 @@
         $(".calendar").addClass("clicked")
         $(".home").removeClass("clicked")
         $(".drive").removeClass("clicked")
+        $("#editPj").find("input[name=type]").val("calendar")
+        $("#boardPost").find("input[name=type]").val("calendar")
     })
     $(document).on('click', '.home', function () {
 
@@ -450,120 +445,7 @@
 </script>
 <%--게시글 전체--%>
 <script>
-    function checkStored() {
-        if (${pj.status == 'N'}) {
-            alert("보관된 프로젝트는 작성/수정 관련 기능이 제한됩니다.")
-            return false
-        } else {
-            return true
-        }
-    }
 
-    function loadReply(board_no) {
-        console.log(board_no)
-        $.ajax({
-            url: '/project/selectReply.do',
-            data: {
-                board_no: board_no
-            },
-            success: function (list) {
-                list = $.parseJSON(list)
-                console.log(list)
-                $(".replyArea").html('')
-                $(".replyCount").text("댓글 " + list.length)
-                if (list.length == 0) {
-                    $(".replyHrArea").css("display", "none")
-                    console.log('확인')
-                } else {
-                    $(".replyHrArea").css("display", "block")
-                    $.each(list, function (i, obj) {
-                        var content = '<div class="reply">'
-                        content += '<div class="col-lg-10" style="display: inline-block">'
-                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
-                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
-                        content += '</div>'
-                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
-                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
-                            content += '<a class="editReplyBtn">수정&nbsp </a>'
-                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
-                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
-                            content += '</div>'
-                        }
-                        content += '<br> <br>'
-                        content += '<div class="col-lg-10">'
-                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
-                        content += '</div>'
-                        content += '<br> <br>'
-                        content += '</div>'
-                        $(".replyArea").append(content)
-                    })
-                }
-            }
-        });
-    }
-
-    $(document).on('click', '.addReplyBtn', function () {
-        if (${pj.reply_power == 'Y'} &&
-        ${pjMember.admin == 'N'})
-        {
-            alert("관리자만 작성할 수 있습니다.")
-            return false
-        }
-        if (checkStored()) {
-            var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
-            console.log(reply_content)
-            console.log(board_no.val())
-            $.ajax({
-                url: '/project/insertReply.do',
-                data: {
-                    "reply_content": reply_content.val(),
-                    "board_no": board_no.val()
-                },
-                success: function (data) {
-                    //console.log(data)
-                    $(".replyContentEnroll").val("")
-                    loadReply(board_no.val())
-                }
-            })
-        }
-    })
-
-    $(document).on('click', '#schEditBtn', function () {
-        if (checkStored()) {
-            editSch()
-        }
-    })
-
-    $(document).on('click', '.boardDeleteBtn', function () {
-        if (checkStored()) {
-            if (confirm("삭제하시겠습니까?")) {
-                var form = document.createElement('form'); // 폼객체 생성
-                var obj1;
-                var obj2;
-                var obj3;
-                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj1.setAttribute('name', 'board_no'); // 객체이름
-                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
-                form.appendChild(obj1);
-                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj2.setAttribute('name', 'pj_no'); // 객체이름
-                obj2.setAttribute('value', ${pj.pj_no}); //객체값
-                form.appendChild(obj2);
-                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj3.setAttribute('name', 'type'); // 객체이름
-                obj3.setAttribute('value', 'calendar'); //객체값
-                form.appendChild(obj3);
-                form.setAttribute('method', 'post'); //get,post 가능
-                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
-                document.body.appendChild(form);
-                form.submit();
-            }
-        }
-    })
 
 </script>
 
@@ -626,7 +508,6 @@
             $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
         }
         $("#editPj").find("#pj_no").val("${pj.pj_no}")
-        $("#editPj").find("input[name=type]").val("calendar")
         $("#editPjModal").modal("show")
     })
 
@@ -705,7 +586,7 @@
                 },
                 async: false,
                 success: function (data) {
-                    console.log('dd')
+                    //console.log('dd')
                 }
             })
             loadViewEmpInPj()
@@ -894,10 +775,5 @@
         $("input:radio[name='customRadio']").prop("checked", false)
     }
 
-</script>
-<script>
-    $(document).on('click', '#schEditBtn', function () {
-        $("#postSch").find("input[name=type]").val("calendar")
-    })
 </script>
 </html>

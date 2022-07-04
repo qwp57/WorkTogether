@@ -9,6 +9,8 @@ public class Schedule {
 
     private int board_no;
 
+    private int pj_no;
+
     private int emp_no;
 
     private String sch_title;
@@ -17,9 +19,9 @@ public class Schedule {
 
     private String sch_attendee;
 
-    private Date sch_start;
+    private String sch_start;
 
-    private Date sch_end;
+    private String sch_end;
 
     private String sch_place;
 
