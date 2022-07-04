@@ -8,23 +8,13 @@
 
 <head>
     <meta charset="UTF-8">
+
+
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
     <link
             href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
             rel="stylesheet">
-
-    <link
-            href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
-            rel="stylesheet">
-    <script
-            src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"
-            integrity="sha512-x/vqovXY/Q4b+rNjgiheBsA/vbWA3IVvsS8lkQSX1gQ4ggSJx38oI2vREZXpTzhAv6tNUaX81E7QBBzkpDQayA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"
-            integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
             integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
@@ -44,10 +34,6 @@
 <style>
     body {
         color: black;
-    }
-
-    .datepicker {
-        width: 275px;
     }
 
     .newPj {
@@ -256,6 +242,10 @@
         margin-top: 13%;
     }
 
+    .bi-circle-fill {
+        margin-right: 20px;
+    }
+
     .boardTable {
         width: 100%;
         text-align: center;
@@ -321,9 +311,7 @@
         color: #6777ef;
     }
 
-    .underline {
-        text-decoration: line-through;
-    }
+
 </style>
 </head>
 <body>
@@ -349,25 +337,25 @@
                                         <canvas id="taskChart"></canvas>
                                     </div>
                                     <h5 class="chartDeatil">
-                                        <span class='bi bi-circle-fill' style='color: #4e73df'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                                        <span class='bi bi-circle-fill' style='color: #4e73df'></span>&nbsp;&nbsp;
                                         <span id="beforeRw"></span>
                                         &nbsp;
                                         <span id="beforeRwPercent" style='color: #4e73df'></span>
                                     </h5>
                                     <h5 class="chartDeatil">
-                                        <span class='bi bi-circle-fill' style='color: #1cc88a'>&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+                                        <span class='bi bi-circle-fill' style='color: #1cc88a'></span>&nbsp;&nbsp;
                                         <span id="whileRw"></span>
                                         &nbsp;
                                         <span id="whileRwPercent" style='color: #1cc88a'></span>
                                     </h5>
                                     <h5 class="chartDeatil">
-                                        <span class='bi bi-circle-fill' style='color: #f3a435'>&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+                                        <span class='bi bi-circle-fill' style='color: #f3a435'></span>&nbsp;&nbsp;
                                         <span id="completeRw"></span>
                                         &nbsp;
                                         <span id="completeRwPercent" style='color: #f3a435'></span>
                                     </h5>
                                     <h5 class="chartDeatil">
-                                        <span class='bi bi-circle-fill' style='color: gray'>&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;
+                                        <span class='bi bi-circle-fill' style='color: gray'></span>&nbsp;&nbsp;
                                         <span id="keepRw"></span>
                                         &nbsp;
                                         <span id="keepRwPercent" style='color: gray'></span>
@@ -448,7 +436,7 @@
                         <input type="text" class="form-control" id="searchedKeyword"
                                placeholder="검색어를 입력해주세요">
                         <div class="input-group-append">
-                            <button class="btn btn-light" type="button" onclick="changePage(1)();">
+                            <button class="btn btn-light" type="button" onclick="changePage(1);">
                                 <i class="bi bi-search"></i>
                             </button>
                         </div>
@@ -461,20 +449,14 @@
 </div>
 <jsp:include page="../common/footer.jsp"/>
 <jsp:include page="invitePjModal.jsp"/>
-<jsp:include page="attendeeViewModal.jsp"/>
 <jsp:include page="colorTagModal.jsp"/>
 <jsp:include page="pjFormModal.jsp"/>
-<jsp:include page="boardViewModal.jsp"/>
 <jsp:include page="boardEnrollModal.jsp"/>
 
 </body>
 
 <script src="/resources/assets/js/pjHead.js"></script>
-<script src="/resources/assets/js/pjBoard.js"></script>
 <script src="/resources/assets/js/pjHome.js"></script>
-<script src="/resources/assets/js/pjPost.js"></script>
-<script src="/resources/assets/js/pjSchedule.js"></script>
-<script src="/resources/assets/js/pjTodo.js"></script>
 
 <script>
     function loadRw() {
@@ -491,7 +473,7 @@
             async: false,
             success: function (list) {
                 list = $.parseJSON(list)
-                console.log(list)
+                // console.log(list)
                 $.each(list, function (i, obj) {
                     if (obj.status == 'P') {
                         pCount++
@@ -531,10 +513,11 @@
     }
 
     $(function () {
-
         $(".calendar").removeClass("clicked")
         $(".home").addClass("clicked")
         $(".drive").removeClass("clicked")
+        $("#boardPost").find("input[name=type]").val("home")
+        $("#editPj").find("input[name=type]").val("calendar")
         loadRw()
         datepickerLoad()
         changePage(1)
@@ -542,14 +525,6 @@
 </script>
 <%--게시글 전체--%>
 <script>
-    function checkStored() {
-        if (${pj.status == 'N'}) {
-            alert("보관된 프로젝트는 작성/수정/삭제 관련 기능이 제한됩니다.")
-            return false
-        } else {
-            return true
-        }
-    }
 
     function sendajax(searchTarget, searchKeyword, type, currentPage) {
         console.log("sendajax");
@@ -653,13 +628,19 @@
                         $("#schWriter").html(list.sch.name)
                         $("#schUploadDate").html(list.sch.create_date)
                         $(".detailViewBoard_no").val(list.sch.board_no)
-                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD LT') == moment(list.sch.sch_end).format('YYYY-MM-DD LT')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
+                        } else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD ')
+                                + moment(list.sch.sch_start).format('LT') + ' ~ '
+                                + moment(list.sch.sch_end).format('LT (ddd)')
+                            )
                         } else {
                             $("#schDate").html(
-                                moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
+                                moment(list.sch.sch_start).format('YYYY-MM-DD LT (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD LT (ddd)')
                             )
                         }
 
@@ -675,7 +656,9 @@
                         $.each(list.schAttendeeList, function (i, obj) {
                             if (obj.emp_no != ${pjMember.emp_no}) {
                                 var content = '<tr>'
-                                content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                                content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                                content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                                content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                                 content += '</td>'
                                 content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                                 content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -773,147 +756,45 @@
         }
     )
 
-    function loadReply(board_no) {
-        console.log(board_no)
-        $.ajax({
-            url: '/project/selectReply.do',
-            data: {
-                board_no: board_no
-            },
-            success: function (list) {
-                list = $.parseJSON(list)
-                console.log(list)
-                $(".replyArea").html('')
-                $(".replyCount").text("댓글 " + list.length)
-                if (list.length == 0) {
-                    $(".replyHrArea").css("display", "none")
-                    console.log('확인')
-                } else {
-                    $(".replyHrArea").css("display", "block")
-                    $.each(list, function (i, obj) {
-                        var content = '<div class="reply">'
-                        content += '<div class="col-lg-10" style="display: inline-block">'
-                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
-                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
-                        content += '</div>'
-                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
-                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
-                            content += '<a class="editReplyBtn">수정&nbsp </a>'
-                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
-                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
-                            content += '</div>'
-                        }
-                        content += '<br> <br>'
-                        content += '<div class="col-lg-10">'
-                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
-                        content += '</div>'
-                        content += '<br> <br>'
-                        content += '</div>'
-                        $(".replyArea").append(content)
-                    })
-                }
-            }
-        });
-    }
-
-
-    $(document).on('click', '.addReplyBtn', function () {
-        if (${pj.reply_power == 'Y'} &&
-        ${pjMember.admin == 'N'})
-        {
-            alert("관리자만 작성할 수 있습니다.")
-            return false
-        }
-        if (checkStored()) {
-            var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
-            console.log(reply_content)
-            console.log(board_no.val())
-            $.ajax({
-                url: '/project/insertReply.do',
-                data: {
-                    "reply_content": reply_content.val(),
-                    "board_no": board_no.val()
-                },
-                success: function (data) {
-                    //console.log(data)
-                    $(".replyContentEnroll").val("")
-                    loadReply(board_no.val())
-                }
-            })
-        }
-    })
-
-
-    $(document).on('click', '.boardDeleteBtn', function () {
-        if (checkStored()) {
-            if (confirm("삭제하시겠습니까?")) {
-                var form = document.createElement('form'); // 폼객체 생성
-                var obj1;
-                var obj2;
-                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj1.setAttribute('name', 'board_no'); // 객체이름
-                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
-                form.appendChild(obj1);
-                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj2.setAttribute('name', 'pj_no'); // 객체이름
-                obj2.setAttribute('value', ${pj.pj_no}); //객체값
-                form.appendChild(obj2);
-                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj3.setAttribute('name', 'type'); // 객체이름
-                obj3.setAttribute('value', 'home'); //객체값
-                form.appendChild(obj3);
-                form.setAttribute('method', 'post'); //get,post 가능
-                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
-                document.body.appendChild(form);
-                form.submit();
-            }
-        }
-
-    })
-
-
-    $("#close").click(function () {
-        //console.log("진입확인")
-        $("#fileAndMentionArea").html(
-            '<input type="text" class="form-control" id="file-label"' +
-            'style="display: none; border: 0px white;">' +
-            '<input type="file" name="upload_file" id="upload-file" hidden>' +
-            '<i class="bi bi-paperclip fa-2x fileUploadBtn"></i>' +
-            '<i class="bi bi-person fa-2x postFor"></i>'
-        )
-        $("#postForArea").html('')
-        $('#summernote').summernote('reset');
-        $(".todos").html(
-            '<div class="form-group row">' +
-            '<div class="col-lg-1 pr-0 text-right">' +
-            '</div>' +
-            '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
-            '<input type="text" class="form-control"' +
-            'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
-            '</div>' +
-            '<div class="col-sm-12 col-md-3 col-lg-1">' +
-            '<div class="input-group todoInput date" style="width: 100px;">' +
-            '<input type="text" style="display: none; width:25px;"' +
-            'class="form-control bg-white border-0 small todoDue">' +
-            '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
-            '</div>' +
-            '</div>' +
-            '<div class="col-lg-1">' +
-            '<i class="bi bi-person fa-2x todoPerson"></i>' +
-            '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
-            '<input type="hidden" name="todo_for">' +
-            '</p>' +
-            '</div>' +
-            '<input type="hidden" name="status" value="N">' +
-            '</div>'
-        )
-        datepickerLoad()
-        loadBoards()
-    })
+    //
+    // $("#close").click(function () {
+    //     //console.log("진입확인")
+    //     $("#fileAndMentionArea").html(
+    //         '<input type="text" class="form-control" id="file-label"' +
+    //         'style="display: none; border: 0px white;">' +
+    //         '<input type="file" name="upload_file" id="upload-file" hidden>' +
+    //         '<i class="bi bi-paperclip fa-2x fileUploadBtn"></i>' +
+    //         '<i class="bi bi-person fa-2x postFor"></i>'
+    //     )
+    //     $("#postForArea").html('')
+    //     $('#summernote').summernote('reset');
+    //     $(".todos").html(
+    //         '<div class="form-group row">' +
+    //         '<div class="col-lg-1 pr-0 text-right">' +
+    //         '</div>' +
+    //         '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
+    //         '<input type="text" class="form-control"' +
+    //         'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
+    //         '</div>' +
+    //         '<div class="col-sm-12 col-md-3 col-lg-1">' +
+    //         '<div class="input-group todoInput date" style="width: 100px;">' +
+    //         '<input type="text" style="display: none; width:25px;"' +
+    //         'class="form-control bg-white border-0 small todoDue">' +
+    //         '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
+    //         '</div>' +
+    //         '</div>' +
+    //         '<div class="col-lg-1">' +
+    //         '<i class="bi bi-person fa-2x todoPerson"></i>' +
+    //         '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
+    //         '<input type="hidden" name="todo_for">' +
+    //         '</p>' +
+    //         '</div>' +
+    //         '<input type="hidden" name="status" value="N">' +
+    //         '</div>'
+    //     )
+    //     datepickerLoad()
+    //     loadBoards()
+    // })
 </script>
 
 <%-- 프로젝트 헤드 --%>
@@ -951,9 +832,9 @@
         $("#editPj").find("input[name=pj_title]").val("${pj.pj_title}")
         $("#editPj").find("input[name=pj_content]").val("${pj.pj_content}")
         $("#editPj").find("input[name=pj_content]").text("${pj.pj_content}")
-        console.log("${pj.board_power}")
-        console.log("${pj.reply_power}")
-        console.log("${pj.file_power}")
+        <%--console.log("${pj.board_power}")--%>
+        <%--console.log("${pj.reply_power}")--%>
+        <%--console.log("${pj.file_power}")--%>
         if ("${pj.board_power}" == 'Y') {
             $("#editPj").find("select[name=board_power]").find(".all").removeAttr("selected")
             $("#editPj").find("select[name=board_power]").find(".admin").attr("selected", true)
@@ -976,7 +857,6 @@
             $("#editPj").find("select[name=file_power]").find(".all").attr("selected", true)
         }
         $("#editPj").find("#pj_no").val("${pj.pj_no}")
-        $("#editPj").find("input[name=type]").val("home")
         $("#editPjModal").modal("show")
     })
 
@@ -993,7 +873,9 @@
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
                     var content = '<tr>'
-                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                    content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                    content += 'id="profileImg_pjEmp" class="img-fluid m-3 rounded-circle"></span>'
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
                     content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
@@ -1165,7 +1047,9 @@
                     if (list.length > 0) {
                         $.each(list, function (i, obj) {
                             var content = '<tr>'
-                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                            content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                            content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                             content += '</td>'
                             content += '<th style="width: 50%">' + obj.name + '</th>'
                             content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -1262,7 +1146,9 @@
                 $.each(list, function (i, obj) {
                     if (obj.emp_no != ${pjMember.emp_no}) {
                         var content = '<tr>'
-                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                        content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                        content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                        content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                         content += '</td>'
                         content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                         content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -1323,7 +1209,9 @@
                 $.each(list, function (i, obj) {
                     if (obj.emp_no != ${pjMember.emp_no}) {
                         var content = '<tr>'
-                        content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                        content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                        content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                        content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                         content += '</td>'
                         content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                         content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -1349,6 +1237,7 @@
             }
         })
     })
+
 </script>
 <%--일정글--%>
 <script>
@@ -1360,7 +1249,6 @@
             return false
         }
         if (checkStored()) {
-            $("#postSch").find("input[name=type]").val("home")
             $("textarea[name=sch_content]").val('')
             $("textarea[name=sch_content]").text('')
             $("input[name=sch_attendee]").parent().parent().remove()
@@ -1377,10 +1265,8 @@
         }
 
     })
-    $(document).on('click', '#schEditBtn', function () {
-        $("#postSch").find("input[name=type]").val("home")
-    })
 </script>
+
 <%--할일글--%>
 <script>
     $(document).on('click', '#todoBtn', function () {
@@ -1420,7 +1306,9 @@
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
                     var content = '<tr class="selectTodoFor">'
-                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                    content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                    content += 'id="profileImg_header" class="img-fluid m-3 rounded-circle"></span>'
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
                     content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
@@ -1467,7 +1355,7 @@
 </script>
 <script>
     var sum = loadRw()
-    console.log(sum)
+    //console.log(sum)
     // Pie Chart Example
     var ctx = document.getElementById("taskChart");
     var myPieChart = new Chart(ctx, {

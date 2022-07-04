@@ -31,7 +31,7 @@
             </div>
             <p id="pjDetail">${pj.pj_content}</p>
             <h5 id="pjTitle">${pj.pj_title}</h5>
-            <a href="#" id="inviteBtn"
+            <a id="inviteBtn"
                class="btn btn-icon icon-left btn-secondary"><i
                     class="far fa-user"></i> +초대하기</a>
             <div id="navMenus">
@@ -41,7 +41,6 @@
           </div>
 
         </div>
-
       </div>
     </div>
   </div>

@@ -23,7 +23,7 @@ public class NoticeController {
 	private NoticeService noticeService;
 	
 	@ResponseBody
-	@RequestMapping("deleteNotice.do")
+	@RequestMapping("/deleteNotice.do")
 	public String deleteNotice(int notice_no, HttpServletRequest request) throws Exception {
 		log.info("삭제할 알림 번호 : {}", notice_no);
 		
@@ -34,7 +34,7 @@ public class NoticeController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("plusNoticeList.do")
+	@RequestMapping("/plusNoticeList.do")
 	public String plusNoticeList(HttpServletRequest request, int notice_no) throws Exception {
 		
 		String result = noticeService.plusNoticelist(request, notice_no);
@@ -43,7 +43,7 @@ public class NoticeController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("deleteAllNotice.do")
+	@RequestMapping("/deleteAllNotice.do")
 	public String deleteAllNotice(HttpServletRequest request) throws Exception {
 		int emp_no = ((Employee)request.getSession().getAttribute("loginEmp")).getEmp_no();
 		String result = noticeService.deleteAllNotice(emp_no);

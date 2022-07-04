@@ -70,7 +70,7 @@
 				<span><h3>일반 품의서</h3></span> 
 			</div>
 			<section class="section-body">
-				<form id="letterOfApprovalForm"  method="post" action="updateMyLetterOfApproval.do" enctype="multipart/form-data">
+				<form id="letterOfApprovalForm"  method="post" action="/updateMyLetterOfApproval.do" enctype="multipart/form-data">
 					<div id="letterOfApproval">
 						<input type="hidden" name="approvalNo" value="${ app.approvalNo }"/>
 						<div><h2 class="text-center pt-3">품의서</h2></div>							

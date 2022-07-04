@@ -69,7 +69,7 @@
 				<span><h3>일반 품의서</h3></span> 
 			</div>	
 			<section class="section-body">
-				<form id="letterOfApprovalForm" method="post" action="insertApproval.do" enctype="multipart/form-data"><!-- 첨부파일도 함께 보낸다. -->
+				<form id="letterOfApprovalForm" method="post" action="/insertApproval.do" enctype="multipart/form-data"><!-- 첨부파일도 함께 보낸다. -->
 					<input type="hidden" name="docNo" value="1"/>
 					<div id="letterOfApproval">
 						<div><h2 class="text-center pt-3">품의서</h2></div>							

@@ -21,12 +21,6 @@
             rel="stylesheet">
     <script
             src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"
-            integrity="sha512-x/vqovXY/Q4b+rNjgiheBsA/vbWA3IVvsS8lkQSX1gQ4ggSJx38oI2vREZXpTzhAv6tNUaX81E7QBBzkpDQayA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"
-            integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"
             integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ=="
@@ -41,18 +35,78 @@
           integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <style>
-        .card-body {
-            padding-bottom: 0px !important;
+        body {
+            color: black;
         }
 
-        .body-1 {
-            max-height: 850px;
+        datepicker > datepicker-days {
+            width: 275px;
         }
+
+        .colors {
+            -text: white;
+            margin-left: 20px;
+            padding: 20px;
+            width: 25px;
+            height: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 2rem -1rem rgba(0, 0, 0, .05);
+            transition: all 0.2s;
+            color: #ffffff;
+            -text: white;
+            grid-row: 1/2;
+            gird-column: 1/3;
+        }
+
+        .color-1 {
+            background: #3C3B3D;
+        }
+
+        .color-2 {
+            background: #EC87C0;
+        }
+
+        .color-3 {
+            background: #5D9CEC;
+        }
+
+        .color-4 {
+            background: #8a40f2;
+        }
+
+        .color-5 {
+            background: #82B553;
+        }
+
+        .color-6 {
+            background: #f05650;
+        }
+
+        .color-7 {
+            background: #917B56;
+        }
+
+        .color-8 {
+            background: gray;
+        }
+
+
+
+        #postTodo {
+            height: 70%;
+        }
+
+
+        .body-1 {
+            padding-top: 0px !important;
+        }
+
 
         .card {
             border-radius: 25px !important;
             margin-bottom: 0px;
         }
+
 
         .boardTable {
             width: 100%;
@@ -92,15 +146,25 @@
             border-bottom: none;
         }
 
+
         .badge {
             width: 70px;
             color: white;
         }
 
-        #caSetting:hover, .fa-star:hover, .fa-ellipsis-v:hover, .navMenu:hover,
-        .fa-plus:hover, .todoCalendar, .todoPerson, .switchPost, .switchSch,
-        .switchTodo {
+        .sorttmenu {
+            float: right;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+        }
+
+        #caSetting, .favoBtn, .navMenu, .fa-plus, .todoCalendar, .todoPerson, #todoEditBtn, .todoDue, .todoFor, .selectTodoFor, #schEditBtn, .viewAttendee,
+        .switchPost, .switchSch, .switchTodo, disconnectingTagBtn, .fileUploadBtn, .postFor, .removeTodo, .boardDeleteBtn, #postEditBtn, .editReplyBtn, .deleteReplyBtn {
             cursor: pointer;
+        }
+
+        .bi-circle-fill {
+            height: 50px;
         }
 
 
@@ -108,60 +172,7 @@
             cursor: pointer;
             color: #6777ef;
         }
-        .sorttmenu {
-            float: right;
-            border: 1px solid lightgray;
-            border-radius: 5px;
-        }
-        .colors {
-            -text: white;
-            margin-left: 0px;
-            margin-left: 15px;
-            padding: 0px;
-            width: 35px;
-            height: 35px;
-            border-radius: 10px;
-            box-shadow: 0 0 2rem -1rem rgba(0, 0, 0, .05);
-            transition: all 0.2s;
-            color: #ffffff;
-            -text: white;
-        }
 
-        .color-1 {
-            background: #3C3B3D;
-        }
-
-        .color-2 {
-            background: #EC87C0;
-        }
-
-        .color-3 {
-            background: #5D9CEC;
-        }
-
-        .color-4 {
-            background: #8a40f2;
-        }
-
-        .color-5 {
-            background: #82B553;
-        }
-
-        .color-6 {
-            background: #f05650;
-        }
-
-        .color-7 {
-            background: #917B56;
-        }
-
-        .color-8 {
-            background: gray;
-        }
-
-        .buttons {
-            margin-left: 38%;
-        }
     </style>
 </head>
 <body>
@@ -181,7 +192,7 @@
                             <input type="text" class="form-control" id="searchedKeyword"
                                    placeholder="검색어를 입력해주세요">
                             <div class="input-group-append">
-                                <button class="btn btn-light" type="button" onclick="changePage(1)();">
+                                <button class="btn btn-light" type="button" onclick="changePage(1);">
                                     <i class="bi bi-search"></i>
                                 </button>
                             </div>
@@ -268,17 +279,12 @@
 </div>
 </body>
 <jsp:include page="../common/footer.jsp"/>
-<jsp:include page="boardViewModal.jsp"/>
 <jsp:include page="boardEnrollModal.jsp"/>
-<jsp:include page="attendeeViewModal.jsp"/>
 <script src="/resources/assets/js/pjHome.js"></script>
-<script src="/resources/assets/js/pjBoard.js"></script>
-<script src="/resources/assets/js/pjPost.js"></script>
-<script src="/resources/assets/js/pjSchedule.js"></script>
-<script src="/resources/assets/js/pjTodo.js"></script>
 <script>
     $(function () {
         changePage(1)
+        $("#boardPost").find("input[name=type]").val('myBoard')
     })
 
 
@@ -316,7 +322,7 @@
             success: function (list) {
                 console.log(list)
                 $.each(list, function (i, obj) {
-                    $(".pj_no" + obj.pj_no).parent().find(".colors").addClass(obj.pj_color)
+                    $(".pj_no" + obj.pj_no).parent().parent().find(".colors").addClass(obj.pj_color)
                     $("#boardView").find(".pj_no" + obj.pj_no).addClass(obj.pj_color)
 
                 })
@@ -324,30 +330,12 @@
         })
     }
 
-    function loadPj(pj_no) {
-        $.ajax({
-            url: '/project/selectOneProject.do',
-            data: {
-                "pj_no": pj_no
-            },
-            success: function (list) {
-                // console.log(list)
-                // console.log(list.pj)
-                // console.log(list.pjMember)
-
-                $("#boardView").find(".colors").attr("class", "colors")
-                $("#boardView").find(".colors").addClass(list.pjMember.pj_color).addClass("ml-2")
-                $("#boardView").find(".pjTitle").html(list.pj.pj_title)
-                $("#boardPost").find("input[name=pj_no]").val(list.pj.pj_no)
-                $("#boardPost").find("input[name=type]").val('myBoard')
-            }
-        })
-    }
 
     $(document).on('click', '.boardTable tr', function () {
             console.log($(this).find(".board_no").val())
             $board_no = $(this).find(".board_no").val()
             console.log($(this).find(".board_type").val())
+            pj_no = $(this).find("input[name=pj_no]").val()
             var list = loadPj($(this).find("input[name=pj_no]").val())
             console.log(list)
             if ($(this).find(".board_type").val() == 'post') {
@@ -421,11 +409,17 @@
                         $("#schWriter").html(list.sch.name)
                         $("#schUploadDate").html(list.sch.create_date)
                         $(".detailViewBoard_no").val(list.sch.board_no)
-                        if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        if (moment(list.sch.sch_start).format('YYYY-MM-DD LT') == moment(list.sch.sch_end).format('YYYY-MM-DD LT')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
-                        } else {
+                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                            $("#schDate").html(
+                                moment(list.sch.sch_start).format('YYYY-MM-DD ')
+                                + moment(list.sch.sch_start).format('LT') + ' ~ '
+                                + moment(list.sch.sch_end).format('LT (ddd)')
+                            )
+                        }  else {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
                             )
@@ -553,49 +547,6 @@
         }
     }
 
-
-    function loadReply(board_no) {
-        console.log(board_no)
-        $.ajax({
-            url: '/project/selectReply.do',
-            data: {
-                board_no: board_no
-            },
-            success: function (list) {
-                list = $.parseJSON(list)
-                console.log(list)
-                $(".replyArea").html('')
-                $(".replyCount").text("댓글 " + list.length)
-                if (list.length == 0) {
-                    $(".replyHrArea").css("display", "none")
-                    console.log('확인')
-                } else {
-                    $(".replyHrArea").css("display", "block")
-                    $.each(list, function (i, obj) {
-                        var content = '<div class="reply">'
-                        content += '<div class="col-lg-10" style="display: inline-block">'
-                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
-                        content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
-                        content += '</div>'
-                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
-                            content += '<div class="col-lg-2 text-right" style="display: inline-block">'
-                            content += '<a class="editReplyBtn">수정&nbsp </a>'
-                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
-                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
-                            content += '</div>'
-                        }
-                        content += '<br> <br>'
-                        content += '<div class="col-lg-10">'
-                        content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
-                        content += '</div>'
-                        content += '<br> <br>'
-                        content += '</div>'
-                        $(".replyArea").append(content)
-                    })
-                }
-            }
-        });
-    }
 
 
     $(document).on('click', '.addReplyBtn', function () {

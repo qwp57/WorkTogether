@@ -9,9 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="검색, 페이징, 필터, 내가 쓴 게시글">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="프로필 일부 적용, msgMap 변경" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,6 +26,7 @@
         <option value="Class" />
         <option value="Jsp File" />
         <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
@@ -73,6 +72,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "D:/WorkTogether/src/main/webapp/resources/assets/img",
+    "list.type.of.created.stylesheet": "CSS",
     "nodejs_package_manager_path": "npm",
     "project.structure.last.edited": "Artifacts",
     "project.structure.proportion": "0.15625",
@@ -342,7 +342,28 @@
       <option name="project" value="LOCAL" />
       <updated>1656783498428</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary=".do /추가">
+      <created>1656865249423</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1656865249423</updated>
+    </task>
+    <task id="LOCAL-00018" summary="알림기능, 데이트피커 수정">
+      <created>1656883057950</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1656883057950</updated>
+    </task>
+    <task id="LOCAL-00019" summary="프로필 일부 적용, msgMap 변경">
+      <created>1656890275787</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1656890275787</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -388,7 +409,10 @@
     <MESSAGE value="프로젝트 드라이브" />
     <MESSAGE value="헤더 msg 출력 변경" />
     <MESSAGE value="검색, 페이징, 필터, 내가 쓴 게시글" />
-    <option name="LAST_COMMIT_MESSAGE" value="검색, 페이징, 필터, 내가 쓴 게시글" />
+    <MESSAGE value=".do /추가" />
+    <MESSAGE value="알림기능, 데이트피커 수정" />
+    <MESSAGE value="프로필 일부 적용, msgMap 변경" />
+    <option name="LAST_COMMIT_MESSAGE" value="프로필 일부 적용, msgMap 변경" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
