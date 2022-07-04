@@ -77,7 +77,7 @@ public class TodoController {
         todoService.insertTodo(todos, boardAll);
 
         for(Todo todo1 : todos){
-            if(todo1.getTodo_for() != null){
+            if(!todo1.getTodo_for().equals("")){
                 HashMap<String, Object> content = new HashMap<String, Object>();
                 content.put("TODO", todo1);
                 noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");
@@ -177,7 +177,7 @@ public class TodoController {
         todoService.editTodo(todos);
         Employee emp = (Employee) session.getAttribute("loginEmp");
         for(Todo todo1 : todos){
-            if(todo1.getTodo_for() != null){
+            if(!todo1.getTodo_for().equals("")){
                 HashMap<String, Object> content = new HashMap<String, Object>();
                 content.put("TODO", todo1);
                 noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");

@@ -28,7 +28,7 @@ $('#dept').on("change", function(){
 let dept_code = $(this).val();
 
 $.ajax({
-    url:"getDeptMember.do",
+    url:"/getDeptMember.do",
     data : {dept_code : dept_code},
     type : "post",
     success : function(obj){

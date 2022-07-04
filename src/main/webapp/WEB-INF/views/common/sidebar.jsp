@@ -58,7 +58,7 @@
                <hr>
                <li class="menu-header">프로젝트</li>
               <li class="nav-item dropdown">
-                <a href="/project" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>프로젝트조회</span></a>
+                <a href="/project" class="nav-link has-dropdown"><i class="far fa-file-alt" style="margin-left: 0px;"></i> <span>프로젝트 조회</span></a>
                 <ul class="dropdown-menu">
                   <li><a class="nav-link" href="/project">전체 프로젝트</a></li>
                   <li><a class="nav-link" href="/project/storedPj.do">보관 프로젝트</a></li>

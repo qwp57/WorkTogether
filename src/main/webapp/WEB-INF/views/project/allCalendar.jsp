@@ -326,9 +326,16 @@
                         $.each(list.schAttendeeList, function (i, obj) {
                             if (obj.emp_no != ${emp_no}) {
                                 var content = '<tr>'
-                                content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
-                                content += 'src="/resources/assets/img/avatar/avatar-1.png"'
-                                content += 'id="profileImg_Sch" class="img-fluid m-3 rounded-circle"></span>'
+                                content += '<td rowspan="2">'
+                                if (obj.change_name != undefined) {
+                                    content += '<img alt="image" style="height: 45px;"'
+                                    content += 'src="/resources/upload_files/'+ obj.change_name +'"'
+                                    content += 'class="rounded-circle mr-1">'
+                                }else {
+                                    content += '<img alt="image" style="height: 45px;"'
+                                    content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                                    content += 'class="rounded-circle mr-1">'
+                                }
                                 content += '</td>'
                                 content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                                 content += '<td rowspan="2" style="width: 20%; text-align: right;">'

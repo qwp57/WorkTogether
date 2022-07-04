@@ -35,6 +35,8 @@ public class ProjectServiceImpl implements ProjectService {
     private RequestWorkMapper requestWorkMapper;
     @Autowired
     private ProjectFileMapper projectFileMapper;
+    @Autowired
+    private BoardAllMapper boardAllMapper;
     private Map<String, Object> paramMap = new HashMap<String, Object>();
 
     @Override
@@ -161,6 +163,11 @@ public class ProjectServiceImpl implements ProjectService {
         ArrayList<ProjectFile> list = projectFileMapper.getPjFiles(paramMap);
         paramMap.clear();
         return list;
+    }
+
+    @Override
+    public String selectBoardProfilePic(int board_no) throws Exception {
+        return boardAllMapper.selectBoardProfilePic(board_no);
     }
 
     @Override

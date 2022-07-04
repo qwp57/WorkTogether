@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.uni.wt.project.model.dao.ProjectMapper;
+import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.post.model.dao.PostMapper;
 import com.uni.wt.project.post.model.dto.Post;
 import com.uni.wt.project.schedule.model.dto.Schedule;
@@ -40,8 +42,7 @@ public class NoticeService {
     private RequestWorkMapper rwMapper;
 
     @Autowired
-    private PostMapper postMapper;
-
+    private ProjectMapper projectMapper;
     @Autowired
     private EchoHandler echoHandler;
 
@@ -127,13 +128,20 @@ public class NoticeService {
                 break;
             case "SCH":
                 contentDetail = ((Schedule)contentBoard.get("SCH")).getSch_title();
-                content = empFrom.getName() + "님이 회원님을 일정에 등록했습니다.\n참석, 불참 여부를 정해주세요.";//알림메시지
+                content = empFrom.getName() + "님이 회원님을 일정에 등록했습니다.\n참석 불참 여부를 정하세요.";//알림메시지
                 url = ""+((Schedule)contentBoard.get("SCH")).getBoard_no();
                 break;
             case "TODO":
                 contentDetail = ((Todo)contentBoard.get("TODO")).getTodo_content();
                 content = empFrom.getName() + "님이 회원님을 할 일 담당자로 지정했습니다.";//알림메시지
                 url = ""+((Todo)contentBoard.get("TODO")).getBoard_no();
+                break;
+            case "PJ_INVITE":
+                int pj_no = (int)(contentBoard.get("PJ_INVITE"));
+                Project project = projectMapper.selectOneProject(pj_no);
+                contentDetail= project.getPj_title();
+                content = empFrom.getName() + "님이 회원님을 프로젝트에 초대했습니다.";
+                url = "/project/inputToPj.do?pj_no=" + pj_no;//URL
                 break;
         }
 

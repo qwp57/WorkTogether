@@ -32,4 +32,5 @@ public interface BoardAllMapper {
 
     ArrayList<BoardAll> selectPjBoardList(Map<String, Object> paramMap, RowBounds rwB);
 
+    String selectBoardProfilePic(int board_no);
 }
