@@ -14,6 +14,8 @@
 		<result property="create_date" column="CREATE_DATE"/>
 		<result property="dept_name" column="DEPT_NAME"/>
 		<result property="job_name" column="JOB_NAME"/>
+		<result property="orginal_name" column="ORIGINAL_NAME"/>
+		<result property="change_name" column="CHANGE_NAME"/>
 	</resultMap>
 	
 	<!-- dept resultMap -->
@@ -329,6 +331,31 @@
 			</if>
 		</trim>
 		ORDER BY JOIN_DATE DESC
-	</select>	
+	</select>
+	
+	<!-- 조직도 -->
+	<!-- 부서 조회 -->
+	<select id="selectDeptList" resultMap="departmenteResultSet">
+		SELECT *
+		FROM DEPARTMENT
+		START WITH UPPER_DEPT_CODE IS NULL
+		CONNECT BY PRIOR DEPT_CODE=UPPER_DEPT_CODE	
+	</select>
+	
+	<!-- 인사 조회 -->
+	<select id="organizationEmpList" resultMap="employeeResultSet">
+		SELECT 
+			A.*,
+			DEPT_NAME,
+			JOB_NAME,
+			CHANGE_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		LEFT JOIN ATTACHMENT D ON (A.FILE_NO=D.FILE_NO)
+		WHERE A.STATUS='I'	
+		ORDER BY A.JOB_CODE
+	</select>
+	
 </mapper>
         
