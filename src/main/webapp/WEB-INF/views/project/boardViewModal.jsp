@@ -23,7 +23,7 @@
                     <div class="col-lg-8"></div>
                 </div>
                 <span><input
-                        type="image" data-dismiss="modal" onclick="loadBoards()"
+                        type="image" data-dismiss="modal"
                         src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
@@ -33,17 +33,9 @@
                         <div class="form-group">
                             <div class="row ml-5 mr-5 boardBody">
                                 <div class="col-lg-10">
-                                    <c:choose>
-                                        <c:when test="${empty sessionScope.loginEmp.change_name}">
-                                            <img alt="image" style="height: 40px;"
-                                                 src="/resources/assets/img/avatar/avatar-1.png"
-                                                 class="rounded-circle mr-1"></c:when>
-                                        <c:otherwise>
-                                            <img alt="image" style="height: 40px;"
-                                                 src="/resources/upload_files/${loginEmp.change_name }"
-                                                 class="rounded-circle mr-1">
-                                        </c:otherwise>
-                                    </c:choose>
+                                  <div class="boardViewProfile" style="display: inline-block">
+
+                                  </div>
                                     <span id="postWriter" style="margin-right: 10px;"></span>
                                     <span style="color: gray" id="postUploadDate"></span>
                                 </div>
@@ -113,17 +105,9 @@
                         <div class="form-group">
                             <div class="row ml-5 mr-5 boardBody">
                                 <div class="col-lg-10">
-                                    <c:choose>
-                                        <c:when test="${empty sessionScope.loginEmp.change_name}">
-                                            <img alt="image" style="height: 40px;"
-                                                 src="/resources/assets/img/avatar/avatar-1.png"
-                                                 class="rounded-circle mr-1"></c:when>
-                                        <c:otherwise>
-                                            <img alt="image" style="height: 40px;"
-                                                 src="/resources/upload_files/${loginEmp.change_name }"
-                                                 class="rounded-circle mr-1">
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <div class="boardViewProfile" style="display: inline-block">
+
+                                    </div>
                                     <span id="schWriter"></span>
                                     <span style="color: gray" id="schUploadDate"></span>
                                 </div>
@@ -209,17 +193,9 @@
                         <div class="form-group">
                             <div class="row ml-5 mr-5 boardBody">
                                 <div class="col-lg-10">
-                                    <c:choose>
-                                        <c:when test="${empty sessionScope.loginEmp.change_name}">
-                                            <img alt="image" style="height: 40px;"
-                                                 src="/resources/assets/img/avatar/avatar-1.png"
-                                                 class="rounded-circle mr-1"></c:when>
-                                        <c:otherwise>
-                                            <img alt="image" style="height: 40px;"
-                                                 src="/resources/upload_files/${loginEmp.change_name }"
-                                                 class="rounded-circle mr-1">
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <div class="boardViewProfile" style="display: inline-block">
+
+                                    </div>
                                     <span id="todoWriter"></span>
                                     <span style="color: gray" id="todoUploadDate"></span>
                                 </div>

@@ -113,7 +113,7 @@ public class PostController {
         log.info("글리턴 : " + type);
         redirect.addFlashAttribute("msg", "게시물 수정 완료.");
 
-        if (type.equals("")) {
+        if (type.equals("home")) {
             return "redirect:/project/detailPj.do?pj_no=" + pj_no;
         } else if (type.equals("myBoard")) {
             return "redirect:/project/myBoard.do";
