@@ -31,7 +31,7 @@ $(document).on('click', '.replyEditSubmit', function () {
         },
         async: false,
         success: function (data) {
-            console.log('dd')
+            //console.log('dd')
         }
     })
     loadReply($(".detailViewBoard_no").val())
@@ -89,10 +89,48 @@ $(document).on('click', '#filterTodo', function () {
     $(".section-title").text("할 일")
     changePage(1)
 })
+$(function (){
+    $('#boardPost').on('hidden.bs.modal', function () {
+        console.log('asfe')
+        $(this).find('form')[0].reset();
+        $(this).find('form')[1].reset();
+        $(this).find('form')[2].reset();
+        $('#summernote').summernote('reset');
+        $("#fileAndMentionArea").html(
+            '<input type="text" class="form-control" id="file-label"' +
+            'style="display: none; border: 0px white;">' +
+            '<input type="file" name="upload_file" id="upload-file" hidden>' +
+            '<i class="bi bi-paperclip fa-2x fileUploadBtn"></i>' +
+            '<i class="bi bi-person fa-2x postFor"></i>'
+        )
+        $("#postForArea").html('')
+        $(".todos").html(
+            '<div class="form-group row">' +
+            '<div class="col-lg-1 pr-0 text-right">' +
+            '</div>' +
+            '<div class="text-md-right col-10 col-md-7 col-lg-9">' +
+            '<input type="text" class="form-control"' +
+            'placeholder="할 일 추가 / 최대 50자" name="todo_content">' +
+            '</div>' +
+            '<div class="col-sm-12 col-md-3 col-lg-1">' +
+            '<div class="input-group todoInput date" style="width: 100px;">' +
+            '<input type="text" style="display: none; width:25px;"' +
+            'class="form-control bg-white border-0 small todoDue">' +
+            '<span class="bi bi-calendar fa-2x mr-3 todoCalendar input-group-addon"></span>' +
+            '</div>' +
+            '</div>' +
+            '<div class="col-lg-1">' +
+            '<i class="bi bi-person fa-2x todoPerson"></i>' +
+            '<p class="todoFor" style="font-size: 11px; margin-top: 6px;">' +
+            '<input type="hidden" name="todo_for">' +
+            '</p>' +
+            '</div>' +
+            '<input type="hidden" name="status" value="N">' +
+            '</div>'
+        )
+        datepickerLoad()
 
-$('#boardPost').on('hidden.bs.modal', function (e) {
-    $(this).find('form')[0].reset();
-    $(this).find('form')[1].reset();
-    $(this).find('form')[2].reset();
+    })
 })
+
 

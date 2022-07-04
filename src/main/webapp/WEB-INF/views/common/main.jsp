@@ -425,7 +425,7 @@ td:last-child {
             $.ajax({
                 url: '/project/selectProjectColor.do',
                 success: function (list) {
-                    console.log(list)
+                    //console.log(list)
                     $.each(list, function (i, obj) {
                         $(".pj_no" + obj.pj_no).parent(".project").addClass(obj.pj_color)
                         $(".pj_no" + obj.pj_no).parent(".colors").addClass(obj.pj_color)

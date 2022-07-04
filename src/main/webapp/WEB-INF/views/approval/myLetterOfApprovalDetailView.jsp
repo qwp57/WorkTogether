@@ -50,7 +50,7 @@
 			<div class="float-right">
 				<c:choose>
 					<c:when test="${ map['app'].progress eq 'W'}"> <!-- 결재 상태가 대기일 때만 수정 가능 -->
-						<button type="button" class="btn btn-primary" onclick="location.href='updateMyLetterOfApprovalForm.do?approvalNo=' + ${map['app'].approvalNo}">수정</button>
+						<button type="button" class="btn btn-primary" onclick="location.href='/updateMyLetterOfApprovalForm.do?approvalNo=' + ${map['app'].approvalNo}">수정</button>
 						<button type="button" class="btn btn-danger" onclick="deleteDocument()">삭제</button>
 					</c:when>
 					<c:otherwise>
@@ -158,7 +158,7 @@
 					<c:if test="${ map['app'].fileNo ne 0 }">
 						<div class="mt-3 ml-4" id="fileArea">
 							<div>
-								<a href="${ pageContext.servletContext.contextPath }/resources/upload_files/${ map['app'].change_name }" download="${ map['app'].orginal_name }">${ map['app'].orginal_name }</a>
+								<a href="/${ pageContext.servletContext.contextPath }/resources/upload_files/${ map['app'].change_name }" download="${ map['app'].orginal_name }">${ map['app'].orginal_name }</a>
 							</div>									
 						</div>
 					</c:if>
@@ -167,7 +167,7 @@
 					</c:if>
 				</div>					
 				<div class="float-right mt-3">						
-					<button type="button" class="btn btn-primary" onclick="location.href='draftDocument.do'">목록</button>
+					<button type="button" class="btn btn-primary" onclick="location.href='/draftDocument.do'">목록</button>
 				</div>	
 			</section>
 		</div>
@@ -176,7 +176,7 @@
 	<script>
 		function deleteDocument(){
 			if(confirm("정말 삭제하시겠습니까?") == true){
-				location.href = "deleteApproval.do?approvalNo=" + "${ map['app'].approvalNo }" + "&docNo=" + "${map['app'].docNo}" + "&fileNo=" + "${map['app'].fileNo}";
+				location.href = "/deleteApproval.do?approvalNo=" + "${ map['app'].approvalNo }" + "&docNo=" + "${map['app'].docNo}" + "&fileNo=" + "${map['app'].fileNo}";
 			}else {
 				return false;
 			}

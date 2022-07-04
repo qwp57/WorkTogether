@@ -338,7 +338,7 @@ public class WorkStateController {
 		return name;
 	}
 	
-	@RequestMapping("deleteVacLog.do")
+	@RequestMapping("/deleteVacLog.do")
 	public String deleteVacationLog(int vac_no) throws Exception {
 	
 		wsService.deleteVacationLog(vac_no);
@@ -350,7 +350,7 @@ public class WorkStateController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "vacationDetail.do", produces = "application/text; charset =UTF-8")
+	@RequestMapping(value = "/vacationDetail.do", produces = "application/text; charset =UTF-8")
 	public String vacationDetail(int vac_no,HttpServletRequest request) throws Exception{
 		log.info("상세조회할 휴가 글 번호: {}", vac_no);
 		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
@@ -367,7 +367,7 @@ public class WorkStateController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "modifiedVacation.do", produces = "application/text; charset =UTF-8")
+	@RequestMapping(value = "/modifiedVacation.do", produces = "application/text; charset =UTF-8")
 	public String modifiedVacation(Vacation vac, MultipartFile newFile,HttpServletRequest request) throws Exception{
 		log.info("수정할 글: {}", vac.toString());
 		

@@ -14,7 +14,7 @@
       </div>
       <!-- modal body : 내용 -->
       <form class="form">
-        <div class="modal-body">
+        <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
           <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
           <table class="inviteTable">
           </table>
@@ -45,7 +45,7 @@
       </div>
       <!-- modal body : 내용 -->
       <form class="form">
-        <div class="modal-body">
+        <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
           <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
           <table class="inviteTable">
           </table>
@@ -69,7 +69,7 @@
       </div>
       <!-- modal body : 내용 -->
       <form class="form">
-        <div class="modal-body">
+        <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
           <form>
             <input type="text" class="form-control" id="memberSearching"
                    placeholder="사원명으로 검색">
@@ -96,7 +96,7 @@
       </div>
       <!-- modal body : 내용 -->
       <form class="form">
-        <div class="modal-body">
+        <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
           <form>
             <input type="text" class="form-control memberSearching" placeholder="사원명으로 검색">
             <table class="inviteTable">

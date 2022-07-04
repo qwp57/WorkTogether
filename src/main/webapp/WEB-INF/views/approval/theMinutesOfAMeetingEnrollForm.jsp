@@ -75,7 +75,7 @@
 				<span><h3>회의록</h3></span> 
 			</div>
 			<section class="section-body">
-				<form id="theMinutesOfAMeetingForm" method="post" action="insertApproval.do" enctype="multipart/form-data">
+				<form id="theMinutesOfAMeetingForm" method="post" action="/insertApproval.do" enctype="multipart/form-data">
 					<input type="hidden" name="docNo" value="3"/>
 					<div id="theMinutesOfAMeeting">
 						<div><h2 class="text-center pt-3">회의록</h2></div>											
@@ -196,7 +196,7 @@
 					</div>
 					<div class="float-right mt-3">
 						<button type="submit" class="btn btn-primary">기안하기</button>
-						<button type="button" class="btn btn-primary" onclick="location.href='approvalMain.do'">취소하기</button>
+						<button type="button" class="btn btn-primary" onclick="location.href='/approvalMain.do'">취소하기</button>
 					</div>	
 				</form>
 			</section>

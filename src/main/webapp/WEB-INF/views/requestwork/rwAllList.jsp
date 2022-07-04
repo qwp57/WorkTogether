@@ -96,7 +96,7 @@ text-align: center;
 <div>
 	<h2 >전체 업무요청</h2>
 	<div class="searchWrap">
-		<form class="form-inline mr-auto" method="get" action="allRequest.do">
+		<form class="form-inline mr-auto" method="get" action="/allRequest.do">
          	<select class="sorttmenu" id="selectsearch" name="searchTarget">
 			    <option value="name">담당자</option>
 			    <option value="title">제목</option>

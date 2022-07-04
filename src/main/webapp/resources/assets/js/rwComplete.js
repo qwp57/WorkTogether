@@ -51,7 +51,7 @@ function deleteComplete(num){
 if(confirm("정말 삭제하시겠습니까? ")){
 
     $.ajax({
-        url: "deleteAjax.do",
+        url: "/deleteAjax.do",
         data:{rw_no : num},
         type: "get",
         success : function(result){
@@ -80,7 +80,7 @@ $(".complete").children('tr').click(function(){
 function selectDetail(rw_no){
 
 	$.ajax({
-		url : "selectRWDetail.do",
+		url : "/selectRWDetail.do",
 		data :{rw_no : rw_no},
 		type : "get",
 		success : function(result){
