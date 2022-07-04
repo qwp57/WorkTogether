@@ -50,6 +50,8 @@ public class NoticeService {
 		case "RW" :
 			result = noticeMapper.insertNotice(insertRWNotice(emp, seqNo, type, nno));
 			break;
+		case "AP" :
+			result = noticeMapper.insertNotice(insertAPNotice(emp, seqNo, type, nno));
 		}
 		
 		//결과 확인
@@ -67,6 +69,15 @@ public class NoticeService {
 		////////웹소켓 전송
 		websocketSend(emp, noticeResult);
 		
+	}
+
+
+
+	private Notice insertAPNotice(Employee emp, int seqNo, String type, int nno) {
+		
+		
+		
+		return null;
 	}
 
 

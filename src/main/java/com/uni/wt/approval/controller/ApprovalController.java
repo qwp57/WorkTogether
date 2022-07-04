@@ -28,6 +28,7 @@ import com.uni.wt.approval.model.service.ApprovalService;
 import com.uni.wt.common.Pagination;
 import com.uni.wt.common.commonFile.FileService;
 import com.uni.wt.common.dto.PageInfo;
+import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
 
 @Controller
@@ -40,6 +41,9 @@ public class ApprovalController {
 	
 	@Autowired
 	private FileService fileService;
+	
+	@Autowired
+	private NoticeService noticeService;
 	
 	//전자결재 홈으로 이동
 	@RequestMapping("approvalMain.do")
@@ -276,21 +280,27 @@ public class ApprovalController {
 			finalApproverNo = Integer.parseInt(finalApp);
 		}
 		log.info("최종결재자 사번 넣은 후 finalApproverNo : " + finalApproverNo);
-				
+		
+		int result = 0; //등록 결과를 받을 result
 		//기안서 양식에 맞워서 등록
 		if(app.getDocNo() == 1) { //일반품의서인 경우
-			insertLetterOfApproval(loa, app.getApprovalNo(), firstApproverNo, finalApproverNo);
+			result = insertLetterOfApproval(loa, app.getApprovalNo(), firstApproverNo, finalApproverNo);
 		}else if(app.getDocNo() == 2) { //지출 결의서인 경우
-			insertExpenditure(appEx, exDateList, exClassificationList, amountList, exHistoryList, noteList, app.getApprovalNo(), firstApproverNo, finalApproverNo);
+			result = insertExpenditure(appEx, exDateList, exClassificationList, amountList, exHistoryList, noteList, app.getApprovalNo(), firstApproverNo, finalApproverNo);
 		}else { //회의록인 경우
-			insertMminutes(appMm, app.getApprovalNo(), firstApproverNo, finalApproverNo);
+			result = insertMminutes(appMm, app.getApprovalNo(), firstApproverNo, finalApproverNo);
+		}
+		
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		if(result > 0) {
+			noticeService.insertNotice(emp, result, "AP", request);
 		}
 		
 		return "redirect:/draftDocument.do";
 	}
 
 	//일반 품의서 insert
-	private void insertLetterOfApproval(ApprovalLoa loa, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {		
+	private int insertLetterOfApproval(ApprovalLoa loa, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {		
 		//결재선 insert
 		int lineNo = insertApprovalLine(approvalNo, firstApproverNo, finalApproverNo);
 		
@@ -298,8 +308,9 @@ public class ApprovalController {
 		loa.setApprovalNo(approvalNo);
 		loa.setLineNo(lineNo);
 		loa.setContent(loa.getContent().replace("\r\n", "<br>")); //개행
-		approvalService.insertLoa(loa);
-	
+		int result = approvalService.insertLoa(loa);
+		
+		return result;
 	}
 
 	//결재선 등록 메소드
@@ -343,7 +354,7 @@ public class ApprovalController {
 	}
 	
 	//지출결의서 작성
-	private void insertExpenditure(ApprovalExpenditure appEx, List<String> exDateList,
+	private int insertExpenditure(ApprovalExpenditure appEx, List<String> exDateList,
 			List<String> exClassificationList, List<String> amountList, List<String> exHistoryList,
 			List<String> noteList, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {
 		
@@ -370,8 +381,9 @@ public class ApprovalController {
 		String note = String.join(",", noteList);
 		appEx.setNote(note);
 		
-		approvalService.insertExpenditure(appEx);
+		int result = approvalService.insertExpenditure(appEx);
 		
+		return result;
 	}
 	
 	//회의록으로 이동
@@ -396,7 +408,7 @@ public class ApprovalController {
 	}
 	
 	//회의록 insert
-	private void insertMminutes(ApprovalMMinutes appMm, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {
+	private int insertMminutes(ApprovalMMinutes appMm, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {
 		//결재선 insert
 		int lineNo = insertApprovalLine(approvalNo, firstApproverNo, finalApproverNo);
 		
@@ -405,7 +417,9 @@ public class ApprovalController {
 		appMm.setLineNo(lineNo);
 		appMm.setMeetingPurpose(appMm.getMeetingPurpose().replace("\r\n", "<br>"));
 		appMm.setMeetingContent(appMm.getMeetingContent().replace("\r\n", "<br>"));
-		approvalService.insertMminutes(appMm);
+		int result = approvalService.insertMminutes(appMm);
+		
+		return result;
 	}
 	
 	//내 기안서 디테일로 이동
@@ -927,7 +941,7 @@ public class ApprovalController {
 		return "redirect:approvalDocument.do";
 	}
 	
-	@RequestMapping("deleteApproval.do")
+	@RequestMapping("deleteApproval.do") 
 	public String deleteApproval(String approvalNo, String docNo, @RequestParam(value="fileNo", required=false) String fileNo) throws Exception {
 		//첨부파일 삭제
 		if(fileNo != null) {

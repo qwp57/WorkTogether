@@ -310,13 +310,13 @@
 													</a>														
 												</c:if>
 												<c:forEach items="${ empList }" var="el">
-														<c:if test="${ dl.deptCode == el.dept_code }">
-															<div id="deptEmp2${dl.deptCode}" class="mx-5 my-2 deptUpper collapse">
-																<input type="radio" class="form-check-input" name="empNo2" id="empNo2" value="${ el.emp_no }"><label for="empNo2">${ el.name }</label>
-																<span>${el.job_name}</span>														
-															</div>
-														</c:if>
-													</c:forEach>
+													<c:if test="${ dl.deptCode == el.dept_code }">
+														<div id="deptEmp2${dl.deptCode}" class="mx-5 my-2 deptUpper collapse">
+															<input type="radio" class="form-check-input" name="empNo2" id="empNo2" value="${ el.emp_no }"><label for="empNo2">${ el.name }</label>
+															<span>${el.job_name}</span>														
+														</div>
+													</c:if>
+												</c:forEach>
 											</div>
 										</c:forEach>
 									</div>

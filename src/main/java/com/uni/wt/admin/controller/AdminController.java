@@ -37,10 +37,17 @@ public class AdminController {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
-	//부서 조회
+	//부서 조회 -> 조직도
 	@RequestMapping("organizationChart.do")
-	public String organizationChart(Model model) {
-
+	public String organizationChart(Model model) throws Exception {
+		//부서 조회
+		ArrayList<Department> deptList = adminService.selectDeptList();		
+		//사원 조회
+		ArrayList<Employee> empList= adminService.organizationEmpList();
+		
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("empList", empList);
+		
 		return "organizationChart/organizationChartView";
 	}
 	
@@ -286,4 +293,5 @@ public class AdminController {
 		
 		return mv;
 	}
+
 }

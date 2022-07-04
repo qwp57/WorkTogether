@@ -196,7 +196,7 @@ public class RequestWorkController {
 	
 	@RequestMapping("/insertRequestWork.do")
 	public String insertRequestWork(RequestWork rw, @RequestParam(name="upload_file", required=false) MultipartFile file,
-			HttpServletRequest request, RedirectAttributes redirect) throws Exception {
+					HttpServletRequest request, RedirectAttributes redirect) throws Exception {
 		Map<String, String> msgMap = new HashMap<String, String>(); 
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
 		log.info("[로그인된 유저] : {}", emp.toString());

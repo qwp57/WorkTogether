@@ -201,20 +201,21 @@ $(function(){
               <a href="#" class="dropdown-item has-icon" id="profile">
                 <i class="far fa-user"></i> 내 정보
               </a>
-              <!-- 관리자 설정은 관리자에게만 보인다. -->
-              <h5 class="dropdown-header">
-	            <i class="fas fa-cog"></i> 관리자 설정
-	          </h5>
-	          <a class="dropdown-item has-icon ml-3" href="adminApprovalList.do">
-              	<i class="bi bi-check-square-fill"></i>가입 승인
-              </a>
-	       	  <a class="dropdown-item has-icon ml-3" href="departmentManagement.do">
-              	<i class="bi bi-diagram-3-fill"></i>부서 관리
-              </a>
-	           <a class="dropdown-item has-icon ml-3" href="employeeManagement.do">
-              	<i class="bi bi-people-fill"></i>인사 관리
-              </a>
-
+              <c:if test="${ loginEmp.admin == 'Y' }">
+	              <!-- 관리자 설정은 관리자에게만 보인다. -->
+	              <h5 class="dropdown-header">
+		            <i class="fas fa-cog"></i> 관리자 설정
+		          </h5>
+		          <a class="dropdown-item has-icon ml-3" href="adminApprovalList.do">
+	              	<i class="bi bi-check-square-fill"></i>가입 승인
+	              </a>
+		       	  <a class="dropdown-item has-icon ml-3" href="departmentManagement.do">
+	              	<i class="bi bi-diagram-3-fill"></i>부서 관리
+	              </a>
+		           <a class="dropdown-item has-icon ml-3" href="employeeManagement.do">
+	              	<i class="bi bi-people-fill"></i>인사 관리
+	              </a>
+			  </c:if>
               <div class="dropdown-divider"></div>
               <a href="/logout.do" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> 로그아웃

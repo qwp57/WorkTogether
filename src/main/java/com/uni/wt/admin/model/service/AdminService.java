@@ -42,6 +42,10 @@ public interface AdminService {
 
 	ArrayList<Employee> searchEmpList(EmployeeSearchCondition sc, PageInfo pi) throws Exception;
 
+	ArrayList<Department> selectDeptList() throws Exception;
+
+	ArrayList<Employee> organizationEmpList() throws Exception;
+
 
 
 }

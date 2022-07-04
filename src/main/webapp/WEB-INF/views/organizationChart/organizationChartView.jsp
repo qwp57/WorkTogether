@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <jsp:include page="../common/header.jsp"/>
@@ -40,8 +41,10 @@
 		width: 70px;
 		height: 80px;
 	}
-	
-	
+
+	.empJob{
+		margin-bottom: 30px;
+	}
 </style>
 </head>
 <body>	
@@ -72,43 +75,19 @@
 					</div>
 					
 					<div id="allWT" class="collapse show">
-						<div id="allManagement">
-							<a href="#management" data-toggle="collapse">
-								<i class="bi bi-plus" id="plusIcon2"></i>
-								<i class="bi bi-dash" id="minusIcon2" style="display:none"></i>
-							</a>
-							<a href="#" id="deptName"><span>관리부</span></a>
-							
-							<div id="management" class="collapse">
-								<a href="#">인사팀</a><br>
-								<a href="#">재무회계팀</a>
-							</div>
-						</div>
-						
-						<div id="allProduction">
-							<a href="#production" data-toggle="collapse">
-								<i class="bi bi-plus" id="plusIcon3"></i>
-								<i class="bi bi-dash" id="minusIcon3" style="display:none"></i>
-							</a>
-							<a href="#" id="deptName"><span>생산부</span></a>
-							
-							<div id="production" class="collapse">
-								<a href="#">생산팀</a><br>
-								<a href="#">품질관리팀</a>
-							</div>
-						</div>
-						
-						<div id="allSales">
-							<a href="#sales" data-toggle="collapse">
-								<i class="bi bi-plus" id="plusIcon4"></i>
-								<i class="bi bi-dash" id="minusIcon4" style="display:none"></i>
-							</a>
-							<a href="#" id="deptName"><span>영업부</span></a>
-							
-							<div id="sales" class="collapse">
-								<a href="#">영업팀</a><br>
-								<a href="#">고객지원팀</a>
-							</div>
+						<div id="allManagement">													
+							<c:forEach items="${ deptList }" var="dl">							
+								<c:if test="${ dl.deptLevel == 1 }">
+									<div class="mb-3">
+										<a href="#management" data-toggle="collapse" id="deptName">${ dl.deptName }</a>
+									</div>									
+								</c:if>		
+								<div id="management" class="collapse mb-3">						
+									<c:if test="${ dl.deptLevel == 2}">
+										<a href="organizationChartDept.do?deptCode="+"${ dl.deptCode }">${ dl.deptName }</a><br>																		
+									</c:if>	
+								</div>							
+							</c:forEach>
 						</div>
 					</div>
 				</div>
@@ -117,65 +96,70 @@
 			<!-- 부서별 사원들의 사진 및 정보 -->
 			<!-- 기능 구현할 때는 list로 뿌려주기 -> 부서 테이블 조회해서 -->
 			<div class="col-lg-9">
-				<h4 id="title" style="color:black">워크 투게더</h4>				
-				<div class="row" id="empProfile">
+				<h4 id="title" style="color:black">워크 투게더</h4>							
+				<div class="row" id="empProfile">						
 					<div class="col-lg-1 picture">
-						<img src="resources/assets/img/profile/김대표.jpg" class="img-fluid float-left mt-3">
+					<c:forEach items="${ empList }" var="el">	
+						<c:if test="${ el.job_code == 'J1' }"> 
+							<c:choose>
+								<c:when test="${ el.file_no == null }">
+									<img src="resources/assets/img/noimg.jpg" class="img-fluid float-left mt-3">
+								</c:when>
+								<c:otherwise>
+									<img src="resources/upload_files/${ el.change_name }" class="img-fluid float-left mt-3">
+								</c:otherwise>
+							</c:choose>		
+						</c:if>
+						</c:forEach>
 					</div>
+					
 					<div class="col-lg-2 mt-3">
-						<span class="font-weight-bold" id="empName">김대표</span>
-						<div class="mt-2" id="empJob">대표이사</div>
-					</div>					
+						<c:forEach items="${ empList }" var="el">
+							<c:if test="${  el.job_code == 'J1' }">
+								<span class="font-weight-bold" id="empName">${ el.name }</span>
+								<div class="mt-2" id="empJob">${ el.job_name }</div>
+							</c:if>
+						</c:forEach>	
+					</div>										
 				</div>
 			
 				<!-- 부서와 하위 부서 이름 -->
 				<!-- 직급 레벨 컬럼 추가 -> 레벨이 다르면 또 div가 만들어져서 밑에 추가되고, 레벨이 같으면 같은 div 안에 추가된다. -->
-				<div id="dept">
-					<h5 class="mt-5" id="deptTitle" style="color:black">관리부</h5>
-					<h6 class="mt-3" id="deptUpperTitle" style="color:black">인사팀</h6>
-				</div>
-				
-				<div class="row mt-3" id="empProfile">
-					<div class="col-lg-1 picture">
-						<img id="picture" src="resources/assets/img/profile/정부사장.jpg" class="img-fluid float-left mt-3">
-					</div>
-					<div class="col-lg-2 mt-3">
-						<span class="font-weight-bold" id="empName">정부사장</span>
-						<div class="mt-2" id="empDept">인사팀</div>
-						<div class="mt-2" id="empJob">부사장</div>
+				<c:forEach items="${ deptList }" var="dl">	
+					<div id="dept">
+						<c:if test="${ dl.deptLevel == 1 }">
+						<h5 class="mt-5" id="deptTitle" style="color:black">${ dl.deptName }</h5>
+						</c:if>
+						<c:if test="${ dl.deptLevel == 2 }">
+						<h6 class="mt-3" id="deptUpperTitle" style="color:black">${ dl.deptName }</h6>
+						</c:if>
+					</div>				
+					<div class="row mt-3" id="empProfile">
+						<div class="col-lg-1 picture">	
+						<c:forEach items="${ empList }" var="el">				
+								<c:if test="${ dl.deptCode == el.dept_code}">
+									<c:choose>
+										<c:when test="${ el.file_no == null }">
+											<img src="resources/assets/img/noimg.jpg" class="img-fluid float-left mt-3">
+										</c:when>
+										<c:otherwise>
+											<img src="resources/upload_files/${ el.change_name }" class="img-fluid float-left mt-3">
+										</c:otherwise>
+									</c:choose>								
+								</c:if>	
+							</c:forEach>
+						</div>			
+						<div class="col-lg-2 mt-3"> 
+							<c:forEach items="${ empList }" var="el">	
+								<c:if test="${ dl.deptCode == el.dept_code}">
+									<span class="font-weight-bold mt-3 empName" name="empName">${ el.name }</span>
+									<div class="mt-2 empDept" name="empDept">${ el.dept_name }</div>
+									<div class="mt-2 empJob" name="empJob">${ el.job_name }</div>
+								</c:if>
+							</c:forEach>
+						</div>					
 					</div>					
-				</div>	
-						
-				<div class="row mt-3" id="empProfile">
-					<div class="col-lg-1 picture">
-						<img src="resources/assets/img/profile/최차장.jpg" class="img-fluid float-left mt-3">
-					</div>
-					<div class="col-lg-2 mt-3">
-						<span class="font-weight-bold" id="empName">최차장</span>
-						<div class="mt-2" id="empDept">인사팀</div>
-						<div class="mt-2" id="empJob">차장</div>
-					</div>					
-				</div>
-				
-				<div class="row mt-3" id="empProfile">
-					<div class="col-lg-1 picture">
-						<img src="resources/assets/img/profile/나과장.jpg" class="img-fluid float-left mt-3">
-					</div>
-					<div class="col-lg-2 mt-3">
-						<span class="font-weight-bold" id="empName">나과장</span>
-						<div class="mt-2" id="empDept">인사팀</div>
-						<div class="mt-2" id="empJob">과장</div>
-					</div>	
-					
-					<div class="col-lg-1 picture">
-						<img src="resources/assets/img/profile/이과장.jpg" class="img-fluid float-left mt-3">
-					</div>
-					<div class="col-lg-2 mt-3">
-						<span class="font-weight-bold" id="empName">이과장</span>
-						<div class="mt-2" id="empDept">인사팀</div>
-						<div class="mt-2" id="empJob">과장</div>
-					</div>					
-				</div>
+				</c:forEach>		
 			</div>
 		</div>		
 	</div>
@@ -195,7 +179,7 @@
    						<div class="col-lg-4">
    							<img style="height: 100px" alt="image"
                                               src="resources/assets/img/profile/최차장.jpg"
-                                              id=empModalProfile"" class="img-fluid m-3">
+                                              id="empModalProfile" class="img-fluid m-3">
    						</div>
 						<div class="col-lg-8">
 							<h6 class="mt-3" style="color:black" id="empModalName">최차장</h6>
@@ -218,50 +202,6 @@
       
 	<script>
 		$(function(){
-			$("#plusIcon1").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon1").removeAttr("style");	
-				
-			});
-			
-			$("#minusIcon1").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon1").removeAttr("style");				
-			});
-			
-			$("#minusIcon2").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon2").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon2").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon2").removeAttr("style");				
-			});
-			
-			$("#minusIcon3").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon3").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon3").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon3").removeAttr("style");				
-			});
-			
-			$("#minusIcon4").click(function(){
-				$(this).css("display","none");
-				$("#plusIcon4").removeAttr("style");	
-				
-			});
-			
-			$("#plusIcon4").click(function(){
-				$(this).css("display","none");
-				$("#minusIcon4").removeAttr("style");				
-			});
-			
 			//사진 클릭하면 모달창이 뜨도록 한다.
 			$(".picture").click(function(){
 				$("#empModal").modal("show");
