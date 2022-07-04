@@ -234,7 +234,7 @@
                     src="/resources/assets/img/close.png/" style="width: 20px;"></span>
             </div>
             <!-- modal body : 내용 -->
-            <div class="modal-body">
+            <div class="modal-body" style="overflow-y: scroll; max-height: 500px;">
                 <table id="tagTable">
                 </table>
                 <br>

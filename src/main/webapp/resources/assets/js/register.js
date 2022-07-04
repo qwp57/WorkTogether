@@ -21,7 +21,7 @@
 				$('#userId').css({'border': '1px solid #e4e6fc'});
 					
 			$.ajax({
-				url:"idCheck.do",
+				url:"/idCheck.do",
 				data : { userId : $('#userId').val()},
 				type : "post",
 				success : function(result){

@@ -122,7 +122,7 @@ AND A.STATUS != 'CM'
  
  
  
- <select id="selectRQList" parameterType="_int" resultMap="requestWorkSet">
+ <select id="selectRQList" parameterType="map" resultMap="requestWorkSet">
  SELECT
     RW_NO,
     B.NAME AS RES_MEMBER,
@@ -145,7 +145,7 @@ AND A.STATUS NOT IN ('CM', 'CC')
  
  </select>
  
-  <select id="selectRSList" parameterType="_int" resultMap="requestWorkSet">
+  <select id="selectRSList" parameterType="map" resultMap="requestWorkSet">
  SELECT
     RW_NO,
     B.NAME AS REQ_MEMBER,

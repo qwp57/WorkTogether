@@ -9,6 +9,8 @@ public class Todo {
 
     private int todo_no;
 
+    private int pj_no;
+
     private int emp_no;
 
     private int board_no;

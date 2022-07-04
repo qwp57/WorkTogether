@@ -65,7 +65,7 @@ margin: 0;
        			</table>
        			<div class="responsheader">응답</div>
        			<table class="table table-bordered">
-					<form id="updateStatus" action="updateRW.do" method="post" enctype="multipart/form-data" >
+					<form id="updateStatus" action="/updateRW.do" method="post" enctype="multipart/form-data" >
        				<tbody class="tbody">
        					<tr>
        						<th class="th">상태 메시지</th>

@@ -75,7 +75,7 @@
 				<span><h3>회의록</h3></span> 
 			</div>
 			<section class="section-body">
-				<form id="theMinutesOfAMeetingForm"  method="post" action="updateMyTheMinutesOfAMeeting.do" enctype="multipart/form-data">
+				<form id="theMinutesOfAMeetingForm"  method="post" action="/updateMyTheMinutesOfAMeeting.do" enctype="multipart/form-data">
 					<div id="theMinutesOfAMeeting">	
 						<input type="hidden" name="approvalNo" value="${ app.approvalNo }"/>
 						<div><h2 class="text-center pt-3">회의록</h2></div>							

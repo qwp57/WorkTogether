@@ -24,8 +24,8 @@ $(document).on('click', '#schEditBtn', function () {
             async: false,
             success: function (data) {
                 console.log(data)
-                $("input[name=sch_start]").val(data.sch_start)
-                $("input[name=sch_end]").val(data.sch_end)
+                $("input[name=sch_start]").val(moment(data.sch_start).format('YYYY-MM-DD h:mm'))
+                $("input[name=sch_end]").val(moment(data.sch_end).format('YYYY-MM-DD h:mm'))
                 $("input[name=sch_place]").val(data.sch_place)
                 $("textarea[name=sch_content]").val(data.sch_content)
                 $("textarea[name=sch_content]").text(data.sch_content)
@@ -108,7 +108,7 @@ function schJoin(status, board_no) {
         },
         async: false,
         success: function (data) {
-            console.log('dd')
+            //console.log('dd')
         }
     })
     loadSchAttendee(board_no)
@@ -153,21 +153,79 @@ $(document).on('click', '.viewAttendee', function () {
     })
 
 })
+$(function (){
+    var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new kakao.maps.LatLng(37.498971671111775, 127.03287470164285), // 지도의 중심좌표
+            level: 4 // 지도의 확대 레벨
+        };
+    // 지도를 생성합니다
+    var map = new kakao.maps.Map(mapContainer, mapOption);
 
-$('#datepicker').datepicker({
-    format: "yyyy-mm-dd",	//데이터 포맷 형식(yyyy : 년 mm : 월 dd : 일 )
-    autoclose: true,	//사용자가 날짜를 클릭하면 자동 캘린더가 닫히는 옵션
-    clearBtn: true, //날짜 선택한 값 초기화 해주는 버튼 보여주는 옵션 기본값 false 보여주려면 true
-    daysOfWeekHighlighted: [0], //강조 되어야 하는 요일 설정
-    disableTouchKeyboard: false,	//모바일에서 플러그인 작동 여부 기본값 false 가 작동 true가 작동 안함.
-    templates: {
-        leftArrow: '&laquo;',
-        rightArrow: '&raquo;'
-    }, //다음달 이전달로 넘어가는 화살표 모양 커스텀 마이징
-    showWeekDays: true,// 위에 요일 보여주는 옵션 기본값 : true
-    todayHighlight: true,	//오늘 날짜에 하이라이팅 기능 기본값 :false
-    weekStart: 0,//달력 시작 요일 선택하는 것 기본값은 0인 일요일
-    language: "ko"	//달력의 언어 선택, 그에 맞는 js로 교체해줘야한다.
+    $("#kakaoMapSearch").keyup(function(){
+        // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
 
+        // 장소 검색 객체를 생성합니다
+        var ps = new kakao.maps.services.Places();
+        // 키워드로 장소를 검색합니다
+        var keyword = $("#kakaoMapSearch").val();
+        //console.log(keyword)
+        ps.keywordSearch(keyword, placesSearchCB);
+        // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+
+    });
+    function placesSearchCB(data, status, pagination) {
+        if (status === kakao.maps.services.Status.OK) {
+            // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+            // LatLngBounds 객체에 좌표를 추가합니다
+            var bounds = new kakao.maps.LatLngBounds();
+            for (var i = 0; i < data.length; i++) {
+                displayMarker(data[i]);
+                bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+            }
+            // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+            map.setBounds(bounds);
+        }
+    }
+
+    // 지도에 마커를 표시하는 함수입니다
+    function displayMarker(place) {
+        // 마커를 생성하고 지도에 표시합니다
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(place.y, place.x)
+        });
+        // 마커에 클릭이벤트를 등록합니다
+        kakao.maps.event.addListener(marker, 'click', function () {
+            // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+            infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+            infowindow.open(map, marker);
+            $("input[name=sch_place]").val(place.place_name);
+        });
+    }
+    $('#datetimepicker7').datetimepicker({
+        icons: {
+            time: "fa fa-clock"
+        },
+        locale: 'ko',
+        format: "YYYY-MM-DD HH:mm"
+
+    });
+    $('#datetimepicker8').datetimepicker({
+        icons: {
+            time: "fa fa-clock"
+        },
+        useCurrent: false,
+        locale: 'ko',
+        format: "YYYY-MM-DD HH:mm"
+
+    });
+    $("#datetimepicker7").on("change.datetimepicker", function (e) {
+        console.log('ㅋㅋ')
+        $('#datetimepicker8').datetimepicker('minDate', e.date);
+    });
+    $("#datetimepicker8").on("change.datetimepicker", function (e) {
+        $('#datetimepicker7').datetimepicker('maxDate', e.date);
+    });
 })
-

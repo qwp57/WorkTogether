@@ -28,6 +28,7 @@ import com.uni.wt.approval.model.service.ApprovalService;
 import com.uni.wt.common.Pagination;
 import com.uni.wt.common.commonFile.FileService;
 import com.uni.wt.common.dto.PageInfo;
+import com.uni.wt.common.notice.service.NoticeService;
 import com.uni.wt.employee.model.dto.Employee;
 
 @Controller
@@ -41,8 +42,11 @@ public class ApprovalController {
 	@Autowired
 	private FileService fileService;
 	
+	@Autowired
+	private NoticeService noticeService;
+	
 	//전자결재 홈으로 이동
-	@RequestMapping("approvalMain.do")
+	@RequestMapping("/approvalMain.do")
 	public String approvalMainPage(HttpServletRequest request, Model model) throws Exception {
 		//로그인한 사람의 emp 정보를 가지고 온다.
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
@@ -76,7 +80,7 @@ public class ApprovalController {
 	}
 	
 	//기안 문서함으로 이동
-	@RequestMapping("draftDocument.do")
+	@RequestMapping("/draftDocument.do")
 	public String draftDocumentBoxPage(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model) throws Exception {
 		//로그인한 사람의 emp 정보를 가지고 온다.
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
@@ -98,7 +102,7 @@ public class ApprovalController {
 	}
 	
 	//기안 문서함 검색
-	@RequestMapping("searchDraft.do")
+	@RequestMapping("/searchDraft.do")
 	public String draftSearchList(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model, 
 								  String condition, String keyword, ApprovalSearchCondition asc) throws Exception {
 		log.info("condition : " + condition);
@@ -141,7 +145,7 @@ public class ApprovalController {
 	}
 	
 	//결재 문서함으로 이동
-	@RequestMapping("approvalDocument.do")
+	@RequestMapping("/approvalDocument.do")
 	public String approvalDocumentBoxPage(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model) throws Exception {
 		//로그인한 사람 정보 가지고 온다.
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
@@ -161,7 +165,7 @@ public class ApprovalController {
 	}
 	
 	//결재 문서함 검색
-	@RequestMapping("searchApp.do")
+	@RequestMapping("/searchApp.do")
 	public String appSearchList(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model, 
 								String condition, String keyword, ApprovalSearchCondition asc) throws Exception {
 		//로그인한 사람 정보 가지고 온다.
@@ -202,7 +206,7 @@ public class ApprovalController {
 	}
 	
 	//일반 품의서 작성폼으로 이동
-	@RequestMapping("letterOfApprovalEnrollForm.do")
+	@RequestMapping("/letterOfApprovalEnrollForm.do")
 	public String letterOfApprovalEnrollForm(HttpServletRequest request, Model model) throws Exception {		
 		//부서 조회
 		ArrayList<Department> deptList = approvalService.selectDeptList();		
@@ -223,7 +227,7 @@ public class ApprovalController {
 	}
 	
 	//공통 문서 저장
-	@RequestMapping("insertApproval.do")
+	@RequestMapping("/insertApproval.do")
 	public String insertApproval(Approval app, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, @RequestParam(value="firstApproverNo") int firstApproverNo,
 								@RequestParam(name="finalApp", required = false) String finalApp, @RequestParam(name="upfile", required = false) MultipartFile file, HttpServletRequest request, 
 								@RequestParam(value="exDateList", required = false)List<String> exDateList, @RequestParam(value="exClassificationList", required = false)List<String> exClassificationList, 
@@ -276,21 +280,27 @@ public class ApprovalController {
 			finalApproverNo = Integer.parseInt(finalApp);
 		}
 		log.info("최종결재자 사번 넣은 후 finalApproverNo : " + finalApproverNo);
-				
+		
+		int result = 0; //등록 결과를 받을 result
 		//기안서 양식에 맞워서 등록
 		if(app.getDocNo() == 1) { //일반품의서인 경우
-			insertLetterOfApproval(loa, app.getApprovalNo(), firstApproverNo, finalApproverNo);
+			result = insertLetterOfApproval(loa, app.getApprovalNo(), firstApproverNo, finalApproverNo);
 		}else if(app.getDocNo() == 2) { //지출 결의서인 경우
-			insertExpenditure(appEx, exDateList, exClassificationList, amountList, exHistoryList, noteList, app.getApprovalNo(), firstApproverNo, finalApproverNo);
+			result = insertExpenditure(appEx, exDateList, exClassificationList, amountList, exHistoryList, noteList, app.getApprovalNo(), firstApproverNo, finalApproverNo);
 		}else { //회의록인 경우
-			insertMminutes(appMm, app.getApprovalNo(), firstApproverNo, finalApproverNo);
+			result = insertMminutes(appMm, app.getApprovalNo(), firstApproverNo, finalApproverNo);
+		}
+		
+		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
+		if(result > 0) {
+			noticeService.insertNotice(emp, result, "AP", request);
 		}
 		
 		return "redirect:/draftDocument.do";
 	}
 
 	//일반 품의서 insert
-	private void insertLetterOfApproval(ApprovalLoa loa, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {		
+	private int insertLetterOfApproval(ApprovalLoa loa, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {		
 		//결재선 insert
 		int lineNo = insertApprovalLine(approvalNo, firstApproverNo, finalApproverNo);
 		
@@ -298,8 +308,9 @@ public class ApprovalController {
 		loa.setApprovalNo(approvalNo);
 		loa.setLineNo(lineNo);
 		loa.setContent(loa.getContent().replace("\r\n", "<br>")); //개행
-		approvalService.insertLoa(loa);
-	
+		int result = approvalService.insertLoa(loa);
+		
+		return result;
 	}
 
 	//결재선 등록 메소드
@@ -322,7 +333,7 @@ public class ApprovalController {
 	}
 
 	//지출 결의서 작성 폼으로 이동
-	@RequestMapping("expenditureEnrollForm.do")
+	@RequestMapping("/expenditureEnrollForm.do")
 	public String expenditureEnrollForm(HttpServletRequest request, Model model) throws Exception {		
 		//부서 조회
 		ArrayList<Department> deptList = approvalService.selectDeptList();		
@@ -343,7 +354,7 @@ public class ApprovalController {
 	}
 	
 	//지출결의서 작성
-	private void insertExpenditure(ApprovalExpenditure appEx, List<String> exDateList,
+	private int insertExpenditure(ApprovalExpenditure appEx, List<String> exDateList,
 			List<String> exClassificationList, List<String> amountList, List<String> exHistoryList,
 			List<String> noteList, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {
 		
@@ -370,12 +381,13 @@ public class ApprovalController {
 		String note = String.join(",", noteList);
 		appEx.setNote(note);
 		
-		approvalService.insertExpenditure(appEx);
+		int result = approvalService.insertExpenditure(appEx);
 		
+		return result;
 	}
 	
 	//회의록으로 이동
-	@RequestMapping("theMinutesOfAMeetingEnrollForm.do")
+	@RequestMapping("/theMinutesOfAMeetingEnrollForm.do")
 	public String theMinutesOfAMeetingForm(HttpServletRequest request, Model model) throws Exception {
 		//부서 조회
 		ArrayList<Department> deptList = approvalService.selectDeptList();		
@@ -396,7 +408,7 @@ public class ApprovalController {
 	}
 	
 	//회의록 insert
-	private void insertMminutes(ApprovalMMinutes appMm, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {
+	private int insertMminutes(ApprovalMMinutes appMm, int approvalNo, int firstApproverNo, int finalApproverNo) throws Exception {
 		//결재선 insert
 		int lineNo = insertApprovalLine(approvalNo, firstApproverNo, finalApproverNo);
 		
@@ -405,11 +417,13 @@ public class ApprovalController {
 		appMm.setLineNo(lineNo);
 		appMm.setMeetingPurpose(appMm.getMeetingPurpose().replace("\r\n", "<br>"));
 		appMm.setMeetingContent(appMm.getMeetingContent().replace("\r\n", "<br>"));
-		approvalService.insertMminutes(appMm);
+		int result = approvalService.insertMminutes(appMm);
+		
+		return result;
 	}
 	
 	//내 기안서 디테일로 이동
-	@RequestMapping("detailDraftDocument.do")
+	@RequestMapping("/detailDraftDocument.do")
 	public ModelAndView detailDraftDocument(String approvalNo, String docNo, Approval app, ApprovalLine appL, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, ModelAndView mv) throws Exception {
 		//형 변환
 		int doc_no = Integer.parseInt(docNo);
@@ -503,7 +517,7 @@ public class ApprovalController {
 	}
 	
 	//일반 품의서 수정폼으로 이동
-	@RequestMapping("updateMyLetterOfApprovalForm.do")
+	@RequestMapping("/updateMyLetterOfApprovalForm.do")
 	public String updateMyLetterOfApprovalForm(String approvalNo, Approval app, ApprovalLine appL, ApprovalLoa loa, Model model) throws Exception {
 		//디테일 조회할 때 사용한 공통 문서 조회 메소드 사용
 		app = selectApproval(Integer.parseInt(approvalNo), app);
@@ -526,7 +540,7 @@ public class ApprovalController {
 	}
 	
 	//일반 품의서 수정
-	@RequestMapping("updateMyLetterOfApproval.do")
+	@RequestMapping("/updateMyLetterOfApproval.do")
 	public ModelAndView updateMyLetterOfApproval(Approval app, ApprovalLoa loa, @RequestParam(name="firstApproverNo") int firstApproverNo, @RequestParam(name="finalApp", required = false) String finalApp,
 													@RequestParam(name="reUpfile" ,required=false) MultipartFile file, ModelAndView mv, HttpServletRequest request) throws Exception {
 		log.info("업데이트 app : " + app);
@@ -598,7 +612,7 @@ public class ApprovalController {
 	}
 
 	//지출 결의서 수정으로 이동
-	@RequestMapping("updateMyExpenditureForm.do")
+	@RequestMapping("/updateMyExpenditureForm.do")
 	public String updateMyExpenditureForm(String approvalNo, Approval app, ApprovalLine appL, ApprovalExpenditure appEx, Model model) throws NumberFormatException, Exception {
 		//디테일 조회할 때 사용한 공통 문서 조회 메소드 사용
 		app = selectApproval(Integer.parseInt(approvalNo), app);
@@ -621,7 +635,7 @@ public class ApprovalController {
 	}
 	
 	//지출 결의서 수정
-	@RequestMapping("updateMyExpenditure.do")
+	@RequestMapping("/updateMyExpenditure.do")
 	public ModelAndView updateMyExpenditure(Approval app, ApprovalExpenditure appEx, @RequestParam(name="firstApproverNo") int firstApproverNo, @RequestParam(name="finalApp", required = false) String finalApp, @RequestParam(name="reUpfile" ,required=false) MultipartFile file, 
 											@RequestParam(value="exDateList", required = false)List<String> exDateList, @RequestParam(value="exClassificationList", required = false)List<String> exClassificationList, @RequestParam(value="amountList", required = false) List<String> amountList, 
 											@RequestParam(value="exHistoryList", required = false)List<String> exHistoryList, @RequestParam(value="noteList", required = false)List<String> noteList, ModelAndView mv, HttpServletRequest request) throws Exception	{
@@ -685,7 +699,7 @@ public class ApprovalController {
 	}
 		
 	//회의록 수정폼으로 이동
-	@RequestMapping("updateMyTheMinutesOfAMeetingForm.do")
+	@RequestMapping("/updateMyTheMinutesOfAMeetingForm.do")
 	public String updateMyTheMinutesOfAMeetingForm(String approvalNo, Approval app, ApprovalLine appL, ApprovalMMinutes appMm, Model model) throws Exception {
 		//디테일 조회할 때 사용한 공통 문서 조회 메소드 사용
 		app = selectApproval(Integer.parseInt(approvalNo), app);
@@ -707,7 +721,7 @@ public class ApprovalController {
 		return "approval/myTheMinutesOfAMeetingUpdateForm";
 	}
 	
-	@RequestMapping("updateMyTheMinutesOfAMeeting.do")
+	@RequestMapping("/updateMyTheMinutesOfAMeeting.do")
 	public ModelAndView updateMyTheMinutesOfAMeeting(Approval app, ApprovalMMinutes appMm, @RequestParam(name="firstApproverNo") int firstApproverNo, @RequestParam(name="finalApp", required = false) String finalApp,
 													@RequestParam(name="reUpfile" ,required=false) MultipartFile file, ModelAndView mv, HttpServletRequest request) throws Exception {
 		log.info("업데이트 app : " + app);
@@ -750,7 +764,7 @@ public class ApprovalController {
 	}
 	
 	//공통 결재 디테일 조회
-	@RequestMapping("detailApproval.do")
+	@RequestMapping("/detailApproval.do")
 	public ModelAndView detailApproval(String approvalNo, String docNo, Approval app, ApprovalLine appL, ApprovalLoa loa, ApprovalExpenditure appEx, ApprovalMMinutes appMm, ModelAndView mv, HttpServletRequest request) throws Exception {
 		//결재 
 		int doc_no = Integer.parseInt(docNo);
@@ -844,7 +858,7 @@ public class ApprovalController {
 	}
 	
 	//결재 상태 업데이트 -> 승인
-	@RequestMapping("approvalUpdate.do")
+	@RequestMapping("/approvalUpdate.do")
 	public String approvalUpdate(@RequestParam(value="firstApproverNo", required = false) String firstApproverNo, @RequestParam(value="finalApproverNo", required=false) String finalApproverNo, String approvalNo, String lineLevel) throws Exception {
 		log.info("지출결의서 결재 firstApproverNo : " + firstApproverNo);
 		log.info("지출결의서 결재 finalApproverNo : " + finalApproverNo);
@@ -891,7 +905,7 @@ public class ApprovalController {
 	}
 	
 	//결재 상태 업데이트 -> 반려
-	@RequestMapping("rejectionUpdate.do")
+	@RequestMapping("/rejectionUpdate.do")
 	public String rejectionUpdate(@RequestParam(value="firstApproverNo", required = false) String firstApproverNo, @RequestParam(value="finalApproverNo", required=false) String finalApproverNo, String approvalNo, String lineLevel, String rejectionReason) throws Exception {
 		log.info(rejectionReason);
 		
@@ -927,7 +941,7 @@ public class ApprovalController {
 		return "redirect:approvalDocument.do";
 	}
 	
-	@RequestMapping("deleteApproval.do")
+	@RequestMapping("/deleteApproval.do")
 	public String deleteApproval(String approvalNo, String docNo, @RequestParam(value="fileNo", required=false) String fileNo) throws Exception {
 		//첨부파일 삭제
 		if(fileNo != null) {
@@ -951,7 +965,7 @@ public class ApprovalController {
 	
 	//정렬
 	//기안 문서함 진행 list
-	@RequestMapping("draftWaitingList.do")
+	@RequestMapping("/draftWaitingList.do")
 	public String draftWaitingList(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model) throws Exception {
 		//로그인한 사람의 emp 정보를 가지고 온다.
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");

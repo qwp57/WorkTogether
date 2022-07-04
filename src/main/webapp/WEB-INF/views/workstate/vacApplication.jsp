@@ -69,7 +69,7 @@ width: 100%;
 				
 				<div class="modal-body">
 				<div class="modal-body-title">휴가정보</div>
-				<form role="form" id="vac-Form" action="insertVacation.do" method="post" enctype="multipart/form-data">
+				<form role="form" id="vac-Form" action="/insertVacation.do" method="post" enctype="multipart/form-data">
 					<input class="nonVisible" type="number" name="vcategory_no">
 					<input class="nonVisible" type="text" name="emp_no" value="${loginEmp.emp_no}" >
 				  <div class="form-row">

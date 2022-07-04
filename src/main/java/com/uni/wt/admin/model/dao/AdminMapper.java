@@ -50,6 +50,10 @@ public interface AdminMapper {
 	int searchListCount(EmployeeSearchCondition sc);
 
 	ArrayList<Employee> searchEmpList(EmployeeSearchCondition sc, RowBounds rowBounds);
+
+	ArrayList<Department> selectDeptList();
+
+	ArrayList<Employee> organizationEmpList();
 	
 	
 

@@ -104,7 +104,7 @@ public class RequestWorkController {
 		return "requestwork/rwMain";
 	}
 	
-	@RequestMapping("selectRWDetail_Notice.do")
+	@RequestMapping("/selectRWDetail_Notice.do")
 	public String selectRWDetail_Notice(String rno,  RedirectAttributes redirect)throws Exception {
 		log.info("알림 삭제 후 경로 이동");
 		RequestWork r = rwService.selectRWDetail(rno);
@@ -117,7 +117,7 @@ public class RequestWorkController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value="selectRQList.do" , produces = "application/text; charset=UTF-8")
+	@RequestMapping(value="/selectRQList.do" , produces = "application/text; charset=UTF-8")
 	public String selectRQList(String sortVal, int currentPage, HttpServletRequest request) throws Exception{
 		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
 		log.info("정렬 : " +sortVal);
@@ -131,7 +131,7 @@ public class RequestWorkController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="selectRSList.do" , produces = "application/text; charset=UTF-8")
+	@RequestMapping(value="/selectRSList.do" , produces = "application/text; charset=UTF-8")
 	public String selectRSList(String sortVal, int currentPage, HttpServletRequest request) throws Exception{
 		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
 		log.info("정렬 : " +sortVal);
@@ -196,7 +196,7 @@ public class RequestWorkController {
 	
 	@RequestMapping("/insertRequestWork.do")
 	public String insertRequestWork(RequestWork rw, @RequestParam(name="upload_file", required=false) MultipartFile file,
-			HttpServletRequest request, RedirectAttributes redirect) throws Exception {
+					HttpServletRequest request, RedirectAttributes redirect) throws Exception {
 		Map<String, String> msgMap = new HashMap<String, String>(); 
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
 		log.info("[로그인된 유저] : {}", emp.toString());
@@ -239,7 +239,7 @@ public class RequestWorkController {
 	
 
 	@ResponseBody
-	@RequestMapping(value="selectRWDetail.do", produces="application/text; charset=UTF-8")
+	@RequestMapping(value="/selectRWDetail.do", produces="application/text; charset=UTF-8")
 	public String selectRWDetail(String rw_no) throws Exception {
 		
 		RequestWork detail = rwService.selectRWDetail(rw_no);
@@ -248,7 +248,7 @@ public class RequestWorkController {
 		
 	}
 	
-	@RequestMapping("cancleRW.do")//취소랑 거절이랑 공유함
+	@RequestMapping("/cancleRW.do")//취소랑 거절이랑 공유함
 	public String cancleRW(RequestWork rw) throws Exception {
 		log.info(rw.toString());
 		
@@ -257,7 +257,7 @@ public class RequestWorkController {
 		return "redirect:/requestWorkMain.do";
 	}
 	
-	@RequestMapping("updateRW.do")
+	@RequestMapping("/updateRW.do")
 	public String updateRW(RequestWork rw, @RequestParam(name="upload_file", required=false) MultipartFile file,
 							HttpServletRequest request) throws Exception{
 		log.info(rw.toString());
@@ -284,7 +284,7 @@ public class RequestWorkController {
 		return "redirect:/requestWorkMain.do";
 	}
 	
-	@RequestMapping("deleteRW.do")
+	@RequestMapping("/deleteRW.do")
 	public String deleteRW(String rw_no) throws Exception {
 		
 		rwService.deleteRW(Integer.parseInt(rw_no));
@@ -326,7 +326,7 @@ public class RequestWorkController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("deleteAjax.do")
+	@RequestMapping("/deleteAjax.do")
 	public String deleteAjax(int rw_no) throws Exception {
 		
 		rwService.deleteRW(rw_no);
@@ -356,7 +356,7 @@ public class RequestWorkController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "searchOptionAllList.do", produces = "application/text; charset=UTF-8")
+	@RequestMapping(value = "/searchOptionAllList.do", produces = "application/text; charset=UTF-8")
 	public String searchOptionAllList(HttpServletRequest request, RequestWork rw, SearchDto sd, String sort, int currentPage) throws Exception {
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
 		log.info("검색할 내용 : {}", sd.toString());
