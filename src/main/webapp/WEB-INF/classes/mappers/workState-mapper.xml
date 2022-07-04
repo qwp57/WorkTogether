@@ -24,6 +24,21 @@
  	<result property="vac_name" column="VAC_NAME"/>
  </resultMap>
  
+ <resultMap type="Employee" id="employeeSet">
+		<id property="emp_no" column="EMP_NO"/>
+		<result property="dept_code" column="DEPT_CODE"/>
+		<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+		<result property="job_code" column="JOB_CODE"/>
+		<result property="join_date" column="JOIN_DATE"/>
+		<result property="resignation_date" column="RESIGNATION_DATE"/>
+		<result property="file_no" column="FILE_NO"/>
+		<result property="create_date" column="CREATE_DATE"/>
+		<result property="reject_reason" column="REJECT_REASON"/>
+		<result property="dept_name" column="DEPT_NAME"/>
+		<result property="job_name" column="JOB_NAME"/>
+		<result property="change_name" column="CHANGE_NAME"/>
+	</resultMap>
+ 
  
  <select id="getSeq" resultType="_int">
  SELECT WS_SEQ.NEXTVAL FROM DUAL
@@ -337,5 +352,75 @@ SET START_DATE = #{start_date},
 	APPROVAL_NO = #{approval_no}
 WHERE VAC_NO = #{vac_no}
 </update>
+
+<select id="bestEmployee" parameterType="map" resultMap="employeeSet">
+SELECT 
+*
+FROM(
+    SELECT 
+        A.EMP_NO,
+        B.NAME,
+        C.DEPT_NAME,
+        D.JOB_NAME,
+       ROUND(SUM((OUT_TIME - IN_TIME)*24*60*60)) AS SUMTIME
+    FROM WORK_TIME A
+    LEFT JOIN EMPLOYEE B ON A.EMP_NO = B.EMP_NO
+    JOIN DEPARTMENT C ON B.DEPT_CODE = C.DEPT_CODE
+    JOIN JOB D ON B.JOB_CODE = D.JOB_CODE
+    <choose>
+    	<when test="type.equals('month')">
+    	WHERE TO_CHAR(A.IN_TIME, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+    	AND EXTRACT(MONTH FROM IN_TIME) = #{monthYear}
+    	</when>
+    	<otherwise>
+    	WHERE EXTRACT(YEAR FROM IN_TIME) = #{monthYear}
+    	</otherwise>
+    </choose>
+    GROUP BY A.EMP_NO, B.NAME, C.DEPT_NAME, D.JOB_NAME) P
+JOIN (
+        SELECT 
+            MAX(SUMTIME) AS SUMTIME1,
+            DEPT_NAME
+        FROM (
+                SELECT 
+                    EMP_NO,
+                    SUM(ROUND((OUT_TIME - IN_TIME)*24*60*60)) AS SUMTIME
+                FROM WORK_TIME
+               <choose>
+			    	<when test="type.equals('month')">
+			    	WHERE TO_CHAR(IN_TIME, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+			    	AND EXTRACT(MONTH FROM IN_TIME) = #{monthYear}
+			    	</when>
+			    	<otherwise>
+			    	WHERE EXTRACT(YEAR FROM IN_TIME) = #{monthYear}
+			    	</otherwise>
+			    </choose>
+                GROUP BY EMP_NO) A
+        JOIN EMPLOYEE B ON A.EMP_NO = B.EMP_NO
+        JOIN DEPARTMENT C ON B.DEPT_CODE = C.DEPT_CODE
+        GROUP BY DEPT_NAME) Q ON P.SUMTIME = Q.SUMTIME1 AND P.DEPT_NAME = Q.DEPT_NAME
+</select>
+
+<select id="departmentStats" parameterType="map" resultType="map">
+SELECT
+    C.DEPT_NAME,
+    ROUND(SUM(((OUT_TIME-IN_TIME) * 24)),2 )AS SUM,
+    ROUND(AVG(((OUT_TIME-IN_TIME) * 24)),2) AS AVG
+FROM WORK_TIME A
+         LEFT JOIN EMPLOYEE B ON A.EMP_NO = B.EMP_NO
+         JOIN DEPARTMENT C ON B.DEPT_CODE = C.DEPT_CODE
+         JOIN JOB D ON B.JOB_CODE = D.JOB_CODE
+<choose>
+  	<when test="type.equals('month')">
+  	WHERE TO_CHAR(A.IN_TIME, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+  	AND EXTRACT(MONTH FROM IN_TIME) = #{monthYear}
+  	</when>
+  	<otherwise>
+  	WHERE EXTRACT(YEAR FROM IN_TIME) = #{monthYear}
+  	</otherwise>
+  </choose>
+GROUP BY C.DEPT_NAME
+</select>
+
 
 </mapper>

@@ -833,7 +833,7 @@
 	      			</div>
 
 	      			<div class="modal-footer">
-	      				
+
 	      				<div class="col-lg-12 text-center">
 	      					<button type="button" class="btn btn-lg btn-primary btn-lg mb-3" id="myProfilebtn">저장</button>
 	      				</div>
@@ -946,14 +946,6 @@
   <script src="/resources/assets/js/custom.js"></script>
 
 
-                    <div class="col-lg-12 text-center">
-                        <button type="button" class="btn btn-lg btn-primary btn-lg mb-3" id="myProfilebtn">저장</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 
 <script>
     let file_no = "${loginEmp.file_no}";
