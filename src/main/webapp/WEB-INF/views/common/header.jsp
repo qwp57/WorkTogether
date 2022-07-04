@@ -344,12 +344,6 @@ function deleteAllNotice(){
 
 
 </script>
-	
-	
-
-
-	
-
 
       <!-- 개인정보 모달창 -->
       <!-- data-backdrop="static" 속성은 모달창 주위의 배경을 클릭해도 창이 닫히지 않도록 한다. -->

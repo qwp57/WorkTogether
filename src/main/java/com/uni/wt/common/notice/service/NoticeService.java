@@ -37,7 +37,7 @@ public class NoticeService {
 	@Autowired
 	private EchoHandler echoHandler;
 
-	public void insertNotice(Employee emp, int seqNo, String type, HttpServletRequest request) throws Exception {
+	public void insertNotice(Employee emp, int seqNo, String type) throws Exception {
 		//로그인된 사원 정보, 글번호, 게시판타입
 		
 	
@@ -65,7 +65,7 @@ public class NoticeService {
 		
 		
 		////////웹소켓 전송
-		websocketSend(emp, noticeResult);
+		websocketSend(noticeResult);
 		
 	}
 
@@ -85,7 +85,7 @@ public class NoticeService {
 		
 	}
 	
-	private void websocketSend(Employee emp, Notice notice)throws Exception {
+	private void websocketSend(Notice notice)throws Exception {
 		Map<String, WebSocketSession> users = echoHandler.getUsers();
 		
 		String msg = notice.getNotice_no()+","+notice.getType()+","+notice.getContent()+","+
