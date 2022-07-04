@@ -9,29 +9,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="알림기능, 데이트피커 수정">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/post/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/post/controller/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/schedule/controller/ScheduleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/schedule/controller/ScheduleController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/controller/TodoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/controller/TodoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/controller/ProjectController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/controller/ProjectController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/post/controller/PostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/post/controller/PostController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/schedule/controller/ScheduleController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/schedule/controller/ScheduleController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/todo/controller/TodoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/todo/controller/TodoController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/common/header.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/common/header.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allCalendar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allCalendar.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/attendeeViewModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/attendeeViewModal.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/boardEnrollModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/boardEnrollModal.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/boardViewModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/boardViewModal.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/colorTagModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/colorTagModal.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/invitePjModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/invitePjModal.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjBoard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjBoard.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjPost.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjPost.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjSchedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjSchedule.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjTodo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjTodo.js" afterDir="false" />
-    </list>
+    <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="프로필 일부 적용, msgMap 변경" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -378,7 +356,14 @@
       <option name="project" value="LOCAL" />
       <updated>1656883057950</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="프로필 일부 적용, msgMap 변경">
+      <created>1656890275787</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1656890275787</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -426,7 +411,8 @@
     <MESSAGE value="검색, 페이징, 필터, 내가 쓴 게시글" />
     <MESSAGE value=".do /추가" />
     <MESSAGE value="알림기능, 데이트피커 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="알림기능, 데이트피커 수정" />
+    <MESSAGE value="프로필 일부 적용, msgMap 변경" />
+    <option name="LAST_COMMIT_MESSAGE" value="프로필 일부 적용, msgMap 변경" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
