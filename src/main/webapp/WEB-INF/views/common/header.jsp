@@ -104,7 +104,7 @@
 <script type="text/javascript">
 
 $(function(){
-	let msg = "${msg.msg}";
+	let msg = "${msg}";
 	if(msg != ""){
 		alert(msg);
 
@@ -399,6 +399,7 @@ function deleteAllNotice(){
 	      					<tr>
 	      						<th>&nbsp;부서</th>
 	      						<td><select class="form-control" name="dept_code" id="dept" >
+	      									<option value="">부서 없음</option>
 	      								<c:forEach items="${dList}" var="d">
 											<option value="${d.DEPT_CODE}">${d.DEPT_NAME}</option>      						
 	      								</c:forEach>
@@ -406,6 +407,7 @@ function deleteAllNotice(){
 	      						</td>
 	      						<th>&nbsp;직위</th>
 	      						<td><select class="form-control" name="job_code" id="job" >
+	      								<option value="">직급 없음</option>
 	      							<c:forEach items="${jList}" var="j">
 	      								<option value="${j.JOB_CODE}">${j.JOB_NAME}</option>
 	      							</c:forEach>
@@ -505,6 +507,12 @@ function deleteAllNotice(){
       	
       	$('#myProfilebtn').click(function(){
       		
+      		if($('#dept option:selected').val() == ""){
+      			alert("부서를 선택해주세요");
+      		}else if($('#job option:selected').val() == ""){
+      			alert("직급을 선택해주세요");
+      		}else{
+      			
       	/*	let formData = $('#myProfileUpdate').serialize();*/
       	let form = $('#myProfileUpdate')[0];
       	let formData = new FormData(form);
@@ -522,6 +530,9 @@ function deleteAllNotice(){
 					location.reload();
 				}
 			})      		
+      			
+      		}
+      		
       		
       	})
       </script>

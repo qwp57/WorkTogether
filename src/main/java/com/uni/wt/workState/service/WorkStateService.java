@@ -57,13 +57,9 @@ public interface WorkStateService {
 
 	void modifiedVacation(Vacation vac)throws Exception;
 
-	ArrayList<Map<String, String>> empOfTheMonth(int month)throws Exception;
+	ArrayList<Map<String, Object>> departmentStats(int month, String type)throws Exception;
 
-	ArrayList<Map<String, String>> statsOfTheMonth(int month)throws Exception;
-
-	ArrayList<Map<String, String>> empOfTheYear(int month)throws Exception;
-
-	ArrayList<Map<String, String>> statsfTheYear(int month)throws Exception;
+	ArrayList<Employee> bestEmployee(int month, String type) throws Exception;
 
 
 

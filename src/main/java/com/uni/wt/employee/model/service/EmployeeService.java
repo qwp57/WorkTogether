@@ -21,4 +21,6 @@ public interface EmployeeService {
 
 	Employee myProfileUpdate(Employee emp)throws Exception;
 
+	String getUpperDeptCode(String dept_code)throws Exception;
+
 }
