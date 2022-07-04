@@ -171,6 +171,18 @@ public class AdminServiceImpl implements AdminService{
 		return adminMapper.searchEmpList(sc, rowBounds);
 	}
 
+	@Override
+	public ArrayList<Department> selectDeptList() throws Exception {
+
+		return adminMapper.selectDeptList();
+	}
+
+	@Override
+	public ArrayList<Employee> organizationEmpList() throws Exception {
+		
+		return adminMapper.organizationEmpList();
+	}
+
 
 
 

@@ -77,13 +77,13 @@
 						<tr onclick="modalEmpInfo(this)">
 							<!-- <td class="empNo">사번</td>을 숨겨놓는다. -->
 							<td class="d-none">${ ad.emp_no }</td>
-							<td>${ ad.join_date }</td>
+							<td id="join_date">${ ad.join_date }</td>
 							<td>${ ad.name }</td>
 							<td>${ ad.id }</td>
 							<td>${ ad.email }</td>
 							<td>${ ad.phone }</td>
-							<td>${ ad.birth }</td>
-							<td>${ ad.create_date }</td>
+							<td id="birth">${ ad.birth }</td>
+							<td id="create_date">${ ad.create_date }</td>
 							<c:if test="${ ad.status == 'W'}">
 								<td><span class="status p-2" style="color: white; background-color: skyblue; border-radius: 5px;">대기</span></td>
 							</c:if>

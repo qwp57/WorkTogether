@@ -38,11 +38,11 @@ public interface ApprovalService {
 
 	void insertApprovalLine2(ApprovalLine appL) throws Exception;
 	
-	void insertLoa(ApprovalLoa loa) throws Exception;
+	int insertLoa(ApprovalLoa loa) throws Exception;
 
-	void insertExpenditure(ApprovalExpenditure appEx) throws Exception;
+	int insertExpenditure(ApprovalExpenditure appEx) throws Exception;
 
-	void insertMminutes(ApprovalMMinutes appMm) throws Exception;
+	int insertMminutes(ApprovalMMinutes appMm) throws Exception;
 
 	int draftListCount(int emp_no) throws Exception;
 

@@ -135,7 +135,7 @@ public class ApprovalServiceImpl implements ApprovalService {
 	}
 	
 	@Override
-	public void insertLoa(ApprovalLoa loa) throws Exception {
+	public int insertLoa(ApprovalLoa loa) throws Exception {
 		
 		int result = approvalMapper.insertLoa(loa);
 		
@@ -143,26 +143,32 @@ public class ApprovalServiceImpl implements ApprovalService {
 			throw new Exception("품의서 등록에 실패하였습니다.");
 		}
 		
+		return result;
+		
 	}
 
 	@Override
-	public void insertExpenditure(ApprovalExpenditure appEx) throws Exception {
+	public int insertExpenditure(ApprovalExpenditure appEx) throws Exception {
 		
 		int result = approvalMapper.insertExpenditure(appEx);
 		
 		if(result < 0) {
 			throw new Exception("지출결의서 등록에 실패하였습니다.");
 		}
+		
+		return result;
 	}
 
 	@Override
-	public void insertMminutes(ApprovalMMinutes appMm) throws Exception {
+	public int insertMminutes(ApprovalMMinutes appMm) throws Exception {
 		
 		int result = approvalMapper.insertMminutes(appMm);
 		
 		if(result < 0) {
 			throw new Exception("회의록 등록에  실패하였습니다.");
 		}
+		
+		return result;
 		
 	}
 
