@@ -63,6 +63,10 @@ public interface WorkStateMapper {
 
 	public int modifiedVacation(Vacation vac)throws Exception;
 
+	public ArrayList<Map<String, Object>> departmentStats(Map<String, Object> paramMap)throws Exception;
+
+	public ArrayList<Employee> bestEmployee(Map<String, Object> paramMap)throws Exception;
+
 	
 
 	

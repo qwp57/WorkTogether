@@ -335,34 +335,27 @@ public class WorkStateServiceImpl implements WorkStateService{
 
 
 	@Override
-	public ArrayList<Map<String, String>> empOfTheMonth(int month) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Map<String, Object>> departmentStats(int monthYear, String type) throws Exception {
+		
+		paramMap.put("type", type);
+		paramMap.put("monthYear", monthYear);
+		 ArrayList<Map<String, Object>> list = wsMapper.departmentStats(paramMap);
+		paramMap.clear();
+		
+		return list;
 	}
 
 
 	@Override
-	public ArrayList<Map<String, String>> statsOfTheMonth(int month) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public ArrayList<Employee> bestEmployee(int monthYear, String type) throws Exception {
+		paramMap.put("type", type);
+		paramMap.put("monthYear", monthYear);
+		ArrayList<Employee> list = wsMapper.bestEmployee(paramMap);
+		paramMap.clear();
+		return list;
 	}
 
 
-	@Override
-	public ArrayList<Map<String, String>> empOfTheYear(int month) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public ArrayList<Map<String, String>> statsfTheYear(int month) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	
 
 
 

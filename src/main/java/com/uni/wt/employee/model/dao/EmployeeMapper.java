@@ -26,4 +26,6 @@ public interface EmployeeMapper {
 
 	public Employee selectUpdatedEmp(int emp_no)throws Exception;
 
+	public String getUpperDeptCode(String dept_code)throws Exception;
+
 }

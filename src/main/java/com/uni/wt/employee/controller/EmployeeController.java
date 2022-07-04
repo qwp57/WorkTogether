@@ -41,7 +41,7 @@ import com.uni.wt.workState.service.WorkStateService;
 /**
  * Handles requests for the application home page.
  */
-@SessionAttributes({"loginEmp", "noticeList", "unreadNotice"})
+@SessionAttributes({"loginEmp", "noticeList", "unreadNotice", "jList", "dList"})
 @Controller
 public class EmployeeController {
 	
@@ -132,6 +132,9 @@ public class EmployeeController {
 		}
 		log.info("즐겨찾기 프로젝트 : " + bookmarkProjects);
 		m.addAttribute("pjList", bookmarkProjects);
+		
+		//통계
+		
 
 
 		return "common/main";
@@ -268,6 +271,8 @@ public class EmployeeController {
 		int file_no = fileService.uploadFile(new_file, request, "PR");
 		emp.setFile_no(String.valueOf(file_no));
 	}
+	emp.setUpper_dept_code(empService.getUpperDeptCode(emp.getDept_code()));
+	
 	
 	log.info("수정할 emp 정보 :{}", emp.toString());
 	Employee loginEmp = empService.myProfileUpdate(emp);
