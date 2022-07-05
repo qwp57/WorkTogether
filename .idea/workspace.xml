@@ -11,44 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="47660d2a-1aa3-4d65-b559-207c97700eec" name="Changes" comment="헤더 마이프로필 버튼 변경">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/common/notice/service/NoticeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/common/notice/service/NoticeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dao/BoardAllMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dao/BoardAllMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dto/BoardAll.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dto/BoardAll.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dto/Reply.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/boardAll/model/dto/Reply.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/controller/ProjectController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/model/service/ProjectServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/post/controller/PostController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/post/controller/PostController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/controller/TodoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/uni/wt/project/todo/controller/TodoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/boardAll-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mappers/boardAll-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/project-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mappers/project-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/mappers/schedule-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/mappers/schedule-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/common/notice/service/NoticeService.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/common/notice/service/NoticeService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/boardAll/model/dao/BoardAllMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/boardAll/model/dao/BoardAllMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/boardAll/model/dto/BoardAll.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/boardAll/model/dto/BoardAll.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/boardAll/model/dto/Reply.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/boardAll/model/dto/Reply.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/controller/ProjectController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/controller/ProjectController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/model/service/ProjectService.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/model/service/ProjectService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/model/service/ProjectServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/model/service/ProjectServiceImpl.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/post/controller/PostController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/post/controller/PostController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/todo/controller/TodoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/com/uni/wt/project/todo/controller/TodoController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/mappers/boardAll-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/mappers/boardAll-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/mappers/project-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/mappers/project-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/mappers/schedule-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/classes/mappers/schedule-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/common/header.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/common/header.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/common/sidebar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/common/sidebar.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allCalendar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allCalendar.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allProject.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/allProject.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/boardViewModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/boardViewModal.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailCalendar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailCalendar.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/detailPj.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/invitePjModal.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/invitePjModal.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/myBoard.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/myBoard.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/projectViewByTag.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/projectViewByTag.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/storedPj.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/views/project/storedPj.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjSchedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjSchedule.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjTodo.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/pjTodo.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/rwAppli.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/assets/js/rwAppli.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -270,6 +232,7 @@
       <workItem from="1656653263211" duration="42871000" />
       <workItem from="1656745555307" duration="36900000" />
       <workItem from="1656919850311" duration="14945000" />
+      <workItem from="1657002904213" duration="1087000" />
     </task>
     <task id="LOCAL-00001" summary="commit">
       <created>1655124496590</created>
