@@ -9,7 +9,7 @@ public interface EmployeeService {
 
 	int idCheck(String userId) throws Exception;
 
-	void insertEmp(Employee emp) throws Exception;
+	int insertEmp(Employee emp) throws Exception;
 
 	Employee loginEmp(Employee emp) throws Exception;
 
