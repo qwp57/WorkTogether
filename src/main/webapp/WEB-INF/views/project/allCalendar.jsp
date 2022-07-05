@@ -9,15 +9,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
+    <%-- 카카오맵 api--%>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=06989ef7025ad30be2fddb6e0d28320b&libraries=services"></script>
     <link
             href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
             rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"
-            integrity="sha512-x/vqovXY/Q4b+rNjgiheBsA/vbWA3IVvsS8lkQSX1gQ4ggSJx38oI2vREZXpTzhAv6tNUaX81E7QBBzkpDQayA=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/locale/ko.min.js"
-            integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales-all.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
@@ -243,6 +239,7 @@
 
 <jsp:include page="../common/footer.jsp"/>
 <jsp:include page="invitePjModal.jsp"/>
+<jsp:include page="boardEnrollModal.jsp"/>
 
 </body>
 <script>
@@ -288,7 +285,8 @@
                     success: function (list) {
                         //list = $.parseJSON(list)
                         console.log(list)
-
+                        loadPj(list.sch.pj_no)
+                        pj_no = list.sch.pj_no
                         $("#postView").css("display", "none")
                         $("#schView").css("display", "block")
                         $("#todoView").css("display", "none")
@@ -370,6 +368,7 @@
                     title: '${sch.sch_title}',
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
+                    <c:if test="${sch.sch_start == sch.sch_end}">allDay: true,</c:if>
                     groupId: ${sch.board_no}
                 }
                 </c:when>
@@ -378,6 +377,7 @@
                     title: '${sch.sch_title}',
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
+                    <c:if test="${sch.sch_start == sch.sch_end}">allDay: true,</c:if>
                     groupId: ${sch.board_no},
                 },
                 </c:otherwise>
@@ -408,7 +408,35 @@
         }
     }
 
-
+    $(document).on('click', '.boardDeleteBtn', function () {
+        if (checkStored()) {
+            if (confirm("삭제하시겠습니까?")) {
+                var form = document.createElement('form'); // 폼객체 생성
+                var obj1;
+                var obj2;
+                var obj3;
+                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj1.setAttribute('name', 'board_no'); // 객체이름
+                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
+                form.appendChild(obj1);
+                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj2.setAttribute('name', 'pj_no'); // 객체이름
+                obj2.setAttribute('value', '0'); //객체값
+                form.appendChild(obj2);
+                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj3.setAttribute('name', 'type'); // 객체이름
+                obj3.setAttribute('value', 'allCalendar'); //객체값
+                form.appendChild(obj3);
+                form.setAttribute('method', 'post'); //get,post 가능
+                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    })
 
     $(document).on('click', '.addReplyBtn', function () {
         if (${pj.reply_power == 'Y'} &&
@@ -437,42 +465,60 @@
         }
     })
 
+</script>
+<%--카카오맵--%>
+<script>
+    $(function (){
+        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+        var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+            mapOption = {
+                center: new kakao.maps.LatLng(37.498971671111775, 127.03287470164285), // 지도의 중심좌표
+                level: 4 // 지도의 확대 레벨
+            };
+        // 지도를 생성합니다
+        var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    $(document).on('click', '.boardDeleteBtn', function () {
-        if (checkStored()) {
-            if (confirm("삭제하시겠습니까?")) {
-                var form = document.createElement('form'); // 폼객체 생성
-                var obj1;
-                var obj2;
-                var obj3;
-                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj1.setAttribute('name', 'board_no'); // 객체이름
-                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
-                form.appendChild(obj1);
-                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj2.setAttribute('name', 'pj_no'); // 객체이름
-                obj2.setAttribute('value', ${pj.pj_no}); //객체값
-                form.appendChild(obj2);
-                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj3.setAttribute('name', 'type'); // 객체이름
-                obj3.setAttribute('value', ''); //객체값
-                form.appendChild(obj3);
-                form.setAttribute('method', 'post'); //get,post 가능
-                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
-                document.body.appendChild(form);
-                form.submit();
+        $("#kakaoMapSearch").keyup(function(){
+            // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
+
+            // 장소 검색 객체를 생성합니다
+            var ps = new kakao.maps.services.Places();
+            // 키워드로 장소를 검색합니다
+            var keyword = $("#kakaoMapSearch").val();
+            //console.log(keyword)
+            ps.keywordSearch(keyword, placesSearchCB);
+            // 키워드 검색 완료 시 호출되는 콜백함수 입니다
+
+        });
+        function placesSearchCB(data, status, pagination) {
+            if (status === kakao.maps.services.Status.OK) {
+                // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
+                // LatLngBounds 객체에 좌표를 추가합니다
+                var bounds = new kakao.maps.LatLngBounds();
+                for (var i = 0; i < data.length; i++) {
+                    displayMarker(data[i]);
+                    bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
+                }
+                // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
+                map.setBounds(bounds);
             }
         }
-    })
 
-</script>
-<script>
-    $(function () {
-
-
+        // 지도에 마커를 표시하는 함수입니다
+        function displayMarker(place) {
+            // 마커를 생성하고 지도에 표시합니다
+            var marker = new kakao.maps.Marker({
+                map: map,
+                position: new kakao.maps.LatLng(place.y, place.x)
+            });
+            // 마커에 클릭이벤트를 등록합니다
+            kakao.maps.event.addListener(marker, 'click', function () {
+                // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+                infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+                infowindow.open(map, marker);
+                $("input[name=sch_place]").val(place.place_name);
+            });
+        }
     })
 
 </script>

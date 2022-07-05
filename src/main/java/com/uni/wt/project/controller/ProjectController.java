@@ -476,7 +476,7 @@ public class ProjectController {
         } else if (type.equals("myBoard")) {
             return "redirect:/project/myBoard.do";
         } else {
-            return "redirect:/allCalendar.do";
+            return "redirect:/project/allCalendar.do";
         }
     }
 

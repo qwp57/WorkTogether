@@ -10,7 +10,8 @@
     <meta charset="UTF-8">
 
     <%-- 카카오맵 api--%>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=06989ef7025ad30be2fddb6e0d28320b&libraries=services"></script>
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=06989ef7025ad30be2fddb6e0d28320b&libraries=services"></script>
 
     <script
             src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -36,6 +37,7 @@
 <style>
     body {
         color: black;
+        font-family: 'Nanum Gothic', sans-serif;
     }
 
     .newPj {
@@ -545,9 +547,13 @@
                 //console.log("데이터 가져옴");
                 // console.log(result)
                 result = JSON.parse(result);
-                //console.log(data);
-                setList(result.list)
-                setpi(result.pi);
+                console.log(result);
+                if(result.list.length > 0) {
+                    setList(result.list)
+                    setpi(result.pi);
+                }else {
+                    //$(".boardTable").html('작성된 게시물이 없습니다.')
+                }
             }
         })
         //console.log("sendajax 끝남");
@@ -659,9 +665,9 @@
                                 content += '<td rowspan="2">'
                                 if (obj.change_name != undefined) {
                                     content += '<img alt="image" style="height: 45px;"'
-                                    content += 'src="/resources/upload_files/'+ obj.change_name +'"'
+                                    content += 'src="/resources/upload_files/' + obj.change_name + '"'
                                     content += 'class="rounded-circle mr-1">'
-                                }else {
+                                } else {
                                     content += '<img alt="image" style="height: 45px;"'
                                     content += 'src="/resources/assets/img/avatar/avatar-1.png"'
                                     content += 'class="rounded-circle mr-1">'
@@ -757,7 +763,7 @@
                     }
                 })
             }
-        loadBoardProfile($board_no)
+            loadBoardProfile($board_no)
             loadReply($board_no)
             $("#boardView").modal("show")
 
@@ -884,9 +890,9 @@
                     content += '<td rowspan="2">'
                     if (obj.change_name != undefined) {
                         content += '<img alt="image" style="height: 45px;"'
-                        content += 'src="/resources/upload_files/'+ obj.change_name +'"'
+                        content += 'src="/resources/upload_files/' + obj.change_name + '"'
                         content += 'class="rounded-circle mr-1">'
-                    }else {
+                    } else {
                         content += '<img alt="image" style="height: 45px;"'
                         content += 'src="/resources/assets/img/avatar/avatar-1.png"'
                         content += 'class="rounded-circle mr-1">'
@@ -920,6 +926,36 @@
             }
         })
     }
+
+    $(document).on('click', '.boardDeleteBtn', function () {
+        if (checkStored()) {
+            if (confirm("삭제하시겠습니까?")) {
+                var form = document.createElement('form'); // 폼객체 생성
+                var obj1;
+                var obj2;
+                var obj3;
+                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj1.setAttribute('name', 'board_no'); // 객체이름
+                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
+                form.appendChild(obj1);
+                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj2.setAttribute('name', 'pj_no'); // 객체이름
+                obj2.setAttribute('value', ${pj.pj_no}); //객체값
+                form.appendChild(obj2);
+                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj3.setAttribute('name', 'type'); // 객체이름
+                obj3.setAttribute('value', 'home'); //객체값
+                form.appendChild(obj3);
+                form.setAttribute('method', 'post'); //get,post 가능
+                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    })
 
     $(document).on('click', '.deportBtn', function () {
         console.log($(this).parent().parent().find(".inviteEmpNo").val())
@@ -1066,9 +1102,9 @@
                             content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
                             if (obj.change_name != undefined) {
                                 content += '<img alt="image" style="height: 45px;"'
-                                content += 'src="/resources/upload_files/'+ obj.change_name +'"'
+                                content += 'src="/resources/upload_files/' + obj.change_name + '"'
                                 content += 'class="rounded-circle mr-1">'
-                            }else {
+                            } else {
                                 content += '<img alt="image" style="height: 45px;"'
                                 content += 'src="/resources/assets/img/avatar/avatar-1.png"'
                                 content += 'class="rounded-circle mr-1">'
@@ -1172,9 +1208,9 @@
                         content += '<td rowspan="2">'
                         if (obj.change_name != undefined) {
                             content += '<img alt="image" style="height: 45px;"'
-                            content += 'src="/resources/upload_files/'+ obj.change_name +'"'
+                            content += 'src="/resources/upload_files/' + obj.change_name + '"'
                             content += 'class="rounded-circle mr-1">'
-                        }else {
+                        } else {
                             content += '<img alt="image" style="height: 45px;"'
                             content += 'src="/resources/assets/img/avatar/avatar-1.png"'
                             content += 'class="rounded-circle mr-1">'
@@ -1243,9 +1279,9 @@
                         content += '<td rowspan="2">'
                         if (obj.change_name != undefined) {
                             content += '<img alt="image" style="height: 45px;"'
-                            content += 'src="/resources/upload_files/'+ obj.change_name +'"'
+                            content += 'src="/resources/upload_files/' + obj.change_name + '"'
                             content += 'class="rounded-circle mr-1">'
-                        }else {
+                        } else {
                             content += '<img alt="image" style="height: 45px;"'
                             content += 'src="/resources/assets/img/avatar/avatar-1.png"'
                             content += 'class="rounded-circle mr-1">'
@@ -1344,32 +1380,34 @@
                 console.log(list)
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
-                    var content = '<tr class="selectTodoFor empNameTr">'
-                    content += '<td rowspan="2">'
-                    if (obj.change_name != undefined) {
-                        content += '<img alt="image" style="height: 45px;"'
-                        content += 'src="/resources/upload_files/'+ obj.change_name +'"'
-                        content += 'class="rounded-circle mr-1">'
-                    }else {
-                        content += '<img alt="image" style="height: 45px;"'
-                        content += 'src="/resources/assets/img/avatar/avatar-1.png"'
-                        content += 'class="rounded-circle mr-1">'
-                    }
-                    content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
-                    content += '</td>'
-                    content += '<th style="width: 50%; text-align: center" class="emp_name">' + obj.name + '</th>'
-                    content += '<td rowspan="2" style="width: 20%; text-align: right;">'
-                    content += '</td>'
-                    content += '</tr>'
-                    content += '<tr>'
-                    if (obj.job_name != undefined) {
-                        content += '<td style="text-align: center;">' + obj.job_name + '</td>'
-                    } else {
-                        content += '<td style="text-align: center;">직급이 없습니다.</td>'
-                    }
-                    content += '</tr>'
+                    if (obj.emp_no != ${pjMember.emp_no}) {
+                        var content = '<tr class="selectTodoFor empNameTr">'
+                        content += '<td rowspan="2">'
+                        if (obj.change_name != undefined) {
+                            content += '<img alt="image" style="height: 45px;"'
+                            content += 'src="/resources/upload_files/' + obj.change_name + '"'
+                            content += 'class="rounded-circle mr-1">'
+                        } else {
+                            content += '<img alt="image" style="height: 45px;"'
+                            content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                            content += 'class="rounded-circle mr-1">'
+                        }
+                        content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                        content += '</td>'
+                        content += '<th style="width: 50%; text-align: center" class="emp_name">' + obj.name + '</th>'
+                        content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                        content += '</td>'
+                        content += '</tr>'
+                        content += '<tr>'
+                        if (obj.job_name != undefined) {
+                            content += '<td style="text-align: center;">' + obj.job_name + '</td>'
+                        } else {
+                            content += '<td style="text-align: center;">직급이 없습니다.</td>'
+                        }
+                        content += '</tr>'
 
-                    $("#todoFor").find(".inviteTable").append(content)
+                        $("#todoFor").find(".inviteTable").append(content)
+                    }
                 })
                 $("#todoFor").find(".inviteTable").append('<tr><td></td>초대할 수 있는 사원이 없습니다.</tr>')
                 $("#todoForSearch").val("");
@@ -1457,8 +1495,8 @@
 
 <%--카카오맵--%>
 <script>
-    $(function (){
-        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+    $(function () {
+        var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
                 center: new kakao.maps.LatLng(37.498971671111775, 127.03287470164285), // 지도의 중심좌표
@@ -1467,7 +1505,7 @@
         // 지도를 생성합니다
         var map = new kakao.maps.Map(mapContainer, mapOption);
 
-        $("#kakaoMapSearch").keyup(function(){
+        $("#kakaoMapSearch").keyup(function () {
             // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
 
             // 장소 검색 객체를 생성합니다
@@ -1479,6 +1517,7 @@
             // 키워드 검색 완료 시 호출되는 콜백함수 입니다
 
         });
+
         function placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
