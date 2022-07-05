@@ -241,12 +241,27 @@
                                    class="dropdown-item dropdown-item-unread">
                                     <div class="dropdown-item-desc">
                                         <div class="font-weight-bold">
-                                            프로젝트 초대
+                                         	  프로젝트 초대
                                         </div>
                                             ${n.content}
                                         <div class="text-secondary"> ${n.contentDetail}</div>
                                         <div class="time text-primary">${n.create_date}</div>
                                     </div>
+                                </a>
+                            </c:when>
+                            <c:when test="${ n.type eq  'AP'}">
+                            	<a href="${n.url}" onclick="return deleteNotice(${n.notice_no});" id="${n.notice_no}" class="dropdown-item dropdown-item-unread">
+                                   <div class="dropdown-item-desc">
+                                   	   <div class="font-weight-bold">
+		                                   <c:choose>
+		                                       <c:when test="${n.type eq 'AP'}">결재요청</c:when>
+		                                       <c:otherwise>알림메시지</c:otherwise>
+		                                   </c:choose>
+	                                   </div>
+	                                   	${n.content}
+	                                   	<div class="text-secondary">${n.contentDetail }</div>
+	                                   	<div class="time text-privary">${n.create_date }</div>
+                                   </div>
                                 </a>
                             </c:when>
                         </c:choose>
@@ -373,6 +388,10 @@
             text += "<div class='dropdown-item-desc'>"
             text += "<div class='font-weight-bold'>"
             text += "프로젝트 초대</div>"
+        } else if(msgArr[1] == 'AP'){
+        	text += "<a href='" +msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
+        	test += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
+        	test += "결재요청 </div>";
         }
 
         text += msgArr[2];
@@ -465,9 +484,9 @@
     function checkStored() {
         if (${pj.status == 'N'}) {
             alert("보관된 프로젝트는 작성/수정 관련 기능이 제한됩니다.")
-            return false
+            return false;
         } else {
-            return true
+            return true;
         }
     }
 
@@ -731,7 +750,7 @@
                 $(".replyArea").html('')
                 $(".replyCount").text("댓글 " + list.length)
                 if (list.length == 0) {
-                    $(".replyHrArea").css("display", "none")
+                    $(".replyHrArea").css("display", "none");
                     console.log('확인')
                 } else {
                     $(".replyHrArea").css("display", "block")
