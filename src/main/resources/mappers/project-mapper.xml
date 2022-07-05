@@ -20,6 +20,7 @@
         <result property="job_name" column="JOB_NAME"/>
         <result property="name" column="NAME"/>
         <result property="admin" column="ADMIN"/>
+        <result property="change_name" column="CHANGE_NAME"/>
     </resultMap>
 
 
@@ -42,8 +43,8 @@
         <if test="type.equals('stored')">
             WHERE STATUS = 'N'
         </if>
-          AND PJ_NO IN (SELECT PJ_NO FROM PROJECT_MEMBER WHERE EMP_NO = #{emp_no}
-            MINUS
+        AND PJ_NO IN (SELECT PJ_NO FROM PROJECT_MEMBER WHERE EMP_NO = #{emp_no}
+        MINUS
         SELECT PJ_NO
         FROM PJ_BOOKMARK
         WHERE EMP_NO = #{emp_no})
@@ -66,15 +67,17 @@
         SELECT *
         FROM PROJECT
         WHERE STATUS = 'Y'
-          AND PJ_NO IN (SELECT PJ_NO FROM PROJECT_MEMBER WHERE EMP_NO = #{emp_no}
-            MINUS
-        SELECT PJ_NO
-        FROM PJ_BOOKMARK
-        WHERE EMP_NO = #{emp_no}
-        INTERSECT
-        SELECT PJ_NO
-        FROM PROJECT_TAG
-        WHERE TAG_NO = #{tag_no})
+          AND PJ_NO IN (SELECT PJ_NO
+                        FROM PROJECT_MEMBER
+                        WHERE EMP_NO = #{emp_no}
+                        MINUS
+                        SELECT PJ_NO
+                        FROM PJ_BOOKMARK
+                        WHERE EMP_NO = #{emp_no}
+                        INTERSECT
+                        SELECT PJ_NO
+                        FROM PROJECT_TAG
+                        WHERE TAG_NO = #{tag_no})
         ORDER BY PJ_NO
     </select>
     <select id="selectMyBookmarkProjectByTag" resultMap="projectSet" parameterType="ProjectTag">
@@ -115,22 +118,26 @@
         WHERE TAG_NO = #{tag_no}
     </delete>
     <select id="selectEmpListByPj" parameterType="int" resultMap="employeeSet">
-        SELECT B.EMP_NO, B.NAME, C.JOB_NAME, A.ADMIN
+        SELECT B.EMP_NO, B.NAME, C.JOB_NAME, A.ADMIN, D.CHANGE_NAME
         FROM PROJECT_MEMBER A
                  JOIN EMPLOYEE B
                       ON A.EMP_NO = B.EMP_NO
                  LEFT JOIN JOB C
                            ON B.JOB_CODE = C.JOB_CODE
+                 LEFT JOIN ATTACHMENT D
+                           ON (B.FILE_NO = D.FILE_NO)
         WHERE A.PJ_NO = #{pj_no}
-        AND B.STATUS != 'Q'
+          AND B.STATUS != 'Q'
     </select>
     <select id="selectEmpInviteList" parameterType="int" resultMap="employeeSet">
-        SELECT A.EMP_NO, A.NAME, B.JOB_NAME
+        SELECT A.EMP_NO, A.NAME, B.JOB_NAME, C.CHANGE_NAME
         FROM EMPLOYEE A
                  LEFT JOIN JOB B
-                           ON A. JOB_CODE = B.JOB_CODE
+                           ON A.JOB_CODE = B.JOB_CODE
+                 LEFT JOIN ATTACHMENT C
+                           ON (A.FILE_NO = C.FILE_NO)
         WHERE A.EMP_NO NOT IN (SELECT EMP_NO FROM PROJECT_MEMBER WHERE PJ_NO = #{pj_no})
-        AND A.STATUS != 'Q'
+          AND A.STATUS != 'Q'
     </select>
 
     <update id="editReply" parameterType="Reply">
@@ -140,15 +147,16 @@
     </update>
     <update id="editPj" parameterType="Project">
         UPDATE PROJECT
-        SET PJ_TITLE = #{pj_title},
-            PJ_CONTENT = #{pj_content},
+        SET PJ_TITLE    = #{pj_title},
+            PJ_CONTENT  = #{pj_content},
             BOARD_POWER = #{board_power},
             REPLY_POWER = #{reply_power},
-            FILE_POWER = #{file_power}
+            FILE_POWER  = #{file_power}
         WHERE PJ_NO = #{pj_no}
     </update>
     <delete id="deleteProject" parameterType="int">
-        DELETE FROM PROJECT
+        DELETE
+        FROM PROJECT
         WHERE PJ_NO = #{pj_no}
     </delete>
     <update id="keepProject" parameterType="int">

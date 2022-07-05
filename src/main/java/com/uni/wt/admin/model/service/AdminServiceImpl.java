@@ -183,6 +183,42 @@ public class AdminServiceImpl implements AdminService{
 		return adminMapper.organizationEmpList();
 	}
 
+	@Override
+	public Employee empModal(int emp_no) throws Exception {
+		
+		Employee emp = adminMapper.empModal(emp_no);
+		
+		if(emp == null) {
+			throw new Exception("사원 정보 조회에 실패하였습니다.");
+		}
+		
+		return emp;
+	}
+
+	@Override
+	public ArrayList<Employee> DeptEmpList(String deptName) throws Exception {
+		
+		ArrayList<Employee> empList = adminMapper.DeptEmpList(deptName);
+			
+		if(empList.isEmpty()) {
+			throw new Exception("부서 사원 정보 조회에 실패하였습니다.");
+		}
+		
+		return empList;
+	}
+
+	@Override
+	public ArrayList<Department> selectDeptEmpList(Map<String, Object> map) throws Exception {
+		
+		ArrayList<Department> deptEmpList = adminMapper.selectDeptEmpList(map);
+		
+		if(deptEmpList == null) {
+			throw new Exception("부서 사원 정보 조회에 실패하였습니다.");
+		}
+		
+		return deptEmpList;
+	}
+
 
 
 

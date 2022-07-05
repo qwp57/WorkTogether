@@ -236,10 +236,14 @@ public class EmployeeController {
 		emp.setPassword(encPwd);
 		
 		
-		empService.insertEmp(emp);
+		int result = empService.insertEmp(emp);
 		
 		msgMap.put("msg", "회원가입에 성공했습니다.");
 		redirect.addFlashAttribute("msg", msgMap);
+		
+		//if(result > 0) {
+			
+		//}
 		
 		
 		return "redirect:/loginForm.do";

@@ -31,15 +31,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public void insertEmp(Employee emp) throws Exception{
+	public int insertEmp(Employee emp) throws Exception{
 		
 		int result = empMapper.insertEmp(emp);
-		
+		//에러뜨면 롤백되는거 확인
 		if(result < 0) {
 			throw new Exception("회원가입에 실패하였습니다.");
 		}
 		
-		//에러뜨면 롤백되는거 확인
+		return result;
+				
 	}
 
 	@Override

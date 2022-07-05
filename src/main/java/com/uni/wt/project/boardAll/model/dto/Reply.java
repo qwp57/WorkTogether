@@ -5,10 +5,11 @@ import lombok.Data;
 @Data
 public class Reply {
 
-    int reply_no;
-    int board_no;
-    int writer;
-    String name;
-    String reply_content;
-    String create_date;
+    private int reply_no;
+    private int board_no;
+    private int writer;
+    private String change_name;
+    private String name;
+    private String reply_content;
+    private String create_date;
 }

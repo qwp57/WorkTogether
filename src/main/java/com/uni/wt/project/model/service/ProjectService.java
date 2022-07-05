@@ -52,4 +52,6 @@ public interface ProjectService {
     void restoreProject(int pj_no) throws Exception;
 
     ArrayList<ProjectFile> getPjFiles(int pj_no, String sort) throws Exception;
+
+    String selectBoardProfilePic(int board_no) throws Exception;
 }

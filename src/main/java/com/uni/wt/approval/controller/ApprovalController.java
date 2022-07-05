@@ -292,8 +292,9 @@ public class ApprovalController {
 		}
 		
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
-		if(result > 0) {
-			noticeService.insertNotice(emp, result, "AP", request);
+		if(result > 0) {			
+			noticeService.insertNotice(firstApproverNo, finalApp, emp, app, "AP", request);
+			
 		}
 		
 		return "redirect:/draftDocument.do";

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.uni.wt.project.model.dao.ProjectMapper;
+import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.post.model.dao.PostMapper;
 import com.uni.wt.project.post.model.dto.Post;
 import com.uni.wt.project.schedule.model.dto.Schedule;
@@ -14,14 +16,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.uni.wt.approval.model.dto.Approval;
 import com.uni.wt.common.notice.dao.NoticeMapper;
 import com.uni.wt.common.notice.dto.Notice;
 import com.uni.wt.common.socket.EchoHandler;
 import com.uni.wt.employee.model.dto.Employee;
+import com.uni.wt.project.post.model.dao.PostMapper;
+import com.uni.wt.project.post.model.dto.Post;
+import com.uni.wt.project.schedule.model.dto.Schedule;
+import com.uni.wt.project.todo.model.dto.Todo;
 import com.uni.wt.requestWork.model.dao.RequestWorkMapper;
 import com.uni.wt.requestWork.model.dto.RequestWork;
 
@@ -40,8 +47,7 @@ public class NoticeService {
     private RequestWorkMapper rwMapper;
 
     @Autowired
-    private PostMapper postMapper;
-
+    private ProjectMapper projectMapper;
     @Autowired
     private EchoHandler echoHandler;
 
@@ -99,8 +105,48 @@ public class NoticeService {
         ////////웹소켓 전송
         websocketSend(empFrom, noticeResult);
     }
+    
+    public void insertNotice(int firstApproverNo, String finalApp, Employee emp, Approval app, String type, HttpServletRequest request) throws Exception {
+    	 //int result1 = 0;// 등록이 됐는지 확인할 result
+    	 //int result2 = 1;
+         if(finalApp.equals("")) {
+        	 int nno = noticeMapper.getNoticeSeq();
+        	 int result = noticeMapper.insertNotice(insertAPNotice(firstApproverNo, app, emp,  nno, type));
+        	
+        	 //결과 확인
+             if (result <= 0) {
+                  throw new Exception("알림 등록에 실패했습니다.");
+              }
+        	 
+             //입력한 notice 정보 완전조회
+             Notice noticeResult = noticeMapper.selectNotice(nno);
+             
+             ////////웹소켓 전송
+             websocketSend(emp, noticeResult);
+         }else {
+        	 int finalApprovalNo = Integer.parseInt(finalApp);
+        	 int nno1 = noticeMapper.getNoticeSeq();
+        	 int result1 = noticeMapper.insertNotice(insertAPNotice(firstApproverNo, app, emp, nno1, type));
+        	 int nno2 = noticeMapper.getNoticeSeq();
+        	 int result2 = noticeMapper.insertNotice(insertAPNotice(finalApprovalNo, app, emp, nno2, type));
+        	 
+        	 //결과 확인
+             if (result1 * result2 <= 0) {
+                  throw new Exception("알림 등록에 실패했습니다.");
+              }
+        	 
+             //입력한 notice 정보 완전조회
+             Notice noticeResult1 = noticeMapper.selectNotice(nno1);
+             Notice noticeResult2 = noticeMapper.selectNotice(nno2);
+             
+             ////////웹소켓 전송
+             websocketSend(emp, noticeResult1);
+             websocketSend(emp, noticeResult2);
+         }
 
-    private Notice insertRWNotice(Employee emp, int seqNo, String type, int nno) throws Exception {
+	}
+
+	private Notice insertRWNotice(Employee emp, int seqNo, String type, int nno) throws Exception {
 
         //글번호로 업무요청 글을 조회해온다.
         RequestWork rw = rwMapper.selectRWDetailsimple(seqNo);
@@ -127,7 +173,7 @@ public class NoticeService {
                 break;
             case "SCH":
                 contentDetail = ((Schedule)contentBoard.get("SCH")).getSch_title();
-                content = empFrom.getName() + "님이 회원님을 일정에 등록했습니다.\n참석, 불참 여부를 정해주세요.";//알림메시지
+                content = empFrom.getName() + "님이 회원님을 일정에 등록했습니다.\n참석 불참 여부를 정하세요.";//알림메시지
                 url = ""+((Schedule)contentBoard.get("SCH")).getBoard_no();
                 break;
             case "TODO":
@@ -135,11 +181,28 @@ public class NoticeService {
                 content = empFrom.getName() + "님이 회원님을 할 일 담당자로 지정했습니다.";//알림메시지
                 url = ""+((Todo)contentBoard.get("TODO")).getBoard_no();
                 break;
+            case "PJ_INVITE":
+                int pj_no = (int)(contentBoard.get("PJ_INVITE"));
+                Project project = projectMapper.selectOneProject(pj_no);
+                contentDetail= project.getPj_title();
+                content = empFrom.getName() + "님이 회원님을 프로젝트에 초대했습니다.";
+                url = "/project/inputToPj.do?pj_no=" + pj_no;//URL
+                break;
         }
 
         return new Notice(nno, empTo, type, content, contentDetail, url);
-
+        
     }
+    
+    private Notice insertAPNotice(int empTo, Approval app, Employee emp, int nno, String type) {
+    	
+    	String contentDetail = app.getTitle();
+    	String content = emp.getName() + "님이 회원님에게 결재 문서를 기안하였습니다.";
+        String url = "/approvalDocument.do";
+        
+		return new Notice(nno, empTo, type, content, contentDetail, url);
+	}
+    
     private void websocketSend(Employee emp, Notice notice) throws Exception {
         Map<String, WebSocketSession> users = echoHandler.getUsers();
 
@@ -228,5 +291,8 @@ public class NoticeService {
 
         return "fail";
     }
+	
+	
+	
 
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.google.gson.Gson;
 import com.uni.wt.admin.model.dto.Department;
 import com.uni.wt.admin.model.dto.EmployeeSearchCondition;
 import com.uni.wt.admin.model.service.AdminService;
@@ -46,7 +47,39 @@ public class AdminController {
 		ArrayList<Employee> empList= adminService.organizationEmpList();
 		
 		model.addAttribute("deptList", deptList);
+		model.addAttribute("empList", empList);		
+		
+		return "organizationChart/organizationChartView";
+	}
+	
+	//조직도 모달
+	@ResponseBody
+	@RequestMapping(value="/empModal.do", produces = "application/json; charset=utf-8")
+	public String empModal(int emp_no) throws Exception {
+		
+		Employee emp = adminService.empModal(emp_no);
+		
+		
+		 return new Gson().toJson(emp);
+	}
+	
+	//조직도 부서별
+	@RequestMapping("/deptEmpList.do")
+	public String organizationChartDeptEmpList(String deptName, String upperDeptCode, Model model) throws Exception {
+		//부서 조회
+		ArrayList<Department> deptList = adminService.selectDeptList();	
+		//사원 조회
+		ArrayList<Employee> empList = adminService.DeptEmpList(deptName);
+		//인사 있는 부서 조회
+		int upper_dept_code = Integer.parseInt(upperDeptCode);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("deptName",deptName);
+		map.put("upper_dept_code",upper_dept_code);
+		ArrayList<Department> deptEmpList = adminService.selectDeptEmpList(map);
+		
+		model.addAttribute("deptList", deptList);
 		model.addAttribute("empList", empList);
+		model.addAttribute("deptEmpList", deptEmpList);
 		
 		return "organizationChart/organizationChartView";
 	}

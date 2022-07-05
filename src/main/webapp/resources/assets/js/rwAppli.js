@@ -24,6 +24,7 @@ $("#file-label").val(filename);
 
 
 
+
 $(document).on('change', '#dept', function () {
     let dept_code = $(this).val();
 
@@ -48,6 +49,7 @@ $(document).on('change', '#dept', function () {
         }
     
     })
+
     
 })
 

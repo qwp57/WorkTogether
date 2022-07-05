@@ -23,6 +23,7 @@
         <result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
         <result property="job_name" column="JOB_NAME"/>
         <result property="name" column="NAME"/>
+        <result property="change_name" column="CHANGE_NAME"/>
     </resultMap>
 
     <select id="detailView" parameterType="int" resultMap="scheduleSet">
@@ -69,12 +70,14 @@
           AND STATUS = #{status}
     </select>
     <select id="selectSchAttendee" parameterType="int" resultMap="employeeSet">
-        SELECT B.EMP_NO, B.NAME, C.JOB_NAME
+        SELECT B.EMP_NO, B.NAME, C.JOB_NAME, D.CHANGE_NAME
         FROM SCH_ATTENDEE A
                  JOIN EMPLOYEE B
                       ON A.EMP_NO = B.EMP_NO
                  LEFT JOIN JOB C
                            ON B.JOB_CODE = C.JOB_CODE
+                 LEFT JOIN ATTACHMENT D
+                           ON B.FILE_NO = D.FILE_NO
         WHERE A.BOARD_NO = #{board_no}
           AND A.STATUS = 'Y'
           AND B.STATUS != 'Q'

@@ -54,6 +54,8 @@ public class ProjectController {
     private ScheduleService scheduleService;
     @Autowired
     private BoardAllService boardAllService;
+    @Autowired
+    private NoticeService noticeService;
 
     private Map<String, String> msgMap = new HashMap<String, String>();
 
@@ -83,12 +85,13 @@ public class ProjectController {
         myAllProjects.add(bookmarkProjects);
         return gson.toJson(myAllProjects);
     }
+
     @ResponseBody
     @RequestMapping(value = "/selectOneProject.do", produces = "application/json; charset=utf-8")
     public String selectOneProject(HttpSession session, int pj_no) throws Exception {
         int loginEmp = ((Employee) session.getAttribute("loginEmp")).getEmp_no();
 
-        Project project =  projectService.selectOneProject(pj_no);
+        Project project = projectService.selectOneProject(pj_no);
         ProjectTag projectTag = new ProjectTag();
         projectTag.setEmp_no(loginEmp);
         projectTag.setPj_no(pj_no);
@@ -99,9 +102,11 @@ public class ProjectController {
         map.put("pj", project);
         return new GsonBuilder().setDateFormat("yyyy-MM-dd").create().toJson(map);
     }
-
     @RequestMapping(value = "/invitePj.do", produces = "application/json; charset=utf-8")
-    public String invitePj(@RequestParam("inviteEmpNo") int[] emp_no, @RequestParam("pj_no") int pj_no,  RedirectAttributes redirect) throws Exception {
+    public String invitePj(@RequestParam("inviteEmpNo") int[] emp_no, @RequestParam("pj_no") int pj_no, HttpSession session, RedirectAttributes redirect) throws Exception {
+        Employee emp = (Employee) session.getAttribute("loginEmp");
+        HashMap<String, Object> content = new HashMap<String, Object>();
+        content.put("PJ_INVITE", pj_no);
         for (int i : emp_no) {
             log.info("사번 : " + i);
             ProjectMember pjm = new ProjectMember();
@@ -109,13 +114,29 @@ public class ProjectController {
             pjm.setPj_no(pj_no);
             pjm.setAdmin("N");
             log.info(pjm.toString());
-            projectMemberService.insertProjectMember(pjm);
+            //projectMemberService.insertProjectMember(pjm);
+            noticeService.insertNotice(i, emp, content, "PJ_INVITE");
         }
         redirect.addFlashAttribute("msg", "프로젝트 초대 완료.");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
 
-    private Map<String, Object> getBoardList(int pj_no, int currentPage, String boardType,  int emp_no, SearchDto sd) throws Exception {
+    @RequestMapping(value = "/inputToPj.do", produces = "application/json; charset=utf-8")
+    public String inputToPj(@RequestParam("pj_no") int pj_no, HttpSession session, RedirectAttributes redirect) throws Exception {
+        int loginEmp = ((Employee) session.getAttribute("loginEmp")).getEmp_no();
+        log.info("사번 : " + loginEmp);
+        ProjectMember pjm = new ProjectMember();
+        pjm.setEmp_no(loginEmp);
+        pjm.setPj_no(pj_no);
+        pjm.setAdmin("N");
+        log.info(pjm.toString());
+        projectMemberService.insertProjectMember(pjm);
+        redirect.addFlashAttribute("msg", "프로젝트 참여 완료.");
+        return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+    }
+
+
+    private Map<String, Object> getBoardList(int pj_no, int currentPage, String boardType, int emp_no, SearchDto sd) throws Exception {
         //요청된 업무 리스트 전체 개수
         int listCount = boardAllService.getListCount(pj_no, boardType, emp_no, sd);
         log.info("[요청받은 전체글 리스트 개수] : {}", listCount);
@@ -124,10 +145,10 @@ public class ProjectController {
 
         ArrayList<BoardAll> list = boardAllService.selectPjBoardList(pj_no, pi, boardType, emp_no, sd);
         log.info("[요청받은 전체글 리스트] : {}", list);
-            for (BoardAll b : list) {
-                if(b.getBoard_type().equals("todo"))
+        for (BoardAll b : list) {
+            if (b.getBoard_type().equals("todo"))
                 b.setTodo_percent(todoService.getTodoPercent(b.getBoard_no()));
-            }
+        }
         Map<String, Object> map = new HashMap<String, Object>();
 
         map.put("list", list);
@@ -258,6 +279,13 @@ public class ProjectController {
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/selectBoardProfilePic.do", produces = "application/json; charset=utf-8")
+    public String selectBoardProfilePic(@RequestParam("board_no") int board_no) throws Exception {
+        String change_name = projectService.selectBoardProfilePic(board_no);
+        return new GsonBuilder().create().toJson(change_name);
+
+    }
 
     @ResponseBody
     @RequestMapping(value = "/editReply.do", produces = "application/json; charset=utf-8")
@@ -362,16 +390,18 @@ public class ProjectController {
 
         return new GsonBuilder().create().toJson(list);
     }
+
     @ResponseBody
     @RequestMapping(value = "/deleteFile.do", produces = "application/text;charset=utf8")
     public String deleteFile(@RequestParam("file_no[]") int[] file_no) throws Exception {
 
         log.info("삭제할 파일 : " + file_no.toString());
-        for (int i : file_no){
+        for (int i : file_no) {
             projectFileService.deleteFile(projectFileService.getFileByFileNo(i));
         }
         return new GsonBuilder().create().toJson("파일 삭제 성공");
     }
+
     @ResponseBody
     @RequestMapping(value = "/fileSort.do", produces = "application/text;charset=utf8")
     public String fileSort(@RequestParam("pj_no") int pj_no, @RequestParam("sort") String sort) throws Exception {
@@ -437,15 +467,15 @@ public class ProjectController {
 
         redirect.addFlashAttribute("msg", "게시물 삭제 완료.");
 
-            if (type.equals("calendar")){
-                return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
-            }else if(type.equals("home")){
-                return "redirect:/project/detailPj.do?pj_no=" + pj_no;
-            }else if(type.equals("myBoard")){
-                return "redirect:/project/myBoard.do";
-            }else {
-                return "redirect:/allCalendar.do";
-            }
+        if (type.equals("calendar")) {
+            return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
+        } else if (type.equals("home")) {
+            return "redirect:/project/detailPj.do?pj_no=" + pj_no;
+        } else if (type.equals("myBoard")) {
+            return "redirect:/project/myBoard.do";
+        } else {
+            return "redirect:/allCalendar.do";
+        }
     }
 
     @RequestMapping("/editPj.do")
@@ -454,13 +484,13 @@ public class ProjectController {
         projectService.editPj(project);
         redirect.addFlashAttribute("msg", "프로젝트 수정 완료.");
 
-        if (type.equals("calendar")){
+        if (type.equals("calendar")) {
             return "redirect:/project/detailCalendar.do?pj_no=" + project.getPj_no();
-        }else if(type.equals("home")){
+        } else if (type.equals("home")) {
             return "redirect:/project/detailPj.do?pj_no=" + project.getPj_no();
-        }else if(type.equals("drive")){
+        } else if (type.equals("drive")) {
             return "redirect:/project/drivePj.do?pj_no=" + project.getPj_no();
-        }else{
+        } else {
             return "redirect:/project/";
         }
 
@@ -479,13 +509,14 @@ public class ProjectController {
         redirect.addFlashAttribute("msg", "프로젝트 보관 완료.");
         return "redirect:/project/storedPj.do";
     }
+
     @RequestMapping("/restoreProject.do")
     public String restoreProject(@RequestParam("pj_no") int pj_no, RedirectAttributes redirect) throws Exception {
         projectService.restoreProject(pj_no);
         redirect.addFlashAttribute("msg", "프로젝트 복구 완료.");
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
-    
+
     @RequestMapping("/tagViewSelect.do")
     public ModelAndView tagViewSelect(@RequestParam("tag_no") int tag_no, @RequestParam("tag_name") String tag_name, ModelAndView mv) {
         ProjectTag projectTag = new ProjectTag();
@@ -568,7 +599,7 @@ public class ProjectController {
     @RequestMapping("/myBoard.do")
     public String myBoard(HttpSession session, Model m) {
 
-        m.addAttribute("emp_no",((Employee) session.getAttribute("loginEmp")).getEmp_no());
+        m.addAttribute("emp_no", ((Employee) session.getAttribute("loginEmp")).getEmp_no());
 
         return "project/myBoard";
     }
