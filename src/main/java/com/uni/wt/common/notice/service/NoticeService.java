@@ -6,22 +6,23 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.uni.wt.project.post.model.dao.PostMapper;
-import com.uni.wt.project.post.model.dto.Post;
-import com.uni.wt.project.schedule.model.dto.Schedule;
-import com.uni.wt.project.todo.model.dto.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
 
+import com.uni.wt.approval.model.dto.Approval;
 import com.uni.wt.common.notice.dao.NoticeMapper;
 import com.uni.wt.common.notice.dto.Notice;
 import com.uni.wt.common.socket.EchoHandler;
 import com.uni.wt.employee.model.dto.Employee;
+import com.uni.wt.project.post.model.dao.PostMapper;
+import com.uni.wt.project.post.model.dto.Post;
+import com.uni.wt.project.schedule.model.dto.Schedule;
+import com.uni.wt.project.todo.model.dto.Todo;
 import com.uni.wt.requestWork.model.dao.RequestWorkMapper;
 import com.uni.wt.requestWork.model.dto.RequestWork;
 
@@ -99,8 +100,48 @@ public class NoticeService {
         ////////웹소켓 전송
         websocketSend(empFrom, noticeResult);
     }
+    
+    public void insertNotice(int firstApproverNo, String finalApp, Employee emp, Approval app, String type, HttpServletRequest request) throws Exception {
+    	 //int result1 = 0;// 등록이 됐는지 확인할 result
+    	 //int result2 = 1;
+         if(finalApp.equals("")) {
+        	 int nno = noticeMapper.getNoticeSeq();
+        	 int result = noticeMapper.insertNotice(insertAPNotice(firstApproverNo, app, emp,  nno, type));
+        	
+        	 //결과 확인
+             if (result <= 0) {
+                  throw new Exception("알림 등록에 실패했습니다.");
+              }
+        	 
+             //입력한 notice 정보 완전조회
+             Notice noticeResult = noticeMapper.selectNotice(nno);
+             
+             ////////웹소켓 전송
+             websocketSend(emp, noticeResult);
+         }else {
+        	 int finalApprovalNo = Integer.parseInt(finalApp);
+        	 int nno1 = noticeMapper.getNoticeSeq();
+        	 int result1 = noticeMapper.insertNotice(insertAPNotice(firstApproverNo, app, emp, nno1, type));
+        	 int nno2 = noticeMapper.getNoticeSeq();
+        	 int result2 = noticeMapper.insertNotice(insertAPNotice(finalApprovalNo, app, emp, nno2, type));
+        	 
+        	 //결과 확인
+             if (result1 * result2 <= 0) {
+                  throw new Exception("알림 등록에 실패했습니다.");
+              }
+        	 
+             //입력한 notice 정보 완전조회
+             Notice noticeResult1 = noticeMapper.selectNotice(nno1);
+             Notice noticeResult2 = noticeMapper.selectNotice(nno2);
+             
+             ////////웹소켓 전송
+             websocketSend(emp, noticeResult1);
+             websocketSend(emp, noticeResult2);
+         }
 
-    private Notice insertRWNotice(Employee emp, int seqNo, String type, int nno) throws Exception {
+	}
+
+	private Notice insertRWNotice(Employee emp, int seqNo, String type, int nno) throws Exception {
 
         //글번호로 업무요청 글을 조회해온다.
         RequestWork rw = rwMapper.selectRWDetailsimple(seqNo);
@@ -138,8 +179,18 @@ public class NoticeService {
         }
 
         return new Notice(nno, empTo, type, content, contentDetail, url);
-
+        
     }
+    
+    private Notice insertAPNotice(int empTo, Approval app, Employee emp, int nno, String type) {
+    	
+    	String contentDetail = app.getTitle();
+    	String content = emp.getName() + "님이 회원님에게 결재 문서를 기안하였습니다.";
+        String url = "/approvalDocument.do";
+        
+		return new Notice(nno, empTo, type, content, contentDetail, url);
+	}
+    
     private void websocketSend(Employee emp, Notice notice) throws Exception {
         Map<String, WebSocketSession> users = echoHandler.getUsers();
 
@@ -228,5 +279,8 @@ public class NoticeService {
 
         return "fail";
     }
+	
+	
+	
 
 }

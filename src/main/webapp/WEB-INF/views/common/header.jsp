@@ -258,20 +258,20 @@
                 <i class="far fa-user"></i> 내 정보
               </a>
               <c:if test="${ loginEmp.admin == 'Y' }">
-	              <!-- 관리자 설정은 관리자에게만 보인다. -->
-	              <h5 class="dropdown-header">
-		            <i class="fas fa-cog"></i> 관리자 설정
-		          </h5>
-		          <a class="dropdown-item has-icon ml-3" href="adminApprovalList.do">
-	              	<i class="bi bi-check-square-fill"></i>가입 승인
-	              </a>
-		       	  <a class="dropdown-item has-icon ml-3" href="departmentManagement.do">
-	              	<i class="bi bi-diagram-3-fill"></i>부서 관리
-	              </a>
-		           <a class="dropdown-item has-icon ml-3" href="employeeManagement.do">
-	              	<i class="bi bi-people-fill"></i>인사 관리
-	              </a>
-			  </c:if>
+                 <!-- 관리자 설정은 관리자에게만 보인다. -->
+                 <h5 class="dropdown-header">
+                  <i class="fas fa-cog"></i> 관리자 설정
+                </h5>
+                <a class="dropdown-item has-icon ml-3" href="adminApprovalList.do">
+                    <i class="bi bi-check-square-fill"></i>가입 승인
+                 </a>
+                  <a class="dropdown-item has-icon ml-3" href="departmentManagement.do">
+                    <i class="bi bi-diagram-3-fill"></i>부서 관리
+                 </a>
+                 <a class="dropdown-item has-icon ml-3" href="employeeManagement.do">
+                    <i class="bi bi-people-fill"></i>인사 관리
+                 </a>
+           </c:if>
               <div class="dropdown-divider"></div>
               <a href="/logout.do" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> 로그아웃
@@ -423,7 +423,7 @@
 
                 $("#boardView").find(".colors").attr("class", "colors")
                 $("#boardView").find(".colors").addClass(list.pjMember.pj_color).addClass("ml-2")
-                $("#boardView").find(".pjTitle").html(list.pj.pj_title)
+                $("#boardView").find(".pjTitle").html(list.pj.pj_title);
                 $("#boardPost").find("input[name=pj_no]").val(list.pj.pj_no)
 
             }
@@ -630,7 +630,7 @@
                     )
                     $("#todoCompleteCount").html(completeCount + "&nbsp;")
                     $("#todoCompletePercent").html(Math.floor(completeCount / list.length * 100) + "%")
-                    $("#todoBar").attr("data-width", $("#todoCompletePercent").text())
+                    $("#todoBar").attr("data-width", $("#todoCompletePercent").text());
                     $("#todoBar").attr("style", 'width:' + $("#todoCompletePercent").text() + ';')
                 }
             })
@@ -771,159 +771,159 @@
                                 </c:choose>
 
                                 <span class="filebox">
-	                               		<label for="newFile">+</label>
-	                               		<input type="file" id="newFile" name="new_file">
-	                               		<label for="ex_file" id="deletefile">-</label>
-	                               		<input type="hidden" id="exfile" name="ex_file">
-	                               	</span>
+                                        <label for="newFile">+</label>
+                                        <input type="file" id="newFile" name="new_file">
+                                        <label for="ex_file" id="deletefile">-</label>
+                                        <input type="hidden" id="exfile" name="ex_file">
+                                     </span>
 
-	                            </td>
-	      					</tr>
-	      					<tr>
-	      						<th>&nbsp;이름</th>
-	      						<td><input class="form-control" type="text" value="${loginEmp.name}" name="name" ></td>
-	      						<th style="width: 15%">&nbsp;아이디</th>
-	      						<td>${loginEmp.id }<input type="hidden" name="emp_no" value="${loginEmp.emp_no }"></td>
-	      					</tr>
-	      					<tr>
-	      						<th>&nbsp;부서</th>
-	      						<td><select class="form-control" name="dept_code" id="dept" >
-	      									<option value="">부서 없음</option>
-	      								<c:forEach items="${dList}" var="d">
-											<option value="${d.DEPT_CODE}">${d.DEPT_NAME}</option>      						
-	      								</c:forEach>
-	      							</select>
-	      						</td>
-	      						<th>&nbsp;직위</th>
-	      						<td><select class="form-control" name="job_code" id="job" >
-	      								<option value="">직급 없음</option>
-	      							<c:forEach items="${jList}" var="j">
-	      								<option value="${j.JOB_CODE}">${j.JOB_NAME}</option>
-	      							</c:forEach>
-	      							</select>
-	      						</td>
-	      					</tr>
-	      					<tr>
-	      						<th>&nbsp;생일</th>
-	      						<td>
-		      						<div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-					                    <input type="text" id="empbirth" class="form-control datetimepicker-input" data-target="#datetimepicker1"  name="birth" />
-					                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-					                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-					                    </div>
-					                </div>
-	      						</td>
-	      						<th>&nbsp;핸드폰 번호</th>
-	      						<td><input class="form-control" type="tel" value="${loginEmp.phone }" name="phone" ></td>
-	      					</tr>
-	      					<tr>
-	      						<th>&nbsp;이메일</th>
-	      						<td><input class="form-control" type="email" value="${loginEmp.email }" name="email" ></td>
-	      						<th>&nbsp;입사일</th>
-	      						<td>
-	      							<div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-					                    <input type="text" id="empjoinDate" class="form-control datetimepicker-input" data-target="#datetimepicker2"  name="join_date" />
-					                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-					                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-					                    </div>
-					                </div>
-	      						</td>
-	      					</tr>
-	      				</table>
-	      			</div>
+                               </td>
+                        </tr>
+                        <tr>
+                           <th>&nbsp;이름</th>
+                           <td><input class="form-control" type="text" value="${loginEmp.name}" name="name" ></td>
+                           <th style="width: 15%">&nbsp;아이디</th>
+                           <td>${loginEmp.id }<input type="hidden" name="emp_no" value="${loginEmp.emp_no }"></td>
+                        </tr>
+                        <tr>
+                           <th>&nbsp;부서</th>
+                           <td><select class="form-control" name="dept_code" id="dept" >
+                                    <option value="">부서 없음</option>
+                                 <c:forEach items="${dList}" var="d">
+                                 <option value="${d.DEPT_CODE}">${d.DEPT_NAME}</option>                        
+                                 </c:forEach>
+                              </select>
+                           </td>
+                           <th>&nbsp;직위</th>
+                           <td><select class="form-control" name="job_code" id="job" >
+                                 <option value="">직급 없음</option>
+                              <c:forEach items="${jList}" var="j">
+                                 <option value="${j.JOB_CODE}">${j.JOB_NAME}</option>
+                              </c:forEach>
+                              </select>
+                           </td>
+                        </tr>
+                        <tr>
+                           <th>&nbsp;생일</th>
+                           <td>
+                              <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                   <input type="text" id="empbirth" class="form-control datetimepicker-input" data-target="#datetimepicker1"  name="birth" />
+                                   <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                   </div>
+                               </div>
+                           </td>
+                           <th>&nbsp;핸드폰 번호</th>
+                           <td><input class="form-control" type="tel" value="${loginEmp.phone }" name="phone" ></td>
+                        </tr>
+                        <tr>
+                           <th>&nbsp;이메일</th>
+                           <td><input class="form-control" type="email" value="${loginEmp.email }" name="email" ></td>
+                           <th>&nbsp;입사일</th>
+                           <td>
+                              <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                                   <input type="text" id="empjoinDate" class="form-control datetimepicker-input" data-target="#datetimepicker2"  name="join_date" />
+                                   <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                   </div>
+                               </div>
+                           </td>
+                        </tr>
+                     </table>
+                  </div>
 
-	      			<div class="modal-footer">
+                  <div class="modal-footer">
 
-	      				<div class="col-lg-12 text-center">
-	      					<button type="button" class="btn btn-lg btn-primary btn-lg mb-3" id="myProfilebtn">저장</button>
-	      				</div>
-	      			</div>
- 				</form>
-      		</div>
-      	</div>
+                     <div class="col-lg-12 text-center">
+                        <button type="button" class="btn btn-lg btn-primary btn-lg mb-3" id="myProfilebtn">저장</button>
+                     </div>
+                  </div>
+             </form>
+            </div>
+         </div>
       </div>
 
       <script>
       let file_no = "${loginEmp.file_no}";
       console.log(file_no);
-      	$(function(){
-      		$("#profile").click(function(){
-      			$("#myProfile").modal("show")
-      		});
+         $(function(){
+            $("#profile").click(function(){
+               $("#myProfile").modal("show")
+            });
 
-      		$('#datetimepicker1').datetimepicker({
+            $('#datetimepicker1').datetimepicker({
                 format: 'YY-MM-DD'
             });
 
-      		$('#datetimepicker2').datetimepicker({
+            $('#datetimepicker2').datetimepicker({
                 format: 'YY-MM-DD',
                 useCurrent: false
             });
-      		
-      		let birthday = '${loginEmp.birth}';
-      		let joinDate = '${loginEmp.join_date}';
-      	
-      		document.getElementById('empbirth').value = birthday.substring(0, 11);
-      		document.getElementById('empjoinDate').value = joinDate.substring(0, 11);
-      		
-      		let job_code ='${loginEmp.job_code}';
-      		let dept_code ='${loginEmp.dept_code}';
-      		
-      		$('#dept option[value = '+dept_code+']').prop('selected', true);
-      		$('#job option[value = '+job_code+']').prop('selected', true);
-      		
+            
+            let birthday = '${loginEmp.birth}';
+            let joinDate = '${loginEmp.join_date}';
+         
+            document.getElementById('empbirth').value = birthday.substring(0, 11);
+            document.getElementById('empjoinDate').value = joinDate.substring(0, 11);
+            
+            let job_code ='${loginEmp.job_code}';
+            let dept_code ='${loginEmp.dept_code}';
+            
+            $('#dept option[value = '+dept_code+']').prop('selected', true);
+            $('#job option[value = '+job_code+']').prop('selected', true);
+            
       
-      		
+            
 
-      	});
-      	
-      	$('#newFile').on('change', function() {
-			let file = $('#newFile').prop('files')[0];
-			let url = window.URL.createObjectURL(file);
-			console.log(url);
-			$('#profileImg_header').attr('src', url);
-			
-			$('#exfile').val(file_no);
-			console.log($('#exfile').val());
-		})
-		
-		$('#deletefile').click(function() {
-			$('#profileImg_header').attr('src',"/resources/assets/img/avatar/avatar-1.png");
-			$('#exfile').val(file_no);
-			console.log($('#exfile').val());
-		})
-      	
-      	
-      	$('#myProfilebtn').click(function(){
-      		
-      		if($('#dept option:selected').val() == ""){
-      			alert("부서를 선택해주세요");
-      		}else if($('#job option:selected').val() == ""){
-      			alert("직급을 선택해주세요");
-      		}else{
-      			
-      	/*	let formData = $('#myProfileUpdate').serialize();*/
-      	let form = $('#myProfileUpdate')[0];
-      	let formData = new FormData(form);
-      	
-      		alert(formData);
-			$.ajax({
-				url:"myProfileUpdate.do",
-				type : "post",
-				cache : false,
-				contentType : false,
-				processData : false, 
-				 enctype: 'multipart/form-data', 
-				data : formData,
-				success : function() {
-					location.reload();
-				}
-			})      		
-      			
-      		}
-      		
-      		
-      	})
+         });
+         
+         $('#newFile').on('change', function() {
+         let file = $('#newFile').prop('files')[0];
+         let url = window.URL.createObjectURL(file);
+         console.log(url);
+         $('#profileImg_header').attr('src', url);
+         
+         $('#exfile').val(file_no);
+         console.log($('#exfile').val());
+      })
+      
+      $('#deletefile').click(function() {
+         $('#profileImg_header').attr('src',"/resources/assets/img/avatar/avatar-1.png");
+         $('#exfile').val(file_no);
+         console.log($('#exfile').val());
+      })
+         
+         
+         $('#myProfilebtn').click(function(){
+            
+            if($('#dept option:selected').val() == ""){
+               alert("부서를 선택해주세요");
+            }else if($('#job option:selected').val() == ""){
+               alert("직급을 선택해주세요");
+            }else{
+               
+         /*   let formData = $('#myProfileUpdate').serialize();*/
+         let form = $('#myProfileUpdate')[0];
+         let formData = new FormData(form);
+         
+            alert(formData);
+         $.ajax({
+            url:"myProfileUpdate.do",
+            type : "post",
+            cache : false,
+            contentType : false,
+            processData : false, 
+             enctype: 'multipart/form-data', 
+            data : formData,
+            success : function() {
+               location.reload();
+            }
+         })            
+               
+            }
+            
+            
+         })
       </script>
 
   <!-- General JS Scripts -->
@@ -934,7 +934,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
   <script src="/resources/assets/js/stisla.js"></script>
 
-	<!-- JS Libraies
+   <!-- JS Libraies
   <script src="resources/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
   <script src="resources/node_modules/chart.js/dist/Chart.min.js"></script>
   <script src="resources/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
@@ -946,101 +946,6 @@
   <script src="/resources/assets/js/custom.js"></script>
 
 
-
-<script>
-    let file_no = "${loginEmp.file_no}";
-    console.log(file_no);
-    $(function () {
-        $("#profile").click(function () {
-            $("#myProfile").modal("show")
-        });
-
-        $('#datetimepicker1').datetimepicker({
-            format: 'YY-MM-DD'
-        });
-
-        $('#datetimepicker2').datetimepicker({
-            format: 'YY-MM-DD',
-            useCurrent: false
-        });
-
-        let birthday = '${loginEmp.birth}';
-        let joinDate = '${loginEmp.join_date}';
-
-        document.getElementById('empbirth').value = birthday.substring(0, 11);
-        document.getElementById('empjoinDate').value = joinDate.substring(0, 11);
-
-        let job_code = '${loginEmp.job_code}';
-        let dept_code = '${loginEmp.dept_code}';
-
-        $('#dept option[value = ' + dept_code + ']').prop('selected', true);
-        $('#job option[value = ' + job_code + ']').prop('selected', true);
-
-
-    });
-
-    $('#newFile').on('change', function () {
-        let file = $('#newFile').prop('files')[0];
-        let url = window.URL.createObjectURL(file);
-        console.log(url);
-        $('#profileImg_header').attr('src', url);
-
-        $('#exfile').val(file_no);
-        console.log($('#exfile').val());
-    })
-
-    $('#deletefile').click(function () {
-        $('#profileImg_header').attr('src', "/resources/assets/img/avatar/avatar-1.png");
-        $('#exfile').val(file_no);
-        console.log($('#exfile').val());
-    })
-
-
-    $('#myProfilebtn').click(function () {
-
-        /*	let formData = $('#myProfileUpdate').serialize();*/
-        let form = $('#myProfileUpdate')[0];
-        let formData = new FormData(form);
-
-        alert(formData);
-        $.ajax({
-            url: "/myProfileUpdate.do",
-            type: "post",
-            cache: false,
-            contentType: false,
-            processData: false,
-            enctype: 'multipart/form-data',
-            data: formData,
-            success: function () {
-                location.reload();
-            }
-        })
-
-    })
-
-</script>
-
-<!-- General JS Scripts -->
-<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
-<script src="/resources/assets/js/stisla.js"></script>
-
-<!-- JS Libraies
-<script src="resources/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
-<script src="resources/node_modules/chart.js/dist/Chart.min.js"></script>
-<script src="resources/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
-<script src="resources/node_modules/summernote/dist/summernote-bs4.js"></script>
-<script src="resources/node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>-->
-
-<!-- Template JS File -->
-<script src="/resources/assets/js/scripts.js"></script>
-<script src="/resources/assets/js/custom.js"></script>
 <jsp:include page="../project/boardViewModal.jsp"/>
 <jsp:include page="../project/attendeeViewModal.jsp"/>
 </body>

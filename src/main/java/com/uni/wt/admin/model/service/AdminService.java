@@ -46,6 +46,12 @@ public interface AdminService {
 
 	ArrayList<Employee> organizationEmpList() throws Exception;
 
+	Employee empModal(int emp_no) throws Exception;
+
+	ArrayList<Employee> DeptEmpList(String deptName) throws Exception;
+
+	ArrayList<Department> selectDeptEmpList(Map<String, Object> map) throws Exception;
+
 
 
 }

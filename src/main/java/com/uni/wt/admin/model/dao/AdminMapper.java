@@ -54,6 +54,12 @@ public interface AdminMapper {
 	ArrayList<Department> selectDeptList();
 
 	ArrayList<Employee> organizationEmpList();
+
+	Employee empModal(int emp_no);
+
+	ArrayList<Employee> DeptEmpList(String deptName);
+
+	ArrayList<Department> selectDeptEmpList(Map<String, Object> map);
 	
 	
 
