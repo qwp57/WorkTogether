@@ -226,7 +226,7 @@ public class EmployeeController {
 	//
 	
 	@RequestMapping(value="/enrollEmp.do")
-	public String enrollEmp (@Valid Employee emp, Model m, RedirectAttributes redirect) throws Exception {
+	public String enrollEmp (@Valid Employee emp, Model m, RedirectAttributes redirect, HttpServletRequest request) throws Exception {
 		
 		log.info(emp.toString());
 		log.info("암호화 전 : "+emp.getPassword());
@@ -241,9 +241,10 @@ public class EmployeeController {
 		msgMap.put("msg", "회원가입에 성공했습니다.");
 		redirect.addFlashAttribute("msg", msgMap);
 		
-		//if(result > 0) {
-			
-		//}
+		int seqNo = 0;
+		if(result > 0) {
+			noticeService.insertNotice(emp, seqNo, "EN", request);
+		}
 		
 		
 		return "redirect:/loginForm.do";

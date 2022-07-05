@@ -288,16 +288,7 @@
 				
 				<!-- modal body -->
 				<form>
-				<div class="modal-body">					
-						<div class="input-group mb-3">
-							<div class="input-group-prepend">
-								<button class="btn btn-secondary" type="button">
-									<i class="bi bi-search"></i>
-								</button>
-								<input type="text" class="form-control" placeholder="사원 이름, 부서 검색">
-							</div>
-						</div>
-						
+					<div class="modal-body">										
 						<div class="row">
 							<div class="ml-3">
 								<div id="lineList1">
@@ -354,15 +345,6 @@
 				<!-- modal body -->
 				<form>
 				<div class="modal-body">					
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<button class="btn btn-secondary" type="button">
-								<i class="bi bi-search"></i>
-							</button>
-							<input type="text" class="form-control" placeholder="사원 이름, 부서 검색">
-						</div>
-					</div>
-						
 					<div class="row">
 						<div class="ml-3">
 							<div id="lineList2">

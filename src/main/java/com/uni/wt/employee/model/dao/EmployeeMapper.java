@@ -30,4 +30,6 @@ public interface EmployeeMapper {
 
 	public ArrayList<Map<String, Object>> getStacts(int month)throws Exception;
 
+	public int selectAdmin() throws Exception;
+
 }

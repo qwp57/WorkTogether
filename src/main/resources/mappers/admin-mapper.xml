@@ -235,7 +235,9 @@
 	 -->
 	 <select id="searchListCount" parameterType="EmployeeSearchCondition" resultType="int">
 	 	SELECT COUNT(*)
-		FROM EMPLOYEE
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="emp_no != null">
 			AND EMP_NO LIKE '%'||#{emp_no}||'%'
@@ -249,11 +251,11 @@
 			<if test="job_name != null">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status == 'I' &amp;&amp; status != null">
-			AND STATUS=#{status}
+			<if test="status.equals('I') &amp;&amp; status != null">
+			AND A.STATUS='I'
 			</if>
-			<if test="status == 'Q' &amp;&amp; status != null">
-			AND STATUS=#{status}
+			<if test="status.equals('Q') &amp;&amp; status != null">
+			AND A.STATUS='Q'
 			</if>
 		</trim>
 	 </select>
@@ -323,11 +325,11 @@
 			<if test="job_name != null">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status == 'I' &amp;&amp; status != null">
-			AND STATUS='I'
+			<if test="status.equals('I') &amp;&amp; status != null">
+			AND A.STATUS='I'
 			</if>
-			<if test="status == 'Q' &amp;&amp; status != null">
-			AND STATUS='Q'
+			<if test="status.equals('Q') &amp;&amp; status != null">
+			AND A.STATUS='Q'
 			</if>
 		</trim>
 		ORDER BY JOIN_DATE DESC

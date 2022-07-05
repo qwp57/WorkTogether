@@ -6,17 +6,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.uni.wt.project.model.dao.ProjectMapper;
-import com.uni.wt.project.model.dto.Project;
-import com.uni.wt.project.post.model.dao.PostMapper;
-import com.uni.wt.project.post.model.dto.Post;
-import com.uni.wt.project.schedule.model.dto.Schedule;
-import com.uni.wt.project.todo.model.dto.Todo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -24,8 +17,10 @@ import com.uni.wt.approval.model.dto.Approval;
 import com.uni.wt.common.notice.dao.NoticeMapper;
 import com.uni.wt.common.notice.dto.Notice;
 import com.uni.wt.common.socket.EchoHandler;
+import com.uni.wt.employee.model.dao.EmployeeMapper;
 import com.uni.wt.employee.model.dto.Employee;
-import com.uni.wt.project.post.model.dao.PostMapper;
+import com.uni.wt.project.model.dao.ProjectMapper;
+import com.uni.wt.project.model.dto.Project;
 import com.uni.wt.project.post.model.dto.Post;
 import com.uni.wt.project.schedule.model.dto.Schedule;
 import com.uni.wt.project.todo.model.dto.Todo;
@@ -50,6 +45,9 @@ public class NoticeService {
     private ProjectMapper projectMapper;
     @Autowired
     private EchoHandler echoHandler;
+    
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     public void insertNotice(Employee emp, int seqNo, String type, HttpServletRequest request) throws Exception {
         //로그인된 사원 정보, 글번호, 게시판타입
@@ -64,7 +62,8 @@ public class NoticeService {
             case "RW":
                 result = noticeMapper.insertNotice(insertRWNotice(emp, seqNo, type, nno));
                 break;
-
+            case "EN":
+            	result = noticeMapper.insertNotice(insertENNotice(emp, seqNo, type, nno));
         }
 
 
@@ -84,7 +83,8 @@ public class NoticeService {
         websocketSend(emp, noticeResult);
 
     }
-    public void insertNotice(int empTo, Employee empFrom, HashMap<String, Object> content, String type) throws Exception {
+    
+	public void insertNotice(int empTo, Employee empFrom, HashMap<String, Object> content, String type) throws Exception {
         int result = 0;// 등록이 됐는지 확인할 result
         int nno = noticeMapper.getNoticeSeq();
 
@@ -107,8 +107,6 @@ public class NoticeService {
     }
     
     public void insertNotice(int firstApproverNo, String finalApp, Employee emp, Approval app, String type, HttpServletRequest request) throws Exception {
-    	 //int result1 = 0;// 등록이 됐는지 확인할 result
-    	 //int result2 = 1;
          if(finalApp.equals("")) {
         	 int nno = noticeMapper.getNoticeSeq();
         	 int result = noticeMapper.insertNotice(insertAPNotice(firstApproverNo, app, emp,  nno, type));
@@ -201,6 +199,16 @@ public class NoticeService {
         String url = "/approvalDocument.do";
         
 		return new Notice(nno, empTo, type, content, contentDetail, url);
+	}
+    
+    private Notice insertENNotice(Employee emp, int seqNo, String type, int nno) throws Exception {
+		//관리자 사번을 조회한다.
+    	seqNo = employeeMapper.selectAdmin();
+    	String contentDetail = emp.getId();
+    	String content = emp.getName() + "님이 관리자님에게 가입 승인을 요청하였습니다.";
+    	String url = "/adminApprovalList.do";
+    	
+		return new Notice(nno, seqNo, type, content, contentDetail, url);
 	}
     
     private void websocketSend(Employee emp, Notice notice) throws Exception {
