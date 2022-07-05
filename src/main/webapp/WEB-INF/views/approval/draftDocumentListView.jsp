@@ -49,7 +49,8 @@
 		<div class="container">
 			<div class="title mt-5">
 				<h3>기안 문서함</h3>
-			</div>			
+			</div>	
+			<!-- 	
 			<div class="row">
 				<div class="statusList ml-4 mt-3">
 					<span id="all"><a href="/draftDocument.do">전체</a></span>
@@ -59,6 +60,7 @@
 					<span class="ml-3" id="rejection"><a href="#">반려</a></span>
 				</div>
 			</div>
+			 -->	
 			<div class="section-body">
 				<table class="table table-hover thead-light mt-3" id="draftList">
 					<thead>

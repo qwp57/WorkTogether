@@ -215,30 +215,7 @@
 								</tr>
 							</thead>
 							<tbody id="exTableTbody">
-								<!-- 
-								<tr>
-									<td>
-										<input type="date" class="form-control" name="exDateList" tabindex="8"/>	 
-									</td>
-									<td>
-										<div class="input-group">
-						    				<div class="input-group-prepend">
-						    					<select class="form-control rounded-1" id="exClassification" name="exClassificationList">
-													<option value="물품 구입비">물품 구입비</option>
-													<option value="잡비">잡비</option>	
-													<option value="회식비">회식비</option>		
-													<option value="식비">식비</option>		
-													<option value="교통비">교통비</option>	
-													<option value="기타">기타</option>									
-												</select>
-						    				</div>
-					    				</div>
-									</td>
-									<td><input type="text" class="form-control" name="amountList" required/></td>
-									<td><input type="text" class="form-control" name="exHistoryList" required/></td>
-									<td><input type="text" class="form-control" name="noteList"/></td>
-								</tr>
-								 -->
+								
 							</tbody>
 						</table>
 						<div>
@@ -278,16 +255,7 @@
 				
 				<!-- modal body -->
 				<form>
-				<div class="modal-body">					
-						<div class="input-group mb-3">
-							<div class="input-group-prepend">
-								<button class="btn btn-secondary" type="button">
-									<i class="bi bi-search"></i>
-								</button>
-								<input type="text" class="form-control" placeholder="사원 이름, 부서 검색">
-							</div>
-						</div>
-						
+					<div class="modal-body">									
 						<div class="row">
 							<div class="ml-3">
 								<div id="lineList1">
@@ -343,16 +311,7 @@
 				
 				<!-- modal body -->
 				<form>
-				<div class="modal-body">					
-					<div class="input-group mb-3">
-						<div class="input-group-prepend">
-							<button class="btn btn-secondary" type="button">
-								<i class="bi bi-search"></i>
-							</button>
-							<input type="text" class="form-control" placeholder="사원 이름, 부서 검색">
-						</div>
-					</div>
-						
+				<div class="modal-body">						
 					<div class="row">
 						<div class="ml-3">
 							<div id="lineList2">
