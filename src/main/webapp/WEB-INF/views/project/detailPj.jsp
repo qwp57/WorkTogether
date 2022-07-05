@@ -880,7 +880,7 @@
                 console.log(list)
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
-                    var content = '<tr>'
+                    var content = '<tr class="empNameTr">'
                     content += '<td rowspan="2">'
                     if (obj.change_name != undefined) {
                         content += '<img alt="image" style="height: 45px;"'
@@ -893,7 +893,7 @@
                     }
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
-                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<th style="width: 50%; text-align: center" class="emp_name">' + obj.name + '</th>'
                     content += '<td rowspan="2" style="width: 30%; text-align: right;">'
                     if ('${pjMember.admin}' == 'Y' && obj.admin == 'N') {
                         content += '<button type="button" class="btn btn-sm btn-dark deportBtn">내보내기</button>'
@@ -914,7 +914,7 @@
 
                     $(".inviteTable").append(content)
                 })
-
+                $("#empListModalSearch").val("")
 
                 $("#empListModal").modal("show")
             }
@@ -937,6 +937,7 @@
                 }
             })
             loadViewEmpInPj()
+            $(".memberSearching").val("")
         }
     })
 
@@ -1061,7 +1062,7 @@
                     $("#invitePj").find("input[name=pj_no]").val(${pj.pj_no})
                     if (list.length > 0) {
                         $.each(list, function (i, obj) {
-                            var content = '<tr>'
+                            var content = '<tr class="empNameTr">'
                             content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
                             if (obj.change_name != undefined) {
                                 content += '<img alt="image" style="height: 45px;"'
@@ -1073,7 +1074,7 @@
                                 content += 'class="rounded-circle mr-1">'
                             }
                             content += '</td>'
-                            content += '<th style="width: 50%">' + obj.name + '</th>'
+                            content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                             content += '<td rowspan="2" style="width: 20%; text-align: right;">'
                             content += '<div class="custom-control custom-checkbox">'
                             content += '<input type="checkbox" name="inviteEmpNo" class="inviteEmpNo" value="' + obj.emp_no + '">'
@@ -1167,7 +1168,7 @@
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
                     if (obj.emp_no != ${pjMember.emp_no}) {
-                        var content = '<tr>'
+                        var content = '<tr class="empNameTr">'
                         content += '<td rowspan="2">'
                         if (obj.change_name != undefined) {
                             content += '<img alt="image" style="height: 45px;"'
@@ -1198,6 +1199,7 @@
                 })
                 $("#PostAddEmpBtn").css("display", "inline-block")
                 $("#SchAddEmpBtn").css("display", "none")
+                $("#mentionForModalSearch").val("")
                 $("#mentionForModal").css("z-index", "123333")
                 $("#mentionForModal").modal("show")
             }
@@ -1237,7 +1239,7 @@
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
                     if (obj.emp_no != ${pjMember.emp_no}) {
-                        var content = '<tr>'
+                        var content = '<tr class="empNameTr">'
                         content += '<td rowspan="2">'
                         if (obj.change_name != undefined) {
                             content += '<img alt="image" style="height: 45px;"'
@@ -1266,6 +1268,7 @@
                         $(".inviteTable").append(content)
                     }
                 })
+                $("#mentionForModalSearch").val("")
                 $("#PostAddEmpBtn").css("display", "none")
                 $("#SchAddEmpBtn").css("display", "inline-block")
                 $("#mentionForModal").css("z-index", "111112")
@@ -1341,7 +1344,7 @@
                 console.log(list)
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
-                    var content = '<tr class="selectTodoFor">'
+                    var content = '<tr class="selectTodoFor empNameTr">'
                     content += '<td rowspan="2">'
                     if (obj.change_name != undefined) {
                         content += '<img alt="image" style="height: 45px;"'
@@ -1354,7 +1357,7 @@
                     }
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
-                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<th style="width: 50%; text-align: center" class="emp_name">' + obj.name + '</th>'
                     content += '<td rowspan="2" style="width: 20%; text-align: right;">'
                     content += '</td>'
                     content += '</tr>'
@@ -1369,7 +1372,7 @@
                     $("#todoFor").find(".inviteTable").append(content)
                 })
                 $("#todoFor").find(".inviteTable").append('<tr><td></td>초대할 수 있는 사원이 없습니다.</tr>')
-
+                $("#todoForSearch").val("");
                 $("#todoFor").css("z-index", "112222")
                 $("#todoFor").modal("show")
             }

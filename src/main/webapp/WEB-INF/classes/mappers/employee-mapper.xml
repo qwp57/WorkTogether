@@ -97,5 +97,23 @@
 	<select id="getUpperDeptCode" parameterType="string" resultType="string">
 	SELECT UPPER_DEPT_CODE FROM DEPARTMENT WHERE DEPT_CODE = #{dept_code}
 	</select>
+	
+	<select id="getStacts" parameterType="_int" resultType="map">
+		SELECT
+		    A.NAME,
+		    A.DEPT_NAME
+		FROM (SELECT
+		           A.EMP_NO,
+		           A.NAME,
+		           C.DEPT_NAME
+		        FROM EMPLOYEE A
+		        JOIN WORK_TIME B ON A.EMP_NO=B.EMP_NO
+		        JOIN DEPARTMENT C ON A.DEPT_CODE=C.DEPT_CODE
+		        WHERE EXTRACT(MONTH FROM B.IN_TIME) = #{month}
+		        AND TO_CHAR(IN_TIME, 'YYYY') = TO_CHAR(SYSDATE, 'YYYY')
+		        GROUP BY A.EMP_NO, A.NAME, C.DEPT_NAME
+		        ORDER BY SUM(B.OUT_TIME-B.IN_TIME) DESC) A
+		<![CDATA[WHERE ROWNUM <= 5]]>
+	</select>
 
 </mapper>
