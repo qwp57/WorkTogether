@@ -14,7 +14,7 @@ public class BoardAll {
     private String board_type;
 
     private int writer;
-
+    private String change_name;
     private String name;
 
     private String create_date;

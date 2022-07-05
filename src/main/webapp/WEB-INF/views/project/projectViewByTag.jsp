@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
           rel="stylesheet">
-    <script src="https://kit.fontawesome.com/f2449ad7e5.js" crossorigin="anonymous"></script>
+<%--    <script src="https://kit.fontawesome.com/f2449ad7e5.js" crossorigin="anonymous"></script>--%>
 </head>
 <style>
     * {

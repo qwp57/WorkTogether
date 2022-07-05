@@ -13,6 +13,7 @@
         <result property="sch_title" column="SCH_TITLE"/>
         <result property="todo_title" column="TODO_TITLE"/>
         <result property="sch_start" column="SCH_START"/>
+        <result property="change_name" column="CHANGE_NAME"/>
     </resultMap>
     <resultMap type="Reply" id="replySet">
         <id property="reply_no" column="REPLY_NO"/>
@@ -21,6 +22,7 @@
         <result property="name" column="NAME"/>
         <result property="reply_content" column="REPLY_CONTENT"/>
         <result property="create_date" column="CREATE_DATE"/>
+        <result property="change_name" column="CHANGE_NAME"/>
     </resultMap>
     <select id="nextBoardNo" resultType="int">
         SELECT BOARD_SEQ.NEXTVAL
@@ -30,6 +32,15 @@
         INSERT INTO PJ_BOARD
         VALUES (#{board_no}, #{pj_no}, #{board_type}, #{writer}, SYSDATE, DEFAULT)
     </insert>
+    <select id="selectBoardProfilePic" parameterType="int" resultType="String">
+        SELECT C.CHANGE_NAME
+        FROM PJ_BOARD A
+                 JOIN EMPLOYEE B
+                      ON A.WRITER = B.EMP_NO
+                 LEFT JOIN ATTACHMENT C
+                           ON B.FILE_NO = C.FILE_NO
+        WHERE A.BOARD_NO = #{board_no}
+    </select>
     <select id="selectAllBoard" parameterType="int" resultMap="boardAllSet">
         SELECT DISTINCT A.BOARD_NO,
                         A.PJ_NO,
@@ -39,7 +50,8 @@
                         B.POST_TITLE,
                         C.SCH_TITLE,
                         C.SCH_START,
-                        D.TODO_TITLE
+                        D.TODO_TITLE,
+                        F.CHANGE_NAME
         FROM PJ_BOARD A
                  LEFT JOIN BOARD_POST B
                            ON A.BOARD_NO = B.BOARD_NO
@@ -49,6 +61,8 @@
                            ON A.BOARD_NO = D.BOARD_NO
                  JOIN EMPLOYEE E
                       ON A.WRITER = E.EMP_NO
+                 LEFT JOIN ATTACHMENT F
+                           ON (F.FILE_NO = E.FILE_NO)
         WHERE PJ_NO = #{pj_no}
         ORDER BY A.BOARD_NO DESC
     </select>
@@ -161,10 +175,12 @@
         VALUES (REPLY_SEQ.NEXTVAL, #{board_no}, #{writer}, #{reply_content}, SYSDATE)
     </insert>
     <select id="selectReply" parameterType="int" resultMap="replySet">
-        SELECT A.*, B.NAME
+        SELECT A.*, B.NAME, C.CHANGE_NAME
         FROM BOARD_REPLY A
                  JOIN EMPLOYEE B
                       ON A.WRITER = B.EMP_NO
+                 LEFT JOIN ATTACHMENT C
+                           ON (B.FILE_NO = C.FILE_NO)
         WHERE BOARD_NO = #{board_no}
         ORDER BY A.REPLY_NO
     </select>

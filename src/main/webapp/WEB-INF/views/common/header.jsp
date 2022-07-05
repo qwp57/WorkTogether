@@ -9,16 +9,15 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <title>Ecommerce Dashboard &mdash; Stisla</title>
 
-    <%-- 카카오맵 api--%>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=06989ef7025ad30be2fddb6e0d28320b&libraries=services"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
-          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <%--    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"--%>
+    <%--          integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">--%>
+    <script src="https://kit.fontawesome.com/f2449ad7e5.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css"
           integrity="sha384-eoTu3+HydHRBIjnCVwsFyCpUDZHZSFKEJD0mc3ZqSBSb6YhZzRHeiomAUWCstIWo" crossorigin="anonymous">
 
@@ -32,8 +31,10 @@
             integrity="sha512-3kMAxw/DoCOkS6yQGfQsRY1FWknTEzdiz8DOwWoqf+eGRN45AmjS2Lggql50nCe9Q6m5su5dDZylflBY2YjABQ=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <script type="text/javascript"
+            src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css"/>
 
     <link
             href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
@@ -116,6 +117,7 @@
         .underline {
             text-decoration: line-through;
         }
+
     </style>
 </head>
 <body>
@@ -216,7 +218,7 @@
                                 </a>
                             </c:when>
                             <c:when test="${n.type eq 'POST' || n.type eq 'SCH' || n.type eq 'TODO'}">
-                                <a onclick="return boardView(${n.notice_no});" id="${n.notice_no}"
+                                <a onclick="boardView(${n.notice_no});" id="${n.notice_no}"
                                    class="dropdown-item dropdown-item-unread">
                                     <input type="hidden" name="board_no" value="${n.url}">
                                     <input type="hidden" name="type" value="${n.type}">
@@ -227,6 +229,19 @@
                                                 <c:when test="${n.type eq 'SCH'}">일정</c:when>
                                                 <c:otherwise>할 일</c:otherwise>
                                             </c:choose>
+                                        </div>
+                                            ${n.content}
+                                        <div class="text-secondary"> ${n.contentDetail}</div>
+                                        <div class="time text-primary">${n.create_date}</div>
+                                    </div>
+                                </a>
+                            </c:when>
+                            <c:when test="${n.type eq 'PJ_INVITE'}">
+                                <a href="${n.url}" onclick="return confirmJoinPj(${n.notice_no});" id="${n.notice_no}"
+                                   class="dropdown-item dropdown-item-unread">
+                                    <div class="dropdown-item-desc">
+                                        <div class="font-weight-bold">
+                                            프로젝트 초대
                                         </div>
                                             ${n.content}
                                         <div class="text-secondary"> ${n.contentDetail}</div>
@@ -254,28 +269,28 @@
             <div class="d-sm-none d-lg-inline-block">Hi, ${sessionScope.loginEmp.name}</div>
         </a>
             <div class="dropdown-menu dropdown-menu-right">
-              <a href="#" class="dropdown-item has-icon" id="profile">
-                <i class="far fa-user"></i> 내 정보
-              </a>
-              <c:if test="${ loginEmp.admin == 'Y' }">
-                 <!-- 관리자 설정은 관리자에게만 보인다. -->
-                 <h5 class="dropdown-header">
-                  <i class="fas fa-cog"></i> 관리자 설정
-                </h5>
-                <a class="dropdown-item has-icon ml-3" href="adminApprovalList.do">
-                    <i class="bi bi-check-square-fill"></i>가입 승인
-                 </a>
-                  <a class="dropdown-item has-icon ml-3" href="departmentManagement.do">
-                    <i class="bi bi-diagram-3-fill"></i>부서 관리
-                 </a>
-                 <a class="dropdown-item has-icon ml-3" href="employeeManagement.do">
-                    <i class="bi bi-people-fill"></i>인사 관리
-                 </a>
-           </c:if>
-              <div class="dropdown-divider"></div>
-              <a href="/logout.do" class="dropdown-item has-icon text-danger">
-                <i class="fas fa-sign-out-alt"></i> 로그아웃
-              </a>
+                <a href="#" class="dropdown-item has-icon" id="profile">
+                    <i class="far fa-user"></i> 내 정보
+                </a>
+                <c:if test="${ loginEmp.admin == 'Y' }">
+                    <!-- 관리자 설정은 관리자에게만 보인다. -->
+                    <h5 class="dropdown-header">
+                        <i class="fas fa-cog"></i> 관리자 설정
+                    </h5>
+                    <a class="dropdown-item has-icon ml-3" href="adminApprovalList.do">
+                        <i class="bi bi-check-square-fill"></i>가입 승인
+                    </a>
+                    <a class="dropdown-item has-icon ml-3" href="departmentManagement.do">
+                        <i class="bi bi-diagram-3-fill"></i>부서 관리
+                    </a>
+                    <a class="dropdown-item has-icon ml-3" href="employeeManagement.do">
+                        <i class="bi bi-people-fill"></i>인사 관리
+                    </a>
+                </c:if>
+                <div class="dropdown-divider"></div>
+                <a href="/logout.do" class="dropdown-item has-icon text-danger">
+                    <i class="fas fa-sign-out-alt"></i> 로그아웃
+                </a>
             </div>
         </li>
     </ul>
@@ -321,7 +336,7 @@
 
     function noticeSet(msgArr) {
         $.ajax({
-            url: "plusNoticeList.do",
+            url: "/plusNoticeList.do",
             data: {notice_no: msgArr[0]},
             method: "get",
             success: function (result) {
@@ -336,11 +351,25 @@
             text = "<a href='" + msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
             text += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
             text += "업무요청</div>"
-        } else if (msgArr[1] == 'POST') {
-            text += "<a onclick='viewBoard(" + msgArr[4] + ", " + msgArr[1] + ")' class='dropdown-item dropdown-item-unread'>";
-            text += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
-            text += "글</div>"
-
+        } else if (msgArr[1] == 'POST' || msgArr[1] == 'SCH' || msgArr[1] == 'TODO') {
+                text += "<a onclick='boardView(" + msgArr[0] + ");' id='" + msgArr[0] + "'"
+            text += "class='dropdown-item dropdown-item-unread'>"
+            text += "<input type='hidden' name='board_no' value='" + msgArr[4] + "'>"
+            text += "<input type='hidden' name='type' value='" + msgArr[1] + "'>"
+            text += "<div class='dropdown-item-desc'>"
+            text += "<div class='font-weight-bold'>"
+            switch (msgArr[1]){
+                case 'POST': text += "글"; break;
+                case 'SCH': text += "일정"; break;
+                case 'TODO': text += "할 일"; break;
+            }
+            text += "</div>"
+        } else if(msgArr[1] == 'PJ_INVITE'){
+            text += "<a href='" + msgArr[4] + "' onclick='return confirmJoinPj(" + msgArr[0] + ");' id='" + msgArr[0] + "'"
+            text += "class='dropdown-item dropdown-item-unread'>"
+            text += "<div class='dropdown-item-desc'>"
+            text += "<div class='font-weight-bold'>"
+            text += "프로젝트 초대</div>"
         }
 
         text += msgArr[2];
@@ -351,7 +380,7 @@
         $('#noticeArea').append(text);
 
         $('#noticecnt').text(Number($('#noticecnt').text()) + 1);
-        $('#noticecnt').css('display', 'inline');
+        $('#noticecnt').css('display', 'inline-block');
 
 
     }
@@ -363,7 +392,7 @@
 
 
         $.ajax({
-            url: "deleteNotice.do",
+            url: "/deleteNotice.do",
             data: {notice_no: nno},
             type: "post",
             success: function (result) {
@@ -389,7 +418,7 @@
     function deleteAllNotice() {
 
         $.ajax({
-            url: "deleteAllNotice.do",
+            url: "/deleteAllNotice.do",
             success: function (result) {
                 if (result == 'success') {
                     $('#noticeArea').empty();
@@ -441,8 +470,11 @@
 
     var pj_no = 0;
     $(document).on('click', '#boardViewTitle', function () {
-        console.log('확인')
-        location.href = '/project/detailPj.do?pj_no=' + pj_no
+        if (pj_no > 0) {
+            console.log('확인')
+            location.href = '/project/detailPj.do?pj_no=' + pj_no
+            pj_no = 0;
+        }
     })
 
     function boardView(notice_no) {
@@ -546,9 +578,16 @@
                     $.each(list.schAttendeeList, function (i, obj) {
                         if (obj.emp_no != '${sessionScope.loginEmp.emp_no}') {
                             var content = '<tr>'
-                            content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
-                            content += 'src="/resources/assets/img/avatar/avatar-1.png"'
-                            content += 'id="profileImg_Sch" class="img-fluid m-3 rounded-circle"></span>'
+                            content += '<td rowspan="2">'
+                            if (obj.change_name != undefined) {
+                                content += '<img alt="image" style="height: 45px;"'
+                                content += 'src="/resources/upload_files/' + obj.change_name + '"'
+                                content += 'class="rounded-circle mr-1">'
+                            } else {
+                                content += '<img alt="image" style="height: 45px;"'
+                                content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                                content += 'class="rounded-circle mr-1">'
+                            }
                             content += '</td>'
                             content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                             content += '<td rowspan="2" style="width: 20%; text-align: right;">'
@@ -635,10 +674,44 @@
                 }
             })
         }
+        loadBoardProfile(board_no)
         loadReply(board_no)
         $("#boardView").modal("show")
-        return deleteNotice(notice_no)
 
+        deleteNotice(notice_no)
+
+        $("#noticeArea").find("#"+notice_no).remove()
+        if ($("#noticecnt").text() <= 1){
+            $('#noticeArea').empty();
+            $('#noticecnt').css('display', 'none');
+        }
+        $('#noticecnt').text($('#noticecnt').text() - 1)
+
+
+    }
+
+    function loadBoardProfile(board_no) {
+        $.ajax({
+            url: '/project/selectBoardProfilePic.do',
+            data: {
+                "board_no": board_no
+            },
+            success: function (change_name) {
+                //list = $.parseJSON(change_name)
+                //console.log(change_name)
+                var content = ""
+                if (change_name != null) {
+                    content += '<img alt="image" style="height: 45px;"'
+                    content += 'src="/resources/upload_files/' + change_name + '"'
+                    content += 'class="rounded-circle mr-1">'
+                } else {
+                    content += '<img alt="image" style="height: 45px;"'
+                    content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                    content += 'class="rounded-circle mr-1">'
+                }
+                $("#boardView").find(".boardViewProfile").html(content)
+            }
+        })
     }
 
     function loadReply(board_no) {
@@ -660,17 +733,36 @@
                 } else {
                     $(".replyHrArea").css("display", "block")
                     $.each(list, function (i, obj) {
-                        var content = '<div class="reply">'
+                        var content = '<div class="reply" style="margin-top: 20px;">'
                         content += '<div class="col-lg-10" style="display: inline-block">'
-                        content += '<span class="bi bi-person-circle fa-lg replyWriter">' + obj.name + '</span>'
+                        if (obj.change_name != undefined) {
+                            content += '<img alt="image" style="height: 35px;"'
+                            content += 'src="/resources/upload_files/' + obj.change_name + '"'
+                            content += 'class="rounded-circle mr-1">'
+                        } else {
+                            content += '<img alt="image" style="height: 35px;"'
+                            content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                            content += 'class="rounded-circle mr-1">'
+                        }
+                        content += '<span class="replyWriter">' + obj.name + '</span>'
                         content += '<span style="color: gray" class="replyDate">' + moment(obj.create_date).format('YYYY-MM-DD HH:mm') + '</span>'
                         content += '</div>'
-                        content += '<br> <br>'
-                        content += '<div class="col-lg-10">'
+                        if ("${sessionScope.loginEmp.emp_no}" == obj.writer) {
+                            content += '<div class="col-lg-2 text-right" style="display: inline-block;">'
+                            content += '<a class="editReplyBtn">수정&nbsp </a>'
+                            content += '<a class="deleteReplyBtn">&nbsp 삭제</a>'
+                            content += '<input type="text" value="' + obj.reply_no + '" class="reply_no" hidden>'
+                            content += '</div>'
+                        }
+                        content += '<div class="col-lg-10" style="margin-top: 5px;">'
                         content += '<a class="ml-4 replyContent">' + obj.reply_content + '</a>'
                         content += '</div>'
-                        content += '<br> <br>'
                         content += '</div>'
+                        if (i != list.length - 1) {
+                            // console.log(i)
+                            // console.log(list.length)
+                            content += '<hr>'
+                        }
                         $(".replyArea").append(content)
                     })
                 }
@@ -735,6 +827,34 @@
             }
         }
     })
+
+    function confirmJoinPj(notice_no) {
+        deleteNoticeNoreturn(notice_no)
+        if (confirm("프로젝트에 참여하시겠습니까?")) {
+            return true
+        } else {
+            $("#noticeArea").find("#"+notice_no).remove()
+
+            if ($("#noticecnt").text() <= 1){
+                $('#noticeArea').empty();
+                $('#noticecnt').css('display', 'none');
+            }
+            $('#noticecnt').text($('#noticecnt').text() - 1)
+            return false
+        }
+    }
+
+    function deleteNoticeNoreturn(nno) {
+        console.log(nno);
+        $.ajax({
+            url: "/deleteNotice.do",
+            data: {notice_no: nno},
+            type: "post",
+            error: function (err) {
+                console.log(err);
+            }
+        })
+    };
 </script>
 
 
@@ -776,7 +896,6 @@
                                         <label for="ex_file" id="deletefile">-</label>
                                         <input type="hidden" id="exfile" name="ex_file">
                                      </span>
-
                                </td>
                         </tr>
                         <tr>
@@ -944,6 +1063,111 @@
   <!-- Template JS File -->
   <script src="/resources/assets/js/scripts.js"></script>
   <script src="/resources/assets/js/custom.js"></script>
+
+<script>
+    let file_no = "${loginEmp.file_no}";
+    console.log(file_no);
+    $(function () {
+        $("#profile").click(function () {
+            $("#myProfile").modal("show")
+        });
+
+        $('#datetimepicker1').datetimepicker({
+            format: 'YY-MM-DD'
+        });
+
+        $('#datetimepicker2').datetimepicker({
+            format: 'YY-MM-DD',
+            useCurrent: false
+        });
+
+        let birthday = '${loginEmp.birth}';
+        let joinDate = '${loginEmp.join_date}';
+
+        document.getElementById('empbirth').value = birthday.substring(0, 11);
+        document.getElementById('empjoinDate').value = joinDate.substring(0, 11);
+
+        let job_code = '${loginEmp.job_code}';
+        let dept_code = '${loginEmp.dept_code}';
+
+        $('#dept option[value = ' + dept_code + ']').prop('selected', true);
+        $('#job option[value = ' + job_code + ']').prop('selected', true);
+
+
+    });
+
+    $('#newFile').on('change', function () {
+        let file = $('#newFile').prop('files')[0];
+        let url = window.URL.createObjectURL(file);
+        console.log(url);
+        $('#profileImg_header').attr('src', url);
+
+        $('#exfile').val(file_no);
+        console.log($('#exfile').val());
+    })
+
+    $('#deletefile').click(function () {
+        $('#profileImg_header').attr('src', "/resources/assets/img/avatar/avatar-1.png");
+        $('#exfile').val(file_no);
+        console.log($('#exfile').val());
+    })
+
+
+    $('#myProfilebtn').click(function () {
+
+        if ($('#dept option:selected').val() == "") {
+            alert("부서를 선택해주세요");
+        } else if ($('#job option:selected').val() == "") {
+            alert("직급을 선택해주세요");
+        } else {
+
+            /*   let formData = $('#myProfileUpdate').serialize();*/
+            let form = $('#myProfileUpdate')[0];
+            let formData = new FormData(form);
+
+            alert(formData);
+            $.ajax({
+                url: "/myProfileUpdate.do",
+                type: "post",
+                cache: false,
+                contentType: false,
+                processData: false,
+                enctype: 'multipart/form-data',
+                data: formData,
+                success: function () {
+                    location.reload();
+                }
+            })
+
+        }
+
+
+    })
+</script>
+
+<!-- General JS Scripts -->
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ko.min.js"></script>
+<script src="/resources/assets/js/stisla.js"></script>
+
+<!-- JS Libraies
+<script src="resources/node_modules/jquery-sparkline/jquery.sparkline.min.js"></script>
+<script src="resources/node_modules/chart.js/dist/Chart.min.js"></script>
+<script src="resources/node_modules/owl.carousel/dist/owl.carousel.min.js"></script>
+<script src="resources/node_modules/summernote/dist/summernote-bs4.js"></script>
+<script src="resources/node_modules/chocolat/dist/js/jquery.chocolat.min.js"></script>-->
+
+<!-- Template JS File -->
+<script src="/resources/assets/js/scripts.js"></script>
+<script src="/resources/assets/js/custom.js"></script>
 
 
 <jsp:include page="../project/boardViewModal.jsp"/>
