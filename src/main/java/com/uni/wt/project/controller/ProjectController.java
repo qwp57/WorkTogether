@@ -125,13 +125,15 @@ public class ProjectController {
     public String inputToPj(@RequestParam("pj_no") int pj_no, HttpSession session, RedirectAttributes redirect) throws Exception {
         int loginEmp = ((Employee) session.getAttribute("loginEmp")).getEmp_no();
         log.info("사번 : " + loginEmp);
+
         ProjectMember pjm = new ProjectMember();
         pjm.setEmp_no(loginEmp);
         pjm.setPj_no(pj_no);
         pjm.setAdmin("N");
         log.info(pjm.toString());
-        projectMemberService.insertProjectMember(pjm);
-        redirect.addFlashAttribute("msg", "프로젝트 참여 완료.");
+            projectMemberService.insertProjectMember(pjm);
+            redirect.addFlashAttribute("msg", "프로젝트 참여 완료.");
+
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
 

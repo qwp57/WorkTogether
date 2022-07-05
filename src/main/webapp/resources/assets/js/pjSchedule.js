@@ -126,7 +126,7 @@ $(document).on('click', '.viewAttendee', function () {
             console.log(list.length)
             if (list.length > 0) {
                 $.each(list, function (i, obj) {
-                    var content = '<tr>'
+                    var content = '<tr class="empNameTr">'
                     content += '<td rowspan="2">'
                     if (obj.change_name != undefined) {
                         content += '<img alt="image" style="height: 45px;"'
@@ -139,7 +139,7 @@ $(document).on('click', '.viewAttendee', function () {
                     }
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
-                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<th style="width: 50%; text-align: center" class="emp_name">' + obj.name + '</th>'
                     content += '<td rowspan="2" style="width: 20%; text-align: right;">'
                     content += '</td>'
                     content += '</tr>'
@@ -156,7 +156,7 @@ $(document).on('click', '.viewAttendee', function () {
             } else {
                 $("#viewSchAttendee").find(".inviteTable").append('<tr><td>참석한 사원이 없습니다.</td></tr>')
             }
-
+            $("#viewSchAttendeeSearch").val("")
             $("#viewSchAttendee").modal("show")
         }
     })

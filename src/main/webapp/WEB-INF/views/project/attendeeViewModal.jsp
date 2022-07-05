@@ -15,7 +15,7 @@
       <!-- modal body : 내용 -->
       <form class="form">
         <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
-          <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
+          <input type="text" class="form-control memberSearching" id="mentionForModalSearch" placeholder="사원명으로 검색">
           <table class="inviteTable">
           </table>
           <br>
@@ -46,7 +46,7 @@
       <!-- modal body : 내용 -->
       <form class="form">
         <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
-          <input type="text" class="form-control searchEmpByName" placeholder="사원명으로 검색">
+          <input type="text" class="form-control memberSearching" id="viewSchAttendeeSearch" placeholder="사원명으로 검색">
           <table class="inviteTable">
           </table>
           <br>
@@ -71,7 +71,7 @@
       <form class="form">
         <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
           <form>
-            <input type="text" class="form-control" id="memberSearching"
+            <input type="text" class="form-control memberSearching" id="todoForSearch"
                    placeholder="사원명으로 검색">
             <table class="inviteTable">
             </table>
@@ -98,9 +98,9 @@
       <form class="form">
         <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
           <form>
-            <input type="text" class="form-control memberSearching" placeholder="사원명으로 검색">
-            <table class="inviteTable">
-            </table>
+            <input type="text" class="form-control memberSearching" id="empListModalSearch" placeholder="사원명으로 검색">
+            <div class="inviteTable">
+            </div>
             <br>
           </form>
         </div>
@@ -108,3 +108,68 @@
     </div>
   </div>
 </div>
+<script>
+  $("#empListModalSearch").keyup(function(){
+    var keyword = $("#empListModalSearch").val();
+    console.log(keyword)
+    $("#empListModal").find(".inviteTable").find(".empNameTr").each(function (){
+      if(!$(this).find(".emp_name").text().includes(keyword)){
+        $(this).css("display", "none")
+        $(this).next().css("display", "none")
+      }else {
+        //console.log($(this).next().html())
+        $(this).removeAttr("style")
+        $(this).next().removeAttr("style")
+       // console.log($(this).text())
+      }
+    })
+  });
+
+  $("#todoForSearch").keyup(function(){
+    var keyword = $("#todoForSearch").val();
+    console.log(keyword)
+    $("#todoFor").find(".inviteTable").find(".empNameTr").each(function (){
+      if(!$(this).find(".emp_name").text().includes(keyword)){
+        $(this).css("display", "none")
+        $(this).next().css("display", "none")
+      }else {
+        console.log($(this).next().html())
+        $(this).removeAttr("style")
+        $(this).next().removeAttr("style")
+        // console.log($(this).text())
+      }
+    })
+  });
+
+  $("#mentionForModalSearch").keyup(function(){
+    var keyword = $("#mentionForModalSearch").val();
+    console.log(keyword)
+    $("#mentionForModal").find(".inviteTable").find(".empNameTr").each(function (){
+      if(!$(this).find(".emp_name").text().includes(keyword)){
+        $(this).css("display", "none")
+        $(this).next().css("display", "none")
+      }else {
+        console.log($(this).next().html())
+        $(this).removeAttr("style")
+        $(this).next().removeAttr("style")
+        // console.log($(this).text())
+      }
+    })
+  });
+
+  $("#viewSchAttendeeSearch").keyup(function(){
+    var keyword = $("#viewSchAttendeeSearch").val();
+    console.log(keyword)
+    $("#viewSchAttendee").find(".inviteTable").find(".empNameTr").each(function (){
+      if(!$(this).find(".emp_name").text().includes(keyword)){
+        $(this).css("display", "none")
+        $(this).next().css("display", "none")
+      }else {
+        console.log($(this).next().html())
+        $(this).removeAttr("style")
+        $(this).next().removeAttr("style")
+        // console.log($(this).text())
+      }
+    })
+  });
+</script>

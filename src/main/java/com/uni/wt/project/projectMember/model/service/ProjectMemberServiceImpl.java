@@ -22,7 +22,11 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public void insertProjectMember(ProjectMember pjm) throws Exception {
-        projectMemberMapper.insertProjectMember(pjm);
+        int count = selectEmpInPjCount(pjm);
+        if (count == 0) {
+            projectMemberMapper.insertProjectMember(pjm);
+        }
+
     }
 
     @Override
@@ -107,7 +111,7 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
         int result = projectMemberMapper.quitProject(pjMember);
         if (result < 0) {
             throw new Exception("프로젝트 나가기 실패");
-        }else {
+        } else {
             removeBookmark(pjMember);
         }
     }
@@ -119,9 +123,14 @@ public class ProjectMemberServiceImpl implements ProjectMemberService {
 
     @Override
     public void setAdmin(ProjectMember pjMember) throws Exception {
-       int result = projectMemberMapper.setAdmin(pjMember);
+        int result = projectMemberMapper.setAdmin(pjMember);
         if (result < 0) {
             throw new Exception("관리자 지정 실패");
         }
+    }
+
+    @Override
+    public int selectEmpInPjCount(ProjectMember pjm) throws Exception {
+        return projectMemberMapper.selectEmpInPjCount(pjm);
     }
 }

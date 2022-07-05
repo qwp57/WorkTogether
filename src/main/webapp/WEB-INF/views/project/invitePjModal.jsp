@@ -29,7 +29,7 @@
             <form class="form" id="invitePj" action="/project/invitePj.do" method="post">
                 <input type="hidden" name="pj_no">
                 <div class="modal-body" style="overflow-y: scroll; max-height: 600px;">
-                    <input type="text" class="form-control" id="memberSearching"
+                    <input type="text" class="form-control memberSearching" id="inviteModalSearch"
                            placeholder="사원명으로 검색">
                     <table class="inviteTable">
                     </table>
@@ -46,4 +46,21 @@
 </div>
 
 </body>
+<script>
+    $("#inviteModalSearch").keyup(function(){
+        var keyword = $("#inviteModalSearch").val();
+        console.log(keyword)
+        $("#inviteModal").find(".inviteTable").find(".empNameTr").each(function (){
+            if(!$(this).find(".emp_name").text().includes(keyword)){
+                $(this).css("display", "none")
+                $(this).next().css("display", "none")
+            }else {
+                console.log($(this).next().html())
+                $(this).removeAttr("style")
+                $(this).next().removeAttr("style")
+                // console.log($(this).text())
+            }
+        })
+    });
+</script>
 </html>

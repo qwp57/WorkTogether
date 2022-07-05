@@ -529,11 +529,11 @@
                 console.log(list)
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
-                    var content = '<tr>'
+                    var content = '<tr class="empNameTr">'
                     content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
-                    content += '<th style="width: 50%; text-align: center">' + obj.name + '</th>'
+                    content += '<th style="width: 50%; text-align: center" class="emp_name">' + obj.name + '</th>'
                     content += '<td rowspan="2" style="width: 30%; text-align: right;">'
                     if ('${pjMember.admin}' == 'Y' && obj.admin == 'N') {
                         content += '<button type="button" class="btn btn-sm btn-dark deportBtn">내보내기</button>'

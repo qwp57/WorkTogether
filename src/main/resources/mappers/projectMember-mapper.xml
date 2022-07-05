@@ -109,4 +109,10 @@
         FROM EMPLOYEE
         WHERE EMP_NO = #{emp_no}
     </select>
+    <select id="selectEmpInPjCount" parameterType="ProjectMember" resultType="int">
+        SELECT COUNT(*)
+        FROM PROJECT_MEMBER
+        WHERE EMP_NO = #{emp_no}
+        AND PJ_NO = #{pj_no}
+    </select>
 </mapper>
