@@ -28,4 +28,6 @@ public interface EmployeeMapper {
 
 	public String getUpperDeptCode(String dept_code)throws Exception;
 
+	public ArrayList<Map<String, Object>> getStacts(int month)throws Exception;
+
 }

@@ -253,6 +253,7 @@ text-align: center;
 </div>
 
 <jsp:include page="../requestwork/rwDetail_3.jsp"></jsp:include>
+<jsp:include page="../common/footer.jsp"/>
 <script src="/resources/assets/js/rwAllList.js?ver=1"></script>
 <script>
 	console.log("${sd}");

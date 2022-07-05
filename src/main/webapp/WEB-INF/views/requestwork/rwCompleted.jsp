@@ -258,5 +258,6 @@ if(searchTarget != ''){
 
 </script>
 <script src="/resources/assets/js/rwComplete.js?ver=2"></script>
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

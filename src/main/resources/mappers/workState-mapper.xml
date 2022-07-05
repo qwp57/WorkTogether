@@ -121,7 +121,7 @@ GROUP BY EMP_NO
     ROUND((OUT_TIME-IN_TIME)*24) AS TIMESUM
 FROM WORK_TIME
 WHERE EMP_NO = #{emp_no}
-AND IN_TIME BETWEEN TO_DATE(#{startday}, 'YYYY.MM.DD') AND TO_DATE(#{startday}, 'YYYY.MM.DD')+6
+AND IN_TIME BETWEEN TO_DATE(#{startday}, 'YYYY.MM.DD') AND TO_DATE(#{startday}, 'YYYY.MM.DD')+7
  </select>
  
  <select id="selectTeamWorkList" parameterType="map" resultType="map">
@@ -138,7 +138,7 @@ FROM (SELECT
            SUM(ROUND((OUT_TIME-IN_TIME)*24)) AS TOTALTIME,
           SUM(ROUND((OUT_TIME-IN_TIME)*24))-52 AS OVERTIME
         FROM WORK_TIME
-        WHERE IN_TIME BETWEEN TO_DATE(#{startday},'YYYYMMDD') AND TO_DATE(#{startday},'YYYYMMDD')+6
+        WHERE IN_TIME BETWEEN TO_DATE(#{startday},'YYYYMMDD') AND TO_DATE(#{startday},'YYYYMMDD')+7
         GROUP BY EMP_NO
         ) A
 FULL OUTER JOIN EMPLOYEE B ON A.EMP_NO = B.EMP_NO
@@ -384,7 +384,7 @@ JOIN (
         FROM (
                 SELECT 
                     EMP_NO,
-                    SUM(ROUND((OUT_TIME - IN_TIME)*24*60*60)) AS SUMTIME
+                    ROUND(SUM((OUT_TIME - IN_TIME)*24*60*60)) AS SUMTIME
                 FROM WORK_TIME
                <choose>
 			    	<when test="type.equals('month')">
@@ -402,6 +402,7 @@ JOIN (
 </select>
 
 <select id="departmentStats" parameterType="map" resultType="map">
+
 SELECT
     C.DEPT_NAME,
     ROUND(SUM(((OUT_TIME-IN_TIME) * 24)),2 )AS SUM,

@@ -226,8 +226,8 @@ cursor: pointer;
                   </div>
               </div>
 </div>
-<script src="/resources/assets/js/myWork_ws.js?ver=2"></script>
+<script src="/resources/assets/js/myWork_ws.js?ver=3"></script>
 
-
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

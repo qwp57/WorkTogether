@@ -94,4 +94,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return empMapper.getUpperDeptCode(dept_code);
 	}
 
+	@Override
+	public ArrayList<Map<String, Object>> getStacts(int month)throws Exception {
+		
+		return empMapper.getStacts(month);
+	}
+
 }

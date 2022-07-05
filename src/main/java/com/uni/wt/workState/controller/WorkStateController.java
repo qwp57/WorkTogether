@@ -280,9 +280,9 @@ public class WorkStateController {
 //		
 //		ArrayList<Map<String, Object>> statsOfTheMonthList= departmentStats(month, "month");
 		ArrayList<Map<String, Object>> statsOfTheYearList = departmentStats(year, "year");
-		ArrayList<Employee> empOfTheMonthList = bestEmployee(6, "month");
+		ArrayList<Employee> empOfTheMonthList = bestEmployee(month, "month");
 		
-		ArrayList<Map<String, Object>> statsOfTheMonthList= departmentStats(6, "month");
+		ArrayList<Map<String, Object>> statsOfTheMonthList= departmentStats(month, "month");
 		
 		log.info("[empOfTheMonthList] : {}",empOfTheMonthList.toString());
 		log.info("[empOfTheYearList] : {}",empOfTheYearList.toString());
@@ -311,19 +311,21 @@ public class WorkStateController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("workstateStats_month.do")
+	@RequestMapping(value = "workstateStats_month.do", produces = "application/text; charset=UTF-8")
 	public String wsStats_month(int month, String type) throws Exception {
 		ArrayList<Map<String, Object>> list1 = departmentStats(month, type);
 		ArrayList<Employee> list2 = bestEmployee(month, type);
 		log.info("월별 통계");
 		log.info("list1 : {}", list1.toString());
 		log.info("list2 : {}", list2.toString());
-		
-		return "";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list1", list1);
+		map.put("list2", list2);
+		return new Gson().toJson(map);
 	}
 	
 	@ResponseBody
-	@RequestMapping("workstateStats_year.do")
+	@RequestMapping(value = "workstateStats_year.do", produces = "application/text; charset=UTF-8")
 	public String workstateStats_year(int year, String type) throws Exception {
 		ArrayList<Map<String, Object>> list1 = departmentStats(year, type);
 		ArrayList<Employee> list2 = bestEmployee(year, type);
@@ -332,7 +334,10 @@ public class WorkStateController {
 		log.info("list1 : {}", list1.toString());
 		log.info("list2 : {}", list2.toString());
 		
-		return "";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("list1", list1);
+		map.put("list2", list2);
+		return new Gson().toJson(map);
 	}
 	
 	

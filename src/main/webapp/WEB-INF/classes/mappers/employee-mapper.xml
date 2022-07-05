@@ -56,6 +56,7 @@
 	
 	<select id="getDetpList" resultType="map">
 	SELECT * FROM DEPARTMENT
+	WHERE DEPT_LEVEL=2
 	
 	</select>
 	<select id="getJobList" resultType="map">
@@ -66,12 +67,17 @@
 	UPDATE EMPLOYEE
 	SET NAME = #{name},
 		DEPT_CODE = #{dept_code},
+		UPPER_DEPT_CODE = #{upper_dept_code},
 		JOB_CODE = #{job_code},
 		BIRTH = TO_DATE(#{birth}, 'YYYY/MM/DD'),
 		PHONE = #{phone},
 		EMAIL = #{email},
-		JOIN_DATE = TO_DATE(#{join_date}, 'YYYY/MM/DD'),
-		FILE_NO = #{file_no}
+
+	<if test="file_no != null">
+		FILE_NO = #{file_no},
+	</if>
+		JOIN_DATE = #{join_date}
+
 	WHERE EMP_NO = #{emp_no}
 	</update>
 	
@@ -86,6 +92,10 @@
 		LEFT JOIN JOB C ON A.JOB_CODE = C.JOB_CODE
 		LEFT JOIN ATTACHMENT D ON A.FILE_NO = D.FILE_NO
 		WHERE EMP_NO = #{emp_no}
+	</select>
+	
+	<select id="getUpperDeptCode" parameterType="string" resultType="string">
+	SELECT UPPER_DEPT_CODE FROM DEPARTMENT WHERE DEPT_CODE = #{dept_code}
 	</select>
 
 </mapper>
