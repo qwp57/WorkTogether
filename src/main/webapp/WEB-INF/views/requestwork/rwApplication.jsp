@@ -145,6 +145,6 @@ justify-content: center;}
 <script type="text/javascript">
 	
 </script>
-<script src="/resources/assets/js/rwAppli.js?ver=2"></script>
+<script src="/resources/assets/js/rwAppli.js?ver=3"></script>
 </body>
 </html>

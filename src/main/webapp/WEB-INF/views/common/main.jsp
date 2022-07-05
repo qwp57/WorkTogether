@@ -196,7 +196,7 @@ td:last-child {
                                                     id="profileImg" class="img-fluid">
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <img style="height: 100px" alt="image" src="resources/upload_files/${loginEmp.change_name }"
+                                                    <img style="height: 200px" alt="image" src="resources/upload_files/${loginEmp.change_name }"
                                                     id="profileImg" class="img-fluid">
                                                 </c:otherwise>
                                             </c:choose>
@@ -225,9 +225,9 @@ td:last-child {
                                 <h2>이번 달 근무왕 부서</h2>
                                 <hr>
                                 <br>
-                                <h3>영업부 2팀</h3><br>
-                                <h4>영업부 1팀</h4><br>
-                                <h4>영업부 1팀</h4><br>
+                                <c:forEach items="${Stactslist}" var="s">
+                                	<h4>${s.DEPT_NAME} ${s.NAME}님</h4></br>
+                                </c:forEach>
                             </div>
                         </div>
                     </div>
@@ -240,7 +240,7 @@ td:last-child {
                     <div class="col-12 col-md-10 col-lg-5">
                         <div class="card h-100">
                             <div class="card-body">
-                                <div id="time_Main">
+                                <div id="time_Main" style="margin-top: 30px;">
                                 	<div id="time-header" align="left">
 	                                    <h4 id="time_Title">근무 체크</h4>
 	

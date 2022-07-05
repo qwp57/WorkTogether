@@ -269,6 +269,8 @@
             <div class="d-sm-none d-lg-inline-block">Hi, ${sessionScope.loginEmp.name}</div>
         </a>
             <div class="dropdown-menu dropdown-menu-right">
+
+
                 <a href="#" class="dropdown-item has-icon" id="profile">
                     <i class="far fa-user"></i> 내 정보
                 </a>
@@ -291,6 +293,7 @@
                 <a href="/logout.do" class="dropdown-item has-icon text-danger">
                     <i class="fas fa-sign-out-alt"></i> 로그아웃
                 </a>
+
             </div>
         </li>
     </ul>
@@ -896,6 +899,7 @@
                                         <label for="ex_file" id="deletefile">-</label>
                                         <input type="hidden" id="exfile" name="ex_file">
                                      </span>
+
                                </td>
                         </tr>
                         <tr>
@@ -1025,7 +1029,7 @@
          let form = $('#myProfileUpdate')[0];
          let formData = new FormData(form);
          
-            alert(formData);
+
          $.ajax({
             url:"myProfileUpdate.do",
             type : "post",
@@ -1063,6 +1067,7 @@
   <!-- Template JS File -->
   <script src="/resources/assets/js/scripts.js"></script>
   <script src="/resources/assets/js/custom.js"></script>
+
 
 <script>
     let file_no = "${loginEmp.file_no}";
@@ -1168,6 +1173,7 @@
 <!-- Template JS File -->
 <script src="/resources/assets/js/scripts.js"></script>
 <script src="/resources/assets/js/custom.js"></script>
+
 
 
 <jsp:include page="../project/boardViewModal.jsp"/>

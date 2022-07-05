@@ -41,7 +41,7 @@ border-radius: 5px;
 								<th>사원이름</th>
 							</tr>
 						</thead>
-						<tbody class="tbody">
+						<tbody class="tbody" id="monthBestEmp">
 							<c:forEach items="${empOfTheMonthList}" var="i">
 								<tr>
 								<th>${i.dept_name}</th>
@@ -61,7 +61,7 @@ border-radius: 5px;
 								<th>평균 근무 시간</th>
 							</tr>
 						</thead>
-						<tbody class="tbody">
+						<tbody class="tbody" id="monthDept">
 							<c:forEach items="${statsOfTheMonthList}" var="i">
 								<tr>
 									<th>${i.DEPT_NAME}</th>
@@ -92,7 +92,7 @@ border-radius: 5px;
 								<th>사원이름</th>
 							</tr>
 						</thead>
-						<tbody class="tbody">
+						<tbody class="tbody" id="yearBestEmp">
 							<c:forEach items="${empOfTheYearList}" var="i">
 							<tr>
 								<th>${i.dept_name}</th>
@@ -112,7 +112,7 @@ border-radius: 5px;
 								<th>평균 근무 시간</th>
 							</tr>
 						</thead>
-						<tbody class="tbody">
+						<tbody class="tbody" id="yearDept">
 							<c:forEach items="${statsOfTheYearList}" var="i">
 							<tr>
 								<th>${i.DEPT_NAME}</th>
@@ -127,6 +127,7 @@ border-radius: 5px;
 		</div>
 	</section>
 </div>
-<script src="/resources/assets/js/Statistics_ws.js?ver=3"></script>
+<script src="/resources/assets/js/Statistics_ws.js?ver=4"></script>
+<jsp:include page="../common/footer.jsp"/>
 </body>
 </html>

@@ -160,6 +160,7 @@ function workController(){
        
         success: function(Date){
             let obj = JSON.parse(Date);
+            console.log(obj);
 
             let timesum = [];
             let workday = new Array();

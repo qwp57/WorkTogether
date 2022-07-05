@@ -23,4 +23,6 @@ public interface EmployeeService {
 
 	String getUpperDeptCode(String dept_code)throws Exception;
 
+	ArrayList<Map<String, Object>> getStacts(int month)throws Exception;
+
 }

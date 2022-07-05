@@ -1,6 +1,7 @@
 package com.uni.wt.employee.controller;
 
 import java.text.DateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -134,7 +135,9 @@ public class EmployeeController {
 		m.addAttribute("pjList", bookmarkProjects);
 		
 		//통계
-		
+		int month =  LocalDate.now().getMonthValue();
+		ArrayList<Map<String, Object>> Stactslist = empService.getStacts(month);
+		m.addAttribute("Stactslist", Stactslist);
 
 
 		return "common/main";

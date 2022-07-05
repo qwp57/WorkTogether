@@ -24,33 +24,36 @@ $("#file-label").val(filename);
 
 
 
-$('#dept').on("change", function(){
-let dept_code = $(this).val();
 
-$.ajax({
-    url:"/getDeptMember.do",
-    data : {dept_code : dept_code},
-    type : "post",
-    success : function(obj){
-        $('#res_memberId').empty();
+$(document).on('change', '#dept', function () {
+    let dept_code = $(this).val();
 
-       // console.log(typeof(obj));
-    //console.log(obj.length);
-    console.log(obj);
-
-       $.each($.parseJSON(obj), function(i, e){
-        text = "<option value ="+e.emp_no+">"+e.name+"</option>"
+    $.ajax({
+        url:"getDeptMember.do",
+        data : {dept_code : dept_code},
+        type : "post",
+        success : function(obj){
+            $('#res_memberId').empty();
     
-        $('#res_memberId').append(text);
-       })
+        // console.log(typeof(obj));
+        //console.log(obj.length);
+        console.log(obj);
+    
+           $.each($.parseJSON(obj), function(i, e){
+            text = "<option value ="+e.emp_no+">"+e.name+"</option>"
+        
+            $('#res_memberId').append(text);
+           })
+    
+    
+        }
+    
+    })
 
-
-    }
-
+    
 })
 
 
-})
 
 $('.termRadio').click(function(){
     if($('input[name=termYN]:checked').val() == 'Y'){
