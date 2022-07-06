@@ -160,7 +160,7 @@
 							</tr>							
 						</table>		
 										
-						<textarea id="summernote" name="content"></textarea>	
+						<textarea id="appSummernote" name="content"></textarea>	
 						
 						<div>
 							<div class="mt-5" style="font-size:15px"><strong>첨부파일</strong></div>
@@ -296,7 +296,7 @@
 	
 	<script>		
 		$(function () {
-	        $('#summernote').summernote({
+	        $('#appSummernote').summernote({
 	            placeholder: '내용을 입력해주세요',
 	            tabsize: 2,
 	            height: 500,
@@ -309,7 +309,7 @@
 	                ['color', ['color']],
 	                ['ul', 'ol', 'paragraph'],
 	                ['table', ['table']],
-	                ['insert', ['link', 'picture']],
+	                ['insert', ['link']],
 	            ]
 	        });
 	    });
