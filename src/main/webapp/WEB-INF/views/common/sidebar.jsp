@@ -72,7 +72,7 @@
        
               <li class="nav-item ">
                 <a href="/project/allCalendar.do" class="nav-link "><i class="bi bi-calendar"></i>
-<span>프로젝트 캘린더</span></a>
+<span>참석한 일정</span></a>
                 
               </li>
               <hr>

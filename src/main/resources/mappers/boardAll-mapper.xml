@@ -88,13 +88,16 @@
         ON A.BOARD_NO = D.BOARD_NO
         JOIN EMPLOYEE E
         ON A.WRITER = E.EMP_NO
+        JOIN PROJECT F
+        ON F.PJ_NO = A.PJ_NO
         <where>
-        <if test="pj_no != 0 &amp;&amp; !pj_no.equals('0')">
-            AND A.PJ_NO = #{pj_no}
-        </if>
         <if test="pj_no == 0 || pj_no.equals('0')">
+            AND F.STATUS = 'Y'
             AND E.EMP_NO = #{emp_no}
         </if>
+            <if test="pj_no != 0 &amp;&amp; !pj_no.equals('0')">
+                AND A.PJ_NO = #{pj_no}
+            </if>
         <if test="board_type != null &amp;&amp; board_type != ''">
             AND A.BOARD_TYPE = #{board_type}
         </if>
@@ -132,8 +135,11 @@
         ON A.BOARD_NO = C.BOARD_NO
         LEFT JOIN BOARD_TODO D
         ON A.BOARD_NO = D.BOARD_NO
+        JOIN PROJECT F
+        ON F.PJ_NO = A.PJ_NO
         <where>
             <if test="pj_no == 0 || pj_no.equals('0')">
+                AND F.STATUS = 'Y'
                 AND E.EMP_NO = #{emp_no}
             </if>
             <if test="sd.searchTarget.equals('name') &amp;&amp; sd.searchKeyword != null &amp;&amp; !sd.searchKeyword.equals('')">
