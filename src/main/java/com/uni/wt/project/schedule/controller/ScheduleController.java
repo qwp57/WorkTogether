@@ -49,23 +49,30 @@ public class ScheduleController {
         log.info("글 : " + schedule);
         boardAll.setBoard_type("schedule");
         boardAll.setPj_no(pj_no);
+    
+        if(!schedule.getSch_title().equals("") && !schedule.getSch_start().equals("") && !schedule.getSch_end().equals("")){
+            Employee emp = (Employee) session.getAttribute("loginEmp");
+            log.info("로그인 유저 : " + emp);
+            boardAll.setWriter(emp.getEmp_no());
+            HashMap<String, Object> content = new HashMap<String, Object>();
+            content.put("SCH", schedule);
+            scheduleService.insertSch(schedule, boardAll);
+            if (schedule.getSch_attendee() != null) {
+                String[] schAttendeeList = schedule.getSch_attendee().split(",");
+                if (schAttendeeList.length > 0) {
+                    for (String emp_no : schAttendeeList) {
 
-        Employee emp = (Employee) session.getAttribute("loginEmp");
-        log.info("로그인 유저 : " + emp);
-        boardAll.setWriter(emp.getEmp_no());
-        HashMap<String, Object> content = new HashMap<String, Object>();
-        content.put("SCH", schedule);
-        scheduleService.insertSch(schedule, boardAll);
-        if (schedule.getSch_attendee() != null) {
-            String[] schAttendeeList = schedule.getSch_attendee().split(",");
-            if (schAttendeeList.length > 0) {
-                for (String emp_no : schAttendeeList) {
-
-                    noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "SCH");
+                        noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "SCH");
+                    }
                 }
             }
+            redirect.addFlashAttribute("msg", "게시물 등록 완료.");
+        }else {
+            redirect.addFlashAttribute("msg", "제목, 날짜를 모두 입력해주세요.");
         }
-        redirect.addFlashAttribute("msg", "게시물 등록 완료.");
+        
+      
+
         if (type.equals("calendar")){
             return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
         }else if(type.equals("home")){
@@ -170,21 +177,24 @@ public class ScheduleController {
     public String editSch(Schedule schedule, int pj_no, String type, RedirectAttributes redirect, HttpSession session) throws Exception {
         log.info("일정 : " + schedule);
 
-
-        Employee emp = (Employee) session.getAttribute("loginEmp");
-        log.info("로그인 유저 : " + emp);
-        scheduleService.editSch(schedule);
-        HashMap<String, Object> content = new HashMap<String, Object>();
-        content.put("SCH", schedule);
-        if (schedule.getSch_attendee() != null) {
-            String[] schAttendeeList = schedule.getSch_attendee().split(",");
-            if (schAttendeeList.length > 0) {
-                for (String emp_no : schAttendeeList) {
-                    noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "SCH");
+        if(!schedule.getSch_title().equals("") && !schedule.getSch_start().equals("") && !schedule.getSch_end().equals("")) {
+            Employee emp = (Employee) session.getAttribute("loginEmp");
+            log.info("로그인 유저 : " + emp);
+            scheduleService.editSch(schedule);
+            HashMap<String, Object> content = new HashMap<String, Object>();
+            content.put("SCH", schedule);
+            if (schedule.getSch_attendee() != null) {
+                String[] schAttendeeList = schedule.getSch_attendee().split(",");
+                if (schAttendeeList.length > 0) {
+                    for (String emp_no : schAttendeeList) {
+                        noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "SCH");
+                    }
                 }
             }
+            redirect.addFlashAttribute("msg", "게시물 수정 완료.");
+        }else {
+            redirect.addFlashAttribute("msg", "제목, 날짜를 모두 입력해주세요.");
         }
-        redirect.addFlashAttribute("msg", "게시물 수정 완료.");
 
         if (type.equals("calendar")){
             return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;

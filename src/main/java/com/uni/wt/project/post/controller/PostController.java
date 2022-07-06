@@ -57,29 +57,31 @@ public class PostController {
                              @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam("isImage") String isImage,
                              RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("글 : " + post);
-        boardAll.setBoard_type("post");
-        boardAll.setPj_no(pj_no);
-        Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
-        log.info("로그인 유저 : " + emp);
-        boardAll.setWriter(emp.getEmp_no());
-        HashMap<String, Object> content = new HashMap<String, Object>();
-        content.put("POST", post);
-        int board_no = postService.insertPost(post, boardAll);
-        if (post.getPost_for() != null) {
-            String[] postForList = post.getPost_for().split(",");
-            if (postForList.length > 0) {
-                for (String emp_no : postForList) {
-
-                    noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "POST");
+        if (!post.getPost_title().equals("") && !post.getPost_content().equals("")) {
+            boardAll.setBoard_type("post");
+            boardAll.setPj_no(pj_no);
+            Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+            log.info("로그인 유저 : " + emp);
+            boardAll.setWriter(emp.getEmp_no());
+            HashMap<String, Object> content = new HashMap<String, Object>();
+            content.put("POST", post);
+            int board_no = postService.insertPost(post, boardAll);
+            if (post.getPost_for() != null) {
+                String[] postForList = post.getPost_for().split(",");
+                if (postForList.length > 0) {
+                    for (String emp_no : postForList) {
+                        noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "POST");
+                    }
                 }
             }
-        }
-        if (!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
-            projectFileService.uploadFile(file, request, board_no, isImage);
+            if (!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
+                projectFileService.uploadFile(file, request, board_no, isImage);
+            }
+            redirect.addFlashAttribute("msg", "게시물 등록 완료.");
+        } else {
+            redirect.addFlashAttribute("msg", "제목, 내용을 입력해주세요.");
         }
 
-
-        redirect.addFlashAttribute("msg", "게시물 등록 완료.");
 
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
@@ -89,29 +91,33 @@ public class PostController {
                            @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam("isImage") String isImage,
                            RedirectAttributes redirect, HttpServletRequest request, String type) throws Exception {
         log.info("글 : " + post);
-        log.info("삭제할 파일 : " + projectFile);
-        Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
-        if (projectFile.getFile_no() > 0) {
-            projectFileService.deleteFile(projectFile);
-        }
-        postService.editPost(post);
-        HashMap<String, Object> content = new HashMap<String, Object>();
-        content.put("POST", post);
-        if (post.getPost_for() != null) {
-            String[] postForList = post.getPost_for().split(",");
-            if (postForList.length > 0) {
-                for (String emp_no : postForList) {
-                    noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "POST");
+        if (!post.getPost_title().equals("") && !post.getPost_content().equals("")) {
+            log.info("삭제할 파일 : " + projectFile);
+            Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+            if (projectFile.getFile_no() > 0) {
+                projectFileService.deleteFile(projectFile);
+            }
+            postService.editPost(post);
+            HashMap<String, Object> content = new HashMap<String, Object>();
+            content.put("POST", post);
+            if (post.getPost_for() != null) {
+                String[] postForList = post.getPost_for().split(",");
+                if (postForList.length > 0) {
+                    for (String emp_no : postForList) {
+                        noticeService.insertNotice(Integer.parseInt(emp_no), emp, content, "POST");
+                    }
                 }
             }
-        }
-        if (!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
+            if (!file.getOriginalFilename().equals("")) {//만약 받아온 파일이 비어 있어있지 않으면
 
-            projectFileService.uploadFile(file, request, post.getBoard_no(), isImage);
-        }
+                projectFileService.uploadFile(file, request, post.getBoard_no(), isImage);
+            }
 
-        log.info("글리턴 : " + type);
-        redirect.addFlashAttribute("msg", "게시물 수정 완료.");
+            log.info("글리턴 : " + type);
+            redirect.addFlashAttribute("msg", "게시물 수정 완료.");
+        } else {
+            redirect.addFlashAttribute("msg", "제목, 내용을 입력해주세요.");
+        }
 
         if (type.equals("home")) {
             return "redirect:/project/detailPj.do?pj_no=" + pj_no;

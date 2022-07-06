@@ -447,6 +447,12 @@
 
     })
     $(document).on('click', '.drive', function () {
+        if (${pj.file_power == 'Y'} &&
+        ${pjMember.admin == 'N'})
+        {
+            alert("관리자만 조회할 수 있습니다.")
+            return false
+        }
         location.href = "/project/drivePj.do?pj_no=" +
         ${pj.pj_no}
     })

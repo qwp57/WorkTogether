@@ -108,9 +108,9 @@ $(document).on('click', '#postEditBtn', function () {
 
 $(document).on('click', '#postEditFormDeleteFile', function () {
     $(this).parent().append(
-        '<input type="hidden" name="change_name" value="' + $(this).val() + '">' +
+        '<input type="hidden" name="origin_name" value="' + $(this).val() + '">' +
         '<input type="hidden" name="file_no" value="' + $(this).next().val() + '">' +
-        '<input type="hidden" name="origin_name" value="' + $(this).next().next().val() + '">' +
+        '<input type="hidden" name="change_name" value="' + $(this).next().next().val() + '">' +
         '<input type="hidden" name="path" value="' + $(this).next().next().next().val() + '">'
     )
     $(this).remove()
