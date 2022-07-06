@@ -16,9 +16,6 @@
     <link
             href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
             rel="stylesheet">
-    <link
-            href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
-            rel="stylesheet">
 
     <link
             href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css"
@@ -41,6 +38,7 @@
     <style>
         body {
             color: black;
+            font-family: 'Nanum Gothic', sans-serif;
         }
 
         datepicker > datepicker-days {
@@ -310,8 +308,13 @@
                 // console.log(result)
                 let data = JSON.parse(result);
                 console.log(data);
-                setList(data.list, 'myBoard')
-                setpi(data.pi);
+                if(data.list.length > 0){
+                    setList(data.list, 'myBoard')
+                    setpi(data.pi);
+                }else {
+                    //$(".boardTable").html('작성한 게시물이 없습니다.')
+                }
+
                 loadPjColor()
             }
         })
@@ -340,8 +343,7 @@
             $board_no = $(this).find(".board_no").val()
             console.log($(this).find(".board_type").val())
             pj_no = $(this).find("input[name=pj_no]").val()
-            var list = loadPj($(this).find("input[name=pj_no]").val())
-            console.log(list)
+            loadPj($(this).find("input[name=pj_no]").val())
             if ($(this).find(".board_type").val() == 'post') {
                 $.ajax({
                     url: '/post/detailView.do',
@@ -596,7 +598,7 @@
                 obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
                 obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
                 obj2.setAttribute('name', 'pj_no'); // 객체이름
-                obj2.setAttribute('value', 0); //객체값
+                obj2.setAttribute('value', '0'); //객체값
                 form.appendChild(obj2);
                 obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
                 obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type

@@ -255,23 +255,7 @@
 <script>
     $(function () {
         loadTag()
-        $(document).on("click", ".editTag", function () {
-            $tag_name = $(this).parents("tr").find(".tagName").text()
-            $tag_no = $(this).parents("tr").find(".tag_no").val()
-            console.log($tag_name)
-            console.log($tag_no)
-            $("#tagEditInput").val($tag_name)
-            $("#tagEditModal").modal("show")
-            $("#editTagBtn").click(function () {
-                if ($("#tagEditInput").val() == "") {
-                    alert("태그를 입력해주세요.")
-                    return false
-                }
-                editTag($tag_no)
 
-            })
-
-        })
 
         $(document).on("click", ".tagAddBtn", function () {
             $("#addTagModal").modal("show")
@@ -286,13 +270,7 @@
             //console.log($("#addTagInput").val())
         })
 
-        $(document).on("click", ".deleteTag", function () {
-            if (confirm("삭제하시겠습니까?")) {
-                $tag_no = $(this).parents("tr").find(".tag_no").val()
-                console.log($tag_no)
-                removeTag($tag_no)
-            }
-        })
+
 
         function loadTag() {
             $.ajax({
@@ -332,35 +310,6 @@
                 }
 
             });
-        }
-
-        function editTag(tag_no) {
-            $.ajax({
-                url: '/project/editTag.do',
-                data: {
-                    "tag_name": $("#tagEditInput").val(),
-                    "tag_no": tag_no
-                },
-                async: false,
-                success: function (data) {
-                    //console.log(data)
-                }
-            })
-            loadTag()
-        }
-
-        function removeTag(tag_no) {
-            $.ajax({
-                url: '/project/removeTag.do',
-                data: {
-                    "tag_no": tag_no
-                },
-                async: false,
-                success: function (data) {
-                    //console.log(data)
-                }
-            })
-            loadTag()
         }
 
         function addTag() {

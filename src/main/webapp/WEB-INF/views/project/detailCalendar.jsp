@@ -36,6 +36,7 @@
     <style>
         body {
             color: black;
+            font-family: 'Nanum Gothic', sans-serif;
         }
 
         .newPj {
@@ -298,7 +299,7 @@
                     $("textarea[name=sch_content]").val('')
                     $("textarea[name=sch_content]").text('')
                     $("input[name=sch_attendee]").parent().parent().remove()
-                    $("input[name=sch_start]").val(arg.startStr)
+                    $("input[name=sch_start]").val(moment(arg.startStr).format('YYYY-MM-DD h:mm'))
                     //종료일 하루 빼기
                     var y = arg.endStr.substr(0, 4);
                     var m = arg.endStr.substr(5, 2);
@@ -387,7 +388,7 @@
                                 $("#viewSchAttendee").find(".inviteTable").append(content)
                             }
                         })
-                        loadBoardProfile(board_no)
+                        loadBoardProfile(info.event.groupId)
                         loadSchAttendee(info.event.groupId)
                         loadReply(info.event.groupId)
 
@@ -406,6 +407,7 @@
                     title: '${sch.sch_title}',
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
+                    <c:if test="${sch.sch_start == sch.sch_end}">allDay: true,</c:if>
                     groupId: ${sch.board_no}
                 }
                 </c:when>
@@ -414,6 +416,7 @@
                     title: '${sch.sch_title}',
                     start: '${sch.sch_start}',
                     end: '${sch.sch_end}',
+                    <c:if test="${sch.sch_start == sch.sch_end}">allDay: true,</c:if>
                     groupId: ${sch.board_no},
                 },
                 </c:otherwise>
@@ -530,7 +533,16 @@
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
                     var content = '<tr class="empNameTr">'
-                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<td rowspan="2">'
+                    if (obj.change_name != undefined) {
+                        content += '<img alt="image" style="height: 45px;"'
+                        content += 'src="/resources/upload_files/' + obj.change_name + '"'
+                        content += 'class="rounded-circle mr-1">'
+                    } else {
+                        content += '<img alt="image" style="height: 45px;"'
+                        content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                        content += 'class="rounded-circle mr-1">'
+                    }
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
                     content += '<th style="width: 50%; text-align: center" class="emp_name">' + obj.name + '</th>'
@@ -554,12 +566,42 @@
 
                     $(".inviteTable").append(content)
                 })
-
+                $("#empListModalSearch").val("")
 
                 $("#empListModal").modal("show")
             }
         })
     }
+
+    $(document).on('click', '.boardDeleteBtn', function () {
+        if (checkStored()) {
+            if (confirm("삭제하시겠습니까?")) {
+                var form = document.createElement('form'); // 폼객체 생성
+                var obj1;
+                var obj2;
+                var obj3;
+                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj1.setAttribute('name', 'board_no'); // 객체이름
+                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
+                form.appendChild(obj1);
+                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj2.setAttribute('name', 'pj_no'); // 객체이름
+                obj2.setAttribute('value', ${pj.pj_no}); //객체값
+                form.appendChild(obj2);
+                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
+                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
+                obj3.setAttribute('name', 'type'); // 객체이름
+                obj3.setAttribute('value', 'calendar'); //객체값
+                form.appendChild(obj3);
+                form.setAttribute('method', 'post'); //get,post 가능
+                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    })
 
     $(document).on('click', '.deportBtn', function () {
         console.log($(this).parent().parent().find(".inviteEmpNo").val())
@@ -686,7 +728,6 @@
         }
     })
 
-
     $(document).on('click', '#inviteBtn', function () {
         if (checkStored()) {
             $.ajax({
@@ -701,10 +742,19 @@
                     $("#invitePj").find("input[name=pj_no]").val(${pj.pj_no})
                     if (list.length > 0) {
                         $.each(list, function (i, obj) {
-                            var content = '<tr>'
-                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            var content = '<tr class="empNameTr">'
+                            content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                            if (obj.change_name != undefined) {
+                                content += '<img alt="image" style="height: 45px;"'
+                                content += 'src="/resources/upload_files/' + obj.change_name + '"'
+                                content += 'class="rounded-circle mr-1">'
+                            } else {
+                                content += '<img alt="image" style="height: 45px;"'
+                                content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                                content += 'class="rounded-circle mr-1">'
+                            }
                             content += '</td>'
-                            content += '<th style="width: 50%">' + obj.name + '</th>'
+                            content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                             content += '<td rowspan="2" style="width: 20%; text-align: right;">'
                             content += '<div class="custom-control custom-checkbox">'
                             content += '<input type="checkbox" name="inviteEmpNo" class="inviteEmpNo" value="' + obj.emp_no + '">'
@@ -733,7 +783,6 @@
         }
 
     })
-
     function setColor(selectedProjects, selectedColor) {
         $.ajax({
             url: '/project/setProjectColor.do',
@@ -780,6 +829,55 @@
         setColor(selectedProjects, selectedColor)
         $("input:radio[name='customRadio']").prop("checked", false)
     }
+    $(document).on('click', '#addPeople', function () {
+        $.ajax({
+            url: '/project/selectEmpListByPj.do',
+            data: {
+                "pj_no": ${pj.pj_no},
+                "keyword": 'mention'
+            },
+            success: function (list) {
+                console.log(list)
+                $(".inviteTable").html('')
+                $.each(list, function (i, obj) {
+                    if (obj.emp_no != ${pjMember.emp_no}) {
+                        var content = '<tr class="empNameTr">'
+                        content += '<td rowspan="2">'
+                        if (obj.change_name != undefined) {
+                            content += '<img alt="image" style="height: 45px;"'
+                            content += 'src="/resources/upload_files/' + obj.change_name + '"'
+                            content += 'class="rounded-circle mr-1">'
+                        } else {
+                            content += '<img alt="image" style="height: 45px;"'
+                            content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                            content += 'class="rounded-circle mr-1">'
+                        }
+                        content += '</td>'
+                        content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
+                        content += '<td rowspan="2" style="width: 20%; text-align: right;">'
+                        content += '<div class="custom-control custom-checkbox">'
+                        content += '<input type="checkbox" class="inviteEmpNo" value="' + obj.emp_no + '">'
+                        content += '</div>'
+                        content += '</td>'
+                        content += '</tr>'
+                        content += '<tr>'
+                        if (obj.job_name != undefined) {
+                            content += '<td>' + obj.job_name + '</td>'
+                        } else {
+                            content += '<td>직급이 없습니다.</td>'
+                        }
+                        content += '</tr>'
+                        $(".inviteTable").append(content)
+                    }
+                })
+                $("#mentionForModalSearch").val("")
+                $("#PostAddEmpBtn").css("display", "none")
+                $("#SchAddEmpBtn").css("display", "inline-block")
+                $("#mentionForModal").css("z-index", "111112")
+                $("#mentionForModal").modal("show")
+            }
+        })
+    })
 
 </script>
 

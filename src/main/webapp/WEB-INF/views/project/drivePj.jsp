@@ -17,6 +17,7 @@
 <style>
     body {
         color: black;
+        font-family: 'Nanum Gothic', sans-serif;
     }
 
     .newPj {
@@ -768,7 +769,16 @@
                 $(".inviteTable").html('')
                 $.each(list, function (i, obj) {
                     var content = '<tr class="empNameTr">'
-                    content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                    content += '<td rowspan="2">'
+                    if (obj.change_name != undefined) {
+                        content += '<img alt="image" style="height: 45px;"'
+                        content += 'src="/resources/upload_files/' + obj.change_name + '"'
+                        content += 'class="rounded-circle mr-1">'
+                    } else {
+                        content += '<img alt="image" style="height: 45px;"'
+                        content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                        content += 'class="rounded-circle mr-1">'
+                    }
                     content += '<input type="hidden" class="inviteEmpNo" value="' + obj.emp_no + '">'
                     content += '</td>'
                     content += '<th style="width: 50%; text-align: center" class="emp_name">' + obj.name + '</th>'
@@ -939,10 +949,19 @@
                     $("#invitePj").find("input[name=pj_no]").val(${pj.pj_no})
                     if (list.length > 0) {
                         $.each(list, function (i, obj) {
-                            var content = '<tr>'
-                            content += '<td rowspan="2"><span class="bi bi-person-circle fa-2x"></span>'
+                            var content = '<tr class="empNameTr">'
+                            content += '<td rowspan="2">  <img style="height: 45px" alt="image"'
+                            if (obj.change_name != undefined) {
+                                content += '<img alt="image" style="height: 45px;"'
+                                content += 'src="/resources/upload_files/' + obj.change_name + '"'
+                                content += 'class="rounded-circle mr-1">'
+                            } else {
+                                content += '<img alt="image" style="height: 45px;"'
+                                content += 'src="/resources/assets/img/avatar/avatar-1.png"'
+                                content += 'class="rounded-circle mr-1">'
+                            }
                             content += '</td>'
-                            content += '<th style="width: 50%">' + obj.name + '</th>'
+                            content += '<th style="width: 50%" class="emp_name">' + obj.name + '</th>'
                             content += '<td rowspan="2" style="width: 20%; text-align: right;">'
                             content += '<div class="custom-control custom-checkbox">'
                             content += '<input type="checkbox" name="inviteEmpNo" class="inviteEmpNo" value="' + obj.emp_no + '">'
