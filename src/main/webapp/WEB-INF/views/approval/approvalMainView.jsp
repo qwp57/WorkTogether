@@ -106,7 +106,7 @@
 					<h4 class="ml-3">기안 문서</h4>
 				</div>
 				<!-- 인기글 5개를 보여주는 것 처럼 ajax로 최신 게시글 5개를 보여준다. -->
-				<table class="table" id="/draftDocumentTable">
+				<table class="table" id="draftDocumentTable">
 					<thead>
 						<tr>
 							<th style="width:12%">기안일</th>
@@ -177,7 +177,7 @@
 					<h4 class="ml-3">결재 문서</h4>
 				</div>
 				<!-- 인기글 5개를 보여주는 것 처럼 ajax로 최신 게시글 5개를 보여준다. -->
-				<table class="table" id="/approvalDocumentTable">
+				<table class="table" id="approvalDocumentTable">
 					<thead>
 						<tr>
 							<th style="width:12%">기안일</th>

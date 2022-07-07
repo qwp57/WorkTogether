@@ -239,24 +239,23 @@
 		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
 		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="emp_no != null">
+			<if test="emp_no != null &amp;&amp; !emp_no.equals('')" >
 			AND EMP_NO LIKE '%'||#{emp_no}||'%'
 			</if>
-			<if test="name != null">
+			<if test="name != null &amp;&amp; !name.equals('')">
 			AND NAME LIKE '%'||#{name}||'%'
 			</if>
-			<if test="dept_name != null">
+			<if test="dept_name != null &amp;&amp; !dept_name.equals('')">
 			AND DEPT_NAME LIKE '%'||#{dept_name}||'%'
 			</if>
-			<if test="job_name != null">
+			<if test="job_name != null &amp;&amp; !job_name.equals('')">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status == 'I' &amp;&amp; status != null">
-			AND A.STATUS='I'
-			</if>
-			<if test="status == 'Q' &amp;&amp; status != null">
-			AND A.STATUS='Q'
-			</if>
+
+			<if test="status != null">
+            AND A.STATUS = #{status}
+            </if>
+
 		</trim>
 	 </select>
 	<!-- 검색 결과 list -->
@@ -313,24 +312,21 @@
 		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
 		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="emp_no != null">
+			<if test="emp_no != null &amp;&amp; !emp_no.equals('')" >
 			AND EMP_NO LIKE '%'||#{emp_no}||'%'
 			</if>
-			<if test="name != null">
+			<if test="name != null &amp;&amp; !name.equals('')">
 			AND NAME LIKE '%'||#{name}||'%'
 			</if>
-			<if test="dept_name != null">
+			<if test="dept_name != null &amp;&amp; !dept_name.equals('')">
 			AND DEPT_NAME LIKE '%'||#{dept_name}||'%'
 			</if>
-			<if test="job_name != null">
+			<if test="job_name != null &amp;&amp; !job_name.equals('')">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status.equals('I') &amp;&amp; status != null">
-			AND A.STATUS='I'
-			</if>
-			<if test="status.equals('Q') &amp;&amp; status != null">
-			AND A.STATUS='Q'
-			</if>
+			<if test="status != null">
+            AND A.STATUS = #{status}
+            </if>
 		</trim>
 		ORDER BY JOIN_DATE DESC
 	</select>

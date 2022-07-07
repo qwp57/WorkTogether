@@ -116,4 +116,10 @@
 		<![CDATA[WHERE ROWNUM <= 5]]>
 	</select>
 
+	<select id="selectAdmin" resultType="int">
+		SELECT 
+			EMP_NO
+		FROM EMPLOYEE
+		WHERE ADMIN='Y'
+	</select>
 </mapper>

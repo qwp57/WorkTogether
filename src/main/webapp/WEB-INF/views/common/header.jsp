@@ -241,7 +241,7 @@
                                    class="dropdown-item dropdown-item-unread">
                                     <div class="dropdown-item-desc">
                                         <div class="font-weight-bold">
-                                         	  프로젝트 초대
+                                            프로젝트 초대
                                         </div>
                                             ${n.content}
                                         <div class="text-secondary"> ${n.contentDetail}</div>
@@ -250,34 +250,36 @@
                                 </a>
                             </c:when>
                             <c:when test="${ n.type eq  'AP'}">
-                            	<a href="${n.url}" onclick="return deleteNotice(${n.notice_no});" id="${n.notice_no}" class="dropdown-item dropdown-item-unread">
-                                   <div class="dropdown-item-desc">
-                                   	   <div class="font-weight-bold">
-		                                   <c:choose>
-		                                       <c:when test="${n.type eq 'AP'}">결재요청</c:when>
-		                                       <c:otherwise>알림메시지</c:otherwise>
-		                                   </c:choose>
-	                                   </div>
-	                                   	${n.content}
-	                                   	<div class="text-secondary">${n.contentDetail }</div>
-	                                   	<div class="time text-privary">${n.create_date }</div>
-                                   </div>
+                                <a href="${n.url}" onclick="return deleteNotice(${n.notice_no});" id="${n.notice_no}"
+                                   class="dropdown-item dropdown-item-unread">
+                                    <div class="dropdown-item-desc">
+                                        <div class="font-weight-bold">
+                                            <c:choose>
+                                                <c:when test="${n.type eq 'AP'}">결재요청</c:when>
+                                                <c:otherwise>알림메시지</c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                            ${n.content}
+                                        <div class="text-secondary">${n.contentDetail }</div>
+                                        <div class="time text-privary">${n.create_date }</div>
+                                    </div>
                                 </a>
                             </c:when>
                             <c:when test="${ n.type eq 'EN' }">
-                            	<a href="${n.url}" onclick="return deleteNotice(${n.notice_no});" id="${n.notice_no}" class="dropdown-item dropdown-item-unread">
-	                            	<div class="dropdown-item-desc">
-	                            		<div class="font-weight-bold">
-	                            			<c:choose>
-	                            				<c:when test="${ n.type eq 'EN' }">가입승인</c:when>
-	                            				<c:otherwise>알림메시지</c:otherwise>
-	                            			</c:choose>
-	                            		</div>
-	                            		${n.content}
-	                            		<div class="text-secondary">${n.contentDetail }</div>
-	                                   	<div class="time text-privary">${n.create_date }</div>
-	                            	</div>
-                            	</a>
+                                <a href="${n.url}" onclick="return deleteNotice(${n.notice_no});" id="${n.notice_no}"
+                                   class="dropdown-item dropdown-item-unread">
+                                    <div class="dropdown-item-desc">
+                                        <div class="font-weight-bold">
+                                            <c:choose>
+                                                <c:when test="${ n.type eq 'EN' }">가입승인</c:when>
+                                                <c:otherwise>알림메시지</c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                            ${n.content}
+                                        <div class="text-secondary">${n.contentDetail }</div>
+                                        <div class="time text-privary">${n.create_date }</div>
+                                    </div>
+                                </a>
                             </c:when>
                         </c:choose>
                     </c:forEach>
@@ -409,14 +411,14 @@
             text += "<div class='dropdown-item-desc'>"
             text += "<div class='font-weight-bold'>"
             text += "프로젝트 초대</div>"
-        } else if(msgArr[1] == 'AP'){
-        	text += "<a href='" +msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
-        	test += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
-        	test += "결재요청 </div>";
-        } else if(msgArr[1] == 'EN'){
-        	text += "<a href='" +msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
-        	test += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
-        	test += "가입승인 </div>";
+        } else if (msgArr[1] == 'AP') {
+            text += "<a href='" + msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
+            test += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
+            test += "결재요청 </div>";
+        } else if (msgArr[1] == 'EN') {
+            text += "<a href='" + msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
+            test += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
+            test += "가입승인 </div>";
         }
 
         text += msgArr[2];
@@ -573,12 +575,7 @@
                     }
                     //console.log(list.count)
                     $(".viewCount").text("조회 " + list.post.count)
-                    if ("${sessionScope.loginEmp.emp_no}" == list.post.emp_no) {
-                        // console.log('확인')
-                        $("#postEditBtn").parent().css("display", "block")
-                    } else {
-                        $("#postEditBtn").parent().css("display", "none")
-                    }
+                    $("#postEditBtn").parent().css("display", "none")
 
                 }
             })
@@ -771,7 +768,6 @@
             success: function (list) {
                 list = $.parseJSON(list)
                 console.log(list)
-                console.log(list)
                 $(".replyArea").html('')
                 $(".replyCount").text("댓글 " + list.length)
                 if (list.length == 0) {
@@ -844,36 +840,6 @@
         }
     })
 
-
-    $(document).on('click', '.boardDeleteBtn', function () {
-        if (checkStored()) {
-            if (confirm("삭제하시겠습니까?")) {
-                var form = document.createElement('form'); // 폼객체 생성
-                var obj1;
-                var obj2;
-                var obj3;
-                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj1.setAttribute('name', 'board_no'); // 객체이름
-                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
-                form.appendChild(obj1);
-                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj2.setAttribute('name', 'pj_no'); // 객체이름
-                obj2.setAttribute('value', ${pj.pj_no}); //객체값
-                form.appendChild(obj2);
-                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj3.setAttribute('name', 'type'); // 객체이름
-                obj3.setAttribute('value', 'calendar'); //객체값
-                form.appendChild(obj3);
-                form.setAttribute('method', 'post'); //get,post 가능
-                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
-                document.body.appendChild(form);
-                form.submit();
-            }
-        }
-    })
 
     function confirmJoinPj(notice_no) {
         deleteNoticeNoreturn(notice_no)
