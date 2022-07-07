@@ -498,33 +498,35 @@
 
     // 파일 삭제
     $(document).on("click", "#deleteBtn", function (e) {
-        var checkedinput = $("input:checked").length
-        if (checkedinput != 0) {
-            if (confirm("선택한 파일을 삭제하시겠습니까?")) {
-                // 파일번호를 배열에 저장
-                var check = $("input[name=file_no]:checked")
-                var arr = []
-                $(check).each(function (index) {
-                    arr.push($(this).val())
-                })
-                console.log(arr)
-                if (arr.length > 0) {
-                    $.ajax({
-                        url: "/project/deleteFile.do",
-                        type: "post",
-                        data: {
-                            "file_no": arr
-                        },
-                        success: function (data) {
-                            check.parents(".file").remove()
-                            checkFileList()
-                            alert("삭제되었습니다.")
-                        }
+        if (checkStored()) {
+            var checkedinput = $("input:checked").length
+            if (checkedinput != 0) {
+                if (confirm("선택한 파일을 삭제하시겠습니까?")) {
+                    // 파일번호를 배열에 저장
+                    var check = $("input[name=file_no]:checked")
+                    var arr = []
+                    $(check).each(function (index) {
+                        arr.push($(this).val())
                     })
+                    console.log(arr)
+                    if (arr.length > 0) {
+                        $.ajax({
+                            url: "/project/deleteFile.do",
+                            type: "post",
+                            data: {
+                                "file_no": arr
+                            },
+                            success: function (data) {
+                                check.parents(".file").remove()
+                                checkFileList()
+                                alert("삭제되었습니다.")
+                            }
+                        })
+                    }
                 }
+            } else {
+                alert("파일을 선택해주세요.")
             }
-        } else {
-            alert("파일을 선택해주세요.")
         }
     })
 
@@ -1021,6 +1023,7 @@
 
         $("#tagModal").modal("hide")
         setTag(selectedProjects, selectedTags)
+        alert("태그 설정이 완료되었습니다.")
     }
 
     function saveColor() {

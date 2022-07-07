@@ -334,7 +334,6 @@
 		</div>
 		<div style="width: 100%; height: 30px;"></div>
 		<h3 class="myProjects" style="display:none;">참여중</h3>
-		<div style="width: 100%; height: 30px;"></div>
 		<div class="projects" id="myLargeProjects">
 		</div>
 
@@ -372,7 +371,6 @@
 			</table>
 			<div style="width: 100%; height: 30px;"></div>
 			<h3 class="myProjects" style="display:none;">참여중</h3>
-			<div style="width: 100%; height: 30px;"></div>
 			<table id="myListProjects" class="listViewTable">
 			</table>
 		</div>
@@ -601,10 +599,7 @@
 			}
 			addTag()
 			//console.log($("#addTagInput").val())
-		})
-		$("#saveTagBtn").click(function () {
-
-
+			$("#addTagInput").val("")
 		})
 
 
@@ -865,6 +860,7 @@
 		$("#tagModal").modal("hide")
 		setTag(selectedProjects, selectedTags)
 		closeMenu()
+		alert("태그 설정이 완료되었습니다.")
 	}
 
 	function setColor(selectedProjects, selectedColor) {

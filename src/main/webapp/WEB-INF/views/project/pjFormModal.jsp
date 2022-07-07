@@ -60,7 +60,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="col-lg-12 text-center">
-                        <button type="submit" class="btn btn-primary btn-lg mb-3">생성</button>
+                        <button type="button" onclick="checkPjTitle();" class="btn btn-primary btn-lg mb-3">생성</button>
                     </div>
                 </div>
             </form>
@@ -149,3 +149,13 @@
         </div>
     </div>
 </div>
+<script>
+    function checkPjTitle(){
+        if($("#enrollPj").find("input[name=pj_title]").val() == ""){
+            alert("제목을 입력해주세요.")
+            return false
+        }else {
+            $("#enrollPj").submit()
+        }
+    }
+</script>

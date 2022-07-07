@@ -268,6 +268,7 @@
             }
             addTag()
             //console.log($("#addTagInput").val())
+            $("#addTagInput").val("")
         })
 
 
