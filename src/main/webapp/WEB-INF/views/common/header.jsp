@@ -322,7 +322,7 @@
                     </a>
                 </c:if>
                 <div class="dropdown-divider"></div>
-                <a href="/logout.do" class="dropdown-item has-icon text-danger">
+                <a href="javascript:logout();" class="dropdown-item has-icon text-danger">
                     <i class="fas fa-sign-out-alt"></i> 로그아웃
                 </a>
 
@@ -336,9 +336,7 @@
 
     var socket = null;
 
-    connect();
 
-    function connect() {
         var ws = new WebSocket('ws://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/echo-ws.do/websocket');
         socket = ws;
 
@@ -367,7 +365,12 @@
         };
 
 
-    }
+ 
+    
+    function logout() {
+		ws.close();
+		location.href = "/logout.do";
+	}
 
     function noticeSet(msgArr) {
         $.ajax({
@@ -1005,9 +1008,13 @@
 
         let job_code = '${loginEmp.job_code}';
         let dept_code = '${loginEmp.dept_code}';
-
+        
+        if(dept_code != "" || job_code != ""){
+        	
         $('#dept option[value = ' + dept_code + ']').prop('selected', true);
         $('#job option[value = ' + job_code + ']').prop('selected', true);
+        }
+
 
 
     });
