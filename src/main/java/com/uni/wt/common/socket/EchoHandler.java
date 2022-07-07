@@ -92,7 +92,11 @@ public class EchoHandler extends TextWebSocketHandler{
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		log.info("[WebSocket] : 연결 해제 ");
 		sessions.remove(session);
-		users.remove(getEmp(session).getName(), session);
+		log.info(session.toString());
+		log.info("키값"+getEmp(session).getEmp_no());
+		users.remove(""+getEmp(session).getEmp_no());
+		log.info("[웹소켓 연결 해제 후 sessions] :{}", sessions.toString());
+		log.info("[웹소켓 연결 해제 후 users] :{}", users.toString());
 	}
 	// 에러 발생시
 	@Override
