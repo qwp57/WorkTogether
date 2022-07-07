@@ -36,7 +36,7 @@ public interface AdminService {
 
 	void updateEmployee(Employee emp) throws Exception;
 
-	void updateEmployeeResignation(Employee emp) throws Exception;
+	void updateEmployeeResignation(Map<String, Object> map) throws Exception;
 
 	int searchListCount(EmployeeSearchCondition sc) throws Exception;
 
@@ -44,6 +44,8 @@ public interface AdminService {
 
 	ArrayList<Department> selectDeptList() throws Exception;
 
+	int deptCount() throws Exception;
+	
 	ArrayList<Employee> organizationEmpList() throws Exception;
 
 	Employee empModal(int emp_no) throws Exception;
@@ -51,6 +53,8 @@ public interface AdminService {
 	ArrayList<Employee> DeptEmpList(String deptName) throws Exception;
 
 	ArrayList<Department> selectDeptEmpList(Map<String, Object> map) throws Exception;
+
+	
 
 
 

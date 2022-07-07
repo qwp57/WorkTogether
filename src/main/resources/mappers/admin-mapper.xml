@@ -37,28 +37,45 @@
 	
 	<!-- 가입 승인 대기, 거부 list 조회 -->
 	<select id="selectList" resultMap="employeeResultSet">
-		SELECT *
+		SELECT 
+			EMP_NO,
+			NAME,
+			ID,
+			PASSWORD,
+			EMAIL,
+			PHONE,
+			TO_CHAR(BIRTH, 'YYYY-MM-DD') AS BIRTH,
+			DEPT_CODE,
+			UPPER_DEPT_CODE,
+			JOB_CODE,
+			TO_CHAR(JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE,
+			RESIGNATION_DATE,
+			STATUS,
+			ADMIN,
+			FILE_NO,
+			TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE,
+			REJECT_REASON
 		FROM EMPLOYEE
 		WHERE STATUS='W'
 		OR STATUS='R'
 		ORDER BY CREATE_DATE DESC
 	</select>
-	
-	<!-- 가입 대기 리스트 조회 -->
+	<!--  
+	가입 대기 리스트 조회
 	<select id="watingListCount" resultMap="employeeResultSet">
 		SELECT COUNT(*)
 		FROM EMPLOYEE
 		WHERE STATUS='W'		
 	</select>
 	
-	<!-- 가입 대기 리스트 조회 -->
+	가입 대기 리스트 조회
 	<select id="watingList" resultMap="employeeResultSet">
 		SELECT *
 		FROM EMPLOYEE
 		WHERE STATUS='W'
 		ORDER BY CREATE_DATE DESC
 	</select>
-	
+	-->
 	<!-- 가입 승인 -->
 	<update id="adminApproval" parameterType="_int">
 		UPDATE EMPLOYEE
@@ -90,6 +107,13 @@
 		FROM DEPARTMENT
 		START WITH UPPER_DEPT_CODE IS NULL
 		CONNECT BY PRIOR DEPT_CODE=UPPER_DEPT_CODE		
+	</select>
+	
+	<!-- 부서 개수 -->
+	<select id="deptCount" resultType="int">
+		SELECT COUNT(*)
+		FROM DEPARTMENT
+		WHERE DEPT_LEVEL=2
 	</select>
 	
 	<!-- 부서 추가 -->
@@ -188,10 +212,10 @@
 	</insert>
 	
 	<!-- 사원 정보 추가 -> 퇴직일 있는 경우 -->
-	<update id="updateEmployeeResignation" parameterType="Employee">
+	<update id="updateEmployeeResignation" parameterType="Map">
 		UPDATE EMPLOYEE
-		SET NAME=#{name}, EMAIL=#{email}, PHONE=#{phone}, BIRTH=#{birth}, JOIN_DATE=#{join_date}, DEPT_CODE=#{dept_code}, UPPER_DEPT_CODE=#{upper_dept_code}, JOB_CODE=#{job_code}, RESIGNATION_DATE=#{resignation_date}, STATUS='Q'
-		WHERE EMP_NO=#{emp_no}
+		SET NAME=#{emp.name}, EMAIL=#{emp.email}, PHONE=#{emp.phone}, BIRTH=#{emp.birth}, JOIN_DATE=#{emp.join_date}, DEPT_CODE=#{emp.dept_code}, UPPER_DEPT_CODE=#{emp.upper_dept_code}, JOB_CODE=#{emp.job_code}, RESIGNATION_DATE=TO_DATE(#{resignationDate}), STATUS='Q'
+		WHERE EMP_NO=#{emp.emp_no}
 	</update>
 	
 	<!-- 검색 했을 때 searchListCount -->

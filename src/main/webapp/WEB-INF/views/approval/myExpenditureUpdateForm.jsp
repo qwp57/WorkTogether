@@ -178,11 +178,12 @@
 							</tr>
 							<tr>
 								<th>계좌 정보</th>
-								<td>																										
+								<td>
+																																		
 									<input type="text" class="form-control rounded-1" id="indAccount" name="account" placeholder="은행 명, 계좌번호를 같이 작성하세요" value="${ appEx.account }"/>																			
 									<div class="input-group">
-					    				<div class="input-group-prepend" id="corAccount" style="display:none">
-					    					<select class="form-control rounded-1" name="account">
+					    				<div class="input-group-prepend" id="corAccountArea" style="display:none">
+					    					<select class="form-control rounded-1" id="corAccount" name="account" disabled>
 												<option ${(appEx.account == "우리은행 1111-222-123456") ? "selected" : "" } value="우리은행 1111-222-123456">우리은행  1111-222-123456</option>
 												<option ${(appEx.account == "신한은행 123-6666-7777-78") ? "selected" : "" } value="신한은행 123-6666-7777-78">신한은행 123-6666-7777-78</option>	
 												<option ${(appEx.account == "하나은행 9876-99876-454") ? "selected" : "" } value="하나은행 9876-99876-454">하나은행 9876-99876-454</option>		
@@ -190,7 +191,8 @@
 												<option ${(appEx.account == "카카오뱅크 3333-76-9876934") ? "selected" : "" } value="카카오뱅크 3333-76-9876934">카카오뱅크 3333-76-9876934</option>									
 											</select>
 					    				</div>
-				    				</div>			    				
+				    				</div>	
+				    					    				
 								</td>
 							</tr>
 							<tr>
@@ -372,8 +374,9 @@
 
           	});
 	        
-	        //파일이 있는 경우 없는 경우
-	        if("${ app.orginal_name }" != null){
+	    	 //파일이 있는 경우, 없는 경우
+	        var original_name = "${ app.orginal_name }";
+	        if(original_name != ""){
 	        	$("#file_name").text("${app.orginal_name}");
 				$("#file_text").attr('class', 'd-none');
 	        }
@@ -437,7 +440,7 @@
 			//구분
 			if("${ appEx.exDivision }" == '개인'){
 				$("input:radio[name='exDivision']:radio[value='개인']").prop('checked', true);
-				$("#corAccount").attr("style", "display:none");
+				$("#corAccountArea").attr("style", "display:none");
 				$("#corAccount").attr("disabled", "true"); 
 				$("#indAccount").removeAttr("style", "display:none");
 				$("#indAccount").removeAttr("disabled", "true");
@@ -445,7 +448,7 @@
 				$("input:radio[name='exDivision']:radio[value='법인']").prop('checked', true);
 				$("#indAccount").attr("style", "display:none");
 				$("#indAccount").attr("disabled", "true");
-				$("#corAccount").removeAttr("style", "display:none");
+				$("#corAccountArea").removeAttr("style", "display:none");
 				$("#corAccount").removeAttr("disabled", "ture"); 
 			}
 			
@@ -456,15 +459,15 @@
 				if(accountInfo === '법인'){
 					$("#indAccount").attr("style", "display:none");
 					$("#indAccount").attr("disabled", "true"); //데이터가 전송되지 않도록 한다.
-					$("#corAccount").removeAttr("style", "display:none");
+					$("#corAccountArea").removeAttr("style", "display:none");
 					$("#corAccount").removeAttr("disabled", "true"); 
 				}else {
-					$("#corAccount").attr("style", "display:none");
+					$("#corAccountArea").attr("style", "display:none");
 					$("#corAccount").attr("disabled", "true");
 					$("#indAccount").removeAttr("style", "display:none");
 					$("#indAccount").removeAttr("disabled", "true");
 				}
-			});
+			});	
 			
 			//지출내역 추가
 			$("#addExBtn").click(function(){
@@ -522,7 +525,7 @@
 				tableTr += '<tr>';
 				tableTr += '<td><input type="date" class="form-control" name="exDateList" tabindex="8" value=' + exArray[key].exDate + '></td>';
 				tableTr += '<td><div class="input-group"><div class="input-group-prepend"><select class="form-control rounded-1" id="exClassification" name="exClassificationList">';
-				tableTr += '<option ${(' + exArray[key].exClassification + ' == "물품구입비") ? "selected" : "" } value="물품 구입비">물품 구입비</option>';
+				tableTr += '<option ${(' + exArray[key].exClassification + ' == "물품 구입비") ? "selected" : "" } value="물품 구입비">물품 구입비</option>';
 				tableTr += '<option ${(' + exArray[key].exClassification + ' == "잡비") ? "selected" : "" } value="잡비">잡비</option>';
 				tableTr += '<option ${(' + exArray[key].exClassification + ' == "회식비") ? "selected" : "" } value="회식비">회식비</option>';	
 				tableTr += '<option ${(' + exArray[key].exClassification + ' == "식비") ? "selected" : "" } value="식비">식비</option>';
@@ -533,6 +536,7 @@
 				tableTr += '<td><input type="text" class="form-control" name="exHistoryList" value=' + exArray[key].exHistory + '></td>';
 				tableTr += '<td><input type="text" class="form-control" name="noteList" value=' + exArray[key].note + '></td>';
 				tableTr += '</tr>';
+
 			}
 			
 			$("#exTableTbody").append(tableTr);

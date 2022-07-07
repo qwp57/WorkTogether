@@ -120,7 +120,8 @@
                                 <div class="col-12" style="margin-top: 20px;">
                                     <h3 id="schTitle"></h3>
                                     <br>
-                                    <span class='bi bi-calendar fa-lg ml-3' id="schDate"></span>
+                                    <span class='bi bi-calendar fa-lg ml-3 mr-2'></span>
+                                    <span id="schDate"></span>
                                     <hr>
                                 </div>
 

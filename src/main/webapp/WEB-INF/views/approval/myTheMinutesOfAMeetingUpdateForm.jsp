@@ -172,7 +172,7 @@
 						</table>
 						
 						<div class="mb-2"><strong>회의 내용</strong></div>
-						<textarea id="summernote" name="meetingContent">${ appMm.meetingContent }</textarea>
+						<textarea id="appSummernote" name="meetingContent">${ appMm.meetingContent }</textarea>
 						
 						<div>
 							<div class="mt-5" style="font-size:15px"><strong>첨부파일</strong></div>
@@ -328,8 +328,9 @@
 
           	});
 	        
-	        //파일이 있는 경우 없는 경우
-	        if("${ app.orginal_name }" != null){
+	    	//파일이 있는 경우, 없는 경우
+	        var original_name = "${ app.orginal_name }";
+	        if(original_name != ""){
 	        	$("#file_name").text("${app.orginal_name}");
 				$("#file_text").attr('class', 'd-none');
 	        }
@@ -392,7 +393,7 @@
 		});
 		
 		$(function(){
-			 $('#summernote').summernote({
+			 $('#appSummernote').summernote({
 		           placeholder: '내용을 입력해주세요',
 		           tabsize: 2,
 		           height: 500,

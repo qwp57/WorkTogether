@@ -96,7 +96,7 @@
 			
 			<!-- 부서별 사원들의 사진 및 정보 -->
 			<!-- 기능 구현할 때는 list로 뿌려주기 -> 부서 테이블 조회해서 -->
-			<div class="col-lg-9">
+			<div class="col-lg-9 ">
 				<h4 id="title" style="color:black">워크 투게더</h4>							
 				<div class="row empProfile">						
 					<div class="col-lg-1 picture">

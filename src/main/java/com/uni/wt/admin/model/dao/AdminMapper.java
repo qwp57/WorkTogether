@@ -27,6 +27,8 @@ public interface AdminMapper {
 
 	ArrayList<Department> selectUpperList();
 
+	int deptCount();
+	
 	int addDeptList(Map<String, Object> map);
 
 	int addUpperDeptList(Map<String, Object> map);
@@ -45,7 +47,7 @@ public interface AdminMapper {
 
 	int updateEmployee(Employee emp);
 
-	int updateEmployeeResignation(Employee emp);
+	int updateEmployeeResignation(Map<String, Object> map);
 
 	int searchListCount(EmployeeSearchCondition sc);
 
@@ -60,13 +62,6 @@ public interface AdminMapper {
 	ArrayList<Employee> DeptEmpList(String deptName);
 
 	ArrayList<Department> selectDeptEmpList(Map<String, Object> map);
-	
-	
 
-	
-
-
-
-	
 
 }

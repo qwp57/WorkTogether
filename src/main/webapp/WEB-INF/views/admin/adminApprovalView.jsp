@@ -89,7 +89,7 @@
 								<td><span class="status p-2" style="color: white; background-color: skyblue; border-radius: 5px;">대기</span></td>
 							</c:if>
 							<c:if test="${ ad.status == 'R'}">
-								<td><span class="status" style="color: white; background-color: Firebrick; border-radius: 5px;">반려</span></td>
+								<td><span class="status p-2" style="color: white; background-color: Firebrick; border-radius: 5px;">반려</span></td>
 							</c:if>
 						</tr>
 					</c:forEach>					
