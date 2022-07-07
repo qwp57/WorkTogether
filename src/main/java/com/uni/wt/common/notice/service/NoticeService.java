@@ -66,7 +66,6 @@ public class NoticeService {
             	result = noticeMapper.insertNotice(insertENNotice(emp, seqNo, type, nno));
         }
 
-
         //결과 확인
         if (result <= 0) {
             throw new Exception("알림 등록에 실패했습니다.");
@@ -78,8 +77,7 @@ public class NoticeService {
         //세션에 새 알림 저장
         //plusNoticelist(request, noticeResult);
 
-
-        ////////웹소켓 전송
+        //웹소켓 전송
         websocketSend(emp, noticeResult);
 
     }
@@ -145,7 +143,6 @@ public class NoticeService {
 	}
 
 	private Notice insertRWNotice(Employee emp, int seqNo, String type, int nno) throws Exception {
-
         //글번호로 업무요청 글을 조회해온다.
         RequestWork rw = rwMapper.selectRWDetailsimple(seqNo);
 
