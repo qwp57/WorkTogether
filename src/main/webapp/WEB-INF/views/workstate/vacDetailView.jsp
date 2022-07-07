@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>휴가 상세 내역서</title>
 </head>
 <style>
 #modalTitle{
