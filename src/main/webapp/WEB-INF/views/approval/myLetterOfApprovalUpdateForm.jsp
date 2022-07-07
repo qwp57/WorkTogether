@@ -149,7 +149,7 @@
 							</tr>							
 						</table>		
 										
-						<textarea id="summernote" name="content">${ loa.content }</textarea>		
+						<textarea id="appSummernote" name="content">${ loa.content }</textarea>		
 						
 						<div>
 							<div class="mt-5" style="font-size:15px"><strong>첨부파일</strong></div>
@@ -290,7 +290,7 @@
 	
 	<script>
 		$(function () {
-	        $('#summernote').summernote({
+	        $('#appSummernote').summernote({
 	            tabsize: 2,
 	            height: 500,
 	            minHeight: null,
@@ -302,7 +302,7 @@
 	                ['color', ['color']],
 	                ['ul', 'ol', 'paragraph'],
 	                ['table', ['table']],
-	                ['insert', ['link', 'picture', 'video']],
+	                ['insert', ['link']],
 	            ]
 	        });
 	        
@@ -321,8 +321,9 @@
 
           	});
 	        
-	        //파일이 있는 경우 없는 경우
-	        if("${ app.orginal_name }" != null){
+	        //파일이 있는 경우, 없는 경우
+	        var original_name = "${ app.orginal_name }";
+	        if(original_name != ""){
 	        	$("#file_name").text("${app.orginal_name}");
 				$("#file_text").attr('class', 'd-none');
 	        }

@@ -167,7 +167,7 @@
 					<c:if test="${ map['app'].fileNo ne 0 }">
 						<div class="mt-3 ml-4" id="fileArea">
 							<div>
-								<a href="${ pageContext.servletContext.contextPath }/resources/upload_files/${ map['app'].change_name }" download="${ map['app'].orginal_name }">${ map['app'].orginal_name }</a>
+								<a href="/resources/upload_files/${ map['app'].change_name }" download="${ map['app'].orginal_name }">${ map['app'].orginal_name }</a>
 							</div>									
 						</div>
 					</c:if>

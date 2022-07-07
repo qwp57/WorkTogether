@@ -141,9 +141,9 @@
 	          			<!-- 검색하는 경우 -->
 	          			<c:if test="${ !empty keyword }">
 	          				<c:url var="searchUrl" value="/searchDraft.do">
-							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
-							<c:param name="condition" value="${ condition }"/>
-							<c:param name="keyword" value="${ keyword }"/>							
+								<c:param name="currentPage" value="${pi.currentPage-1 }"/>
+								<c:param name="condition" value="${ condition }"/>
+								<c:param name="keyword" value="${ keyword }"/>							
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
 	          			</c:if>
@@ -168,7 +168,7 @@
 									<c:param name="condition" value="${ condition }"/>
 									<c:param name="keyword" value="${ keyword }"/>							
 								</c:url>
-								<li class="page-item"><a class="page-link" href="/${ searchUrl }">${ p }</a></li>
+								<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
 							</c:if>
 		           		</c:when>
 		           		<c:otherwise>
@@ -192,7 +192,7 @@
 									<c:param name="condition" value="${ condition }"/>
 									<c:param name="keyword" value="${ keyword }"/>
 								</c:url>
-								<li class="page-item"><a class="page-link" href="/${ searchUrl }">Next</a></li>
+								<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>
 							</c:if>
 	          			</c:if>
 	          		</c:when>
@@ -214,7 +214,7 @@
 							</select>
 	    				</div>
 	    				<!-- 검색어 입력 -->		
-						<input type="text" class="form-control" id="keyword" name="keyword" placeholder="검색어를 입력하세요." value="${ param.keyword }">	
+						<input type="search" class="form-control" id="keyword" name="keyword" placeholder="검색어를 입력하세요." value="${ keyword }">	
 						<!-- 검색 버튼 --> 
 						<input type="submit" class="btn btn-primary" id="searchBtn" value="검색">	
 	    			</div>

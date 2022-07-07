@@ -189,8 +189,8 @@
 								<td>
 									<input type="text" class="form-control rounded-1" id="indAccount" name="account" placeholder="은행 명, 계좌번호를 같이 작성하세요" />
 									<div class="input-group">
-					    				<div class="input-group-prepend" id="corAccount" style="display:none">
-					    					<select class="form-control rounded-1" name="account">
+					    				<div class="input-group-prepend" id="corAccountArea" style="display:none">
+					    					<select class="form-control rounded-1" id="corAccount" name="account" disabled>
 												<option value="우리은행 1111-222-123456">우리은행  1111-222-123456</option>
 												<option value="신한은행 123-6666-7777-78">신한은행 123-6666-7777-78</option>	
 												<option value="하나은행 9876-99876-454">하나은행 9876-99876-454</option>		
@@ -503,10 +503,10 @@
 				if(accountInfo === '법인'){
 					$("#indAccount").attr("style", "display:none");
 					$("#indAccount").attr("disabled", "true"); //데이터가 전송되지 않도록 한다.
-					$("#corAccount").removeAttr("style", "display:none");
+					$("#corAccountArea").removeAttr("style", "display:none");
 					$("#corAccount").removeAttr("disabled", "true"); 
 				}else {
-					$("#corAccount").attr("style", "display:none");
+					$("#corAccountArea").attr("style", "display:none");
 					$("#corAccount").attr("disabled", "true");
 					$("#indAccount").removeAttr("style", "display:none");
 					$("#indAccount").removeAttr("disabled", "true");

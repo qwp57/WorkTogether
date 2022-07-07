@@ -134,10 +134,13 @@ public class AdminController {
 	//조회
 	@RequestMapping("/departmentManagement.do")
 	public String departmentManagementPage(Model model) throws Exception {
-		
+		//부서 조회
 		ArrayList<Department> upperList = adminService.selectUpperList();
+		//부서 숫자 조회
+		int deptCount = adminService.deptCount();
 		
 		model.addAttribute("upperList", upperList);
+		model.addAttribute("deptCount", deptCount);
 		
 		return "admin/departmentManagementView";
 	}
@@ -258,13 +261,10 @@ public class AdminController {
 			log.info("정보 업데이트");
 		}else {
 			//포맷터
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			String foragttedDate = simpleDateFormat.format(resignationDate);
-			
-			Date resignation_date = java.sql.Date.valueOf(foragttedDate); //sql.Date는 바로 simpleDateFormat으로 파싱하여 형변환 하는 것이 불가하다.
-			
-			emp.setResignation_date(resignation_date);
-			adminService.updateEmployeeResignation(emp);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("emp", emp);
+			map.put("resignationDate", resignationDate);
+			adminService.updateEmployeeResignation(map);
 			log.info("정보 업데이트");
 		}
 		
