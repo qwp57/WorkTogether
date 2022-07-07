@@ -140,6 +140,8 @@ public class ApprovalController {
 		
 		model.addAttribute("draftList", draftList);
 		model.addAttribute("pi", pi);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("condition", condition);
 		
 		return "approval/draftDocumentListView";
 	}
@@ -201,6 +203,8 @@ public class ApprovalController {
 		
 		model.addAttribute("pi", pi);
 		model.addAttribute("appList", appList);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("condition", condition);
 		
 		return "approval/approvalDocumentListView";
 	}
@@ -943,10 +947,13 @@ public class ApprovalController {
 	}
 	
 	@RequestMapping("/deleteApproval.do")
-	public String deleteApproval(String approvalNo, String docNo, @RequestParam(value="fileNo", required=false) String fileNo) throws Exception {
+	public String deleteApproval(String approvalNo, String docNo, @RequestParam(value="fileNo", required=false) int fileNo) throws Exception {
+		log.info("삭제 fileNo : " + fileNo);
+		
 		//첨부파일 삭제
-		if(fileNo != null) {
-			fileService.deleteFile(fileNo);
+		if(fileNo != 0) {	
+			String file_no = String.valueOf(fileNo);
+			fileService.deleteFile(file_no);
 		}
 		
 		//문서 삭제

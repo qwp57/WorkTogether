@@ -76,6 +76,12 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
+	public int deptCount() throws Exception {
+
+		return adminMapper.deptCount();
+	}
+	
+	@Override
 	public int addDeptList(Map<String, Object> map) {
 		
 		int upperDeptCode = Integer.parseInt(String.valueOf(map.get("upperDeptCode"))); 
@@ -147,9 +153,9 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public void updateEmployeeResignation(Employee emp) throws Exception {
+	public void updateEmployeeResignation(Map<String, Object> map) throws Exception {
 		
-		int result = adminMapper.updateEmployeeResignation(emp);
+		int result = adminMapper.updateEmployeeResignation(map);
 		
 		if(result < 0) {
 			throw new Exception("회원 정보 수정에 실패하였습니다.");
@@ -218,9 +224,6 @@ public class AdminServiceImpl implements AdminService{
 		
 		return deptEmpList;
 	}
-
-
-
 
 
 }
