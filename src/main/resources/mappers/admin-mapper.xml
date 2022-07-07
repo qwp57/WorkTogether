@@ -251,9 +251,11 @@
 			<if test="job_name != null &amp;&amp; !job_name.equals('')">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
+
 			<if test="status != null">
             AND A.STATUS = #{status}
             </if>
+
 		</trim>
 	 </select>
 	<!-- 검색 결과 list -->

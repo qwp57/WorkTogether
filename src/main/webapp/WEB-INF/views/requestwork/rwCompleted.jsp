@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>완료된 업무 조회</title>
 </head>
 <style>
 h2{
