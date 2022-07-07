@@ -819,6 +819,7 @@
 
         $("#tagModal").modal("hide")
         setTag(selectedProjects, selectedTags)
+        alert("태그 설정이 완료되었습니다.")
     }
 
     function saveColor() {

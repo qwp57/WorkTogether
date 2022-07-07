@@ -581,10 +581,7 @@
             }
             addTag()
             //console.log($("#addTagInput").val())
-        })
-        $("#saveTagBtn").click(function () {
-
-
+            $("#addTagInput").val("")
         })
 
 
@@ -825,6 +822,7 @@
         $("#tagModal").modal("hide")
         setTag(selectedProjects, selectedTags)
         closeMenu()
+        alert("태그 설정이 완료되었습니다.")
     }
 
     function setColor(selectedProjects, selectedColor) {

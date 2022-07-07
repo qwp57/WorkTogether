@@ -4,7 +4,30 @@ $(document).on('click', '#viewEmpInPj', function () {
 })
 
 
+$("#addTagBtn").click(function () {
+    if ($("#addTagInput").val() == "") {
+        alert("태그를 입력해주세요.")
+        return false
+    }
+    addTag()
+    //console.log($("#addTagInput").val())
+    $("#addTagInput").val("")
+})
 
+
+function addTag() {
+    $.ajax({
+        url: '/project/addTag.do',
+        data: {
+            "tag_name": $("#addTagInput").val()
+        },
+        async: false,
+        success: function (data) {
+            console.log(data)
+        }
+    })
+    loadTag()
+}
 $(document).on('click', '.newPj', function () {
     $("#makePj").modal("show")
 })

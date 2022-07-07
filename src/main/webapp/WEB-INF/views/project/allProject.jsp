@@ -574,10 +574,7 @@
             }
             addTag()
             //console.log($("#addTagInput").val())
-        })
-        $("#saveTagBtn").click(function () {
-
-
+            $("#addTagInput").val("")
         })
 
 
@@ -595,7 +592,42 @@
             loadTag()
         }
     })
+    function loadTag() {
+        $.ajax({
+            url: '/project/loadTag.do',
+            success: function (list) {
+                $.parseJSON(list);
+                //console.log(list)
+                $("#tagTable").html('')
+                $.each($.parseJSON(list), function (i, obj) {
+                    $("#tagTable").append(
+                        '<tr>' +
+                        '<td><i class="fa fa-tag fa-lg"></i>' +
+                        '</td>' +
+                        '<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
+                        '<td style="width: 20%; text-align: right;">' +
+                        '<div class="custom-control custom-checkbox">' +
+                        '<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+                        '<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
+                        '</div>' +
+                        '</td>' +
+                        '<td style="width: 15%; text-align: right;">' +
+                        '<div class="btn-group dropright">' +
+                        '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+                        '<div class="dropdown-menu dropright">' +
+                        '<a class="dropdown-item editTag" href="#">수정</a>' +
+                        '<div class="dropdown-divider"></div>' +
+                        '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</td>' +
+                        '</tr>'
+                    )
+                })
+            }
 
+        });
+    }
 
     function loadProjects() {
         $.ajax({
@@ -732,11 +764,12 @@
                     $myLargeProjects.html('');
                     $myListProjects.html('')
                     $(".myProjects").css("display", "none")
-                    $myLargeProjects.append(
-                        '<div style="width: 100%; height: 30px;"></div>' +
-                        '<h4 style="margin-left: 10%;">참여중인 프로젝트가 없습니다.</h4>'
-                    )
+                    var content = '<div style="width: 100%; height: 30px;"></div>'
+                    content += '<h4 style="margin-left: 10%;">보관된 프로젝트가 없습니다.</h4>'
 
+                    $(".myProjects").css("display", "none")
+                    $myLargeProjects.html(content)
+                    $myListProjects.html(content)
                 } else if (list[0].length == 0) {
                     $myLargeProjects.html('');
                     $myListProjects.html('')
@@ -810,6 +843,7 @@
         $("#tagModal").modal("hide")
         setTag(selectedProjects, selectedTags)
         closeMenu()
+        alert("태그 설정이 완료되었습니다.")
     }
 
     function setColor(selectedProjects, selectedColor) {
