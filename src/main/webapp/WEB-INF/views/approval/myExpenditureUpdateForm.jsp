@@ -169,12 +169,12 @@
 							<tr>
 								<th>회계 기준월</th>
 								<td>
-									<input type="date" class="form-control" name="accountingMonth" id="accountingMonth" tabindex="8" value="${ appEx.accountingMonth }">	   
+									<input type="date" class="form-control" name="accountingMonth" id="accountingMonth" tabindex="8" value="${ appEx.accountingMonth }" required>	   
 								</td>
 							</tr>
 							<tr>
 								<th>지출자</th>
-								<td><input type="text" class="form-control" name="spender" value="${ appEx.spender }"></td>
+								<td><input type="text" class="form-control" name="spender" value="${ appEx.spender }" required></td>
 							</tr>
 							<tr>
 								<th>계좌 정보</th>
