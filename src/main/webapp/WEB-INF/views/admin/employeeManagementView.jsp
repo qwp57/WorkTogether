@@ -111,61 +111,6 @@
 								</tr>
 								
 								<tr class="thead-light">
-								<!-- 
-									<th>부서</th>
-									<td class="text-left">
-									 	<div class="input-group mb-3 input-group-sm">
-											<!-- 부서 키워드 선택 토글 
-											<div class="input-group-prepend" style="width:100px">
-												<select class="form-select custom-select border-1 rounded-1" id="searchDept" name="upper_dept_code">
-													<option value="">없음</option>
-													<c:forEach items="${ deptList }" var="dl">
-														<c:if test="${ dl.deptLevel == 1 }">
-															<option value="${ dl.deptCode }">${ dl.deptName }</option>
-														</c:if>
-													</c:forEach>
-												</select>
-											</div>							
-										</div>	
-									</td>
-									
-									<th>팀</th>
-									<td class="text-left">
-										<div class="input-group mb-3 input-group-sm">
-											<div class="input-group-prepend" style="width:100px">
-												<select class="form-select custom-select border-1 rounded-1" id="searchDeptUppper" name="dept_code">
-													<option value="none">없음</option>
-													<c:forEach items="${ deptList }" var="dl">																										
-														<c:if test="${ dl.deptLevel == 2 }">					
-															<option value="${ dl.deptCode }">${ dl.deptName }</option>
-														</c:if>	
-													</c:forEach>
-												</select>
-											</div>							
-										</div>
-									</td>
-								 </tr>
-								
-								<tr class="thead-light">
-									<th>직급</th>
-									<td colspan="3" class="text-left">
-									  	<div class="input-group mb-3 input-group-sm">
-											<!-- 직급 키워드 선택 토글 
-											<div class="input-group-prepend" style="width:100px">
-												<select class="form-select custom-select border-1 rounded-1" id="searchJob" name="job_code">
-													<option value="none">없음</option>
-													<option value="J1">대표</option>
-													<option value="J2">부사장</option>
-													<option value="J3">부장</option>
-													<option value="J4">차장</option>
-													<option value="J5">과장</option>
-													<option value="J6">대리</option>
-													<option value="J7">사원</option>
-												</select>
-											</div>							
-										</div>
-									</td>
-								</tr> -->
 							</table>
 							<div class="input-group mb-3 input-group-sm">
 								<!-- 검색 키워드 선택 토글 -->
@@ -411,7 +356,7 @@
 			$("#employeeList tbody tr").click(function(){
 				location.href = "updateView.do?eno=" + $(this).children().eq(0).text();		
 			});
-					
+					console.log('${status}')
 			switch("${status}") {
 			case 'I' :
 				$("input:radio[name='statusList']:input[value='I']").attr("checked", true);

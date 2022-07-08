@@ -3,12 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+<title>태그로 조회</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 
 <head>
+
     <meta charset="UTF-8">
-    <title>Insert title here</title>
     <style>
         .pjColors {
             -text: white;
@@ -256,85 +257,100 @@
     $(function () {
         loadTag()
 
-
-        $(document).on("click", ".tagAddBtn", function () {
-            $("#addTagModal").modal("show")
-        })
-
-        $("#addTagBtn").click(function () {
-            if ($("#addTagInput").val() == "") {
-                alert("태그를 입력해주세요.")
-                return false
-            }
-            addTag()
-            //console.log($("#addTagInput").val())
-            $("#addTagInput").val("")
-        })
-
-
-
-        function loadTag() {
-            $.ajax({
-                url: '/project/loadTag.do',
-                success: function (list) {
-                    list = $.parseJSON(list)
-                    console.log(list)
-                    console.log(list.length)
-                    $("#tagTable").html('')
-                    if (list.length == 0) {
-                        $("#tagNullInfo").css("display", "block")
-                        $("#tagTable").css("display", "none")
-                    } else {
-                        $("#tagNullInfo").css("display", "none")
-                        $("#tagTable").css("display", "table")
-                        $.each(list, function (i, obj) {
-                            $("#tagTable").append(
-                                '<tr style="width: 100%">' +
-                                '<td class="moveTrigger" style="width: 15%;"><i class="fa fa-tag fa-lg"><input type="text" value="' + obj.tag_no + '" style="display: none;" class="tag_no"></i>' +
-                                '</td>' +
-                                '<th class="tagName moveTrigger" style="width: 50%">' + obj.tag_name + '</th>' +
-                                '<td style="width: 15%; text-align: center;">' +
-                                '<div class="btn-group sidemenu dropright">' +
-                                '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
-                                '<div class="dropdown-menu dropright">' +
-                                '<a class="dropdown-item editTag" href="#">수정</a>' +
-                                '<div class="dropdown-divider"></div>' +
-                                '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
-                                '</div>' +
-                                '</div>' +
-                                '</td>' +
-                                '</tr>'
-                            )
-                        })
-
-                    }
-                }
-
-            });
-        }
-
-        function addTag() {
-            $.ajax({
-                url: '/project/addTag.do',
-                data: {
-                    "tag_name": $("#addTagInput").val()
-                },
-                async: false,
-                success: function (data) {
-                    console.log(data)
-                }
-            })
-            loadTag()
-        }
-
-        $(document).on('click', ".moveTrigger", function loadTagView() {
-
-            $tag_no = $(this).parent().find(".tag_no").val()
-            $tag_name = $(this).parent().find(".tagName").text()
-            console.log('확인')
+        $(document).on("click", ".editTag", function () {
+            $tag_name = $(this).parents("tr").find(".tagName").text()
+            $tag_no = $(this).parents("tr").find(".tag_no").val()
+            console.log($tag_name)
             console.log($tag_no)
-            location.href = "/project/tagViewSelect.do?tag_no=" + $tag_no + "&tag_name=" + $tag_name;
+            $("#tagEditInput").val($tag_name)
+            $("#tagEditModal").modal("show")
+            $("#editTagBtn").click(function () {
+                if ($("#tagEditInput").val() == "") {
+                    alert("태그를 입력해주세요.")
+                    return false
+                }
+                editTag($tag_no)
+            })
         })
+
+    })
+    $(document).on("click", ".tagAddBtn", function () {
+        $("#addTagModal").modal("show")
+    })
+
+    $("#addTagBtn").click(function () {
+        if ($("#addTagInput").val() == "") {
+            alert("태그를 입력해주세요.")
+            return false
+        }
+        addTag()
+        //console.log($("#addTagInput").val())
+        $("#addTagInput").val("")
+    })
+
+
+
+    function loadTag() {
+        $.ajax({
+            url: '/project/loadTag.do',
+            success: function (list) {
+                list = $.parseJSON(list)
+                console.log(list)
+                console.log(list.length)
+                $("#tagTable").html('')
+                if (list.length == 0) {
+                    $("#tagNullInfo").css("display", "block")
+                    $("#tagTable").css("display", "none")
+                } else {
+                    $("#tagNullInfo").css("display", "none")
+                    $("#tagTable").css("display", "table")
+                    $.each(list, function (i, obj) {
+                        $("#tagTable").append(
+                            '<tr style="width: 100%">' +
+                            '<td class="moveTrigger" style="width: 15%;"><i class="fa fa-tag fa-lg"><input type="text" value="' + obj.tag_no + '" style="display: none;" class="tag_no"></i>' +
+                            '</td>' +
+                            '<th class="tagName moveTrigger" style="width: 50%">' + obj.tag_name + '</th>' +
+                            '<td style="width: 15%; text-align: center;">' +
+                            '<div class="btn-group sidemenu dropright">' +
+                            '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+                            '<div class="dropdown-menu dropright">' +
+                            '<a class="dropdown-item editTag" href="#">수정</a>' +
+                            '<div class="dropdown-divider"></div>' +
+                            '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</td>' +
+                            '</tr>'
+                        )
+                    })
+
+                }
+            }
+
+        });
+    }
+
+    function addTag() {
+        $.ajax({
+            url: '/project/addTag.do',
+            data: {
+                "tag_name": $("#addTagInput").val()
+            },
+            async: false,
+            success: function (data) {
+                console.log(data)
+            }
+        })
+        loadTag()
+    }
+
+    $(document).on('click', ".moveTrigger", function loadTagView() {
+
+        $tag_no = $(this).parent().find(".tag_no").val()
+        $tag_name = $(this).parent().find(".tagName").text()
+        console.log('확인')
+        console.log($tag_no)
+        location.href = "/project/tagViewSelect.do?tag_no=" + $tag_no + "&tag_name=" + $tag_name;
     })
 </script>
 </html>

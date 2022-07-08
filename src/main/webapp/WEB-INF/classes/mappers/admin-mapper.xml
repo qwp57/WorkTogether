@@ -207,14 +207,14 @@
 	<!-- 사원 정보 추가 -> 퇴직일 없는 경우 -->
 	<insert id="updateEmployee" parameterType="Employee">
 		UPDATE EMPLOYEE
-		SET NAME=#{name}, EMAIL=#{email}, PHONE=#{phone}, BIRTH=#{birth}, JOIN_DATE=#{join_date}, DEPT_CODE=#{dept_code}, UPPER_DEPT_CODE=#{upper_dept_code}, JOB_CODE=#{job_code}
+		SET NAME=#{name}, EMAIL=#{email}, PHONE=#{phone}, BIRTH=TO_DATE(#{birth}, 'YYYY-MM-DD'), JOIN_DATE=TO_DATE(#{join_date}, 'YYYY-MM-DD'), DEPT_CODE=#{dept_code}, UPPER_DEPT_CODE=#{upper_dept_code}, JOB_CODE=#{job_code}
 		WHERE EMP_NO=#{emp_no}
 	</insert>
 	
 	<!-- 사원 정보 추가 -> 퇴직일 있는 경우 -->
 	<update id="updateEmployeeResignation" parameterType="Map">
 		UPDATE EMPLOYEE
-		SET NAME=#{emp.name}, EMAIL=#{emp.email}, PHONE=#{emp.phone}, BIRTH=#{emp.birth}, JOIN_DATE=#{emp.join_date}, DEPT_CODE=#{emp.dept_code}, UPPER_DEPT_CODE=#{emp.upper_dept_code}, JOB_CODE=#{emp.job_code}, RESIGNATION_DATE=TO_DATE(#{resignationDate}), STATUS='Q'
+		SET NAME=#{emp.name}, EMAIL=#{emp.email}, PHONE=#{emp.phone}, BIRTH=TO_DATE(#{emp.birth}, 'YYYY-MM-DD'), JOIN_DATE=TO_DATE(#{emp.join_date}, 'YYYY-MM-DD'), DEPT_CODE=#{emp.dept_code}, UPPER_DEPT_CODE=#{emp.upper_dept_code}, JOB_CODE=#{emp.job_code}, RESIGNATION_DATE=TO_DATE(#{resignationDate}, 'YYYY-MM-DD'), STATUS='Q'
 		WHERE EMP_NO=#{emp.emp_no}
 	</update>
 	
@@ -275,61 +275,34 @@
 			<if test="job_name != null &amp;&amp; !job_name.equals('')">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-
 			<if test="status != null">
             AND A.STATUS = #{status}
-            </if>
-
+            </if>	
+            <if test="status == null">
+            AND (A.STATUS='I'
+			OR STATUS='Q')
+            </if>		
 		</trim>
 	 </select>
-	<!-- 검색 결과 list -->
-	<!--  
-	<select id="searchEmpList" parameterType="Map" resultMap="employeeResultSet">
-		SELECT 
-		    A.*,
-		    DEPT_NAME,
-		    JOB_NAME
-		FROM EMPLOYEE A
-		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
-		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="emp_no != null">
-			AND EMP_NO LIKE '%'||#{emp_no}||'%'
-				<if test="status.equals('I')">
-					AND STATUS='I'
-				</if>
-				<if test="status.equals('Q')">
-					AND STATUS='Q'
-				</if>
-				<if test="!dept_code.equals('none')">
-					AND DEPT_CODE LIKE '%'||{dept_code}||'%'
-				</if>
-				<if test="!job_code.equals('none')">
-					AND JOB_CODE LIKE '%'||#{job_code}||'%'
-				</if>
-			</if>
-			<if test="name != null">
-			AND NAME LIKE '%'||#{name}||'%'
-				<if test="status.equals('I')">
-					AND STATUS='I'
-				</if>
-				<if test="status.equals('Q')">
-					AND STATUS='Q'
-				</if>
-				<if test="!dept_code.equals('none')">
-					AND DEPT_CODE LIKE '%'||#{dept_code}||'%'
-				</if>
-				<if test="!job_code.equals('none')">
-					AND JOB_CODE LIKE '%'||#{job_code}||'%'
-				</if>
-			</if>
-		</trim>
-		ORDER BY JOIN_DATE DESC
-	</select>
-	-->
+	 
+
 	<select id="searchEmpList" parameterType="EmployeeSearchCondition" resultMap="employeeResultSet">
 		SELECT 
-		    A.*,
+		    A.EMP_NO,
+			A.NAME,
+			A.ID,
+			A.EMAIL,
+			A.PHONE,
+			TO_CHAR(A.BIRTH, 'YYYY-MM-DD') AS BIRTH,
+			A.DEPT_CODE,
+			A.UPPER_DEPT_CODE,
+			A.JOB_CODE,
+			TO_CHAR(A.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE,
+			A.RESIGNATION_DATE,
+			A.STATUS,
+			A.ADMIN,
+			A.CREATE_DATE,
+			A.REJECT_REASON,
 		    DEPT_NAME,
 		    JOB_NAME
 		FROM EMPLOYEE A
@@ -350,6 +323,10 @@
 			</if>			
 			<if test="status != null">
             AND A.STATUS = #{status}
+            </if>
+            <if test="status == null">
+            AND (A.STATUS='I'
+			OR STATUS='Q')
             </if>
 		</trim>
 		ORDER BY JOIN_DATE DESC

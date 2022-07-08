@@ -65,9 +65,14 @@ $.ajax({
 function setBestEmpList(list, type){
     let text;
 
-    list.forEach(l => {
-        text += "<tr><th>"+l.dept_name+"</th><th>"+l.name+" "+l.job_name+"님 </th></tr>";
-    });
+    if(list.length > 0){
+        list.forEach(l => {
+            text += "<tr><th>"+l.dept_name+"</th><th>"+l.name+" "+l.job_name+"님 </th></tr>";
+        });
+    }else {
+        text +='<tr><th colspan="3">조회된 데이터가 없습니다.</th></tr>'
+    }
+
 
     console.log(text);
 
@@ -85,10 +90,14 @@ function setBestEmpList(list, type){
 
 function setDeptworkList(list, type){
     let text;
+    if(list.length > 0){
+        list.forEach(l => {
+            text += "<tr><th>"+l.DEPT_NAME+"</th><th>"+l.SUM+" 시간 </th><th>"+l.AVG+" 시간 </th></tr>";
+        });
+    }else {
+        text +='<tr><th colspan="3">조회된 데이터가 없습니다.</th></tr>'
+    }
 
-    list.forEach(l => {
-        text += "<tr><th>"+l.DEPT_NAME+"</th><th>"+l.SUM+" 시간 </th><th>"+l.AVG+" 시간 </th></tr>";
-    });
 
     if(type == 'month'){
         $('#monthDept').empty();
