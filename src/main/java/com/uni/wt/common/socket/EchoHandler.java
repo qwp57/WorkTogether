@@ -93,9 +93,11 @@ public class EchoHandler extends TextWebSocketHandler{
 		log.info("[WebSocket] : 연결 해제 ");
 		sessions.remove(session);
 		log.info(session.toString());
-		users.remove(getEmp(session).getEmp_no(), session);
+		log.info("키값"+getEmp(session).getEmp_no());
+		users.remove(""+getEmp(session).getEmp_no());
 		log.info("[웹소켓 연결 해제 후 sessions] :{}", sessions.toString());
 		log.info("[웹소켓 연결 해제 후 users] :{}", users.toString());
+
 	}
 	// 에러 발생시
 	@Override
