@@ -436,31 +436,37 @@
 					$.parseJSON(list);
 					//console.log(list)
 					$("#tagTable").html('')
-					$.each($.parseJSON(list), function (i, obj) {
+					if($.parseJSON(list).length > 0){
+						$.each($.parseJSON(list), function (i, obj) {
+							$("#tagTable").append(
+									'<tr>' +
+									'<td><i class="fa fa-tag fa-lg"></i>' +
+									'</td>' +
+									'<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
+									'<td style="width: 20%; text-align: right;">' +
+									'<div class="custom-control custom-checkbox">' +
+									'<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+									'<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
+									'</div>' +
+									'</td>' +
+									'<td style="width: 15%; text-align: right;">' +
+									'<div class="btn-group dropright">' +
+									'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+									'<div class="dropdown-menu dropright">' +
+									'<a class="dropdown-item editTag" href="#">수정</a>' +
+									'<div class="dropdown-divider"></div>' +
+									'<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+									'</div>' +
+									'</div>' +
+									'</td>' +
+									'</tr>'
+							)
+						})
+					}else {
 						$("#tagTable").append(
-								'<tr>' +
-								'<td><i class="fa fa-tag fa-lg"></i>' +
-								'</td>' +
-								'<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
-								'<td style="width: 20%; text-align: right;">' +
-								'<div class="custom-control custom-checkbox">' +
-								'<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
-								'<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
-								'</div>' +
-								'</td>' +
-								'<td style="width: 15%; text-align: right;">' +
-								'<div class="btn-group dropright">' +
-								'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
-								'<div class="dropdown-menu dropright">' +
-								'<a class="dropdown-item editTag" href="#">수정</a>' +
-								'<div class="dropdown-divider"></div>' +
-								'<a class="dropdown-item deleteTag" href="#">삭제</a>' +
-								'</div>' +
-								'</div>' +
-								'</td>' +
-								'</tr>'
+								'<tr><td>생성한 태그가 없습니다.</td></tr>'
 						)
-					})
+					}
 				}
 
 			});
