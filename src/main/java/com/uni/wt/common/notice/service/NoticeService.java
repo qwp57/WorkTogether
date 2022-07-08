@@ -271,8 +271,17 @@ public class NoticeService {
                 list.clear();
             } else {
 
-                boolean b = list.remove(n);
-                log.info("알림 리스트 삭제 결과 : {}", b);
+            
+            	for(int i = 0; i<list.size(); i++) {
+            		
+            		if(list.get(i).getNotice_no() == n.getNotice_no()) {
+            			
+            			Notice rn = list.remove(i);
+            			log.info("삭제된 알림 : {}", rn);
+            		}
+            		
+            	}
+            	
             }
 
             log.info(list.toString());
