@@ -41,6 +41,11 @@
 		width: 600px;
 		margin-top: 3em;
 	}
+	
+	.sortMenu{
+		float: right;
+		margin-bottom: 20px;
+	}
 </style>
 </head>
 <body>	
@@ -49,18 +54,16 @@
 		<div class="container">
 			<div class="title mt-5">
 				<h3>기안 문서함</h3>
-			</div>	
-			<!-- 	
-			<div class="row">
-				<div class="statusList ml-4 mt-3">
-					<span id="all"><a href="/draftDocument.do">전체</a></span>
-					<span class="ml-3" id="waiting"><a href="/draftWaitingList.do">대기</a></span>
-					<span class="ml-3" id="proceeding"><a href="#">진행</a></span>
-					<span class="ml-3" id="completion"><a href="#">완료</a></span>
-					<span class="ml-3" id="rejection"><a href="#">반려</a></span>
-				</div>
-			</div>
-			 -->	
+			</div>						    			
+   			<div class="sortMenu">
+   				<select class="form-control rounded-1" name="sortCondition" id="sortCondition">
+   					<option ${(param.sortCondition == "W") ? "selected" : "" } value="W">전체</option>
+					<option ${(param.sortCondition == "W") ? "selected" : "" } value="W">대기</option>
+					<option ${(param.sortCondition == "P") ? "selected" : "" } value="P">진행중</option>	
+					<option ${(param.sortCondition == "C") ? "selected" : "" } value="C">완료</option>
+					<option ${(param.sortCondition == "R") ? "selected" : "" } value="R">반려</option>										
+				</select>
+   			</div>	    				    		 	
 			<div class="section-body">
 				<table class="table table-hover thead-light mt-3" id="draftList">
 					<thead>
@@ -236,6 +239,9 @@
 				location.href="/detailDraftDocument.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
 			});
 			
+			$("#sortCondition").click(function(){
+				
+			});
 		});
 	</script>
 	<jsp:include page="../common/footer.jsp"/>
