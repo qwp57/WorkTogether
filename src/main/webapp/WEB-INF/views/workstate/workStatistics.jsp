@@ -65,8 +65,8 @@ border-radius: 5px;
 							<c:forEach items="${statsOfTheMonthList}" var="i">
 								<tr>
 									<th>${i.DEPT_NAME}</th>
-									<th>${i.SUM} HOUR</th>
-									<th>${i.AVG} HOUR</th>
+									<th>${i.SUM} 시간</th>
+									<th>${i.AVG} 시간</th>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -93,12 +93,17 @@ border-radius: 5px;
 							</tr>
 						</thead>
 						<tbody class="tbody" id="yearBestEmp">
-							<c:forEach items="${empOfTheYearList}" var="i">
-							<tr>
-								<th>${i.dept_name}</th>
-								<th>${i.name} ${i.job_name}님</th>
-							</tr>
-							</c:forEach>
+							<c:if test="${empOfTheYearList ne null}">
+								<c:forEach items="${empOfTheYearList}" var="i">
+									<tr>
+										<th>${i.dept_name}</th>
+										<th>${i.name} ${i.job_name}님</th>
+									</tr>
+								</c:forEach>
+							</c:if>
+							<c:if test="${empOfTheYearList eq null}">
+								<tr><th colspan="3">조회된 데이터가 없습니다.</th></tr>
+							</c:if>
 						</tbody>
 					</table>
 				</div>
@@ -113,13 +118,18 @@ border-radius: 5px;
 							</tr>
 						</thead>
 						<tbody class="tbody" id="yearDept">
+						<c:if test="${statsOfTheYearList ne null}">
 							<c:forEach items="${statsOfTheYearList}" var="i">
-							<tr>
-								<th>${i.DEPT_NAME}</th>
-								<th>${i.SUM} HOUR</th>
-								<th>${i.AVG} HOUR</th>
-							</tr>
+								<tr>
+									<th>${i.DEPT_NAME}</th>
+									<th>${i.SUM} 시간</th>
+									<th>${i.AVG} 시간</th>
+								</tr>
 							</c:forEach>
+						</c:if>
+						<c:if test="${statsOfTheYearList eq null}">
+							<tr><th colspan="3">조회된 데이터가 없습니다.</th></tr>
+						</c:if>
 						</tbody>
 					</table>
 				</div>

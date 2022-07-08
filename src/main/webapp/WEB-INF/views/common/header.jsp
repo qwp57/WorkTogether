@@ -143,45 +143,45 @@
         </ul>
     </form>
     <ul class="navbar-nav navbar-right">
-        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
-                                                     class="nav-link nav-link-lg message-toggle beep"><i
-                class="far fa-envelope"></i></a>
-            <div class="dropdown-menu dropdown-list dropdown-menu-right chat-tab-wrap" style="display: none;">
-                <div class="dropdown-header">
-                    <a id="chatNav">채팅</a>
-                    <div class="float-right">
-                        <a class='bi bi-chat-fill fa-2x' href="/chatinvite.do"
-                           id="chat-add"
-                           onClick="window.open(this.href, '', 'width=470, height=680'); return false;">
+<%--        <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"--%>
+<%--                                                     class="nav-link nav-link-lg message-toggle beep"><i--%>
+<%--                class="far fa-envelope"></i></a>--%>
+<%--            <div class="dropdown-menu dropdown-list dropdown-menu-right chat-tab-wrap" style="display: none;">--%>
+<%--                <div class="dropdown-header">--%>
+<%--                    <a id="chatNav">채팅</a>--%>
+<%--                    <div class="float-right">--%>
+<%--                        <a class='bi bi-chat-fill fa-2x' href="/chatinvite.do"--%>
+<%--                           id="chat-add"--%>
+<%--                           onClick="window.open(this.href, '', 'width=470, height=680'); return false;">--%>
 
-                        </a>
+<%--                        </a>--%>
 
-                    </div>
-                </div>
-                <!-- 채팅 -->
-                <div class="chat-tab-wrap">
-                    <div class="dropdown-list-content dropdown-list-message">
-                        <c:forEach begin="1" end="12">
-                            <a href="/chatRoom.do" class="dropdown-item dropdown-item-unread"
-                               onClick="window.open(this.href, '', 'width=470, height=680'); return false;">
-                                <div class="dropdown-item-avatar">
-                                    <img alt="image"
-                                         src="/resources/assets/img/avatar/avatar-1.png"
-                                         class="rounded-circle">
-                                    <div class="is-online"></div>
-                                </div>
-                                <div class="dropdown-item-desc">
-                                    <b>채팅방 이름</b>
-                                    <p>채팅 내용</p>
-                                </div>
-                            </a>
-                        </c:forEach>
-                    </div>
-                </div>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <!-- 채팅 -->--%>
+<%--                <div class="chat-tab-wrap">--%>
+<%--                    <div class="dropdown-list-content dropdown-list-message">--%>
+<%--                        <c:forEach begin="1" end="12">--%>
+<%--                            <a href="/chatRoom.do" class="dropdown-item dropdown-item-unread"--%>
+<%--                               onClick="window.open(this.href, '', 'width=470, height=680'); return false;">--%>
+<%--                                <div class="dropdown-item-avatar">--%>
+<%--                                    <img alt="image"--%>
+<%--                                         src="/resources/assets/img/avatar/avatar-1.png"--%>
+<%--                                         class="rounded-circle">--%>
+<%--                                    <div class="is-online"></div>--%>
+<%--                                </div>--%>
+<%--                                <div class="dropdown-item-desc">--%>
+<%--                                    <b>채팅방 이름</b>--%>
+<%--                                    <p>채팅 내용</p>--%>
+<%--                                </div>--%>
+<%--                            </a>--%>
+<%--                        </c:forEach>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
 
-            </div>
+<%--            </div>--%>
 
-        </li>
+<%--        </li>--%>
         <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
                                                      class="nav-link notification-toggle nav-link-lg"
                                                      style="width:50px; position:relative;"><i class="far fa-bell"></i>

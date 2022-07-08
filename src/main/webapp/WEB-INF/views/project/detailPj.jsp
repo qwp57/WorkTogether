@@ -3,10 +3,12 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
+<title>프로젝트 상세보기 - 홈</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 
 <head>
+
     <meta charset="UTF-8">
 
     <%-- 카카오맵 api--%>
