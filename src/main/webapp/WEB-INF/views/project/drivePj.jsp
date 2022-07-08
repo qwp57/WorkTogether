@@ -863,38 +863,45 @@
                 // console.log(data.tagByEmpNo)
                 // console.log(data.tagByPjNo)
                 $("#tagTable").html('')
-                $.each(data.tagByEmpNo, function (i, obj) {
+                if(data.tagByEmpNo.length > 0){
+                    $.each(data.tagByEmpNo, function (i, obj) {
+                        $("#tagTable").append(
+                            '<tr>' +
+                            '<td><i class="fa fa-tag fa-lg"></i>' +
+                            '</td>' +
+                            '<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
+                            '<td style="width: 20%; text-align: right;">' +
+                            '<div class="custom-control custom-checkbox">' +
+                            '<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+                            '<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
+                            '</div>' +
+                            '</td>' +
+                            '<td style="width: 15%; text-align: right;">' +
+                            '<div class="btn-group dropright">' +
+                            '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+                            '<div class="dropdown-menu dropright">' +
+                            '<a class="dropdown-item editTag" href="#">수정</a>' +
+                            '<div class="dropdown-divider"></div>' +
+                            '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</td>' +
+                            '</tr>'
+                        )
+                    })
+                    $.each(data.tagByPjNo, function (i, obj) {
+                        $('#tag' + obj.tag_no).next('label').css("display", "none")
+                        $('#tag' + obj.tag_no).parent().css("display", "none")
+                        $('#tag' + obj.tag_no).parents("td").append(
+                            '<i class="bi bi-dash-square mr-2 disconnectingTagBtn"></i>'
+                        )
+                    })
+                }else {
                     $("#tagTable").append(
-                        '<tr>' +
-                        '<td><i class="fa fa-tag fa-lg"></i>' +
-                        '</td>' +
-                        '<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
-                        '<td style="width: 20%; text-align: right;">' +
-                        '<div class="custom-control custom-checkbox">' +
-                        '<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
-                        '<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
-                        '</div>' +
-                        '</td>' +
-                        '<td style="width: 15%; text-align: right;">' +
-                        '<div class="btn-group dropright">' +
-                        '<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
-                        '<div class="dropdown-menu dropright">' +
-                        '<a class="dropdown-item editTag" href="#">수정</a>' +
-                        '<div class="dropdown-divider"></div>' +
-                        '<a class="dropdown-item deleteTag" href="#">삭제</a>' +
-                        '</div>' +
-                        '</div>' +
-                        '</td>' +
-                        '</tr>'
+                        '<tr><td>생성한 태그가 없습니다.</td></tr>'
                     )
-                })
-                $.each(data.tagByPjNo, function (i, obj) {
-                    $('#tag' + obj.tag_no).next('label').css("display", "none")
-                    $('#tag' + obj.tag_no).parent().css("display", "none")
-                    $('#tag' + obj.tag_no).parents("td").append(
-                        '<i class="bi bi-dash-square mr-2 disconnectingTagBtn"></i>'
-                    )
-                })
+                }
+
 
             }
 

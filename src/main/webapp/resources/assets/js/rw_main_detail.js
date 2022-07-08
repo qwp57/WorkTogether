@@ -112,7 +112,8 @@ function rsDetailView(obj){
 		$('#rwDetail_1 .td').eq(5).html("<a href='/resources/upload_files/"+obj.req_file_change+"'download type='text/example')>"+obj.req_file_origin+"</a>");
 	}
 
-	$('#rwDetail_1 .td').eq(6).text(obj.content)
+	$('#rwDetail_1 .td').eq(6).html(obj.content)
+	
 
 	$('input[name=status_message]').val(obj.status_message);
 	$('#stSelect').val(obj.status).prop("selected", true);
@@ -180,7 +181,8 @@ function rqDetailView(obj){
 		$('#rwDetail_2 .td').eq(7).html("<a href='/resources/upload_files/"+obj.req_file_change+"'download type='text/example')>"+obj.req_file_origin+"</a>");
 	}
 
-	$('#rwDetail_2 .td').eq(8).text(obj.content);
+	$('#rwDetail_2 .td').eq(8).html(obj.content);
+	
 	$('#rwDetail_2 .td').eq(9).text(obj.status_message);
 	if(obj.res_file == null){
 		$('#rwDetail_2 .td').eq(10).text("첨부된 파일이 없습니다.");

@@ -1048,7 +1048,7 @@
             let form = $('#myProfileUpdate')[0];
             let formData = new FormData(form);
 
-            alert(formData);
+            
             $.ajax({
                 url: "/myProfileUpdate.do",
                 type: "post",

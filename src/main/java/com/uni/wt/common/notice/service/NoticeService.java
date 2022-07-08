@@ -261,10 +261,12 @@ public class NoticeService {
     public String deleteNotice(int notice_no, HttpServletRequest request) throws Exception {
 
         Notice n = noticeMapper.selectNotice(notice_no);
+        log.info(n.toString());
         int result = noticeMapper.deleteNotice(notice_no);
         if (result > 0) {
 
             ArrayList<Notice> list = (ArrayList<Notice>) request.getSession().getAttribute("noticeList");
+            log.info("알림 리스트 :{}",list.toString());
             if (list.size() == 1) {
                 list.clear();
             } else {
