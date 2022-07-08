@@ -105,7 +105,7 @@ public class AdminController {
 	
 	//가입 승인 버튼 클릭 -> 사원 상태 값 w -> i
 	@ResponseBody
-	@RequestMapping(value="/adminApproval.do")
+	@RequestMapping("/adminApproval.do")
 	public String adminApproval(int empNo) {
 		log.info("empNo:" + empNo);
 		int result = adminService.adminApproval(empNo);
@@ -165,7 +165,7 @@ public class AdminController {
 	//부서 삭제
 	@ResponseBody
 	@RequestMapping("/deleteDeptList.do")
-	public String deleteDeptList(@RequestParam(value="checkBoxArr[]") List<Integer> checkBoxArr) { //@RequestParam(value="parameter이름[]")List<String> 형으로 받아와야 한다.
+	public String deleteDeptList(@RequestParam(value="checkBoxArr[]") List<Integer> checkBoxArr, @RequestParam(value="checkLevelArr[]") List<Integer> checkLevelArr) { //@RequestParam(value="parameter이름[]")List<String> 형으로 받아와야 한다.
 		//ajax에 보낼 result 선언
 		int result=0;
 		
@@ -215,7 +215,7 @@ public class AdminController {
 		model.addAttribute("pi", pi);
 		model.addAttribute("empList", empList);
 		model.addAttribute("deptList", deptList);
-		
+		log.info("인사관리리스트조회 empList : " + empList);
 		return "admin/employeeManagementView";
 	}
 	
@@ -303,9 +303,9 @@ public class AdminController {
 				sc.setStatus("I");
 			}else if(sl.equals("Q")) {
 				sc.setStatus("Q");
-			}
+			}	
 		}
-		
+
 		log.info("sc : " + sc);
 		
 		//검색했을 때 페이징 처리를 위한 count
@@ -320,7 +320,13 @@ public class AdminController {
 		mv.addObject("empList", empList);
 		mv.addObject("pi", pi);
 		mv.addObject("condition", condition);
-		mv.addObject("keyword", keyword);
+		mv.addObject("keyword", keyword);		
+		mv.addObject("status", sc.getStatus());
+		
+		log.info("검색 empList " + empList);
+		log.info("검색 condition " + condition);
+		log.info("검색 keyword " + keyword);
+		log.info("검색 status " + sc.getStatus());
 		
 		mv.setViewName("admin/employeeManagementView");
 		

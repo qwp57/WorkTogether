@@ -126,7 +126,7 @@
 
 						<div class="mb-3 mt-5 float-right">
 							<button type="submit" class="btn btn-primary">저장</button>
-							<button type="button" class="btn btn-secondary" onclick="history.back()">취소</button>
+							<button type="button" class="btn btn-secondary" onclick="location.href='employeeManagement.do'">취소</button>
 						</div>
 					</form>
 				</div>				

@@ -419,9 +419,9 @@
             text += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
             text += "결재요청 </div>";
         } else if (msgArr[1] == 'EN') {
-            text += "<a href='" + msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
-            text += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
-            text += "가입승인 </div>";
+        	text += "<a href='" + msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
+        	text += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
+        	text += "가입승인 </div>";
         }
 
         text += msgArr[2];
