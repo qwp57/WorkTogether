@@ -387,272 +387,219 @@
 		loadProjects()
 
 
-		$(document).on("click", "#tagSettingBtn", function () {
-			if ($("input:checkbox[name='checkedPj']:checked").length <= 0) {
-				alert("프로젝트를 체크해주세요")
-				return false;
-			}
-			loadTag()
-			$("#tagModal").modal("show")
-		})
 
-
-		$(document).on("click", "#colorSettingBtn", function () {
-			if ($("input:checkbox[name='checkedPj']:checked").length <= 0) {
-				alert("프로젝트를 체크해주세요")
-				return false;
-			}
-			$("#colorModal").modal("show")
-		})
-
-
-		$(document).on("click", ".favoBtn", function (e) {
-			if ($(this).hasClass("listView")) {
-				var $pj_no = $(this).parent("td").prev().children(".colors").find("input[name='pj_no']").val()
-			} else {
-				var $pj_no = $(this).parent(".project__icon").prev().val()
-			}
-			//console.log("pj_no : " + $pj_no)
-			if ($(this).hasClass("favoWhite")) {
-				$(this).removeClass("favoWhite")
-				$(this).addClass("favoYellow")
-				console.log("즐겨찾기 추가할것")
-				insertBookmark($pj_no)
-
-			} else if ($(this).hasClass("favoYellow")) {
-				$(this).removeClass("favoYellow")
-				$(this).addClass("favoWhite")
-				console.log("즐겨찾기 제거할것")
-
-				removeBookmark($pj_no);
-			}
-			e.stopPropagation()
-		})
-
-		function loadTag() {
-			$.ajax({
-				url: '/project/loadTag.do',
-				success: function (list) {
-					$.parseJSON(list);
-					//console.log(list)
-					$("#tagTable").html('')
-					if($.parseJSON(list).length > 0){
-						$.each($.parseJSON(list), function (i, obj) {
-							$("#tagTable").append(
-									'<tr>' +
-									'<td><i class="fa fa-tag fa-lg"></i>' +
-									'</td>' +
-									'<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
-									'<td style="width: 20%; text-align: right;">' +
-									'<div class="custom-control custom-checkbox">' +
-									'<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
-									'<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
-									'</div>' +
-									'</td>' +
-									'<td style="width: 15%; text-align: right;">' +
-									'<div class="btn-group dropright">' +
-									'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
-									'<div class="dropdown-menu dropright">' +
-									'<a class="dropdown-item editTag" href="#">수정</a>' +
-									'<div class="dropdown-divider"></div>' +
-									'<a class="dropdown-item deleteTag" href="#">삭제</a>' +
-									'</div>' +
-									'</div>' +
-									'</td>' +
-									'</tr>'
-							)
-						})
-					}else {
-						$("#tagTable").append(
-								'<tr><td>생성한 태그가 없습니다.</td></tr>'
-						)
-					}
-				}
-
-			});
-		}
-
-		function insertBookmark(pj_no) {
-			$.ajax({
-				url: '/project/insertBookmark.do',
-				data: {
-					pj_no: pj_no
-				},
-				success: function (data) {
-					console.log(data + "성공")
-
-					loadProjects()
-
-				}
-			});
-		}
-
-		function removeBookmark(pj_no) {
-			$.ajax({
-				url: '/project/removeBookmark.do',
-				data: {
-					pj_no: pj_no
-				},
-				success: function (data) {
-					console.log(data + "성공")
-
-					loadProjects()
-
-				}
-			});
-		}
-
-		$(document).on("click", ".pjSettingBtn", function () {
-			$("#totalProjectEditBar").css("display", "block")
-			$(".pjCheck").css("display", "block")
-		})
-
-		$(document).on("click", "#closeTagSettingBtn", function () {
-			$(".pjCheck").css("display", "none")
-		})
-
-		$(document).on("click", ".listViewBtn", function () {
-			$(".largeView").css("display", "none")
-			$(".listView").css("display", "block")
-			$(".listViewBtn").css("color", "black")
-			$(".largeViewBtn").css("color", "")
-		})
-
-		$(document).on("click", ".largeViewBtn", function () {
-			$(".listView").css("display", "none")
-			$(".largeView").css("display", "block")
-			$(".largeViewBtn").css("color", "black")
-			$(".listViewBtn").css("color", "")
-		})
-
-		$(document).on("click", "#editBarClose", function () {
-			closeMenu()
-		})
-
-		$(document).on("click", ".select-clear", function () {
-			$(".pjCheckAll").prop("checked", false)
-			$(".select-count").text("0개 프로젝트가 선택되었습니다.")
-		})
-
-		$(document).on("change", ".pjCheckAll", function () {
-
-			//console.log("체크변경")
-			//console.log($(this).val())
-			if ($(this).hasClass('largeViewCheck')) {
-				$(".listViewTable").find('#listCkedPj' + $(this).val()).prop("checked", $(this).prop("checked"))
-			} else if ($(this).hasClass('listViewCheck')) {
-				$(".projects").find("#largeCkedPj" + $(this).val()).prop("checked", $(this).prop("checked"))
-			}
-			var checkedCnt = $('.pjCheckAll:checked').length / 2;
-			//console.log(checkedCnt)
-			$(".select-count").text(checkedCnt + "개 프로젝트가 선택되었습니다.")
-		})
-
-		$(document).on("click", ".pjCheck", function (e) {
-			e.stopPropagation()
-		})
-
-
-		$(document).on("click", ".tagAddBtn", function () {
-			$("#addTagModal").modal("show")
-		})
-
-		$(document).on("click", ".newPj", function () {
-			$("#makePj").modal("show")
-		})
-
-		$(document).on("click", ".project", function () {
-			//console.log($(this).children('input[name=pj_no]').val())
-			var $pj_no = $(this).children('input[name=pj_no]').val()
-			location.href = "/project/detailPj.do?pj_no=" + $pj_no;
-		})
-		$(document).on("click", ".listViewTable tr", function () {
-			//console.log($(this).find("input[name='pj_no']").val())
-			var $pj_no = $(this).find("input[name='pj_no']").val()
-			location.href = "/project/detailPj.do?pj_no=" + $pj_no;
-		})
-
-		$(document).on("click", ".editTag", function () {
-			$tag_name = $(this).parents("tr").find(".tagName").text()
-			$tag_no = $(this).parents("tr").find(".tagInput").val()
-			console.log($tag_name)
-			console.log($tag_no)
-			$("#tagEditInput").val($tag_name)
-			$("#tagEditModal").modal("show")
-			$("#editTagBtn").click(function () {
-				if ($("#tagEditInput").val() == "") {
-					alert("태그를 입력해주세요.")
-					return false
-				}
-				editTag($tag_no)
-
-			})
-		})
-
-		$(document).on("click", ".deleteTag", function () {
-			if (confirm("삭제하시겠습니까?")) {
-				$tag_no = $(this).parents("tr").find(".tagInput").val()
-				console.log($tag_no)
-				removeTag($tag_no)
-			}
-
-		})
-
-		$("#addTagBtn").click(function () {
-			if ($("#addTagInput").val() == "") {
-				alert("태그를 입력해주세요.")
-				return false
-			}
-			addTag()
-			//console.log($("#addTagInput").val())
-			$("#addTagInput").val("")
-		})
-
-
-		function addTag() {
-			$.ajax({
-				url: '/project/addTag.do',
-				data: {
-					"tag_name": $("#addTagInput").val()
-				},
-				async: false,
-				success: function (data) {
-					console.log(data)
-				}
-			})
-			loadTag()
-		}
-
-		function editTag(tag_no) {
-			//console.log($("#tagEditInput").val())
-			$.ajax({
-				url: '/project/editTag.do',
-				data: {
-					"tag_name": $("#tagEditInput").val(),
-					"tag_no": tag_no
-				},
-				async: false,
-				success: function (data) {
-					//console.log(data)
-				}
-			})
-			loadTag()
-		}
-
-		function removeTag(tag_no) {
-			$.ajax({
-				url: '/project/removeTag.do',
-				data: {
-					"tag_no": tag_no
-				},
-				async: false,
-				success: function (data) {
-					console.log(data)
-				}
-			})
-			loadTag()
-		}
 	})
+	$(document).on("click", "#tagSettingBtn", function () {
+		if ($("input:checkbox[name='checkedPj']:checked").length <= 0) {
+			alert("프로젝트를 체크해주세요")
+			return false;
+		}
+		loadTag()
+		$("#tagModal").modal("show")
+	})
+
+
+	$(document).on("click", "#colorSettingBtn", function () {
+		if ($("input:checkbox[name='checkedPj']:checked").length <= 0) {
+			alert("프로젝트를 체크해주세요")
+			return false;
+		}
+		$("#colorModal").modal("show")
+	})
+
+
+	$(document).on("click", ".favoBtn", function (e) {
+		if ($(this).hasClass("listView")) {
+			var $pj_no = $(this).parent("td").prev().children(".colors").find("input[name='pj_no']").val()
+		} else {
+			var $pj_no = $(this).parent(".project__icon").prev().val()
+		}
+		//console.log("pj_no : " + $pj_no)
+		if ($(this).hasClass("favoWhite")) {
+			$(this).removeClass("favoWhite")
+			$(this).addClass("favoYellow")
+			console.log("즐겨찾기 추가할것")
+			insertBookmark($pj_no)
+
+		} else if ($(this).hasClass("favoYellow")) {
+			$(this).removeClass("favoYellow")
+			$(this).addClass("favoWhite")
+			console.log("즐겨찾기 제거할것")
+
+			removeBookmark($pj_no);
+		}
+		e.stopPropagation()
+	})
+
+	function loadTag() {
+		$.ajax({
+			url: '/project/loadTag.do',
+			success: function (list) {
+				$.parseJSON(list);
+				//console.log(list)
+				$("#tagTable").html('')
+				if($.parseJSON(list).length > 0){
+					$.each($.parseJSON(list), function (i, obj) {
+						$("#tagTable").append(
+								'<tr>' +
+								'<td><i class="fa fa-tag fa-lg"></i>' +
+								'</td>' +
+								'<th class="tagName" style="width: 50%">' + obj.tag_name + '</th>' +
+								'<td style="width: 20%; text-align: right;">' +
+								'<div class="custom-control custom-checkbox">' +
+								'<input type="checkbox" name="tagInput" class="custom-control-input tagInput" value="' + obj.tag_no + '" id="tag' + obj.tag_no + '"> ' +
+								'<label class="custom-control-label" for="tag' + obj.tag_no + '"></label>' +
+								'</div>' +
+								'</td>' +
+								'<td style="width: 15%; text-align: right;">' +
+								'<div class="btn-group dropright">' +
+								'<i class="fa fa-ellipsis-v fa-lg" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 30px;"></i>' +
+								'<div class="dropdown-menu dropright">' +
+								'<a class="dropdown-item editTag" href="#">수정</a>' +
+								'<div class="dropdown-divider"></div>' +
+								'<a class="dropdown-item deleteTag" href="#">삭제</a>' +
+								'</div>' +
+								'</div>' +
+								'</td>' +
+								'</tr>'
+						)
+					})
+				}else {
+					$("#tagTable").append(
+							'<tr><td>생성한 태그가 없습니다.</td></tr>'
+					)
+				}
+			}
+
+		});
+	}
+
+	function insertBookmark(pj_no) {
+		$.ajax({
+			url: '/project/insertBookmark.do',
+			data: {
+				pj_no: pj_no
+			},
+			success: function (data) {
+				console.log(data + "성공")
+
+				loadProjects()
+
+			}
+		});
+	}
+
+	function removeBookmark(pj_no) {
+		$.ajax({
+			url: '/project/removeBookmark.do',
+			data: {
+				pj_no: pj_no
+			},
+			success: function (data) {
+				console.log(data + "성공")
+
+				loadProjects()
+
+			}
+		});
+	}
+
+	$(document).on("click", ".pjSettingBtn", function () {
+		$("#totalProjectEditBar").css("display", "block")
+		$(".pjCheck").css("display", "block")
+	})
+
+	$(document).on("click", "#closeTagSettingBtn", function () {
+		$(".pjCheck").css("display", "none")
+	})
+
+	$(document).on("click", ".listViewBtn", function () {
+		$(".largeView").css("display", "none")
+		$(".listView").css("display", "block")
+		$(".listViewBtn").css("color", "black")
+		$(".largeViewBtn").css("color", "")
+	})
+
+	$(document).on("click", ".largeViewBtn", function () {
+		$(".listView").css("display", "none")
+		$(".largeView").css("display", "block")
+		$(".largeViewBtn").css("color", "black")
+		$(".listViewBtn").css("color", "")
+	})
+
+	$(document).on("click", "#editBarClose", function () {
+		closeMenu()
+	})
+
+	$(document).on("click", ".select-clear", function () {
+		$(".pjCheckAll").prop("checked", false)
+		$(".select-count").text("0개 프로젝트가 선택되었습니다.")
+	})
+
+	$(document).on("change", ".pjCheckAll", function () {
+
+		//console.log("체크변경")
+		//console.log($(this).val())
+		if ($(this).hasClass('largeViewCheck')) {
+			$(".listViewTable").find('#listCkedPj' + $(this).val()).prop("checked", $(this).prop("checked"))
+		} else if ($(this).hasClass('listViewCheck')) {
+			$(".projects").find("#largeCkedPj" + $(this).val()).prop("checked", $(this).prop("checked"))
+		}
+		var checkedCnt = $('.pjCheckAll:checked').length / 2;
+		//console.log(checkedCnt)
+		$(".select-count").text(checkedCnt + "개 프로젝트가 선택되었습니다.")
+	})
+
+	$(document).on("click", ".pjCheck", function (e) {
+		e.stopPropagation()
+	})
+
+
+	$(document).on("click", ".tagAddBtn", function () {
+		$("#addTagModal").modal("show")
+	})
+
+	$(document).on("click", ".newPj", function () {
+		$("#makePj").modal("show")
+	})
+
+	$(document).on("click", ".project", function () {
+		//console.log($(this).children('input[name=pj_no]').val())
+		var $pj_no = $(this).children('input[name=pj_no]').val()
+		location.href = "/project/detailPj.do?pj_no=" + $pj_no;
+	})
+	$(document).on("click", ".listViewTable tr", function () {
+		//console.log($(this).find("input[name='pj_no']").val())
+		var $pj_no = $(this).find("input[name='pj_no']").val()
+		location.href = "/project/detailPj.do?pj_no=" + $pj_no;
+	})
+
+
+
+	$("#addTagBtn").click(function () {
+		if ($("#addTagInput").val() == "") {
+			alert("태그를 입력해주세요.")
+			return false
+		}
+		addTag()
+		//console.log($("#addTagInput").val())
+		$("#addTagInput").val("")
+	})
+
+
+	function addTag() {
+		$.ajax({
+			url: '/project/addTag.do',
+			data: {
+				"tag_name": $("#addTagInput").val()
+			},
+			async: false,
+			success: function (data) {
+				console.log(data)
+			}
+		})
+		loadTag()
+	}
 
 
 	function loadProjects() {
@@ -883,19 +830,6 @@
 		})
 	}
 
-	function setTag(selectedProjects, selectedTags) {
-		$.ajax({
-			url: '/project/setProjectTag.do',
-			data: {
-				"selectedProjects": selectedProjects,
-				"selectedTags": selectedTags
-			},
-			success: function (data) {
-				//console.log(data)
-
-			}
-		})
-	}
 
 </script>
 </body>

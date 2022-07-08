@@ -2,410 +2,420 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.uni.wt.admin.model.dao.AdminMapper">
-    <!-- employee resultMap -->
-    <resultMap type="Employee" id="employeeResultSet">
-        <id property="emp_no" column="EMP_NO"/>
-        <result property="dept_code" column="DEPT_CODE"/>
-        <result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
-        <result property="job_code" column="JOB_CODE"/>
-        <result property="join_date" column="JOIN_DATE"/>
-        <result property="resignation_date" column="RESIGNATION_DATE"/>
-        <result property="file_no" column="FILE_NO"/>
-        <result property="create_date" column="CREATE_DATE"/>
-        <result property="dept_name" column="DEPT_NAME"/>
-        <result property="job_name" column="JOB_NAME"/>
-        <result property="orginal_name" column="ORIGINAL_NAME"/>
-        <result property="change_name" column="CHANGE_NAME"/>
-    </resultMap>
+	<!-- employee resultMap -->
+	<resultMap type="Employee" id="employeeResultSet">
+		<id property="emp_no" column="EMP_NO"/>
+		<result property="dept_code" column="DEPT_CODE"/>
+		<result property="upper_dept_code" column="UPPER_DEPT_CODE"/>
+		<result property="job_code" column="JOB_CODE"/>
+		<result property="join_date" column="JOIN_DATE"/>
+		<result property="resignation_date" column="RESIGNATION_DATE"/>
+		<result property="file_no" column="FILE_NO"/>
+		<result property="create_date" column="CREATE_DATE"/>
+		<result property="dept_name" column="DEPT_NAME"/>
+		<result property="job_name" column="JOB_NAME"/>
+		<result property="orginal_name" column="ORIGINAL_NAME"/>
+		<result property="change_name" column="CHANGE_NAME"/>
+	</resultMap>
+	
+	<!-- dept resultMap -->
+	<resultMap type="Department" id="departmenteResultSet">
+		<id property="deptCode" column="DEPT_CODE"/>
+		<result property="deptName" column="DEPT_NAME"/>
+		<result property="deptLevel" column="DEPT_LEVEL"/>
+		<result property="upperDeptCode" column="UPPER_DEPT_CODE"/>
+	</resultMap>
 
-    <!-- dept resultMap -->
-    <resultMap type="Department" id="departmenteResultSet">
-        <id property="deptCode" column="DEPT_CODE"/>
-        <result property="deptName" column="DEPT_NAME"/>
-        <result property="deptLevel" column="DEPT_LEVEL"/>
-        <result property="upperDeptCode" column="UPPER_DEPT_CODE"/>
-    </resultMap>
+	<!-- 가입승인 -->
+	<!-- 페이지 조회 -->
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE 
+		WHERE STATUS='W'
+		OR STATUS='R'
+	</select>
+	
+	<!-- 가입 승인 대기, 거부 list 조회 -->
+	<select id="selectList" resultMap="employeeResultSet">
+		SELECT 
+			EMP_NO,
+			NAME,
+			ID,
+			PASSWORD,
+			EMAIL,
+			PHONE,
+			TO_CHAR(BIRTH, 'YYYY-MM-DD') AS BIRTH,
+			DEPT_CODE,
+			UPPER_DEPT_CODE,
+			JOB_CODE,
+			TO_CHAR(JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE,
+			RESIGNATION_DATE,
+			STATUS,
+			ADMIN,
+			FILE_NO,
+			TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE,
+			REJECT_REASON
+		FROM EMPLOYEE
+		WHERE STATUS='W'
+		OR STATUS='R'
+		ORDER BY CREATE_DATE DESC
+	</select>
+	<!--  
+	가입 대기 리스트 조회
+	<select id="watingListCount" resultMap="employeeResultSet">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE STATUS='W'		
+	</select>
+	
+	가입 대기 리스트 조회
+	<select id="watingList" resultMap="employeeResultSet">
+		SELECT *
+		FROM EMPLOYEE
+		WHERE STATUS='W'
+		ORDER BY CREATE_DATE DESC
+	</select>
+	-->
+	<!-- 가입 승인 -->
+	<update id="adminApproval" parameterType="_int">
+		UPDATE EMPLOYEE
+		SET STATUS='I'
+		WHERE EMP_NO=#{emp_no}
+		AND NOT STATUS IN ('Q')
+	</update>
+	
+	<!-- 승인 거부 -->
+	<update id="adminReject" parameterType="_int">
+		UPDATE EMPLOYEE
+		SET STATUS='R'
+		WHERE EMP_NO=#{emp_no}
+		AND NOT STATUS IN ('Q')
+	</update>
+	
+	<!-- 거부 사유 작성 -->
+	<update id="rejectReason" parameterType="Map">
+		UPDATE EMPLOYEE
+		SET REJECT_REASON=#{rComment}
+		WHERE EMP_NO=#{empNo}
+	</update>
+	
+	
+	<!-- 부서 관리 -->
+	<!-- 부서 조회 -> 계층형 쿼리 -->
+	<select id="selectUpperList" resultMap="departmenteResultSet">
+		SELECT *
+		FROM DEPARTMENT
+		START WITH UPPER_DEPT_CODE IS NULL
+		CONNECT BY PRIOR DEPT_CODE=UPPER_DEPT_CODE		
+	</select>
+	
+	<!-- 부서 개수 -->
+	<select id="deptCount" resultType="int">
+		SELECT COUNT(*)
+		FROM DEPARTMENT
+		WHERE DEPT_LEVEL=2
+	</select>
+	
+	<!-- 부서 추가 -->
+	<insert id="addDeptList" parameterType="Map">
+		INSERT INTO DEPARTMENT		
+		VALUES(DEPT_SEQ.NEXTVAL, #{addDeptName}, 1, 1)
+	</insert>
+	
+	<!-- 하위 부서 추가 -->
+	<insert id="addUpperDeptList" parameterType="Map">
+		INSERT INTO DEPARTMENT		
+		VALUES(DEPT_SEQ.NEXTVAL, #{addDeptName}, 2, #{upperDeptCode})
+	</insert>
+	
+	<!-- 부서 삭제 -->
+	<delete id="deleteDeptList" parameterType="_int">
+		DELETE FROM 
+		(SELECT *
+		FROM DEPARTMENT
+		WHERE DEPT_CODE 
+		IN (SELECT DEPT_CODE
+		    FROM DEPARTMENT
+		    WHERE UPPER_DEPT_CODE=#{deptCode})
+		    OR DEPT_CODE=#{deptCode})
+	</delete>
+	
+	<!-- 부서명 수정 -->
+	<update id="updateDeptList" parameterType="Map">
+		UPDATE DEPARTMENT
+		SET DEPT_NAME=#{deptName}
+		WHERE DEPT_CODE=#{deptCode}
+	</update>
+	
+	<!-- 인사 관리 -->
+	<!-- 인사 관리 리스트 count 조회 -->
+	<select id="empListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		WHERE STATUS='I'
+		OR STATUS='Q'
+	</select>
+	
+	<!-- 인사 관리 리스트 조회 -->
+	<select id="selectEmpList" resultMap="employeeResultSet">
+		SELECT 
+		    A.EMP_NO,
+			A.NAME,
+			A.ID,
+			A.EMAIL,
+			A.PHONE,
+			TO_CHAR(A.BIRTH, 'YYYY-MM-DD') AS BIRTH,
+			A.DEPT_CODE,
+			A.UPPER_DEPT_CODE,
+			A.JOB_CODE,
+			TO_CHAR(A.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE,
+			A.RESIGNATION_DATE,
+			A.STATUS,
+			A.ADMIN,
+			A.CREATE_DATE,
+			A.REJECT_REASON,
+		    DEPT_NAME,
+		    JOB_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		WHERE STATUS='I'
+		OR STATUS='Q'
+		ORDER BY JOIN_DATE DESC
+	</select>
+	
+	<!-- 사원 추가 -->
+	<insert id="addEmployee" parameterType="Employee">
+		INSERT INTO EMPLOYEE
+		VALUES(EMP_SEQ.NEXTVAL, #{name} ,#{id}, #{password}, #{email}, #{phone}, TO_DATE(#{birth}, 'YYYY-MM-DD'), #{dept_code}, #{upper_dept_code}, #{job_code}, TO_DATE(#{join_date}, 'YYYY-MM-DD'), NULL, 'I', DEFAULT, NULL, SYSDATE, NULL)
+	</insert>
+	
+	<!-- 사원 업데이트 모달 -->
+	<select id="updateView" parameterType="_int" resultMap="employeeResultSet">
+		SELECT 
+		    A.*,
+		    DEPT_NAME,
+		    JOB_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		WHERE (STATUS='I'
+		OR STATUS='Q')
+		AND EMP_NO=#{eno}		
+	</select>
+	
+	<!-- 사원 정보 추가 -> 퇴직일 없는 경우 -->
+	<insert id="updateEmployee" parameterType="Employee">
+		UPDATE EMPLOYEE
+		SET NAME=#{name}, EMAIL=#{email}, PHONE=#{phone}, BIRTH=#{birth}, JOIN_DATE=#{join_date}, DEPT_CODE=#{dept_code}, UPPER_DEPT_CODE=#{upper_dept_code}, JOB_CODE=#{job_code}
+		WHERE EMP_NO=#{emp_no}
+	</insert>
+	
+	<!-- 사원 정보 추가 -> 퇴직일 있는 경우 -->
+	<update id="updateEmployeeResignation" parameterType="Map">
+		UPDATE EMPLOYEE
+		SET NAME=#{emp.name}, EMAIL=#{emp.email}, PHONE=#{emp.phone}, BIRTH=#{emp.birth}, JOIN_DATE=#{emp.join_date}, DEPT_CODE=#{emp.dept_code}, UPPER_DEPT_CODE=#{emp.upper_dept_code}, JOB_CODE=#{emp.job_code}, RESIGNATION_DATE=TO_DATE(#{resignationDate}), STATUS='Q'
+		WHERE EMP_NO=#{emp.emp_no}
+	</update>
+	
+	<!-- 검색 했을 때 searchListCount -->
+	<!-- 
+	<select id="searchListCount" parameterType="EmployeeSearchCondition" resultType="_int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="emp_no != null">
+			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+				<if test="status.equals('I')">
+					AND STATUS='I'
+				</if>
+				<if test="status.equals('Q')">
+					AND STATUS='Q'
+				</if>
+				<if test="!dept_code.equals('none')">
+					AND DEPT_CODE LIKE '%'||{dept_code}||'%'
+				</if>
+				<if test="!job_code.equals('none')">
+					AND JOB_CODE LIKE '%'||#{job_code}||'%'
+				</if>
+			</if>
+			<if test="name != null">
+			AND NAME LIKE '%'||#{name}||'%'
+				<if test="status.equals('I')">
+					AND STATUS='I'
+				</if>
+				<if test="status.equals('Q')">
+					AND STATUS='Q'
+				</if>
+				<if test="!dept_code.equals('none')">
+					AND DEPT_CODE LIKE '%'||#{dept_code}||'%'
+				</if>
+				<if test="!job_code.equals('none')">
+					AND JOB_CODE LIKE '%'||#{job_code}||'%'
+				</if>
+			</if>
+		</trim> 	
+	</select>
+	 -->
+	 <select id="searchListCount" parameterType="EmployeeSearchCondition" resultType="int">
+	 	SELECT COUNT(*)
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="emp_no != null &amp;&amp; !emp_no.equals('')" >
+			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+			</if>
+			<if test="name != null &amp;&amp; !name.equals('')">
+			AND NAME LIKE '%'||#{name}||'%'
+			</if>
+			<if test="dept_name != null &amp;&amp; !dept_name.equals('')">
+			AND DEPT_NAME LIKE '%'||#{dept_name}||'%'
+			</if>
+			<if test="job_name != null &amp;&amp; !job_name.equals('')">
+			AND JOB_NAME LIKE '%'||#{job_name}||'%'
+			</if>			
 
-    <!-- 가입승인 -->
-    <!-- 페이지 조회 -->
-    <select id="selectListCount" resultType="_int">
-        SELECT COUNT(*)
-        FROM EMPLOYEE
-        WHERE STATUS = 'W'
-           OR STATUS = 'R'
-    </select>
-
-    <!-- 가입 승인 대기, 거부 list 조회 -->
-    <select id="selectList" resultMap="employeeResultSet">
-        SELECT *
-        FROM EMPLOYEE
-        WHERE STATUS = 'W'
-           OR STATUS = 'R'
-        ORDER BY CREATE_DATE DESC
-    </select>
-
-    <!-- 가입 대기 리스트 조회 -->
-    <select id="watingListCount" resultMap="employeeResultSet">
-        SELECT COUNT(*)
-        FROM EMPLOYEE
-        WHERE STATUS = 'W'
-    </select>
-
-    <!-- 가입 대기 리스트 조회 -->
-    <select id="watingList" resultMap="employeeResultSet">
-        SELECT *
-        FROM EMPLOYEE
-        WHERE STATUS = 'W'
-        ORDER BY CREATE_DATE DESC
-    </select>
-
-    <!-- 가입 승인 -->
-    <update id="adminApproval" parameterType="_int">
-        UPDATE EMPLOYEE
-        SET STATUS='I'
-        WHERE EMP_NO = #{emp_no}
-          AND NOT STATUS IN ('Q')
-    </update>
-
-    <!-- 승인 거부 -->
-    <update id="adminReject" parameterType="_int">
-        UPDATE EMPLOYEE
-        SET STATUS='R'
-        WHERE EMP_NO = #{emp_no}
-          AND NOT STATUS IN ('Q')
-    </update>
-
-    <!-- 거부 사유 작성 -->
-    <update id="rejectReason" parameterType="Map">
-        UPDATE EMPLOYEE
-        SET REJECT_REASON=#{rComment}
-        WHERE EMP_NO = #{empNo}
-    </update>
-
-
-    <!-- 부서 관리 -->
-    <!-- 부서 조회 -> 계층형 쿼리 -->
-    <select id="selectUpperList" resultMap="departmenteResultSet">
-        SELECT *
-        FROM DEPARTMENT
-        START WITH UPPER_DEPT_CODE IS NULL
-        CONNECT BY PRIOR DEPT_CODE = UPPER_DEPT_CODE
-    </select>
-
-    <!-- 부서 추가 -->
-    <insert id="addDeptList" parameterType="Map">
-        INSERT INTO DEPARTMENT
-        VALUES (DEPT_SEQ.NEXTVAL, #{addDeptName}, 1, 1)
-    </insert>
-
-    <!-- 하위 부서 추가 -->
-    <insert id="addUpperDeptList" parameterType="Map">
-        INSERT INTO DEPARTMENT
-        VALUES (DEPT_SEQ.NEXTVAL, #{addDeptName}, 2, #{upperDeptCode})
-    </insert>
-
-    <!-- 부서 삭제 -->
-    <delete id="deleteDeptList" parameterType="_int">
-        DELETE
-        FROM (SELECT *
-              FROM DEPARTMENT
-              WHERE DEPT_CODE
-                  IN (SELECT DEPT_CODE
-                      FROM DEPARTMENT
-                      WHERE UPPER_DEPT_CODE = #{deptCode})
-                 OR DEPT_CODE = #{deptCode})
-    </delete>
-
-    <!-- 부서명 수정 -->
-    <update id="updateDeptList" parameterType="Map">
-        UPDATE DEPARTMENT
-        SET DEPT_NAME=#{deptName}
-        WHERE DEPT_CODE = #{deptCode}
-    </update>
-
-    <!-- 인사 관리 -->
-    <!-- 인사 관리 리스트 count 조회 -->
-    <select id="empListCount" resultType="_int">
-        SELECT COUNT(*)
-        FROM EMPLOYEE
-        WHERE STATUS = 'I'
-           OR STATUS = 'Q'
-    </select>
-
-    <!-- 인사 관리 리스트 조회 -->
-    <select id="selectEmpList" resultMap="employeeResultSet">
-        SELECT A.EMP_NO,
-               A.NAME,
-               A.ID,
-               A.EMAIL,
-               A.PHONE,
-               TO_CHAR(A.BIRTH, 'YYYY-MM-DD')     AS BIRTH,
-               A.DEPT_CODE,
-               A.UPPER_DEPT_CODE,
-               A.JOB_CODE,
-               TO_CHAR(A.JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE,
-               A.RESIGNATION_DATE,
-               A.STATUS,
-               A.ADMIN,
-               A.CREATE_DATE,
-               A.REJECT_REASON,
-               DEPT_NAME,
-               JOB_NAME
-        FROM EMPLOYEE A
-                 LEFT JOIN DEPARTMENT B ON (A.DEPT_CODE = B.DEPT_CODE)
-                 LEFT JOIN JOB C ON (A.JOB_CODE = C.JOB_CODE)
-        WHERE STATUS = 'I'
-           OR STATUS = 'Q'
-        ORDER BY JOIN_DATE DESC
-    </select>
-
-    <!-- 사원 추가 -->
-    <insert id="addEmployee" parameterType="Employee">
-        INSERT INTO EMPLOYEE
-        VALUES (EMP_SEQ.NEXTVAL, #{name}, #{id}, #{password}, #{email}, #{phone}, TO_DATE(#{birth}, 'YYYY-MM-DD'),
-                #{dept_code}, #{upper_dept_code}, #{job_code}, TO_DATE(#{join_date}, 'YYYY-MM-DD'), NULL, 'I', DEFAULT,
-                NULL, SYSDATE, NULL)
-    </insert>
-
-    <!-- 사원 업데이트 모달 -->
-    <select id="updateView" parameterType="_int" resultMap="employeeResultSet">
-        SELECT A.*,
-               DEPT_NAME,
-               JOB_NAME
-        FROM EMPLOYEE A
-                 LEFT JOIN DEPARTMENT B ON (A.DEPT_CODE = B.DEPT_CODE)
-                 LEFT JOIN JOB C ON (A.JOB_CODE = C.JOB_CODE)
-        WHERE (STATUS = 'I'
-            OR STATUS = 'Q')
-          AND EMP_NO = #{eno}
-    </select>
-
-    <!-- 사원 정보 추가 -> 퇴직일 없는 경우 -->
-    <insert id="updateEmployee" parameterType="Employee">
-        UPDATE EMPLOYEE
-        SET NAME=#{name},
-            EMAIL=#{email},
-            PHONE=#{phone},
-            BIRTH=#{birth},
-            JOIN_DATE=#{join_date},
-            DEPT_CODE=#{dept_code},
-            UPPER_DEPT_CODE=#{upper_dept_code},
-            JOB_CODE=#{job_code}
-        WHERE EMP_NO = #{emp_no}
-    </insert>
-
-    <!-- 사원 정보 추가 -> 퇴직일 있는 경우 -->
-    <update id="updateEmployeeResignation" parameterType="Employee">
-        UPDATE EMPLOYEE
-        SET NAME=#{name},
-            EMAIL=#{email},
-            PHONE=#{phone},
-            BIRTH=#{birth},
-            JOIN_DATE=#{join_date},
-            DEPT_CODE=#{dept_code},
-            UPPER_DEPT_CODE=#{upper_dept_code},
-            JOB_CODE=#{job_code},
-            RESIGNATION_DATE=#{resignation_date},
-            STATUS='Q'
-        WHERE EMP_NO = #{emp_no}
-    </update>
-
-    <!-- 검색 했을 때 searchListCount -->
-    <!--
-    <select id="searchListCount" parameterType="EmployeeSearchCondition" resultType="_int">
-        SELECT COUNT(*)
-        FROM EMPLOYEE
-        <trim prefix="WHERE" prefixOverrides="AND|OR">
-            <if test="emp_no != null">
-            AND EMP_NO LIKE '%'||#{emp_no}||'%'
-                <if test="status.equals('I')">
-                    AND STATUS='I'
-                </if>
-                <if test="status.equals('Q')">
-                    AND STATUS='Q'
-                </if>
-                <if test="!dept_code.equals('none')">
-                    AND DEPT_CODE LIKE '%'||{dept_code}||'%'
-                </if>
-                <if test="!job_code.equals('none')">
-                    AND JOB_CODE LIKE '%'||#{job_code}||'%'
-                </if>
+			<if test="status != null">
+            AND A.STATUS = #{status}
             </if>
-            <if test="name != null">
-            AND NAME LIKE '%'||#{name}||'%'
-                <if test="status.equals('I')">
-                    AND STATUS='I'
-                </if>
-                <if test="status.equals('Q')">
-                    AND STATUS='Q'
-                </if>
-                <if test="!dept_code.equals('none')">
-                    AND DEPT_CODE LIKE '%'||#{dept_code}||'%'
-                </if>
-                <if test="!job_code.equals('none')">
-                    AND JOB_CODE LIKE '%'||#{job_code}||'%'
-                </if>
-            </if>
-        </trim>
-    </select>
-     -->
-    <select id="searchListCount" parameterType="EmployeeSearchCondition" resultType="int">
-        SELECT COUNT(*)
-        FROM EMPLOYEE A
-        LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
-        LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
-        <trim prefix="WHERE" prefixOverrides="AND|OR">
-            <if test="emp_no != null">
-                AND EMP_NO LIKE '%'||#{emp_no}||'%'
-            </if>
-            <if test="name != null">
-                AND NAME LIKE '%'||#{name}||'%'
-            </if>
-            <if test="dept_name != null">
-                AND DEPT_NAME LIKE '%'||#{dept_name}||'%'
-            </if>
-            <if test="job_name != null">
-                AND JOB_NAME LIKE '%'||#{job_name}||'%'
-            </if>
-            <if test="status.equals('I') &amp;&amp; status != null">
-                AND A.STATUS='I'
-            </if>
-            <if test="status.equals('Q') &amp;&amp; status != null">
-                AND A.STATUS='Q'
-            </if>
-        </trim>
-    </select>
-    <!-- 검색 결과 list -->
-    <!--
-    <select id="searchEmpList" parameterType="Map" resultMap="employeeResultSet">
-        SELECT
-            A.*,
-            DEPT_NAME,
-            JOB_NAME
-        FROM EMPLOYEE A
-        LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
-        LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
-        <trim prefix="WHERE" prefixOverrides="AND|OR">
-            <if test="emp_no != null">
-            AND EMP_NO LIKE '%'||#{emp_no}||'%'
-                <if test="status.equals('I')">
-                    AND STATUS='I'
-                </if>
-                <if test="status.equals('Q')">
-                    AND STATUS='Q'
-                </if>
-                <if test="!dept_code.equals('none')">
-                    AND DEPT_CODE LIKE '%'||{dept_code}||'%'
-                </if>
-                <if test="!job_code.equals('none')">
-                    AND JOB_CODE LIKE '%'||#{job_code}||'%'
-                </if>
-            </if>
-            <if test="name != null">
-            AND NAME LIKE '%'||#{name}||'%'
-                <if test="status.equals('I')">
-                    AND STATUS='I'
-                </if>
-                <if test="status.equals('Q')">
-                    AND STATUS='Q'
-                </if>
-                <if test="!dept_code.equals('none')">
-                    AND DEPT_CODE LIKE '%'||#{dept_code}||'%'
-                </if>
-                <if test="!job_code.equals('none')">
-                    AND JOB_CODE LIKE '%'||#{job_code}||'%'
-                </if>
-            </if>
-        </trim>
-        ORDER BY JOIN_DATE DESC
-    </select>
-    -->
-    <select id="searchEmpList" parameterType="EmployeeSearchCondition" resultMap="employeeResultSet">
-        SELECT
-        A.*,
-        DEPT_NAME,
-        JOB_NAME
-        FROM EMPLOYEE A
-        LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
-        LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
-        <trim prefix="WHERE" prefixOverrides="AND|OR">
-            <if test="emp_no != null">
-                AND EMP_NO LIKE '%'||#{emp_no}||'%'
-            </if>
-            <if test="name != null">
-                AND NAME LIKE '%'||#{name}||'%'
-            </if>
-            <if test="dept_name != null">
-                AND DEPT_NAME LIKE '%'||#{dept_name}||'%'
-            </if>
-            <if test="job_name != null">
-                AND JOB_NAME LIKE '%'||#{job_name}||'%'
-            </if>
-            <if test="status != null">
-                AND A.STATUS = #{status}
-            </if>
-        </trim>
-        ORDER BY JOIN_DATE DESC
-    </select>
 
-    <!-- 조직도 -->
-    <!-- 부서 조회 -->
-    <select id="selectDeptList" resultMap="departmenteResultSet">
-        SELECT *
-        FROM DEPARTMENT
-        START WITH UPPER_DEPT_CODE IS NULL
-        CONNECT BY PRIOR DEPT_CODE = UPPER_DEPT_CODE
-    </select>
-
-    <!-- 인사 조회 -->
-    <select id="organizationEmpList" resultMap="employeeResultSet">
-        SELECT A.*,
-               DEPT_NAME,
-               JOB_NAME,
-               CHANGE_NAME
-        FROM EMPLOYEE A
-                 LEFT JOIN DEPARTMENT B ON (A.DEPT_CODE = B.DEPT_CODE)
-                 LEFT JOIN JOB C ON (A.JOB_CODE = C.JOB_CODE)
-                 LEFT JOIN ATTACHMENT D ON (A.FILE_NO = D.FILE_NO)
-        WHERE A.STATUS = 'I'
-        ORDER BY A.JOB_CODE
-    </select>
-
-    <!-- 사원 정보 모달창 -->
-    <select id="empModal" parameterType="int" resultMap="employeeResultSet">
-        SELECT A.*,
-               DEPT_NAME,
-               JOB_NAME,
-               CHANGE_NAME
-        FROM EMPLOYEE A
-                 LEFT JOIN DEPARTMENT B ON (A.DEPT_CODE = B.DEPT_CODE)
-                 LEFT JOIN JOB C ON (A.JOB_CODE = C.JOB_CODE)
-                 LEFT JOIN ATTACHMENT D ON (A.FILE_NO = D.FILE_NO)
-        WHERE A.STATUS = 'I'
-          AND A.EMP_NO = #{emp_no}
-    </select>
-
-    <!-- 부서 선택 모달창 -->
-    <select id="DeptEmpList" parameterType="String" resultMap="employeeResultSet">
-        SELECT A.*,
-               DEPT_NAME,
-               JOB_NAME,
-               CHANGE_NAME
-        FROM EMPLOYEE A
-                 LEFT JOIN DEPARTMENT B ON (A.DEPT_CODE = B.DEPT_CODE)
-                 LEFT JOIN JOB C ON (A.JOB_CODE = C.JOB_CODE)
-                 LEFT JOIN ATTACHMENT D ON (A.FILE_NO = D.FILE_NO)
-        WHERE A.STATUS = 'I'
-          AND B.DEPT_NAME = #{deptName}
-        ORDER BY A.JOB_CODE
-    </select>
-
-    <!-- 부서 선택 부서 리스트 -->
-    <select id="selectDeptEmpList" parameterType="Map" resultMap="departmenteResultSet">
-        SELECT *
-        FROM DEPARTMENT
-        WHERE DEPT_NAME = #{deptName}
-           OR DEPT_CODE = #{upper_dept_code}
-    </select>
+		</trim>
+	 </select>
+	<!-- 검색 결과 list -->
+	<!--  
+	<select id="searchEmpList" parameterType="Map" resultMap="employeeResultSet">
+		SELECT 
+		    A.*,
+		    DEPT_NAME,
+		    JOB_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="emp_no != null">
+			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+				<if test="status.equals('I')">
+					AND STATUS='I'
+				</if>
+				<if test="status.equals('Q')">
+					AND STATUS='Q'
+				</if>
+				<if test="!dept_code.equals('none')">
+					AND DEPT_CODE LIKE '%'||{dept_code}||'%'
+				</if>
+				<if test="!job_code.equals('none')">
+					AND JOB_CODE LIKE '%'||#{job_code}||'%'
+				</if>
+			</if>
+			<if test="name != null">
+			AND NAME LIKE '%'||#{name}||'%'
+				<if test="status.equals('I')">
+					AND STATUS='I'
+				</if>
+				<if test="status.equals('Q')">
+					AND STATUS='Q'
+				</if>
+				<if test="!dept_code.equals('none')">
+					AND DEPT_CODE LIKE '%'||#{dept_code}||'%'
+				</if>
+				<if test="!job_code.equals('none')">
+					AND JOB_CODE LIKE '%'||#{job_code}||'%'
+				</if>
+			</if>
+		</trim>
+		ORDER BY JOIN_DATE DESC
+	</select>
+	-->
+	<select id="searchEmpList" parameterType="EmployeeSearchCondition" resultMap="employeeResultSet">
+		SELECT 
+		    A.*,
+		    DEPT_NAME,
+		    JOB_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="emp_no != null &amp;&amp; !emp_no.equals('')" >
+			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+			</if>
+			<if test="name != null &amp;&amp; !name.equals('')">
+			AND NAME LIKE '%'||#{name}||'%'
+			</if>
+			<if test="dept_name != null &amp;&amp; !dept_name.equals('')">
+			AND DEPT_NAME LIKE '%'||#{dept_name}||'%'
+			</if>
+			<if test="job_name != null &amp;&amp; !job_name.equals('')">
+			AND JOB_NAME LIKE '%'||#{job_name}||'%'
+			</if>			
+			<if test="status != null">
+            AND A.STATUS = #{status}
+            </if>
+		</trim>
+		ORDER BY JOIN_DATE DESC
+	</select>
+	
+	<!-- 조직도 -->
+	<!-- 부서 조회 -->
+	<select id="selectDeptList" resultMap="departmenteResultSet">
+		SELECT *
+		FROM DEPARTMENT
+		START WITH UPPER_DEPT_CODE IS NULL
+		CONNECT BY PRIOR DEPT_CODE=UPPER_DEPT_CODE	
+	</select>
+	
+	<!-- 인사 조회 -->
+	<select id="organizationEmpList" resultMap="employeeResultSet">
+		SELECT 
+			A.*,
+			DEPT_NAME,
+			JOB_NAME,
+			CHANGE_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		LEFT JOIN ATTACHMENT D ON (A.FILE_NO=D.FILE_NO)
+		WHERE A.STATUS='I'	
+		ORDER BY A.JOB_CODE
+	</select>
+	
+	<!-- 사원 정보 모달창 -->
+	<select id="empModal" parameterType="int" resultMap="employeeResultSet">
+		SELECT 
+			A.*,
+			DEPT_NAME,
+			JOB_NAME,
+			CHANGE_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		LEFT JOIN ATTACHMENT D ON (A.FILE_NO=D.FILE_NO)
+		WHERE A.STATUS='I'	
+		AND A.EMP_NO=#{emp_no}
+	</select>
+	
+	<!-- 부서 선택 모달창 -->
+	<select id="DeptEmpList" parameterType="String" resultMap="employeeResultSet">
+		SELECT 
+		    A.*,
+		    DEPT_NAME,
+		    JOB_NAME,
+		    CHANGE_NAME
+		FROM EMPLOYEE A
+		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
+		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
+		LEFT JOIN ATTACHMENT D ON (A.FILE_NO=D.FILE_NO)
+		WHERE A.STATUS='I'
+		AND B.DEPT_NAME=#{deptName}
+		ORDER BY A.JOB_CODE
+	</select>
+	
+	<!-- 부서 선택 부서 리스트 -->
+	<select id="selectDeptEmpList" parameterType="Map" resultMap="departmenteResultSet">
+		SELECT *
+		FROM DEPARTMENT
+		WHERE DEPT_NAME=#{deptName}
+		OR DEPT_CODE=#{upper_dept_code}
+	</select>
 </mapper>
         
