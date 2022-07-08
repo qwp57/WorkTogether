@@ -420,6 +420,8 @@ public class WorkStateController {
 		log.info("상세조회할 휴가 글 번호: {}", vac_no);
 		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
 		Vacation vac = wsService.selectVacationDetail(vac_no);
+		
+		
 		log.info("조회한 글 정보 : {}", vac.toString());
 		
 		//ArrayList<Employee> SupvEmp = empService.selectSupvEmpList(emp);

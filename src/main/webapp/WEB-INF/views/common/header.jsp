@@ -416,12 +416,12 @@
             text += "프로젝트 초대</div>"
         } else if (msgArr[1] == 'AP') {
             text += "<a href='" + msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
-            test += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
-            test += "결재요청 </div>";
+            text += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
+            text += "결재요청 </div>";
         } else if (msgArr[1] == 'EN') {
             text += "<a href='" + msgArr[4] + "' onclick='return deleteNotice(" + msgArr[0] + ");' class='dropdown-item dropdown-item-unread'>";
-            test += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
-            test += "가입승인 </div>";
+            text += "<div class='dropdown-item-desc'><div class='font-weight-bold'>";
+            text += "가입승인 </div>";
         }
 
         text += msgArr[2];
@@ -1048,7 +1048,7 @@
             let form = $('#myProfileUpdate')[0];
             let formData = new FormData(form);
 
-            alert(formData);
+            
             $.ajax({
                 url: "/myProfileUpdate.do",
                 type: "post",
