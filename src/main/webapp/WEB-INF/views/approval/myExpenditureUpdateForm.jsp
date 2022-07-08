@@ -7,7 +7,7 @@
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>지출 결의서 수정</title>
 <style>
 	h2, h3, h4, h5, h6{
 		color: black;
@@ -525,12 +525,12 @@
 				tableTr += '<tr>';
 				tableTr += '<td><input type="date" class="form-control" name="exDateList" tabindex="8" value=' + exArray[key].exDate + '></td>';
 				tableTr += '<td><div class="input-group"><div class="input-group-prepend"><select class="form-control rounded-1" id="exClassification" name="exClassificationList">';
-				tableTr += '<option ${(' + exArray[key].exClassification + ' == "물품 구입비") ? "selected" : "" } value="물품 구입비">물품 구입비</option>';
-				tableTr += '<option ${(' + exArray[key].exClassifica tion + ' == "잡비") ? "selected" : "" } value="잡비">잡비</option>';
-				tableTr += '<option ${(' + exArray[key].exClassification + ' == "회식비") ? "selected" : "" } value="회식비">회식비</option>';	
-				tableTr += '<option ${(' + exArray[key].exClassification + ' == "식비") ? "selected" : "" } value="식비">식비</option>';
-				tableTr += '<option ${(' + exArray[key].exClassification + ' == "교통비") ? "selected" : "" } value="교통비">교통비</option>';
-				tableTr += '<option ${(' + exArray[key].exClassification + ' == "기타") ? "selected" : "" } value="기타">기타</option>';
+				tableTr += '<option ${(' + exArray[key].exClassification + ' == "물품구입비") ? "selected" : ""} value="물품구입비">물품구입비</option>';
+				tableTr += '<option ${(' + exArray[key].exClassification + ' == "잡비") ? "selected" : ""} value="잡비">잡비</option>';
+				tableTr += '<option ${(' + exArray[key].exClassification + ' == "회식비") ? "selected" : ""} value="회식비">회식비</option>';	
+				tableTr += '<option ${(' + exArray[key].exClassification + ' == "식비") ? "selected" : ""} value="식비">식비</option>';
+				tableTr += '<option ${(' + exArray[key].exClassification + ' == "교통비") ? "selected" : ""} value="교통비">교통비</option>';
+				tableTr += '<option ${(' + exArray[key].exClassification + ' == "기타") ? "selected" : ""} value="기타">기타</option>';
 				tableTr += '</select></div></div></td>';
 				tableTr += '<td><input type="text" class="form-control" name="amountList" value=' + exArray[key].amount + '></td>';
 				tableTr += '<td><input type="text" class="form-control" name="exHistoryList" value=' + exArray[key].exHistory + '></td>';

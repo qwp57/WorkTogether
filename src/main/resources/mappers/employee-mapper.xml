@@ -72,10 +72,7 @@
 		BIRTH = TO_DATE(#{birth}, 'YYYY/MM/DD'),
 		PHONE = #{phone},
 		EMAIL = #{email},
-
-	<if test="file_no != null">
 		FILE_NO = #{file_no},
-	</if>
 		JOIN_DATE = #{join_date}
 
 	WHERE EMP_NO = #{emp_no}

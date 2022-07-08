@@ -476,7 +476,7 @@
 				insertTr += "<tr>";
 				insertTr += "<td><input type='date' class='form-control' name='exDateList' tabindex='8'></td>";
 				insertTr += "<td><div class='input-group'><div class='input-group-prepend'><select class='form-control rounded-1' id='exClassification' name='exClassificationList'>";
-				insertTr += "<option value='물품 구입비'>물품 구입비</option><option value='잡비'>잡비</option><option value='회식비'>회식비</option><option value='식비'>식비</option>";
+				insertTr += "<option value='물품구입비'>물품구입비</option><option value='잡비'>잡비</option><option value='회식비'>회식비</option><option value='식비'>식비</option>";
 				insertTr += "<option value='교통비'>교통비</option><option value='기타'>기타</option></select></div></div></td>";
 				insertTr += "<td><input type='text' class='form-control' name='amountList'></td>";
 				insertTr += "<td><input type='text' class='form-control' name='exHistoryList'></td>";
