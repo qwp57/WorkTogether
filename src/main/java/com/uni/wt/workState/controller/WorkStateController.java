@@ -416,10 +416,10 @@ public class WorkStateController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/vacationDetail.do", produces = "application/text; charset =UTF-8")
-	public String vacationDetail(int vac_no,HttpServletRequest request) throws Exception{
+	public String vacationDetail(String vac_no,HttpServletRequest request) throws Exception{
 		log.info("상세조회할 휴가 글 번호: {}", vac_no);
 		Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
-		Vacation vac = wsService.selectVacationDetail(vac_no);
+		Vacation vac = wsService.selectVacationDetail(Integer.parseInt(vac_no));
 		
 		
 		log.info("조회한 글 정보 : {}", vac.toString());

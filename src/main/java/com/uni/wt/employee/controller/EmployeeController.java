@@ -279,6 +279,8 @@ public class EmployeeController {
 		int file_no = fileService.uploadFile(new_file, request, "PR");
 		emp.setFile_no(String.valueOf(file_no));
 	}
+	
+	
 	emp.setUpper_dept_code(empService.getUpperDeptCode(emp.getDept_code()));
 	
 	

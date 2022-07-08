@@ -68,7 +68,7 @@ cursor: pointer;
 <div class="main-content">
 <div style="height: 100px"></div>
 	<a href="/workStateMain.do"><h2>내 근무</h2></a>
-	<c:if test="${loginEmp.job_code != 'J5' && loginEmp.job_code != 'J6'}">
+	<c:if test="${loginEmp.job_code != 'J5' && loginEmp.job_code != 'J6' && loginEmp.job_code != 'J6'}">
 		<a href="/teamWorkState.do"><h2 style="color: gray">구성원 근무</h2></a>
 	</c:if>
 	<span id="beforeWeek">◀</span>

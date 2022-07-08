@@ -911,6 +911,7 @@
                                         <input type="file" id="newFile" name="new_file">
                                         <label for="ex_file" id="deletefile">-</label>
                                         <input type="hidden" id="exfile" name="ex_file">
+                                        <input type="hidden" name="file_no" value="${loginEmp.file_no}">
                                      </span>
 
                             </td>

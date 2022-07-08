@@ -112,7 +112,7 @@ width: 100%;
 <div class="main-content">
 <div class="wrap">
 	<a href="vacationMgtMain.do"><h3 class="menuTitle">내 휴가</h3></a>
-	<c:if test="${loginEmp.job_code != 'J5' && loginEmp.job_code != 'J6'}">
+	<c:if test="${loginEmp.job_code != 'J5' && loginEmp.job_code != 'J6' && loginEmp.job_code != 'J7'}">
 		<a href="teamVacation.do"><h3 class="menuTitle" style="color: gray">구성원 휴가</h3></a>
 	</c:if>
 	<form action="vacationMgtMain.do" method="post" id="selectyearWrap">
@@ -233,7 +233,7 @@ width: 100%;
   					<c:when test="${vac.vcategory_no eq '기타'}">
   						<th width="50px"><i class="fa-solid fa-circle-exclamation icon"></i></th>
   					</c:when>
-  					<c:when test="${vac.vcategory_no eq '리프레시'}">
+  					<c:when test="${vac.vcategory_no eq '리플레쉬'}">
   						<th width="50px"><i class='fa fa-plane icon'></i></th>
   					</c:when>
   					<c:otherwise>
@@ -398,8 +398,8 @@ $('#all-List-0').click(function(){//휴가 예정
 	 		}
 			
 		//	test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
-			test +=	"<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th></tr>";
-			test += "<input type='hidden' name='vac_no' value='"+v.vac_no+"' >"
+			test +=	"<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th>";
+			test += "<input type='hidden' name='vac_no' value='"+v.vac_no+"' ></tr>"
 	 $('.vac-menu-content').eq(0).append(test);
 	 
 		});
@@ -469,8 +469,8 @@ $('#all-List-1').click(function(){//휴가 사용 내역
 	 			test += "<th><th><span style='background-color: red; padding: 10px; border-radius: 5px;color: white;'>승인 거부</span></th>"	
 	 		}
 			//test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
-			test += "<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th></tr>";
-			test += "<input type='hidden' name='vac_no' value='"+v.vac_no+"' >"
+			test += "<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th>";
+			test += "<input type='hidden' name='vac_no' value='"+v.vac_no+"' ></tr>"
 	 
 	 $('.vac-menu-content').eq(1).append(test);
 		});
