@@ -46,7 +46,6 @@
 		<result property="lineLevel" column="LINE_LEVEL"/>
 		<result property="firstApproverNo" column="FIRST_APPROVER_NO"/>
 		<result property="finalApproverNo" column="FINAL_APPROVER_NO"/>
-		<result property="refereeNo" column="REFEREE_NO"/>
 		<result property="progress" column="PROGRESS"/>
 		<result property="firstApprovalDate" column="FIRST_APPROVAL_DATE"/>
 		<result property="lastApprovalDate" column="FINAL_APPROVAL_DATE"/>
@@ -207,7 +206,7 @@
 	<!-- 최초 결재자만 있는 경우 등록 -->
 	<insert id="insertApprovalLine1" parameterType="ApprovalLine">
 		INSERT INTO APPROVAL_LINE
-		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, NULL, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL, NULL, NULL)
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL, NULL, NULL)
 		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
 			SELECT APPL_SEQ.CURRVAL AS LINE_NO FROM DUAL
 		</selectKey>
@@ -216,7 +215,7 @@
 	<!-- 최종 결재자도 있는 경우 등록 -->
 	<insert id="insertApprovalLine2" parameterType="ApprovalLine">
 		INSERT INTO APPROVAL_LINE
-		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, #{finalApproverNo}, NULL, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL, NULL, NULL)
+		VALUES(APPL_SEQ.NEXTVAL, #{approvalNo}, #{lineLevel}, #{firstApproverNo}, #{finalApproverNo}, DEFAULT, #{firstApprovalDate}, #{lastApprovalDate}, NULL, NULL, NULL)
 		<selectKey keyProperty="lineNo" resultType="int" order="AFTER">
 			SELECT APPL_SEQ.CURRVAL AS LINE_NO FROM DUAL
 		</selectKey>
@@ -504,7 +503,10 @@
 	<!-- 공통  문서 업데이트 -->
 	<update id="updateApproval" parameterType="Approval">
 		UPDATE APPROVAL
-		SET RETENTION_PERIOD=#{retentionPeriod}, EMERGENCY=#{emergency}, TITLE=#{title}, FILE_NO=#{fileNo}
+		SET RETENTION_PERIOD=#{retentionPeriod}, EMERGENCY=#{emergency}, TITLE=#{title} 
+		<if test="fileNo != 0">
+		,FILE_NO=#{fileNo}
+		</if>
 		WHERE APPROVAL_NO=#{approvalNo}
 	</update>
 	

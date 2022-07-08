@@ -240,18 +240,6 @@
 			}
 		}
 		
-		/*function updateDeptName(value){
-			var updateList = new Array();
-			var updateName = value.getElementsByName("deptName");
-			//var size = document.getElementsByName("deptName").length;
-			
-			for(var i = 0; i < size; i++){
-				updateList.push(updateName[i].value);
-				console.log(updateList);
-			}
-			
-			return updateList;
-		}*/
 		
 		//체크 박스 선택 후 저장 버튼 클릭 시 이벤트
 		function update_checked(){
@@ -259,21 +247,19 @@
 			var updateList = new Array();
 			var deptNameList = new Array();
 			
-			$("input:checkbox[name=deptCheck]:checked").each(function(){ //반복문을 돌려서 체크 된 것을 뽑음
+			$("input:checkbox[name='deptCheck']:checked").each(function(){ //반복문을 돌려서 체크 된 것을 뽑음
 				checkBoxArr2.push($(this).val()); //체크 된 것을 뽑아서 배열에 push한다. -> push : 배열의 마지막에 새로운 요소를 추가한 후, 변경된 배열의 길이를 반환		 
 				console.log(checkBoxArr2);
 			});
 			
-			$("input:checkbox[name=deptCheck]:checked").each(function(){
+			$("input:checkbox[name='deptCheck']:checked").each(function(){
 				updateList.push($(this).next().val());
 				console.log(updateList);
 			});
 			
-			$("input[name=deptName]").keyup(function() {
-				
+			$('input[name="deptName"]').change(function() {				
 				deptNameList.push($(this).next().val());
-				console.log(deptNameList);
-				
+				console.log(deptNameList);				
 			});
 			
 			var boxCheck = checkBoxArr2.join();

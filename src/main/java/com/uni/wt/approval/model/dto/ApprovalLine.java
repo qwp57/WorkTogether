@@ -16,7 +16,7 @@ public class ApprovalLine {
 	private int finalApproverNo;		//최종 결재자
 	private String finalApproverName;	//최종 결재자 이름
 	private String finalApproverJob;	//최종 결재자 직급
-	private int refereeNo;				//참조자
+	//private int refereeNo;				//참조자
 	//private String approvalSubmission;	
 	private String progress;			//결재 진행
 	private Date firstApprovalDate;		//최초 결재자 결재일

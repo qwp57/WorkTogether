@@ -257,7 +257,7 @@
 								<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ p }">${ p }</a></li>
 							</c:if>
 		              		<%-- keyword가 empty아님 -> 검색하는 경우 --%>
-							<c:if test="${ !empty keyword }">
+							<c:if test="${ !empty keyword && empty status }">
 								<c:url var="searchUrl" value="searchEmp.do">
 									<c:param name="currentPage" value="${ p }"/>
 									<c:param name="condition" value="${ condition }"/>
@@ -271,24 +271,22 @@
 		           		</c:otherwise>
 	           		</c:choose>
 	           </c:forEach>
-	           	       
-	              <!-- 다음 페이지 -->	       
-	              <c:choose>
+	           
+	             <!-- 다음 페이지 -->	       
+	             <c:choose>
 	          		<c:when test="${ pi.currentPage ne pi.maxPage }">
 	          			<!-- 검색하지 않는 경우 -->
 	          			<c:if test="${ empty keyword }">
 	          				<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
 	          			</c:if>
 	          			<!-- 검색 하는 경우 -->
-	          			<c:if test="${ !empty keyword }">
-	          				<c:if test="${ !empty keyword }">
-								<c:url var="searchUrl" value="searchEmp.do">
-									<c:param name="currentPage" value="${pi.currentPage+1  }"/>
-									<c:param name="condition" value="${ condition }"/>
-									<c:param name="keyword" value="${ keyword }"/>
-								</c:url>
-								<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>
-							</c:if>
+	          			<c:if test="${ !empty keyword }">	          				
+							<c:url var="searchUrl" value="searchEmp.do">
+								<c:param name="currentPage" value="${pi.currentPage+1  }"/>
+								<c:param name="condition" value="${ condition }"/>
+								<c:param name="keyword" value="${ keyword }"/>
+							</c:url>
+							<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>							
 	          			</c:if>
 	          		</c:when>
 	          		<c:otherwise>
@@ -413,8 +411,18 @@
 			$("#employeeList tbody tr").click(function(){
 				location.href = "updateView.do?eno=" + $(this).children().eq(0).text();		
 			});
-			
-			$
+					
+			switch("${status}") {
+			case 'I' :
+				$("input:radio[name='statusList']:input[value='I']").attr("checked", true);
+				break;
+			case 'Q' :
+				$("input:radio[name='statusList']:input[value='Q']").attr("checked", true);
+				break;
+			case '' :
+				$("input:radio[name='statusList']:input[value='']").attr("checked", true);
+				break;
+			}		
 		});
 	</script>
 
