@@ -108,7 +108,7 @@ public class RequestWorkController {
 	public String selectRWDetail_Notice(String rno,  RedirectAttributes redirect)throws Exception {
 		log.info("알림 삭제 후 경로 이동");
 		RequestWork r = rwService.selectRWDetail(rno);
-	
+		r.setContent(r.getContent().replaceAll("\n", "<br>"));
 		redirect.addFlashAttribute("r", r);
 		
 		
@@ -243,6 +243,7 @@ public class RequestWorkController {
 	public String selectRWDetail(String rw_no) throws Exception {
 		
 		RequestWork detail = rwService.selectRWDetail(rw_no);
+		detail.setContent(detail.getContent().replaceAll("\n", "<br>"));
 		
 		return new Gson().toJson(detail);
 		
