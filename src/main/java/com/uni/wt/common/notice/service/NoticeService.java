@@ -272,6 +272,7 @@ public class NoticeService {
             } else {
                 for(int i = 0; i<list.size(); i++) {
 
+
                     if(list.get(i).getNotice_no() == n.getNotice_no()) {
 
                         Notice rn = list.remove(i);
@@ -281,6 +282,7 @@ public class NoticeService {
                 }
 //                boolean b = list.remove(n);
 //                log.info("알림 리스트 삭제 결과 : {}", b);
+
             }
 
             log.info(list.toString());

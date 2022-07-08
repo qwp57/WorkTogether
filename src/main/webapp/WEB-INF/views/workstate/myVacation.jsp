@@ -394,7 +394,7 @@ $('#all-List-0').click(function(){//휴가 예정
 	 		}else if(v.status == "A"){
 	 			test += "<th><span style='background-color: skyblue; padding: 10px; border-radius: 5px;color: white;'>승인 완료</span></th>"
 	 		}else{
-	 			test += "<th><th><span style='background-color: red; padding: 10px; border-radius: 5px;color: white;'>승인 거부</span></th>"	
+	 			test += "<th><span style='background-color: red; padding: 10px; border-radius: 5px;color: white;'>승인 거부</span></th>"	
 	 		}
 			
 		//	test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
@@ -466,7 +466,7 @@ $('#all-List-1').click(function(){//휴가 사용 내역
 	 		}else if(v.status == "A"){
 	 			test += "<th><span style='background-color: skyblue; padding: 10px; border-radius: 5px;color: white;'>승인 완료</span></th>"
 	 		}else{
-	 			test += "<th><th><span style='background-color: red; padding: 10px; border-radius: 5px;color: white;'>승인 거부</span></th>"	
+	 			test += "<th><span style='background-color: red; padding: 10px; border-radius: 5px;color: white;'>승인 거부</span></th>"	
 	 		}
 			//test += "<th class='vmenustate'><button class='btn btn-primary btn-lg' onclick='selectVacDetail("+v.vac_no+")'>보기</button></th>"
 			test += "<th class='vmenustate'><button class='btn btn-secondary btn-lg' onclick='deleteVac("+v.vac_no+")'>삭제</button></th>";
@@ -486,9 +486,11 @@ function deleteVac(num) {
 	$('#vacNo').val(num);
 	console.log($('#vacNo').val());
 	
-	alert("정말 삭제하시겠습니까?");
-	
+	if(confirm("정말 삭제하시겠습니까?")){
+		
 	$('#deleteVacForm').submit();
+	}
+	
 	
 }
 
