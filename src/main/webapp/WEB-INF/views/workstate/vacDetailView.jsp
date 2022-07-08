@@ -103,7 +103,7 @@ width: 100%;
 				    <div class="col">
 				      <div class="custom-file" id="filearea">
 						<div class="modal-body-title">첨부파일</div>
-						<a id="downloadFile" href="" download type='text/example'><input type="text" name="oldFile" id="fileOriginName" class="form-control" readonly></input></a>
+						<a id="downloadFile" type='text/example' download><input type="text" name="oldFile" id="fileOriginName" class="form-control" readonly></input></a>
 						
 			        </div>
 			       </div>
@@ -186,9 +186,12 @@ function setList(data){
 		$('#fileOriginName').val(obj.original_name);
 		$('#downloadFile').attr('href', "/resources/upload_files/"+obj.change_name);
 		
+		
 	}else{
 		
 		$('#fileOriginName').val("첨부된 파일이 없습니다.");
+		$('#downloadFile').removeAttr('href');
+		
 	}
 
 	$("#approvalDetail option[value = '"+obj.approval_no+"']").prop("selected", true);
