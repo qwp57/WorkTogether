@@ -90,8 +90,11 @@ $(document).on('click', '#filterTodo', function () {
     changePage(1)
 })
 $(function (){
+    $("#boardView").on('hidden.bs.modal', function () {
+        $(".replyContentEnroll").val('')
+    })
     $('#boardPost').on('hidden.bs.modal', function () {
-        console.log('asfe')
+
         $(this).find('form')[0].reset();
         $(this).find('form')[1].reset();
         $(this).find('form')[2].reset();

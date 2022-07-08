@@ -43,48 +43,53 @@ public class TodoController {
     private Map<String, String> msgMap = new HashMap<String, String>();
 
     @RequestMapping("/insertTodo.do")
-    public String insertTodo(Todo todo, BoardAll boardAll, @RequestParam("pj_no") int pj_no, HttpSession session,
+    public String insertTodo(Todo todo, BoardAll boardAll, @RequestParam("pj_no") int pj_no,
                              RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("할일 : " + todo);
         log.info(todo.getTodo_end());
-        String[] todoContents = todo.getTodo_content().split(",", -1);
-        String[] todoEnds = todo.getTodo_end().split(",", -1);
-        String[] todoFor = todo.getTodo_for().split(",", -1);
-        ArrayList<Todo> todos = new ArrayList<>();
-        for (int i = 0; i < todoContents.length; i++) {
-            Todo tempTodo = new Todo();
-            if (!todoContents[i].equals("")) {
-                tempTodo.setTodo_content(todoContents[i]);
+        if(!todo.getTodo_content().equals("") && !todo.getTodo_title().equals("")){
+            String[] todoContents = todo.getTodo_content().split(",", -1);
+            String[] todoEnds = todo.getTodo_end().split(",", -1);
+            String[] todoFor = todo.getTodo_for().split(",", -1);
+            ArrayList<Todo> todos = new ArrayList<>();
+            for (int i = 0; i < todoContents.length; i++) {
+                Todo tempTodo = new Todo();
+                if (!todoContents[i].equals("")) {
+                    tempTodo.setTodo_content(todoContents[i]);
+                }
+                if (todoEnds.length > 0) {
+                    tempTodo.setTodo_end(todoEnds[i]);
+                }
+                if (todoFor.length > 0) {
+                    tempTodo.setTodo_for(todoFor[i]);
+                }
+                tempTodo.setTodo_title(todo.getTodo_title());
+                todos.add(tempTodo);
             }
-            if (todoEnds.length > 0) {
-                tempTodo.setTodo_end(todoEnds[i]);
+            log.info("확인 : " + todos);
+
+            boardAll.setBoard_type("todo");
+            boardAll.setPj_no(pj_no);
+
+            Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
+            log.info("로그인 유저 : " + emp);
+            boardAll.setWriter(emp.getEmp_no());
+
+            todoService.insertTodo(todos, boardAll);
+
+            for(Todo todo1 : todos){
+                if(!todo1.getTodo_for().equals("")){
+                    HashMap<String, Object> content = new HashMap<String, Object>();
+                    content.put("TODO", todo1);
+                    noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");
+                }
             }
-            if (todoFor.length > 0) {
-                tempTodo.setTodo_for(todoFor[i]);
-            }
-            tempTodo.setTodo_title(todo.getTodo_title());
-            todos.add(tempTodo);
+
+            redirect.addFlashAttribute("msg", "게시물 등록 완료.");
+        } else {
+            redirect.addFlashAttribute("msg", "제목, 할일을 모두 입력해주세요.");
         }
-        log.info("확인 : " + todos);
 
-        boardAll.setBoard_type("todo");
-        boardAll.setPj_no(pj_no);
-
-        Employee emp = (Employee) request.getSession().getAttribute("loginEmp");
-        log.info("로그인 유저 : " + emp);
-        boardAll.setWriter(emp.getEmp_no());
-
-        todoService.insertTodo(todos, boardAll);
-
-        for(Todo todo1 : todos){
-            if(!todo1.getTodo_for().equals("")){
-                HashMap<String, Object> content = new HashMap<String, Object>();
-                content.put("TODO", todo1);
-                noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");
-            }
-        }
-
-        redirect.addFlashAttribute("msg", "게시물 등록 완료.");
 
         return "redirect:/project/detailPj.do?pj_no=" + pj_no;
     }
@@ -150,41 +155,44 @@ public class TodoController {
     public String editTodo(Todo todo, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect, String type, HttpSession session) throws Exception {
 //        log.info("할일 : " + todo.getStatus());
 //        log.info("할일 : " + todo);
-        String[] todoContents = todo.getTodo_content().split(",", -1);
-        String[] todoEnds = todo.getTodo_end().split(",", -1);
-        String[] todoFor = todo.getTodo_for().split(",", -1);
-        String[] todoStatus = todo.getStatus().split(",", -1);
-        //log.info("할일 마감일 길이 : " + todoEnds.length);
-        ArrayList<Todo> todos = new ArrayList<>();
-        for (int i = 0; i < todoContents.length; i++) {
-            Todo tempTodo = new Todo();
-            if (!todoContents[i].equals("")) {
-                tempTodo.setTodo_content(todoContents[i]);
+        if(!todo.getTodo_content().equals("") && !todo.getTodo_title().equals("")) {
+            String[] todoContents = todo.getTodo_content().split(",", -1);
+            String[] todoEnds = todo.getTodo_end().split(",", -1);
+            String[] todoFor = todo.getTodo_for().split(",", -1);
+            String[] todoStatus = todo.getStatus().split(",", -1);
+            //log.info("할일 마감일 길이 : " + todoEnds.length);
+            ArrayList<Todo> todos = new ArrayList<>();
+            for (int i = 0; i < todoContents.length; i++) {
+                Todo tempTodo = new Todo();
+                if (!todoContents[i].equals("")) {
+                    tempTodo.setTodo_content(todoContents[i]);
+                }
+                if (todoEnds.length > 0) {
+                    tempTodo.setTodo_end(todoEnds[i]);
+                }
+                if (todoStatus.length > 0) {
+                    tempTodo.setStatus(todoStatus[i]);
+                }
+                if (todoFor.length > 0) {
+                    tempTodo.setTodo_for(todoFor[i]);
+                }
+                tempTodo.setBoard_no(todo.getBoard_no());
+                tempTodo.setTodo_title(todo.getTodo_title());
+                todos.add(tempTodo);
             }
-            if (todoEnds.length > 0) {
-                tempTodo.setTodo_end(todoEnds[i]);
+            todoService.editTodo(todos);
+            Employee emp = (Employee) session.getAttribute("loginEmp");
+            for (Todo todo1 : todos) {
+                if (!todo1.getTodo_for().equals("")) {
+                    HashMap<String, Object> content = new HashMap<String, Object>();
+                    content.put("TODO", todo1);
+                    noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");
+                }
             }
-            if (todoStatus.length > 0) {
-                tempTodo.setStatus(todoStatus[i]);
-            }
-            if (todoFor.length > 0) {
-                tempTodo.setTodo_for(todoFor[i]);
-            }
-            tempTodo.setBoard_no(todo.getBoard_no());
-            tempTodo.setTodo_title(todo.getTodo_title());
-            todos.add(tempTodo);
+            redirect.addFlashAttribute("msg", "게시물 수정 완료.");
+        } else {
+            redirect.addFlashAttribute("msg", "제목, 할일을 모두 입력해주세요.");
         }
-        todoService.editTodo(todos);
-        Employee emp = (Employee) session.getAttribute("loginEmp");
-        for(Todo todo1 : todos){
-            if(!todo1.getTodo_for().equals("")){
-                HashMap<String, Object> content = new HashMap<String, Object>();
-                content.put("TODO", todo1);
-                noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");
-            }
-        }
-        redirect.addFlashAttribute("msg", "게시물 수정 완료.");
-
         if (type.equals("home")){
             return "redirect:/project/detailPj.do?pj_no=" + pj_no;
         }else if(type.equals("myBoard")){

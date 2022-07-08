@@ -181,7 +181,7 @@
 						</table>
 						
 						<div class="mb-2"><strong>회의 내용</strong></div>
-						<textarea class="" id="summernote" name="meetingContent"></textarea>	
+						<textarea class="" id="appSummernote" name="meetingContent"></textarea>	
 						
 						<div>
 							<div class="mt-5" style="font-size:15px"><strong>첨부파일</strong></div>
@@ -321,7 +321,7 @@
 		       	$("#upfile").click();
 		    });	
 			
-			$('#summernote').summernote({
+			$('#appSummernote').summernote({
 	            placeholder: '내용을 입력해주세요',
 	            tabsize: 2,
 	            height: 500,
@@ -334,7 +334,7 @@
 	                ['color', ['color']],
 	                ['ul', 'ol', 'paragraph'],
 	                ['table', ['table']],
-	                ['insert', ['link', 'picture']],
+	                ['insert', ['link']],
 	            ]
 	        });
 			 

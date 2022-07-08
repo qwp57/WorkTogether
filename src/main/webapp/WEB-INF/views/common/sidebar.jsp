@@ -67,7 +67,7 @@
               </li>
               <li class="nav-item">
                 <a href="/project/myBoard.do" class="nav-link "><i class="bi bi-file-earmark-person-fill"></i>
- <span>내가 쓴 게시글</span></a>
+ <span>내가 쓴 게시물</span></a>
               </li>
        
               <li class="nav-item ">

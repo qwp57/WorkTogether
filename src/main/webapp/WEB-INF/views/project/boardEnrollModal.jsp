@@ -124,9 +124,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -134,7 +131,7 @@
                                     class="col-form-label text-md-right col-10 col-md-3 col-lg-3"><i
                                     class="bi bi-person fa-2x"></i></label>
                             <div class="col-sm-12 col-md-7">
-                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 추가" readonly style="background-color: white; border: 0px white;">
+                                <input type="text" id="addPeople" class="form-control" placeholder="참석자 초대" readonly style="background-color: white; border: 0px white;">
                             </div>
                         </div>
                         <div class="form-group row mb-4">
@@ -245,3 +242,24 @@
 
     </div>
 </div>
+<script>
+   // function insertPost(){
+   //     if($("#boardPost").find("input[name=post_title]").val() == ''){
+   //         alert("제목을 입력하세요.")
+   //     }else if($("#boardPost").find("textarea[name=post_content]").val() == ''){
+   //        alert("내용을 입력하세요.")
+   //     }else {
+   //         $("#enrollPost").submit()
+   //     }
+   // }
+   // function insertSch(){
+   //     if($("#boardPost").find("input[name=sch_title]").val() == ''){
+   //         alert("제목을 입력하세요.")
+   //     }else if($("#boardPost").find("input[name=sch_start]").val() == '' || $("#boardPost").find("input[name=sch_end]").val() == ''){
+   //         alert("날짜을 입력하세요.")
+   //     }else {
+   //         console.log($("#boardPost").find("input[name=sch_title]").val())
+   //         $("#enrollSch").submit()
+   //     }
+   // }
+</script>
