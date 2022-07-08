@@ -73,7 +73,7 @@
 		PHONE = #{phone},
 		EMAIL = #{email},
 		FILE_NO = #{file_no},
-		JOIN_DATE = #{join_date}
+		JOIN_DATE = TO_DATE(#{join_date}, 'YYYY/MM/DD')
 
 	WHERE EMP_NO = #{emp_no}
 	</update>
