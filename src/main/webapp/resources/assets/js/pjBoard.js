@@ -43,7 +43,7 @@ $(document).on('click', '.removeEmp', function () {
     //console.log($("#postForArea").html())
     if ($("#postForArea").html() == '') {
         $(".postFor").css("display", "inline-block")
-        console.log('ff')
+        //console.log('ff')
     }
     if ($("input[name=sch_attendee]").length == 0) {
         $("#addPeople").css("display", "block")

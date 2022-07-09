@@ -936,29 +936,19 @@
     $(document).on('click', '.boardDeleteBtn', function () {
         if (checkStored()) {
             if (confirm("삭제하시겠습니까?")) {
-                var form = document.createElement('form'); // 폼객체 생성
-                var obj1;
-                var obj2;
-                var obj3;
-                obj1 = document.createElement('input'); // 태그명
-                obj1.setAttribute('type', 'text'); // 속성
-                obj1.setAttribute('name', 'board_no');
-                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val());
-                form.appendChild(obj1);
-                obj2 = document.createElement('input');
-                obj2.setAttribute('type', 'text');
-                obj2.setAttribute('name', 'pj_no');
-                obj2.setAttribute('value', ${pj.pj_no});
-                form.appendChild(obj2);
-                obj3 = document.createElement('input');
-                obj3.setAttribute('type', 'text');
-                obj3.setAttribute('name', 'type');
-                obj3.setAttribute('value', 'home');
-                form.appendChild(obj3);
-                form.setAttribute('method', 'post');
-                form.setAttribute('action', "/project/deleteBoard.do");
-                document.body.appendChild(form);
-                form.submit();
+                console.log('진입')
+                $.ajax({
+                    type: 'POST',
+                    url: '/project/deleteBoard.do',
+                    data: {
+                        "pj_no": ${pj.pj_no},
+                        "board_no": $(this).parent().find(".detailViewBoard_no").val()
+                    },success: function () {
+                        $("#boardView").modal("hide")
+                        loadBoards()
+                        alert("게시물 삭제 완료")
+                    }
+                })
             }
         }
     })

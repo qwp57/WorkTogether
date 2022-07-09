@@ -458,26 +458,19 @@ public class ProjectController {
         m.addAttribute("pjMember", pjMember);
         return "project/detailPj";
     }
-
+    @ResponseBody
     @RequestMapping("/deleteBoard.do")
     public String deleteBoard(RedirectAttributes redirect, int board_no, int pj_no, String type, ProjectFile projectFile) throws Exception {
         log.info("board_no : " + board_no);
         boardAllService.deleteBoard(board_no);
         if (projectFile.getFile_no() > 0) {
+            log.info("프로젝트파일 : {}",projectFile.toString());
             projectFileService.deleteFile(projectFile);
         }
 
         redirect.addFlashAttribute("msg", "게시물 삭제 완료.");
 
-        if (type.equals("calendar")) {
-            return "redirect:/project/detailCalendar.do?pj_no=" + pj_no;
-        } else if (type.equals("home")) {
-            return "redirect:/project/detailPj.do?pj_no=" + pj_no;
-        } else if (type.equals("myBoard")) {
-            return "redirect:/project/myBoard.do";
-        } else {
-            return "redirect:/project/allCalendar.do";
-        }
+       return "게시물 삭제 완료";
     }
 
     @RequestMapping("/editPj.do")

@@ -421,8 +421,7 @@
 <%--파일관련--%>
 <script>
 
-    var input = $('.checkAllArea').find("input[type=checkbox]");
-    var allLength = input.length;
+    var allLength = $('.checkAllArea').find("input[type=checkbox]").length;
 
     $(document).on("click", "#checkAll", function () {
         if ($("#checkAll").is(":checked")) {
@@ -505,19 +504,19 @@
                 if (confirm("선택한 파일을 삭제하시겠습니까?")) {
                     // 파일번호를 배열에 저장
                     var check = $("input[name=file_no]:checked")
-                    var arr = []
+                    var fileNoArr = []
                     $(check).each(function (index) {
-                        arr.push($(this).val())
+                        fileNoArr.push($(this).val())
                     })
                     console.log(arr)
-                    if (arr.length > 0) {
+                    if (fileNoArr.length > 0) {
                         $.ajax({
                             url: "/project/deleteFile.do",
                             type: "post",
                             data: {
-                                "file_no": arr
+                                "file_no": fileNoArr
                             },
-                            success: function (data) {
+                            success: function () {
                                 check.parents(".file").remove()
                                 checkFileList()
                                 alert("삭제되었습니다.")
@@ -550,7 +549,6 @@
 
     $(".sortDate").click(function () {
         let arrow = $(this).children().html()
-        let pno = $('#thispno').val()
         if (arrow === "↓") {
             $.ajax({
                 url: "/project/fileSort.do",
