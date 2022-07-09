@@ -2,12 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+<html>
+<title>인사 관리</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
-<html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 	h3,h4,h5,h6{
 		color: black;
@@ -179,11 +179,12 @@
 	          				<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
 	          			</c:if>
 	          			<!-- 검색하는 경우 -->
-	          			<c:if test="${ !empty keyword }">
+	          			<c:if test="${ !empty keyword }">	
 	          				<c:url var="searchUrl" value="searchEmp.do">
 							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
 							<c:param name="condition" value="${ condition }"/>
-							<c:param name="keyword" value="${ keyword }"/>							
+							<c:param name="keyword" value="${ keyword }"/>	
+							<c:param name="statusList" value="${ statusList }"/>							
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
 	          			</c:if>
@@ -202,11 +203,12 @@
 								<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ p }">${ p }</a></li>
 							</c:if>
 		              		<%-- keyword가 empty아님 -> 검색하는 경우 --%>
-							<c:if test="${ !empty keyword && empty status }">
+							<c:if test="${ !empty keyword  }">
 								<c:url var="searchUrl" value="searchEmp.do">
 									<c:param name="currentPage" value="${ p }"/>
 									<c:param name="condition" value="${ condition }"/>
-									<c:param name="keyword" value="${ keyword }"/>							
+									<c:param name="keyword" value="${ keyword }"/>
+									<c:param name="statusList" value="${ statusList }"/>							
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
 							</c:if>
@@ -225,11 +227,12 @@
 	          				<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
 	          			</c:if>
 	          			<!-- 검색 하는 경우 -->
-	          			<c:if test="${ !empty keyword }">	          				
+	          			<c:if test="${ !empty keywordn }">	          				
 							<c:url var="searchUrl" value="searchEmp.do">
 								<c:param name="currentPage" value="${pi.currentPage+1  }"/>
 								<c:param name="condition" value="${ condition }"/>
 								<c:param name="keyword" value="${ keyword }"/>
+								<c:param name="statusList" value="${ statusList }"/>
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>							
 	          			</c:if>
@@ -356,8 +359,9 @@
 			$("#employeeList tbody tr").click(function(){
 				location.href = "updateView.do?eno=" + $(this).children().eq(0).text();		
 			});
-					console.log('${status}')
-			switch("${status}") {
+			console.log('${statusList }')
+			
+			switch('${status}') {
 			case 'I' :
 				$("input:radio[name='statusList']:input[value='I']").attr("checked", true);
 				break;
@@ -367,7 +371,10 @@
 			case '' :
 				$("input:radio[name='statusList']:input[value='']").attr("checked", true);
 				break;
-			}		
+			}	
+				
+			
+				
 		});
 	</script>
 

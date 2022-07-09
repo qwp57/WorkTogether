@@ -49,7 +49,7 @@ public interface ApprovalService {
 	ArrayList<Approval> selectDraftList(int emp_no, PageInfo pi) throws Exception;
 
 	int searchListCount(Map<String, Object> map) throws Exception;
-
+	
 	ArrayList<Approval> searchDraftList(Map<String, Object> map, PageInfo pi) throws Exception;
 
 	Approval selectApproval(int approvalNo) throws Exception;
@@ -119,6 +119,8 @@ public interface ApprovalService {
 	int draftWaitingListCount(int emp_no) throws Exception;
 
 	ArrayList<Approval> selectDraftWaitingList(int emp_no, PageInfo pi);
+
+
 
 	
 

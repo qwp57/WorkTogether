@@ -104,9 +104,10 @@ public class ApprovalController {
 	//기안 문서함 검색
 	@RequestMapping("/searchDraft.do")
 	public String draftSearchList(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model, 
-								  String condition, String keyword, ApprovalSearchCondition asc) throws Exception {
+								  String condition, String keyword, ApprovalSearchCondition asc, @RequestParam(value="sortCondition", required=false) String sortCondition) throws Exception {
 		log.info("condition : " + condition);
 		log.info("keyword : " + keyword);
+		log.info("sortCondition : " + sortCondition);
 		
 		//로그인한 사람의 emp 정보를 가지고 온다.
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
@@ -129,6 +130,7 @@ public class ApprovalController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("asc", asc);
 		map.put("emp_no", emp.getEmp_no());
+		map.put("sortCondition", sortCondition);		
 		
 		int listCount = approvalService.searchListCount(map);
 		log.info("검색 페이지 글 수 : " + listCount);
@@ -142,6 +144,7 @@ public class ApprovalController {
 		model.addAttribute("pi", pi);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("condition", condition);
+		model.addAttribute("sortCondition", sortCondition);
 		
 		return "approval/draftDocumentListView";
 	}
@@ -169,7 +172,7 @@ public class ApprovalController {
 	//결재 문서함 검색
 	@RequestMapping("/searchApp.do")
 	public String appSearchList(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model, 
-								String condition, String keyword, ApprovalSearchCondition asc) throws Exception {
+								String condition, String keyword, ApprovalSearchCondition asc, @RequestParam(value="sortCondition", required=false) String sortCondition) throws Exception {
 		//로그인한 사람 정보 가지고 온다.
 		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
 		
@@ -193,6 +196,7 @@ public class ApprovalController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("asc", asc);
 		map.put("emp_no", emp.getEmp_no());
+		map.put("sortCondition", sortCondition);
 		
 		int listCount = approvalService.searchAppListCount(map);
 		
@@ -205,6 +209,7 @@ public class ApprovalController {
 		model.addAttribute("appList", appList);
 		model.addAttribute("keyword", keyword);
 		model.addAttribute("condition", condition);
+		model.addAttribute("sortCondition", sortCondition);
 		
 		return "approval/approvalDocumentListView";
 	}
