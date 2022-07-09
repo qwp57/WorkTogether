@@ -116,10 +116,10 @@
 								<!-- 검색 키워드 선택 토글 -->
 								<div class="input-group-prepend">
 									<select class="form-control rounded-1" id="searchSelect" name="condition">
-										<option ${(param.condition == "emp_no") ? "selected" : "" } value="emp_no">사번</option>
-										<option ${(param.condition == "name") ? "selected" : "" } value="name">이름</option>		
-										<option ${(param.condition == "dept_name") ? "selected" : "" } value="dept_name">팀</option>
-										<option ${(param.condition == "job_name") ? "selected" : "" } value="job_name">직급</option> 								
+										<option ${(condition == "emp_no") ? "selected" : "" } value="emp_no">사번</option>
+										<option ${(condition == "name") ? "selected" : "" } value="name">이름</option>		
+										<option ${(condition == "dept_name") ? "selected" : "" } value="dept_name">팀</option>
+										<option ${(condition == "job_name") ? "selected" : "" } value="job_name">직급</option> 								
 									</select>
 								</div>
 									
@@ -184,7 +184,7 @@
 							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
 							<c:param name="condition" value="${ condition }"/>
 							<c:param name="keyword" value="${ keyword }"/>	
-							<c:param name="statusList" value="${ statusList }"/>							
+							<c:param name="status" value="${ status }"/>							
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
 	          			</c:if>
@@ -208,7 +208,7 @@
 									<c:param name="currentPage" value="${ p }"/>
 									<c:param name="condition" value="${ condition }"/>
 									<c:param name="keyword" value="${ keyword }"/>
-									<c:param name="statusList" value="${ statusList }"/>							
+									<c:param name="status" value="${ status }"/>							
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
 							</c:if>
@@ -227,12 +227,12 @@
 	          				<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
 	          			</c:if>
 	          			<!-- 검색 하는 경우 -->
-	          			<c:if test="${ !empty keywordn }">	          				
+	          			<c:if test="${ !empty keyword }">	          				
 							<c:url var="searchUrl" value="searchEmp.do">
 								<c:param name="currentPage" value="${pi.currentPage+1  }"/>
 								<c:param name="condition" value="${ condition }"/>
 								<c:param name="keyword" value="${ keyword }"/>
-								<c:param name="statusList" value="${ statusList }"/>
+								<c:param name="status" value="${ status }"/>
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>							
 	          			</c:if>
@@ -361,7 +361,7 @@
 			});
 			console.log('${statusList }')
 			
-			switch('${status}') {
+			switch("${status}") {
 			case 'I' :
 				$("input:radio[name='statusList']:input[value='I']").attr("checked", true);
 				break;
