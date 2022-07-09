@@ -275,6 +275,7 @@ public class AdminController {
 	
 	//사원 검색
 	@RequestMapping("/searchEmp.do")
+
 	public ModelAndView searchEmp(EmployeeSearchCondition sc, String condition, String keyword, ModelAndView mv, @RequestParam(value="status", required=false )String status,
 								@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage) throws Exception {
 		log.info("sc : " + sc);
@@ -297,7 +298,17 @@ public class AdminController {
 			sc.setJob_name(keyword);
 			break;
 		}
-	
+		
+//
+//		for(String sl : statusList) {
+//			if(sl.equals("I")) {
+//				sc.setStatus("I");
+//			}else if(sl.equals("Q")) {
+//				sc.setStatus("Q");
+//			}
+//		}
+		sc.setStatus(status);
+
 		log.info("sc : " + sc);		
 		//검색했을 때 페이징 처리를 위한 count
 		int listCount = adminService.searchListCount(sc);
