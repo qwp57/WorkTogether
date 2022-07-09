@@ -554,7 +554,10 @@
                     setList(result.list)
                     setpi(result.pi);
                 }else {
-                    //$(".boardTable").html('작성된 게시물이 없습니다.')
+                    $(".boardTable").html(
+                        '<div style="height: 50px; margin-top: 30px;">작성된 게시물이 없습니다.</div>'
+                        //'<tr colspan="6"><th>작성한 게시물이 없습니다.</th></tr>'
+                    )
                 }
             }
         })

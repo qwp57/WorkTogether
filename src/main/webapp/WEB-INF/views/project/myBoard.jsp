@@ -12,7 +12,8 @@
 
 
     <%-- 카카오맵 api--%>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=06989ef7025ad30be2fddb6e0d28320b&libraries=services"></script>
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=06989ef7025ad30be2fddb6e0d28320b&libraries=services"></script>
 
     <link
             href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
@@ -92,7 +93,6 @@
         .color-8 {
             background: gray;
         }
-
 
 
         #postTodo {
@@ -309,11 +309,14 @@
                 // console.log(result)
                 let data = JSON.parse(result);
                 console.log(data);
-                if(data.list.length > 0){
+                if (data.list.length > 0) {
                     setList(data.list, 'myBoard')
                     setpi(data.pi);
-                }else {
-                    //$(".boardTable").html('작성한 게시물이 없습니다.')
+                } else {
+                    $(".boardTable").html(
+                        '<div style="height: 50px; margin-top: 30px;">작성한 게시물이 없습니다.</div>'
+                        //     '<tr colspan="7"><th>작성한 게시물이 없습니다.</th></tr>'
+                    )
                 }
 
                 loadPjColor()
@@ -420,13 +423,13 @@
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
-                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        } else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD ')
                                 + moment(list.sch.sch_start).format('LT') + ' ~ '
                                 + moment(list.sch.sch_end).format('LT (ddd)')
                             )
-                        }  else {
+                        } else {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
                             )
@@ -555,7 +558,6 @@
     }
 
 
-
     $(document).on('click', '.addReplyBtn', function () {
         if (${pj.reply_power == 'Y'} &&
         ${pjMember.admin == 'N'})
@@ -627,8 +629,8 @@
 </script>
 <%--카카오맵--%>
 <script>
-    $(function (){
-        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+    $(function () {
+        var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
                 center: new kakao.maps.LatLng(37.498971671111775, 127.03287470164285), // 지도의 중심좌표
@@ -637,7 +639,7 @@
         // 지도를 생성합니다
         var map = new kakao.maps.Map(mapContainer, mapOption);
 
-        $("#kakaoMapSearch").keyup(function(){
+        $("#kakaoMapSearch").keyup(function () {
             // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
 
             // 장소 검색 객체를 생성합니다
@@ -649,6 +651,7 @@
             // 키워드 검색 완료 시 호출되는 콜백함수 입니다
 
         });
+
         function placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
