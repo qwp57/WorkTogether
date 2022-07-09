@@ -269,10 +269,10 @@
 			<if test="job_name != null &amp;&amp; !job_name.equals('')">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status != null">
+			<if test="status != null &amp;&amp; status != ''">
             AND A.STATUS = #{status}
             </if>	
-            <if test="status == null">
+            <if test="status == null &amp;&amp; status == ''">
             AND (A.STATUS='I'
 			OR STATUS='Q')
             </if>		

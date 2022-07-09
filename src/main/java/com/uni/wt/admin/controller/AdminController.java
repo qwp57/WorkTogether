@@ -275,12 +275,13 @@ public class AdminController {
 	
 	//사원 검색
 	@RequestMapping("/searchEmp.do")
-	public ModelAndView searchEmp(EmployeeSearchCondition sc, String condition, String keyword, ModelAndView mv, @RequestParam(value="statusList", required=false )String statusList,
+
+	public ModelAndView searchEmp(EmployeeSearchCondition sc, String condition, String keyword, ModelAndView mv, @RequestParam(value="status", required=false )String status,
 								@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage) throws Exception {
 		log.info("sc : " + sc);
 		log.info("condition : " + condition);
 		log.info("keyword : " + keyword);
-		log.info("statusList : " + statusList);
+		log.info("statusList : " + status);
 		
 		//받아온 condition이 무엇이냐에 따라 어디에 set해주냐가 달라짐
 		switch(condition) {
@@ -306,7 +307,8 @@ public class AdminController {
 //				sc.setStatus("Q");
 //			}
 //		}
-		sc.setStatus(statusList);
+		sc.setStatus(status);
+
 		log.info("sc : " + sc);		
 		//검색했을 때 페이징 처리를 위한 count
 		int listCount = adminService.searchListCount(sc);
@@ -321,12 +323,12 @@ public class AdminController {
 		mv.addObject("pi", pi);
 		mv.addObject("condition", condition);
 		mv.addObject("keyword", keyword);		
-		mv.addObject("statusList", statusList);
 		mv.addObject("status", sc.getStatus());
 		
 		log.info("검색 empList " + empList);
 		log.info("검색 condition " + condition);
 		log.info("검색 keyword " + keyword);
+		
 		
 		mv.setViewName("admin/employeeManagementView");
 		
