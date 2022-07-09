@@ -133,7 +133,7 @@
         $(this).css("display", "none")
         $(this).next().css("display", "none")
       }else {
-        console.log($(this).next().html())
+        //console.log($(this).next().html())
         $(this).removeAttr("style")
         $(this).next().removeAttr("style")
         // console.log($(this).text())
@@ -149,7 +149,7 @@
         $(this).css("display", "none")
         $(this).next().css("display", "none")
       }else {
-        console.log($(this).next().html())
+        //console.log($(this).next().html())
         $(this).removeAttr("style")
         $(this).next().removeAttr("style")
         // console.log($(this).text())

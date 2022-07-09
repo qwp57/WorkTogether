@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Transactional(rollbackFor = Exception.class)
 @Slf4j
@@ -21,6 +23,8 @@ public class TodoServiceImpl implements TodoService {
     private BoardAllMapper boardAllMapper;
     @Autowired
     private TodoMapper todoMapper;
+
+    private Map<String, Object> paramMap = new HashMap<String, Object>();
 
     @Override
     public void insertTodo(ArrayList<Todo> todo, BoardAll boardAll) throws Exception {
@@ -46,20 +50,17 @@ public class TodoServiceImpl implements TodoService {
     public ArrayList<Todo> detailView(int board_no) throws Exception {
         return todoMapper.detailView(board_no);
     }
+    
 
     @Override
-    public void completeTodo(int todo_no) throws Exception {
-        int result = todoMapper.completeTodo(todo_no);
-        if (result < 0) {
-            throw new Exception("할일 완료 실패");
-        }
-    }
+    public void changeTodo(int todo_no, String todoStatus) throws Exception {
+        paramMap.put("todo_no", todo_no);
+        paramMap.put("todoStatus", todoStatus);
 
-    @Override
-    public void uncompleteTodo(int todo_no) throws Exception {
-        int result = todoMapper.uncompleteTodo(todo_no);
+        int result = todoMapper.changeTodo(paramMap);
+
         if (result < 0) {
-            throw new Exception("할일 미완료 실패");
+            throw new Exception("할일 변경 실패");
         }
     }
 

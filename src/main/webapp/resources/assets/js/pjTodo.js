@@ -7,34 +7,28 @@ $(document).on('change', '.todoDue', function () {
 })
 
 $(document).on('click', '.ckedInput', function () {
+    var todoStatus;
     if(checkStored()) {
         if ($(this).is(":checked")) {
-            $.ajax({
-                url: '/todo/completeTodo.do',
-                data: {
-                    "todo_no": $(this).val()
-                },
-                success: function (data) {
-                    console.log(data)
-
-                }
-            })
+            todoStatus = "Y"
             $(this).parent().next().children(".ckedTodo").addClass("underline")
         } else {
-            $.ajax({
-                url: '/todo/uncompleteTodo.do',
-                data: {
-                    "todo_no": $(this).val()
-                },
-                success: function (data) {
-                    console.log(data)
-
-                }
-            })
+            todoStatus = "N"
             $(this).parent().next().children(".ckedTodo").removeClass("underline")
         }
+        $.ajax({
+            url: '/todo/changeTodo.do',
+            data: {
+                "todo_no": $(this).val(),
+                "todoStatus": todoStatus
+            },
+            success: function (data) {
+                console.log(data)
 
+            }
+        })
         var percent = $(".ckedInput:checked").length / $(".ckedInput").length * 100
+        $("#todoCompleteCount").html($(".ckedInput:checked").length + "&nbsp;")
         $("#todoCompletePercent").html(Math.floor(percent) + '%')
         $("#todoBar").attr("data-width", percent + '%;')
         $("#todoBar").attr("style", 'width:' + percent + '%;')

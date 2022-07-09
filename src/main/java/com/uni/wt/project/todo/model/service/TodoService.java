@@ -10,9 +10,7 @@ public interface TodoService {
 
     ArrayList<Todo> detailView(int board_no) throws Exception;
 
-    void completeTodo(int todo_no) throws Exception;
-
-    void uncompleteTodo(int todo_no) throws Exception;
+    void changeTodo(int todo_no, String todoStatus) throws Exception;
 
     int getTodoPercent(int board_no) throws Exception;
 

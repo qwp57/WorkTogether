@@ -37,16 +37,12 @@
                       ON B.WRITER = C.EMP_NO
         WHERE B.BOARD_NO = #{board_no}
     </select>
-    <update id="completeTodo" parameterType="int">
+    <update id="changeTodo" parameterType="map">
         UPDATE BOARD_TODO
-        SET STATUS = 'Y'
+        SET STATUS = #{todoStatus}
         WHERE TODO_NO = #{todo_no}
     </update>
-    <update id="uncompleteTodo" parameterType="int">
-        UPDATE BOARD_TODO
-        SET STATUS = 'N'
-        WHERE TODO_NO = #{todo_no}
-    </update>
+
     <select id="getTodoTotalCount" parameterType="int" resultType="int">
         SELECT COUNT(*)
         FROM BOARD_TODO

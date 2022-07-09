@@ -4,6 +4,7 @@ import com.uni.wt.project.todo.model.dto.Todo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 @Mapper
 public interface TodoMapper {
@@ -11,9 +12,8 @@ public interface TodoMapper {
 
     ArrayList<Todo> detailView(int board_no);
 
-    int completeTodo(int todo_no);
 
-    int uncompleteTodo(int todo_no);
+    int changeTodo(Map<String, Object> map);
 
     int getTodoCompleteCount(int board_no);
 

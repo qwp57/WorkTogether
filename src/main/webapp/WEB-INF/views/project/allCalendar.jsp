@@ -412,59 +412,23 @@
     $(document).on('click', '.boardDeleteBtn', function () {
         if (checkStored()) {
             if (confirm("삭제하시겠습니까?")) {
-                var form = document.createElement('form'); // 폼객체 생성
-                var obj1;
-                var obj2;
-                var obj3;
-                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj1.setAttribute('name', 'board_no'); // 객체이름
-                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
-                form.appendChild(obj1);
-                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj2.setAttribute('name', 'pj_no'); // 객체이름
-                obj2.setAttribute('value', '0'); //객체값
-                form.appendChild(obj2);
-                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj3.setAttribute('name', 'type'); // 객체이름
-                obj3.setAttribute('value', 'allCalendar'); //객체값
-                form.appendChild(obj3);
-                form.setAttribute('method', 'post'); //get,post 가능
-                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
-                document.body.appendChild(form);
-                form.submit();
+                console.log('진입')
+                $.ajax({
+                    type: 'POST',
+                    url: '/project/deleteBoard.do',
+                    data: {
+                        "pj_no": 0,
+                        "board_no": $(this).parent().find(".detailViewBoard_no").val()
+                    },success: function () {
+                        $("#boardView").modal("hide")
+                        location.reload()
+                        alert("게시물 삭제 완료")
+                    }
+                })
             }
         }
     })
 
-    $(document).on('click', '.addReplyBtn', function () {
-        if (${pj.reply_power == 'Y'} &&
-        ${pjMember.admin == 'N'})
-        {
-            alert("관리자만 작성할 수 있습니다.")
-            return false
-        }
-        if (checkStored()) {
-            var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
-            console.log(reply_content)
-            console.log(board_no.val())
-            $.ajax({
-                url: '/project/insertReply.do',
-                data: {
-                    "reply_content": reply_content.val(),
-                    "board_no": board_no.val()
-                },
-                success: function (data) {
-                    //console.log(data)
-                    $(".replyContentEnroll").val("")
-                    loadReply(board_no.val())
-                }
-            })
-        }
-    })
 
 </script>
 <%--카카오맵--%>

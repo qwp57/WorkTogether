@@ -53,8 +53,9 @@ public class PostController {
 
 
     @RequestMapping("/insertPost.do")
-    public String insertPost(Post post, BoardAll boardAll, @RequestParam("pj_no") int pj_no, HttpSession session,
-                             @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam(value = "isImage",required = false) String isImage,
+    public String insertPost(Post post, BoardAll boardAll, @RequestParam("pj_no") int pj_no,
+                             @RequestParam(name = "upload_file", required = false) MultipartFile file,
+                             @RequestParam(value = "isImage",required = false) String isImage,
                              RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("글 : " + post);
         if (!post.getPost_title().equals("") && !post.getPost_content().equals("")) {
@@ -141,22 +142,22 @@ public class PostController {
                 // Cookie의 name이 cookie + boardNo와 일치하는 쿠키를 viewCookie에 넣어줌
                 if (cookie.getName().equals("cookie" + board_no)) {
 
-                    log.info("처음 쿠키가 생성한 뒤 들어옴.");
+                    log.info("쿠키 O");
                     viewCookie = cookie;
                 }
             }
         }
 
-        // 만일 viewCookie가 null일 경우 쿠키를 생성해서 조회수 증가 로직을 처리함.
+        // 쿠키가 없을경우 쿠키생성후 조회수 증가
         if (viewCookie == null) {
-            log.info("cookie 없음");
+            log.info("쿠키 X");
             Cookie newCookie = new Cookie("cookie" + board_no, "|" + board_no + "|"); // 쿠키 생성(이름, 값)
             response.addCookie(newCookie); // 쿠키 추가
             boardAllService.increaseCount(board_no); // 쿠키를 추가 시키고 조회수 증가시킴
         } else {
-            log.info("cookie 있음");
+            log.info("쿠키 O");
             String value = viewCookie.getValue(); // 쿠키 값 받아옴.
-            log.info("cookie 값 : " + value);
+            log.info("쿠키 값 : " + value);
         }
         ProjectFile projectFile = projectFileService.getFileByBoardNo(board_no);
         Post post = postService.detailView(board_no);

@@ -12,7 +12,8 @@
 
 
     <%-- 카카오맵 api--%>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=06989ef7025ad30be2fddb6e0d28320b&libraries=services"></script>
+    <script type="text/javascript"
+            src="//dapi.kakao.com/v2/maps/sdk.js?appkey=06989ef7025ad30be2fddb6e0d28320b&libraries=services"></script>
 
     <link
             href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap"
@@ -92,7 +93,6 @@
         .color-8 {
             background: gray;
         }
-
 
 
         #postTodo {
@@ -309,11 +309,14 @@
                 // console.log(result)
                 let data = JSON.parse(result);
                 console.log(data);
-                if(data.list.length > 0){
+                if (data.list.length > 0) {
                     setList(data.list, 'myBoard')
                     setpi(data.pi);
-                }else {
-                    //$(".boardTable").html('작성한 게시물이 없습니다.')
+                } else {
+                    $(".boardTable").html(
+                        '<div style="height: 50px; margin-top: 30px;">작성한 게시물이 없습니다.</div>'
+                        //     '<tr colspan="7"><th>작성한 게시물이 없습니다.</th></tr>'
+                    )
                 }
 
                 loadPjColor()
@@ -420,13 +423,13 @@
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)')
                             )
-                        }else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
+                        } else if (moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') == moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')) {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD ')
                                 + moment(list.sch.sch_start).format('LT') + ' ~ '
                                 + moment(list.sch.sch_end).format('LT (ddd)')
                             )
-                        }  else {
+                        } else {
                             $("#schDate").html(
                                 moment(list.sch.sch_start).format('YYYY-MM-DD (ddd)') + " ~ " + moment(list.sch.sch_end).format('YYYY-MM-DD (ddd)')
                             )
@@ -554,65 +557,24 @@
         }
     }
 
-
-
-    $(document).on('click', '.addReplyBtn', function () {
-        if (${pj.reply_power == 'Y'} &&
-        ${pjMember.admin == 'N'})
-        {
-            alert("관리자만 작성할 수 있습니다.")
-            return false
-        }
-        if (checkStored()) {
-            var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
-            console.log(reply_content)
-            console.log(board_no.val())
-            $.ajax({
-                url: '/project/insertReply.do',
-                data: {
-                    "reply_content": reply_content.val(),
-                    "board_no": board_no.val()
-                },
-                success: function (data) {
-                    //console.log(data)
-                    $(".replyContentEnroll").val("")
-                    loadReply(board_no.val())
-                }
-            })
-        }
-    })
-
-
     $(document).on('click', '.boardDeleteBtn', function () {
         if (checkStored()) {
             if (confirm("삭제하시겠습니까?")) {
-                var form = document.createElement('form'); // 폼객체 생성
-                var obj1;
-                var obj2;
-                var obj3;
-                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj1.setAttribute('name', 'board_no'); // 객체이름
-                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
-                form.appendChild(obj1);
-                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj2.setAttribute('name', 'pj_no'); // 객체이름
-                obj2.setAttribute('value', '0'); //객체값
-                form.appendChild(obj2);
-                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj3.setAttribute('name', 'type'); // 객체이름
-                obj3.setAttribute('value', 'myBoard'); //객체값
-                form.appendChild(obj3);
-                form.setAttribute('method', 'post'); //get,post 가능
-                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
-                document.body.appendChild(form);
-                form.submit();
+                console.log('진입')
+                $.ajax({
+                    type: 'POST',
+                    url: '/project/deleteBoard.do',
+                    data: {
+                        "pj_no": 0,
+                        "board_no": $(this).parent().find(".detailViewBoard_no").val()
+                    },success: function () {
+                        $("#boardView").modal("hide")
+                        loadBoards()
+                        alert("게시물 삭제 완료")
+                    }
+                })
             }
         }
-
     })
 
 
@@ -627,8 +589,8 @@
 </script>
 <%--카카오맵--%>
 <script>
-    $(function (){
-        var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
+    $(function () {
+        var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
         var mapContainer = document.getElementById('map'), // 지도를 표시할 div
             mapOption = {
                 center: new kakao.maps.LatLng(37.498971671111775, 127.03287470164285), // 지도의 중심좌표
@@ -637,7 +599,7 @@
         // 지도를 생성합니다
         var map = new kakao.maps.Map(mapContainer, mapOption);
 
-        $("#kakaoMapSearch").keyup(function(){
+        $("#kakaoMapSearch").keyup(function () {
             // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
 
             // 장소 검색 객체를 생성합니다
@@ -649,6 +611,7 @@
             // 키워드 검색 완료 시 호출되는 콜백함수 입니다
 
         });
+
         function placesSearchCB(data, status, pagination) {
             if (status === kakao.maps.services.Status.OK) {
                 // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
