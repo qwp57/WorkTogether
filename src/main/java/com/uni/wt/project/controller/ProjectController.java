@@ -79,14 +79,10 @@ public class ProjectController {
             bookmarkProjects.get(i).setCount(projectService.getProjectMemberCount(bookmarkProjects.get(i).getPj_no()));
         }
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        log.info("bookmarkProjects : " + bookmarkProjects);
+        //log.info("bookmarkProjects : " + bookmarkProjects);
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("myProjects", myProjects);
         map.put("bookmarkProjects", bookmarkProjects);
-//        ArrayList myAllProjects = new ArrayList();
-//        myAllProjects.add(myProjects);
-//        myAllProjects.add(bookmarkProjects);
-//        return gson.toJson(myAllProjects);
         return gson.toJson(map);
     }
 
@@ -620,10 +616,6 @@ public class ProjectController {
         return "project/allCalendar";
     }
 
-    @RequestMapping("/enrollProject.do")
-    public String enrollProject() {
-        return "pjFormModal";
-    }
 
     @RequestMapping("/storedPj.do")
     public String storedPj() {
@@ -635,15 +627,15 @@ public class ProjectController {
         return "project/selectTag";
     }
 
-    @RequestMapping("/chatinvite.do")
-    public String chatinvite() {
-        return "chat/chatinvite";
-    }
-
-    @RequestMapping("/chatRoom.do")
-    public String chatRoom() {
-        return "chat/chatroom";
-    }
+//    @RequestMapping("/chatinvite.do")
+//    public String chatinvite() {
+//        return "chat/chatinvite";
+//    }
+//
+//    @RequestMapping("/chatRoom.do")
+//    public String chatRoom() {
+//        return "chat/chatroom";
+//    }
 
     @RequestMapping("/insertPj.do")
     public String inseretProject(@Valid Project project, RedirectAttributes redirect, ProjectMember pjm, HttpSession session) throws Exception {

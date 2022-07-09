@@ -424,7 +424,6 @@
             $(this).removeClass("favoYellow")
             $(this).addClass("favoWhite")
             console.log("즐겨찾기 제거할것")
-
             removeBookmark($pj_no);
         }
         e.stopPropagation()
@@ -604,21 +603,15 @@
             },
             success: function (list) {
                 console.log(list)
-                //myAllProjectsByTag
-                //console.log(list[0].length)
-                //console.log(list[1].length)
                 $favoLargeProjects = $("#favoLargeProjects")
                 $myLargeProjects = $('#myLargeProjects')
                 $favoListProjects = $("#favoListProjects")
                 $myListProjects = $("#myListProjects")
-                //if (list[1].length > 0) {
                 if (list.bookmarkProjects.length > 0) {
                     $favoLargeProjects.html('');
                     $favoListProjects.html('');
                     $(".favorite").css("display", "block")
                     $.each(list.bookmarkProjects, function (i, obj) {
-                    //$.each(list[1], function (i, obj) {
-
                         $favoLargeProjects.append(
                             '<div class="project">' +
                             '<input name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
@@ -673,14 +666,12 @@
                     $(".favorite").css("display", "none")
                 }
 
-                //if (list[0].length > 0) {
                 if (list.myProjects.length > 0) {
                     $myLargeProjects.html('');
                     $myListProjects.html('')
                     $(".myProjects").css("display", "block")
 
 
-                    //$.each(list[0], function (i, obj) {
                     $.each(list.myProjects, function (i, obj) {
                         $myLargeProjects.append(
                             '<div class="project">' +
@@ -731,7 +722,6 @@
 
                     })
 
-                //} else if (list[0].length <= 0 && list[1].length <= 0) {
                 } else if (list.bookmarkProjects.length <= 0 && list.myProjects.length <= 0) {
                     $myLargeProjects.html('');
                     $myListProjects.html('')

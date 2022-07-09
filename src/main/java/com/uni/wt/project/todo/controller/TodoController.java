@@ -47,7 +47,7 @@ public class TodoController {
                              RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("할일 : " + todo);
         log.info(todo.getTodo_end());
-        if(!todo.getTodo_content().equals("") && !todo.getTodo_title().equals("")){
+        if (!todo.getTodo_content().equals("") && !todo.getTodo_title().equals("")) {
             String[] todoContents = todo.getTodo_content().split(",", -1);
             String[] todoEnds = todo.getTodo_end().split(",", -1);
             String[] todoFor = todo.getTodo_for().split(",", -1);
@@ -77,8 +77,8 @@ public class TodoController {
 
             todoService.insertTodo(todos, boardAll);
 
-            for(Todo todo1 : todos){
-                if(!todo1.getTodo_for().equals("")){
+            for (Todo todo1 : todos) {
+                if (!todo1.getTodo_for().equals("")) {
                     HashMap<String, Object> content = new HashMap<String, Object>();
                     content.put("TODO", todo1);
                     noticeService.insertNotice(Integer.parseInt(todo1.getTodo_for()), emp, content, "TODO");
@@ -127,7 +127,7 @@ public class TodoController {
 
         ArrayList<Todo> todos = todoService.detailView(board_no);
         for (Todo todo : todos) {
-            if(todo.getTodo_for() != null) {
+            if (todo.getTodo_for() != null) {
                 todo.setTodo_for_name(todoService.getEmpNameByEmpNo(Integer.parseInt(todo.getTodo_for())));
             }
         }
@@ -143,7 +143,7 @@ public class TodoController {
 
         ArrayList<Todo> todos = todoService.detailView(board_no);
         for (Todo todo : todos) {
-            if(todo.getTodo_for() != null) {
+            if (todo.getTodo_for() != null) {
                 todo.setTodo_for_name(todoService.getEmpNameByEmpNo(Integer.parseInt(todo.getTodo_for())));
             }
         }
@@ -151,11 +151,12 @@ public class TodoController {
 
         return new GsonBuilder().setDateFormat("MM-dd").create().toJson(todos);
     }
+
     @RequestMapping("/editTodo.do")
     public String editTodo(Todo todo, @RequestParam("pj_no") int pj_no, RedirectAttributes redirect, String type, HttpSession session) throws Exception {
 //        log.info("할일 : " + todo.getStatus());
 //        log.info("할일 : " + todo);
-        if(!todo.getTodo_content().equals("") && !todo.getTodo_title().equals("")) {
+        if (!todo.getTodo_content().equals("") && !todo.getTodo_title().equals("")) {
             String[] todoContents = todo.getTodo_content().split(",", -1);
             String[] todoEnds = todo.getTodo_end().split(",", -1);
             String[] todoFor = todo.getTodo_for().split(",", -1);
@@ -193,29 +194,31 @@ public class TodoController {
         } else {
             redirect.addFlashAttribute("msg", "제목, 할일을 모두 입력해주세요.");
         }
-        if (type.equals("home")){
+        if (type.equals("home")) {
             return "redirect:/project/detailPj.do?pj_no=" + pj_no;
-        }else if(type.equals("myBoard")){
+        } else if (type.equals("myBoard")) {
             return "redirect:/project/myBoard.do";
-        }else {
+        } else {
             return "redirect:/project/";
         }
     }
 
     @ResponseBody
-    @RequestMapping(value = "/completeTodo.do", produces = "application/json; charset=utf-8")
-    public String completeTodo(@RequestParam("todo_no") int todo_no) throws Exception {
-        todoService.completeTodo(todo_no);
+    @RequestMapping(value = "/changeTodo.do", produces = "application/json; charset=utf-8")
+    public String completeTodo(@RequestParam("todo_no") int todo_no, String todoStatus) throws Exception {
 
-        return "할일 완료";
+        todoService.changeTodo(todo_no, todoStatus);
+
+
+        return "변경 완료";
     }
 
-    @ResponseBody
-    @RequestMapping(value = "/uncompleteTodo.do", produces = "application/json; charset=utf-8")
-    public String uncompleteTodo(@RequestParam("todo_no") int todo_no) throws Exception {
-        todoService.uncompleteTodo(todo_no);
-
-        return "할일 미완료";
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/uncompleteTodo.do", produces = "application/json; charset=utf-8")
+//    public String uncompleteTodo(@RequestParam("todo_no") int todo_no) throws Exception {
+//
+//
+//        return "할일 미완료";
+//    }
 
 }

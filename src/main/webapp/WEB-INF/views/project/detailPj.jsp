@@ -761,6 +761,7 @@
                                 $("#todos").append(content)
                             }
                         )
+                        console.log(completeCount)
                         $("#todoCompleteCount").html(completeCount + "&nbsp;")
                         $("#todoCompletePercent").html(Math.floor(completeCount / list.length * 100) + "%")
                         $("#todoBar").attr("data-width", $("#todoCompletePercent").text())
@@ -939,23 +940,23 @@
                 var obj1;
                 var obj2;
                 var obj3;
-                obj1 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj1.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj1.setAttribute('name', 'board_no'); // 객체이름
-                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val()); //객체값
+                obj1 = document.createElement('input'); // 태그명
+                obj1.setAttribute('type', 'text'); // 속성
+                obj1.setAttribute('name', 'board_no');
+                obj1.setAttribute('value', $(this).parent().find(".detailViewBoard_no").val());
                 form.appendChild(obj1);
-                obj2 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj2.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj2.setAttribute('name', 'pj_no'); // 객체이름
-                obj2.setAttribute('value', ${pj.pj_no}); //객체값
+                obj2 = document.createElement('input');
+                obj2.setAttribute('type', 'text');
+                obj2.setAttribute('name', 'pj_no');
+                obj2.setAttribute('value', ${pj.pj_no});
                 form.appendChild(obj2);
-                obj3 = document.createElement('input'); // 값이 들어있는 녀석의 형식
-                obj3.setAttribute('type', 'text'); // 값이 들어있는 녀석의 type
-                obj3.setAttribute('name', 'type'); // 객체이름
-                obj3.setAttribute('value', 'home'); //객체값
+                obj3 = document.createElement('input');
+                obj3.setAttribute('type', 'text');
+                obj3.setAttribute('name', 'type');
+                obj3.setAttribute('value', 'home');
                 form.appendChild(obj3);
-                form.setAttribute('method', 'post'); //get,post 가능
-                form.setAttribute('action', "/project/deleteBoard.do"); //보내는 url
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', "/project/deleteBoard.do");
                 document.body.appendChild(form);
                 form.submit();
             }

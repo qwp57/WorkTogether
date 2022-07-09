@@ -118,8 +118,8 @@ $(document).on('click', '#postEditFormDeleteFile', function () {
 })
 
 function checkImageType(fullName) {
-    let type = fullName.slice(fullName.lastIndexOf(".") + 1).toLowerCase();
-    let check = true;
+    var type = fullName.slice(fullName.lastIndexOf(".") + 1).toLowerCase();
+    var check = true;
     if (!(type == "gif" || type == "jpg" || type == "jpeg" || type == "png")) {
         check = false;
     }

@@ -439,32 +439,6 @@
         }
     })
 
-    $(document).on('click', '.addReplyBtn', function () {
-        if (${pj.reply_power == 'Y'} &&
-        ${pjMember.admin == 'N'})
-        {
-            alert("관리자만 작성할 수 있습니다.")
-            return false
-        }
-        if (checkStored()) {
-            var reply_content = $(this).parents(".boardBody").find(".replyContentEnroll")
-            var board_no = $(this).parents(".boardBody").find(".detailViewBoard_no")
-            console.log(reply_content)
-            console.log(board_no.val())
-            $.ajax({
-                url: '/project/insertReply.do',
-                data: {
-                    "reply_content": reply_content.val(),
-                    "board_no": board_no.val()
-                },
-                success: function (data) {
-                    //console.log(data)
-                    $(".replyContentEnroll").val("")
-                    loadReply(board_no.val())
-                }
-            })
-        }
-    })
 
 </script>
 <%--카카오맵--%>
