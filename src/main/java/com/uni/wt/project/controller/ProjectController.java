@@ -80,10 +80,14 @@ public class ProjectController {
         }
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         log.info("bookmarkProjects : " + bookmarkProjects);
-        ArrayList myAllProjects = new ArrayList();
-        myAllProjects.add(myProjects);
-        myAllProjects.add(bookmarkProjects);
-        return gson.toJson(myAllProjects);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("myProjects", myProjects);
+        map.put("bookmarkProjects", bookmarkProjects);
+//        ArrayList myAllProjects = new ArrayList();
+//        myAllProjects.add(myProjects);
+//        myAllProjects.add(bookmarkProjects);
+//        return gson.toJson(myAllProjects);
+        return gson.toJson(map);
     }
 
     @ResponseBody

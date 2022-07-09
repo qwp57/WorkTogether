@@ -611,11 +611,13 @@
                 $myLargeProjects = $('#myLargeProjects')
                 $favoListProjects = $("#favoListProjects")
                 $myListProjects = $("#myListProjects")
-                if (list[1].length > 0) {
+                //if (list[1].length > 0) {
+                if (list.bookmarkProjects.length > 0) {
                     $favoLargeProjects.html('');
                     $favoListProjects.html('');
                     $(".favorite").css("display", "block")
-                    $.each(list[1], function (i, obj) {
+                    $.each(list.bookmarkProjects, function (i, obj) {
+                    //$.each(list[1], function (i, obj) {
 
                         $favoLargeProjects.append(
                             '<div class="project">' +
@@ -671,13 +673,15 @@
                     $(".favorite").css("display", "none")
                 }
 
-                if (list[0].length > 0) {
+                //if (list[0].length > 0) {
+                if (list.myProjects.length > 0) {
                     $myLargeProjects.html('');
                     $myListProjects.html('')
                     $(".myProjects").css("display", "block")
 
 
-                    $.each(list[0], function (i, obj) {
+                    //$.each(list[0], function (i, obj) {
+                    $.each(list.myProjects, function (i, obj) {
                         $myLargeProjects.append(
                             '<div class="project">' +
                             '<input  name="pj_no" class="pj_no' + obj.pj_no + '" type="hidden" value="' + obj.pj_no + '">' +
@@ -727,24 +731,25 @@
 
                     })
 
-                } else if (list[0].length <= 0 && list[1].length <= 0) {
+                //} else if (list[0].length <= 0 && list[1].length <= 0) {
+                } else if (list.bookmarkProjects.length <= 0 && list.myProjects.length <= 0) {
                     $myLargeProjects.html('');
                     $myListProjects.html('')
                     $(".myProjects").css("display", "none")
-                    var content = '<div style="width: 100%; height: 30px;"></div>'
-                    content += '<h4 style="margin-left: 10%;">참여중인 프로젝트가 없습니다.</h4>'
+                    var content = '<div style="width: 100%; height: 30px; text-align: center">'
+                    content += '<h4>참여중인 프로젝트가 없습니다.</h4></div>'
 
                     $(".myProjects").css("display", "none")
                     $myLargeProjects.html(content)
                     $myListProjects.html(content)
-                } else if (list[0].length == 0) {
+                //} else if (list[0].length == 0) {
+                } else if (list.myProjects.length == 0) {
                     $myLargeProjects.html('');
                     $myListProjects.html('')
                     $(".myProjects").css("display", "none")
                 }
                 loadPjColor()
             }
-
         });
     }
 
