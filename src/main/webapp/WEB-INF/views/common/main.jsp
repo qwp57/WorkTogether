@@ -8,7 +8,6 @@
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<link rel="shortcut icon" href="/resources/assets/img/logo.ico">
 <style>
 
  .main-content {
