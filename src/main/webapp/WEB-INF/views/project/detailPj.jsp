@@ -523,7 +523,7 @@
         $(".home").addClass("clicked")
         $(".drive").removeClass("clicked")
         $("#boardPost").find("input[name=type]").val("home")
-        $("#editPj").find("input[name=type]").val("calendar")
+        $("#editPj").find("input[name=type]").val("home")
         loadRw()
         datepickerLoad()
         changePage(1)

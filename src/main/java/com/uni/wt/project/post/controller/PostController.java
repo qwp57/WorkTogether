@@ -54,7 +54,7 @@ public class PostController {
 
     @RequestMapping("/insertPost.do")
     public String insertPost(Post post, BoardAll boardAll, @RequestParam("pj_no") int pj_no, HttpSession session,
-                             @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam("isImage") String isImage,
+                             @RequestParam(name = "upload_file", required = false) MultipartFile file, @RequestParam(value = "isImage",required = false) String isImage,
                              RedirectAttributes redirect, HttpServletRequest request) throws Exception {
         log.info("글 : " + post);
         if (!post.getPost_title().equals("") && !post.getPost_content().equals("")) {
