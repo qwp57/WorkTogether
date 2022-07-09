@@ -267,7 +267,10 @@
 			</if>
 			<if test='asc.approvalNo != null'>
 			AND APPROVAL_NO LIKE '%'||#{asc.approvalNo}||'%'
-			</if>	
+			</if>
+			<if test="sortCondition != null &amp;&amp; sortCondition != ''">
+			AND PROGRESS=#{sortCondition}
+			</if>
 		</trim>
 		AND WRITER=#{emp_no}	
 	</select>
@@ -285,6 +288,9 @@
 			</if>
 			<if test='asc.approvalNo != null'>
 			AND APPROVAL_NO LIKE '%'||#{asc.approvalNo}||'%'
+			</if>
+			<if test='sortCondition != null &amp;&amp; sortCondition != ""'>
+			AND PROGRESS=#{sortCondition}
 			</if>	
 		</trim>
 		AND WRITER=#{emp_no}
@@ -390,6 +396,9 @@
 			<if test='asc.appName != null'>
 			AND C.NAME LIKE '%'||#{asc.appName}||'%'
 			</if>
+			<if test='sortCondition != null &amp;&amp; sortCondition != ""'>
+			AND PROGRESS=#{sortCondition}
+			</if>
 		</trim>
 		AND (B.FIRST_APPROVER_NO=#{emp_no}
 		OR B.FINAL_APPROVER_NO=#{emp_no})
@@ -414,6 +423,9 @@
 			</if>
 			<if test='asc.appName != null'>
 			AND C.NAME LIKE '%'||#{asc.appName}||'%'
+			</if>
+			<if test='sortCondition != null &amp;&amp; sortCondition != ""'>
+			AND PROGRESS=#{sortCondition}
 			</if>	
 		</trim>
 		AND (B.FIRST_APPROVER_NO=#{emp_no}

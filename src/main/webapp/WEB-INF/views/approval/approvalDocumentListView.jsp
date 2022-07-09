@@ -41,6 +41,11 @@
 		width: 600px;
 		margin-top: 3em;
 	}
+	
+	.sortMenu{
+		float: right;
+		margin-bottom: 20px;
+	}
 </style>
 </head>
 <body>	
@@ -50,17 +55,15 @@
 			<div class="title mt-5">
 				<h3>결재 문서함</h3>
 			</div>	
-			<!-- 		
-			<div class="row">
-				<div class="statusList ml-4 mt-3">
-					<span id="all"><a href="/approvalDocument.do">전체</a></span>
-					<span class="ml-3" id="waiting"><a href="#">대기</a></span>
-					<span class="ml-3" id="proceeding"><a href="#">진행</a></span>
-					<span class="ml-3" id="completion"><a href="#">완료</a></span>
-					<span class="ml-3" id="rejection"><a href="#">반려</a></span>
-				</div>
-			</div>
-			 -->
+			<div class="sortMenu">
+   				<select class="form-control rounded-1" id="sortCondition">
+   					<option ${(sortCondition == "W") ? "selected" : "" } value="">전체</option>
+					<option ${(sortCondition == "W") ? "selected" : "" } value="W">대기</option>
+					<option ${(sortCondition == "P") ? "selected" : "" } value="P">진행중</option>	
+					<option ${(sortCondition == "C") ? "selected" : "" } value="C">완료</option>
+					<option ${(sortCondition == "R") ? "selected" : "" } value="R">반려</option>										
+				</select>
+   			</div>
 			<section class="section-body">
 				<table class="table table-hover thead-light mt-3" id="approvalList">
 					<thead>
@@ -145,7 +148,8 @@
 	          				<c:url var="searchUrl" value="/searchApp.do">
 							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
 							<c:param name="condition" value="${ condition }"/>
-							<c:param name="keyword" value="${ keyword }"/>							
+							<c:param name="keyword" value="${ keyword }"/>	
+							<c:param name="sortCondition" value="${ sortCondition }"/>							
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
 	          			</c:if>
@@ -168,7 +172,8 @@
 								<c:url var="searchUrl" value="/searchApp.do">
 									<c:param name="currentPage" value="${ p }"/>
 									<c:param name="condition" value="${ condition }"/>
-									<c:param name="keyword" value="${ keyword }"/>							
+									<c:param name="keyword" value="${ keyword }"/>	
+									<c:param name="sortCondition" value="${ sortCondition }"/>							
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
 							</c:if>
@@ -187,15 +192,14 @@
 	          				<li class="page-item"><a class="page-link" href="/approvalDocument.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
 	          			</c:if>
 	          			<!-- 검색 하는 경우 -->
-	          			<c:if test="${ !empty keyword }">
-	          				<c:if test="${ !empty keyword }">
-								<c:url var="searchUrl" value="/searchApp.do">
-									<c:param name="currentPage" value="${pi.currentPage+1  }"/>
-									<c:param name="condition" value="${ condition }"/>
-									<c:param name="keyword" value="${ keyword }"/>
-								</c:url>
-								<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>
-							</c:if>
+	          			<c:if test="${ !empty keyword }">          				
+							<c:url var="searchUrl" value="/searchApp.do">
+								<c:param name="currentPage" value="${pi.currentPage+1  }"/>
+								<c:param name="condition" value="${ condition }"/>
+								<c:param name="keyword" value="${ keyword }"/>
+								<c:param name="sortCondition" value="${ sortCondition }"/>	
+							</c:url>
+							<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>							
 	          			</c:if>
 	          		</c:when>
 	          		<c:otherwise>
@@ -203,10 +207,12 @@
 	          		</c:otherwise>
 	          	</c:choose>
 	          </ul>
-	    	</div>	    	
+	    	</div>	    
+	    		
 	    	<!-- 검색 영역 -->
 	    	<div id="search">
 	    		<form method="get" action="/searchApp.do">
+	    		<input type="hidden" name="sortCondition"/>
 	    			<div class="input-group mt-3 mb-3">
 	    				<div class="input-group-prepend">
 	    					<select class="form-control rounded-1" name="condition">
@@ -237,6 +243,11 @@
 				
 				//결재 양식 번호와 문서 번호를 가지고 간다.
 				location.href="/detailApproval.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
+			});
+			
+			$("#sortCondition").on("change", function(){
+				var sortCondition = $(this).val();
+				$("input[name='sortCondition']").val(sortCondition);
 			});
 					
 		});

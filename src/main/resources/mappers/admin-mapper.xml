@@ -130,14 +130,8 @@
 	
 	<!-- 부서 삭제 -->
 	<delete id="deleteDeptList" parameterType="_int">
-		DELETE FROM 
-		(SELECT *
-		FROM DEPARTMENT
-		WHERE DEPT_CODE 
-		IN (SELECT DEPT_CODE
-		    FROM DEPARTMENT
-		    WHERE UPPER_DEPT_CODE=#{deptCode})
-		    OR DEPT_CODE=#{deptCode})
+		DELETE FROM DEPARTMENT
+		WHERE DEPT_CODE=#{deptCode}
 	</delete>
 	
 	<!-- 부서명 수정 -->

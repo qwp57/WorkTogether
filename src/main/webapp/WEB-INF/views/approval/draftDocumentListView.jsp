@@ -56,12 +56,12 @@
 				<h3>기안 문서함</h3>
 			</div>						    			
    			<div class="sortMenu">
-   				<select class="form-control rounded-1" name="sortCondition" id="sortCondition">
-   					<option ${(param.sortCondition == "W") ? "selected" : "" } value="W">전체</option>
-					<option ${(param.sortCondition == "W") ? "selected" : "" } value="W">대기</option>
-					<option ${(param.sortCondition == "P") ? "selected" : "" } value="P">진행중</option>	
-					<option ${(param.sortCondition == "C") ? "selected" : "" } value="C">완료</option>
-					<option ${(param.sortCondition == "R") ? "selected" : "" } value="R">반려</option>										
+   				<select class="form-control rounded-1" id="sortCondition">
+   					<option ${(sortCondition == "W") ? "selected" : "" } value="">전체</option>
+					<option ${(sortCondition == "W") ? "selected" : "" } value="W">대기</option>
+					<option ${(sortCondition == "P") ? "selected" : "" } value="P">진행중</option>	
+					<option ${(sortCondition == "C") ? "selected" : "" } value="C">완료</option>
+					<option ${(sortCondition == "R") ? "selected" : "" } value="R">반려</option>										
 				</select>
    			</div>	    				    		 	
 			<div class="section-body">
@@ -144,9 +144,10 @@
 	          			<!-- 검색하는 경우 -->
 	          			<c:if test="${ !empty keyword }">
 	          				<c:url var="searchUrl" value="/searchDraft.do">
-								<c:param name="currentPage" value="${pi.currentPage-1 }"/>
-								<c:param name="condition" value="${ condition }"/>
-								<c:param name="keyword" value="${ keyword }"/>							
+							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
+							<c:param name="condition" value="${ condition }"/>
+							<c:param name="keyword" value="${ keyword }"/>		
+							<c:param name="sortCondition" value="${ sortCondition }"/>						
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
 	          			</c:if>
@@ -169,7 +170,8 @@
 								<c:url var="searchUrl" value="/searchDraft.do">
 									<c:param name="currentPage" value="${ p }"/>
 									<c:param name="condition" value="${ condition }"/>
-									<c:param name="keyword" value="${ keyword }"/>							
+									<c:param name="keyword" value="${ keyword }"/>	
+									<c:param name="sortCondition" value="${ sortCondition }"/>							
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
 							</c:if>
@@ -188,15 +190,14 @@
 	          				<li class="page-item"><a class="page-link" href="/draftDocument.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
 	          			</c:if>
 	          			<!-- 검색 하는 경우 -->
-	          			<c:if test="${ !empty keyword }">
-	          				<c:if test="${ !empty keyword }">
-								<c:url var="searchUrl" value="/searchDraft.do">
-									<c:param name="currentPage" value="${pi.currentPage+1  }"/>
-									<c:param name="condition" value="${ condition }"/>
-									<c:param name="keyword" value="${ keyword }"/>
-								</c:url>
-								<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>
-							</c:if>
+	          			<c:if test="${ !empty keyword }">          				
+							<c:url var="searchUrl" value="/searchDraft.do">
+								<c:param name="currentPage" value="${pi.currentPage+1  }"/>
+								<c:param name="condition" value="${ condition }"/>
+								<c:param name="keyword" value="${ keyword }"/>
+								<c:param name="sortCondition" value="${ sortCondition }"/>	
+							</c:url>
+							<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>							
 	          			</c:if>
 	          		</c:when>
 	          		<c:otherwise>
@@ -204,16 +205,18 @@
 	          		</c:otherwise>
 	          	</c:choose>
 	          </ul>
-	    	</div>
+	    	</div>	
+	    	
 	    	<!-- 검색 영역 -->
 	    	<div id="search">
 	    		<form method="get" action="/searchDraft.do">
+	    		<input type="hidden" name="sortCondition"/>
 	    			<div class="input-group mt-3 mb-3">
 	    				<div class="input-group-prepend">
 	    					<select class="form-control rounded-1" name="condition">
 								<option ${(param.condition == "title") ? "selected" : "" } value="title">제목</option>
 								<option ${(param.condition == "docName") ? "selected" : "" } value="docName">결재양식</option>	
-								<option ${(param.condition == "approvalNo") ? "selected" : "" } value="approvalNo">문서번호</option>										
+								<option ${(param.condition == "approvalNo") ? "selected" : "" } value="approvalNo">문서번호</option>																			
 							</select>
 	    				</div>
 	    				<!-- 검색어 입력 -->		
@@ -239,8 +242,9 @@
 				location.href="/detailDraftDocument.do?approvalNo=" + approvalNo + "&docNo=" + docNo;
 			});
 			
-			$("#sortCondition").click(function(){
-				
+			$("#sortCondition").on("change", function(){
+				var sortCondition = $(this).val();
+				$("input[name='sortCondition']").val(sortCondition);
 			});
 		});
 	</script>

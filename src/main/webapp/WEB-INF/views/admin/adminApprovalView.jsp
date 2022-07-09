@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<title>가입 승인</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 	.title{
 		color: black;

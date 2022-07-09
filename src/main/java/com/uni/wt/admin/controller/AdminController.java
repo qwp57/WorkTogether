@@ -165,10 +165,10 @@ public class AdminController {
 	//부서 삭제
 	@ResponseBody
 	@RequestMapping("/deleteDeptList.do")
-	public String deleteDeptList(@RequestParam(value="checkBoxArr[]") List<Integer> checkBoxArr, @RequestParam(value="checkLevelArr[]") List<Integer> checkLevelArr) { //@RequestParam(value="parameter이름[]")List<String> 형으로 받아와야 한다.
+	public String deleteDeptList(@RequestParam(value="checkBoxArr[]") List<Integer> checkBoxArr) { //@RequestParam(value="parameter이름[]")List<String> 형으로 받아와야 한다.
 		//ajax에 보낼 result 선언
 		int result=0;
-		
+
 		//받아온 배열 반복문 돌림
 		for(int deptCode : checkBoxArr) {
 			result = adminService.deleteDeptList(deptCode);
@@ -275,7 +275,7 @@ public class AdminController {
 	
 	//사원 검색
 	@RequestMapping("/searchEmp.do")
-	public ModelAndView searchEmp(EmployeeSearchCondition sc, String condition, String keyword, ModelAndView mv, @RequestParam(value="statusList" )List<String> statusList,
+	public ModelAndView searchEmp(EmployeeSearchCondition sc, String condition, String keyword, ModelAndView mv, @RequestParam(value="statusList", required=false )List<String> statusList,
 								@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage) throws Exception {
 		log.info("sc : " + sc);
 		log.info("condition : " + condition);
@@ -298,16 +298,16 @@ public class AdminController {
 			break;
 		}
 		
+		
 		for(String sl : statusList) {			
 			if(sl.equals("I")) {
 				sc.setStatus("I");
 			}else if(sl.equals("Q")) {
 				sc.setStatus("Q");
-			}	
+			}
 		}
 
-		log.info("sc : " + sc);
-		
+		log.info("sc : " + sc);		
 		//검색했을 때 페이징 처리를 위한 count
 		int listCount = adminService.searchListCount(sc);
 		log.info("listCount : " + listCount);
@@ -321,12 +321,12 @@ public class AdminController {
 		mv.addObject("pi", pi);
 		mv.addObject("condition", condition);
 		mv.addObject("keyword", keyword);		
+		mv.addObject("statusList", statusList);
 		mv.addObject("status", sc.getStatus());
 		
 		log.info("검색 empList " + empList);
 		log.info("검색 condition " + condition);
 		log.info("검색 keyword " + keyword);
-		log.info("검색 status " + sc.getStatus());
 		
 		mv.setViewName("admin/employeeManagementView");
 		

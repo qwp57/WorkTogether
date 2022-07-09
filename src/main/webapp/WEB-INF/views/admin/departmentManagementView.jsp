@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<title>부서 관리</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 	.title{
 		color: black;
@@ -95,7 +95,6 @@
 										 	    <input type="checkbox" class="form-check-input" value="${ ul.deptCode }" name="deptCheck"> <!-- id를 deptCode로 주고, onclick 함수에 deptCode를 함께 넘긴다. -->			 							   
 										    	<input type="text" class="deptName" name="deptName" value="${ ul.deptName }"> <!-- 체크된 박스의 형제 라인 input 찾아서 배열에 넣기 -->
 										    	<input class="d-none" value="${ ul.deptCode }" name="deptCode"/>
-										    	<input class="d-none" value="${ ul.deptLevel }" name="deptLevel"/>
 											</c:if>										
 										</label>
 									</div>									
@@ -105,7 +104,6 @@
 										    	<input type="checkbox" class="form-check-input" value="${ ul.deptCode }" name="deptCheck">										    	
 										  	  	<input type="text" class="deptUpperName" name="deptName" value="${ ul.deptName }"/>
 										  	  	<input class="d-none" value="${ ul.deptCode }" name="subDeptCode"/>
-										  	  	<input class="d-none" value="${ ul.deptLevel }" name="deptLevel"/>
 										    </c:if>
 										</label>
 									</div>	
@@ -204,16 +202,10 @@
 		//체크 박스 선택 후 삭제 버튼 클릭 시 이벤트
 		function del_checked(){
 			var checkBoxArr = new Array(); //배열 선언
-			var checkLevelArr = new Array();
 			$("input:checkbox[name=deptCheck]:checked").each(function(){ //반복문을 돌려서 체크 된 것을 뽑음
 				checkBoxArr.push($(this).val()); //체크 된 것을 뽑아서 배열에 push한다. -> push : 배열의 마지막에 새로운 요소를 추가한 후, 변경된 배열의 길이를 반환		 
 				console.log(checkBoxArr);
-			});
-			
-			$("input:checkbox[name=deptCheck]:checked").each(function(){ //반복문을 돌려서 체크 된 것을 뽑음
-				checkLevelArr.push($(this).next().next().next().val()); //체크 된 것을 뽑아서 배열에 push한다. -> push : 배열의 마지막에 새로운 요소를 추가한 후, 변경된 배열의 길이를 반환		 
-				console.log(checkLevelArr);
-			})
+			});		
 			
 			if(checkBoxArr == 0){ //checkBoxArr 길이가 0이라면 -> 선택하지 않은 것
 				alert("삭제할 부서를 선택하세요.");
@@ -222,8 +214,7 @@
 					type: "post",
 					url: "deleteDeptList.do",
 					data: {
-						checkBoxArr: checkBoxArr,
-						checkLevelArr : checkLevelArr
+						checkBoxArr: checkBoxArr
 					},
 					success: function(status){
 						if(status > 0){
@@ -256,17 +247,7 @@
 				updateList.push($(this).next().val());
 				console.log(updateList);
 			});
-			
-			$('input[name="deptName"]').change(function() {				
-				deptNameList.push($(this).next().val());
-				console.log(deptNameList);				
-			});
-			
-			var boxCheck = checkBoxArr2.join();
-			console.log(boxCheck);
-			
-			var deptCodeCheck = deptNameList.join();
-			console.log(deptCodeCheck);
+		
 			
 			if(checkBoxArr2 == 0){
 				alert("수정할 부서를 선택하세요.");
