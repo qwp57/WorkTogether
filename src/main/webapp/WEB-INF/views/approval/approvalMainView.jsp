@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<title>전자결재 홈</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 	h2, h3, h4, h5{
 		color: black;
@@ -120,6 +120,11 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:if test="${ empty draftList }">
+							<tr>
+								<td colspan="8" class="text-center">조회된 기안 문서가 없습니다.</td>
+							</tr>
+						</c:if>
 						<c:forEach items="${ draftList }" var="dl">
 							<tr>
 								<td class="d-none">${ dl.approvalNo }</td>
@@ -192,6 +197,11 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:if test="${ empty appList }">
+							<tr>
+								<td colspan="9" class="text-center">조회된 결재 문서가 없습니다.</td>
+							</tr>
+						</c:if>
 						<c:forEach items="${ appList }" var="al">
 							<tr>
 								<td class="d-none">${ al.approvalNo }</td>

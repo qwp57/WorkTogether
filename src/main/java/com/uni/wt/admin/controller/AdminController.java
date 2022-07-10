@@ -86,7 +86,7 @@ public class AdminController {
 	
 	//가입 승인 리스트 조회
 	@RequestMapping("/adminApprovalList.do")
-	public String adminApprovalPage(@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage, Model model) {
+	public String adminApprovalPage(@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage, Model model) throws Exception{
 		
 		//총 페이지 개수
 		int listCount = adminService.selectListCount();
@@ -128,6 +128,26 @@ public class AdminController {
 		int result = adminService.adminReject(map);
 		
 		return String.valueOf(result);
+	}
+	
+	//가입 리스트 정렬
+	@RequestMapping("/adminApprovalSortList.do")
+	public String adminApprovalSort(String sortCondition, @RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage, Model model) throws Exception {
+		//상태 변경 시 페이징 처리
+		int listCount = adminService.approvalSortListCount(sortCondition);
+				
+		//페이지 정보		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
+		
+		//list
+		ArrayList<Employee> adminList = adminService.approvalSortList(sortCondition, pi);
+		log.info("정렬 adminList : " + adminList);
+				
+		model.addAttribute("pi", pi);
+		model.addAttribute("adminList", adminList);
+		model.addAttribute("sortCondition", sortCondition);
+		
+		return "admin/adminApprovalView";
 	}
 	
 	//관리자 - 부서 관리 
@@ -229,9 +249,12 @@ public class AdminController {
 		
 		emp.setPassword(encPwd);
 		
+		//상위 부서 추가
+		emp.setUpper_dept_code(adminService.addUpperDept(emp.getDept_code()));
+		
 		adminService.addEmployee(emp);
 		log.info("emp : " + emp);
-		
+
 		redirect.addFlashAttribute("msg", "사원 추가가 완료 되었습니다.");
 		
 		return "redirect:employeeManagement.do";
@@ -254,9 +277,12 @@ public class AdminController {
 	@RequestMapping("/updateEmployeeInfo.do")
 	public ModelAndView updateEployee(Employee emp, @RequestParam(value="resignationDate", required = false) String resignationDate, ModelAndView mv) throws Exception {
 		log.info("resignationDate : " + resignationDate);
+		
+		//상위 부서 추가
+		emp.setUpper_dept_code(adminService.addUpperDept(emp.getDept_code()));
+		
 		//퇴직일이 있을 수도 있고 없을 수도 있다. -> 없는 경우에는 그냥 정보 업데이트, 있는 경우에는 상태까지 변경	
 		if(resignationDate.equals("")) {
-		//if(StringUtils.isEmpty(resignationDate)) {
 			adminService.updateEmployee(emp);
 			log.info("정보 업데이트");
 		}else {
@@ -275,39 +301,32 @@ public class AdminController {
 	
 	//사원 검색
 	@RequestMapping("/searchEmp.do")
-
-	public ModelAndView searchEmp(EmployeeSearchCondition sc, String condition, String keyword, ModelAndView mv, @RequestParam(value="status", required=false )String status,
-								@RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage) throws Exception {
+	public ModelAndView searchEmp(EmployeeSearchCondition sc, @RequestParam(value="condition", required=false ) String condition, @RequestParam(value="keyword", required=false ) String keyword, ModelAndView mv, 
+								@RequestParam(value="statusList", required=false )String statusList, @RequestParam(value="currentPage", required = false, defaultValue="1") int currentPage) throws Exception {
 		log.info("sc : " + sc);
 		log.info("condition : " + condition);
 		log.info("keyword : " + keyword);
-		log.info("statusList : " + status);
+		log.info("statusList : " + statusList);
 		
 		//받아온 condition이 무엇이냐에 따라 어디에 set해주냐가 달라짐
-		switch(condition) {
-		case "emp_no":
-			sc.setEmp_no(keyword);
-			break;
-		case "name":
-			sc.setName(keyword);
-			break;
-		case "dept_name" :
-			sc.setDept_name(keyword);
-			break;
-		case "job_name" :
-			sc.setJob_name(keyword);
-			break;
+		if(condition != null) {
+			switch(condition) {
+			case "emp_no":
+				sc.setEmp_no(keyword);
+				break;
+			case "name":
+				sc.setName(keyword);
+				break;
+			case "dept_name" :
+				sc.setDept_name(keyword);
+				break;
+			case "job_name" :
+				sc.setJob_name(keyword);
+				break;
+			}
 		}
 		
-//
-//		for(String sl : statusList) {
-//			if(sl.equals("I")) {
-//				sc.setStatus("I");
-//			}else if(sl.equals("Q")) {
-//				sc.setStatus("Q");
-//			}
-//		}
-		sc.setStatus(status);
+		sc.setStatus(statusList);
 
 		log.info("sc : " + sc);		
 		//검색했을 때 페이징 처리를 위한 count
@@ -323,7 +342,7 @@ public class AdminController {
 		mv.addObject("pi", pi);
 		mv.addObject("condition", condition);
 		mv.addObject("keyword", keyword);		
-		mv.addObject("status", sc.getStatus());
+		mv.addObject("statusList", sc.getStatus());
 		
 		log.info("검색 empList " + empList);
 		log.info("검색 condition " + condition);

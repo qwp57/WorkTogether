@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<title>결재 문서함</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 	.title{
 		color: black;
@@ -57,7 +57,7 @@
 			</div>	
 			<div class="sortMenu">
    				<select class="form-control rounded-1" id="sortCondition">
-   					<option ${(sortCondition == "W") ? "selected" : "" } value="">전체</option>
+   					<option ${(sortCondition == "") ? "selected" : "" } value="">전체</option>
 					<option ${(sortCondition == "W") ? "selected" : "" } value="W">대기</option>
 					<option ${(sortCondition == "P") ? "selected" : "" } value="P">진행중</option>	
 					<option ${(sortCondition == "C") ? "selected" : "" } value="C">완료</option>
@@ -80,6 +80,11 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:if test="${ empty appList }">
+							<tr>
+								<td colspan="9" class="text-center">조회된 결재 문서가 없습니다.</td>
+							</tr>
+						</c:if>
 						<c:forEach items="${ appList }" var="al">
 							<tr>
 								<td class="d-none">${ al.approvalNo }</td>

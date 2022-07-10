@@ -42,6 +42,10 @@
 		background-color: lightgray;
 	}
 	
+	.sortMenu{
+		float: right;
+		margin-bottom: 20px;
+	}
 </style>
 </head>
 <body>
@@ -51,23 +55,21 @@
 			<div class="title mt-5">
 				<h3>가입 승인</h3>
 			</div>	
-			<!-- 		
-			<div class="row">
-				<div class="statusList ml-4 mt-3">
-					<span id="all"><a href="#">전체</a></span>
-					<span class="ml-3" id="waiting"><a href="#">승인 대기</a></span>
-					<span class="ml-3" id="rejection"><a href="#">승인 거부</a></span>
-				</div>
-			</div>
-			 -->
+			<div class="sortMenu">
+   				<select class="form-control rounded-1" id="sortCondition">
+   					<option ${(sortCondition == "") ? "selected" : "" } value="">전체</option>
+					<option ${(sortCondition == "W") ? "selected" : "" } value="W">대기</option>
+					<option ${(sortCondition == "R") ? "selected" : "" } value="R">반려</option>										
+				</select>
+   			</div>	
 			<table class="table table-hover thead-light mt-3" id="adminList">
 				<thead>
 					<tr>
 						<th style="width:13%">입사일</th>
 						<th style="width:10%">이름</th>
 						<th style="width:10%">아이디</th>
-						<th style="width:17%">이메일</th>
-						<th style="width:14%">휴대폰번호</th>
+						<th style="width:15%">이메일</th>
+						<th style="width:15%">휴대폰번호</th>
 						<th style="width:13%">생년월일</th>
 						<th style="width:13%">가입일</th>
 						<th style="width:10%">상태</th>
@@ -101,28 +103,62 @@
 	          <ul class="pagination">
 	          	<c:choose>
 	          		<c:when test="${ pi.currentPage ne 1 }">
-	          			<li class="page-item"><a class="page-link" href="adminApprovalList.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+	          			<!-- 정렬하지 않는 경우 -->
+	          			<c:if test="${ empty sortCondition }">
+	          				<li class="page-item"><a class="page-link" href="adminApprovalList.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+	          			</c:if>
+	          			<!-- 정렬하는 경우 -->
+	          			<c:if test="${ !empty sortCondition }">
+	          				<c:url var="sortUrl" value="/adminApprovalSortList.do">
+	          				<c:param name="currentPage" value="${pi.currentPage-1 }"/>		
+							<c:param name="sortCondition" value="${ sortCondition }"/>
+	          				</c:url>
+	          				<li class="page-item"><a class="page-link" href="${ sortUrl }">Previous</a></li>
+	          			</c:if>
 	          		</c:when>
 	          		<c:otherwise>
 	          			<li class="page-item disabled"><a class="page-link" href="">Previous</a></li>
 	          		</c:otherwise>
 	          	</c:choose>
 	          	
+	          	<!-- 숫자 -->
 	              <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 	              	<c:choose>
-	           		<c:when test="${ pi.currentPage ne p }">
-	              			<li class="page-item"><a class="page-link" href="adminApprovalList.do?currentPage=${ p }">${ p }</a></li>
-	           		</c:when>
-	           		<c:otherwise>
-	           			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
-	           		</c:otherwise>
-	           	</c:choose>
-	              </c:forEach>
+		           		<c:when test="${ pi.currentPage ne p }">
+		           			<!-- 정렬하지 않는 경우 -->
+		          			<c:if test="${ empty sortCondition }">
+		          				<li class="page-item"><a class="page-link" href="adminApprovalList.do?currentPage=${ p }">${ p }</a></li>
+		          			</c:if>
+		          			<!-- 정렬하는 경우 -->
+		          			<c:if test="${ !empty sortCondition }">
+		          				<c:url var="sortUrl" value="/adminApprovalSortList.do">
+		          				<c:param name="currentPage" value="${ p }"/>		
+								<c:param name="sortCondition" value="${ sortCondition }"/>
+		          				</c:url>
+		          				<li class="page-item"><a class="page-link" href="${ sortUrl }">${ p }</a></li>
+		          			</c:if>	              			
+		           		</c:when>
+		           		<c:otherwise>
+		           			<li class="page-item disabled"><a class="page-link" href="">${ p }</a></li>
+		           		</c:otherwise>
+	           		</c:choose>
+	            </c:forEach>
 	              
-	              
+	              <!-- 다음페이지 -->
 	              <c:choose>
 	          		<c:when test="${ pi.currentPage ne pi.maxPage }">
-	          			<li class="page-item"><a class="page-link" href="adminApprovalList.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          			<!-- 정렬하지 않는 경우 -->
+	          			<c:if test="${ empty sortCondition }">
+	          				<li class="page-item"><a class="page-link" href="adminApprovalList.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          			</c:if>
+	          			<!-- 정렬하는 경우 -->
+	          			<c:if test="${ !empty sortCondition }">
+	          				<c:url var="sortUrl" value="/adminApprovalSortList.do">
+	          				<c:param name="currentPage" value="${ pi.currentPage+1 }"/>		
+							<c:param name="sortCondition" value="${ sortCondition }"/>
+	          				</c:url>
+	          				<li class="page-item"><a class="page-link" href="${ sortUrl }">Next</a></li>
+	          			</c:if>          			
 	          		</c:when>
 	          		<c:otherwise>
 	          			<li class="page-item disabled"><a class="page-link" href="adminApprovalList.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
@@ -264,15 +300,11 @@
 					alert("반려 사유를 작성해주세요.");
 				}
 			});
-			
-			//승인 대기인 것만 보여주기
-			//$('#waiting').click(function(){
-			//	$.ajax({
-			//		type: "post",
-			//		url: "approval"
-			//	})
-			//});
-			
+
+			$("#sortCondition").on('change', function(){
+				var sortCondition = $("#sortCondition").val();
+				location.href = "adminApprovalSortList.do?sortCondition="+sortCondition;
+			});
 		});
 	</script>
 	<jsp:include page="../common/footer.jsp"/>

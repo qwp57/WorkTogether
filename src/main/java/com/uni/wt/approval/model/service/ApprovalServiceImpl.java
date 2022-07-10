@@ -538,25 +538,5 @@ public class ApprovalServiceImpl implements ApprovalService {
 		
 	}
 
-	@Override
-	public int draftWaitingListCount(int emp_no) throws Exception {
-		
-		return  approvalMapper.draftWaitingListCount(emp_no);
-	}
-
-	@Override
-	public ArrayList<Approval> selectDraftWaitingList(int emp_no, PageInfo pi) {
-		
-		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
-		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
-		
-		ArrayList<Approval> draftList = approvalMapper.selectDraftWaitingList(emp_no, rowBounds);
-				
-		return draftList;
-	}
-
-
-
-
 
 }

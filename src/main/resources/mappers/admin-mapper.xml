@@ -60,22 +60,7 @@
 		OR STATUS='R'
 		ORDER BY CREATE_DATE DESC
 	</select>
-	<!--  
-	가입 대기 리스트 조회
-	<select id="watingListCount" resultMap="employeeResultSet">
-		SELECT COUNT(*)
-		FROM EMPLOYEE
-		WHERE STATUS='W'		
-	</select>
-	
-	가입 대기 리스트 조회
-	<select id="watingList" resultMap="employeeResultSet">
-		SELECT *
-		FROM EMPLOYEE
-		WHERE STATUS='W'
-		ORDER BY CREATE_DATE DESC
-	</select>
-	-->
+
 	<!-- 가입 승인 -->
 	<update id="adminApproval" parameterType="_int">
 		UPDATE EMPLOYEE
@@ -99,6 +84,53 @@
 		WHERE EMP_NO=#{empNo}
 	</update>
 	
+	<!-- 가입승인 정렬  listCount -->
+	<select id="approvalSortListCount" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM EMPLOYEE
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="sortCondition != '' &amp;&amp; sortCondition != null">
+			AND STATUS=#{sortCondition}
+			</if>
+			<if test="sortCondition == ''">
+			AND (STATUS='W'
+			OR STATUS='R')
+			</if>
+		</trim>
+	</select>
+	
+	<!-- 가입승인 정렬  list -->
+	<select id="approvalSortList" parameterType="String" resultMap="employeeResultSet">
+		SELECT 
+			EMP_NO,
+			NAME,
+			ID,
+			PASSWORD,
+			EMAIL,
+			PHONE,
+			TO_CHAR(BIRTH, 'YYYY-MM-DD') AS BIRTH,
+			DEPT_CODE,
+			UPPER_DEPT_CODE,
+			JOB_CODE,
+			TO_CHAR(JOIN_DATE, 'YYYY-MM-DD') AS JOIN_DATE,
+			RESIGNATION_DATE,
+			STATUS,
+			ADMIN,
+			FILE_NO,
+			TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS CREATE_DATE,
+			REJECT_REASON
+		FROM EMPLOYEE
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="sortCondition != '' &amp;&amp; sortCondition != null">
+			AND STATUS=#{sortCondition}
+			</if>
+			<if test="sortCondition == ''">
+			AND (STATUS='W'
+			OR STATUS='R')
+			</if>
+		</trim>
+		ORDER BY CREATE_DATE DESC
+	</select>
 	
 	<!-- 부서 관리 -->
 	<!-- 부서 조회 -> 계층형 쿼리 -->
@@ -146,8 +178,8 @@
 	<select id="empListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM EMPLOYEE
-		WHERE STATUS='I'
-		OR STATUS='Q'
+		WHERE (STATUS='I'
+		OR STATUS='Q')
 	</select>
 	
 	<!-- 인사 관리 리스트 조회 -->
@@ -173,9 +205,14 @@
 		FROM EMPLOYEE A
 		LEFT JOIN DEPARTMENT B ON(A.DEPT_CODE=B.DEPT_CODE)
 		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
-		WHERE STATUS='I'
-		OR STATUS='Q'
-		ORDER BY JOIN_DATE DESC
+		WHERE (STATUS='I'
+		OR STATUS='Q')
+		ORDER BY A.EMP_NO DESC
+	</select>
+	
+	<!-- 상위 부서 얻어오기 -->
+	<select id="addUpperDept" parameterType="String" resultType="String">
+	SELECT UPPER_DEPT_CODE FROM DEPARTMENT WHERE DEPT_CODE = #{dept_code}
 	</select>
 	
 	<!-- 사원 추가 -->
@@ -258,7 +295,7 @@
 		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="emp_no != null &amp;&amp; !emp_no.equals('')" >
-			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+			AND EMP_NO = #{emp_no}
 			</if>
 			<if test="name != null &amp;&amp; !name.equals('')">
 			AND NAME LIKE '%'||#{name}||'%'
@@ -272,14 +309,13 @@
 			<if test="status != null &amp;&amp; status != ''">
             AND A.STATUS = #{status}
             </if>	
-            <if test="status == null &amp;&amp; status == ''">
+            <if test="status == ''">
             AND (A.STATUS='I'
 			OR STATUS='Q')
             </if>		
 		</trim>
 	 </select>
 	 
-
 	<select id="searchEmpList" parameterType="EmployeeSearchCondition" resultMap="employeeResultSet">
 		SELECT 
 		    A.EMP_NO,
@@ -304,7 +340,7 @@
 		LEFT JOIN JOB C ON (A.JOB_CODE=C.JOB_CODE)
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="emp_no != null &amp;&amp; !emp_no.equals('')" >
-			AND EMP_NO LIKE '%'||#{emp_no}||'%'
+			AND EMP_NO = #{emp_no}
 			</if>
 			<if test="name != null &amp;&amp; !name.equals('')">
 			AND NAME LIKE '%'||#{name}||'%'
@@ -315,15 +351,15 @@
 			<if test="job_name != null &amp;&amp; !job_name.equals('')">
 			AND JOB_NAME LIKE '%'||#{job_name}||'%'
 			</if>			
-			<if test="status != null">
+			<if test="status != null &amp;&amp; status != ''">
             AND A.STATUS = #{status}
-            </if>
-            <if test="status == null">
+            </if>	
+            <if test="status == ''">
             AND (A.STATUS='I'
 			OR STATUS='Q')
             </if>
 		</trim>
-		ORDER BY JOIN_DATE DESC
+		ORDER BY A.EMP_NO DESC
 	</select>
 	
 	<!-- 조직도 -->

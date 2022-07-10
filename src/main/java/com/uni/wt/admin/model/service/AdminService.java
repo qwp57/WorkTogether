@@ -12,12 +12,16 @@ public interface AdminService {
 
 	int selectListCount();
 	
-	ArrayList<Employee> selectList(PageInfo pi);
+	ArrayList<Employee> selectList(PageInfo pi) throws Exception;
 
 	int adminApproval(int empNo);
 
 	int adminReject(Map<String, Object> map) throws Exception;
 
+	int approvalSortListCount(String sortCondition) throws Exception;
+	
+	ArrayList<Employee> approvalSortList(String sortCondition, PageInfo pi);
+	
 	ArrayList<Department> selectUpperList() throws Exception;
 
 	int addDeptList(Map<String, Object> map);
@@ -30,6 +34,8 @@ public interface AdminService {
 
 	ArrayList<Employee> selectEmpList(PageInfo pi);
 
+	String addUpperDept(String dept_code);
+	
 	void addEmployee(Employee emp) throws Exception;
 
 	Employee updateView(int eno) throws Exception;
@@ -53,9 +59,5 @@ public interface AdminService {
 	ArrayList<Employee> DeptEmpList(String deptName) throws Exception;
 
 	ArrayList<Department> selectDeptEmpList(Map<String, Object> map) throws Exception;
-
-	
-
-
 
 }

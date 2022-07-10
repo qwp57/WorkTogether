@@ -201,7 +201,7 @@ public class EmployeeController {
 			 redirect.addFlashAttribute("msg", msgMap);
 			 return "redirect:/loginForm.do";
 		}else if(st.equals("R")){
-			msgMap.put("msg", "가입승인이 반려되었습니다.");
+			msgMap.put("msg", "가입 승인이 반려되었습니다. 사유 : " +loginEmp.getReject_reason());
 			redirect.addFlashAttribute("msg", msgMap);
 			return "redirect:/loginForm.do";
 		}

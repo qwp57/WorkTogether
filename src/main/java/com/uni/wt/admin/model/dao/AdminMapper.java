@@ -25,6 +25,10 @@ public interface AdminMapper {
 
 	int rejectReason(Map<String, Object> map);
 
+	int approvalSortListCount(String sortCondition);
+	
+	ArrayList<Employee> approvalSortList(String sortCondition, RowBounds rowBounds);
+	
 	ArrayList<Department> selectUpperList();
 
 	int deptCount();
@@ -41,6 +45,8 @@ public interface AdminMapper {
 
 	ArrayList<Employee> selectEmpList(Object object, RowBounds rowBounds);
 
+	String addUpperDept(String dept_code);
+	
 	int addEmployee(Employee emp);
 
 	Employee updateView(int eno);

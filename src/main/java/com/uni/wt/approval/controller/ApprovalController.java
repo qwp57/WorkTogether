@@ -606,18 +606,11 @@ public class ApprovalController {
 			finalApproverNo = Integer.parseInt(finalApp);
 		}
 		
-		//if(finalApp != null) { //최종 결재자가 있을 때
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("approvalNo", approvalNo);
-			map.put("firstApproverNo", firstApproverNo);
-			map.put("finalApproverNo", finalApproverNo);
-			approvalService.updateApprovalLineLevel(map);
-		/*}else { //최종 결재자 넘어오지 않거나, 최초 결재자만 변경
-			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("approvalNo", approvalNo);
-			map.put("firstApproverNo", firstApproverNo);
-			approvalService.updateApprovalLine(map);
-		}*/
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("approvalNo", approvalNo);
+		map.put("firstApproverNo", firstApproverNo);
+		map.put("finalApproverNo", finalApproverNo);
+		approvalService.updateApprovalLineLevel(map);
 		
 	}
 
@@ -975,27 +968,5 @@ public class ApprovalController {
 		
 		return "redirect:draftDocument.do";
 	}
-	
-	//정렬
-	//기안 문서함 진행 list
-	@RequestMapping("/draftWaitingList.do")
-	public String draftWaitingList(@RequestParam(value="currentPage", required=false, defaultValue="1") int currentPage, HttpServletRequest request, Model model) throws Exception {
-		//로그인한 사람의 emp 정보를 가지고 온다.
-		Employee emp = (Employee)request.getSession().getAttribute("loginEmp");
-		
-		int listCount = approvalService.draftWaitingListCount(emp.getEmp_no());
-		log.info("글 개수 : " + listCount);
-		
-		//페이지 정보를 가지고 있는 객체 생성
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10);
-		log.info("페이지 정보 : " + pi);
-		
-		//list 조회해오기
-		ArrayList<Approval> draftList = approvalService.selectDraftWaitingList(emp.getEmp_no(), pi);
-		
-		model.addAttribute("draftList", draftList);
-		model.addAttribute("pi", pi);
-		
-		return "approval/draftDocumentListView"; 
-	}
+
 }

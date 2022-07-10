@@ -35,10 +35,16 @@ public class AdminServiceImpl implements AdminService{
 	}
 
 	@Override
-	public ArrayList<Employee> selectList(PageInfo pi) {
+	public ArrayList<Employee> selectList(PageInfo pi) throws Exception{
 		
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Employee> selectList = adminMapper.selectList(null, rowBounds);
+		
+		if(selectList.isEmpty()) {
+			throw new Exception("가입 승인 리스트 조회에 실패하였습니다.");
+		}
 		
 		return adminMapper.selectList(null, rowBounds);
 	}
@@ -69,6 +75,24 @@ public class AdminServiceImpl implements AdminService{
 		return result2;
 	}
 
+
+	@Override
+	public int approvalSortListCount(String sortCondition) throws Exception {
+		
+		return adminMapper.approvalSortListCount(sortCondition);
+	}
+	
+	@Override
+	public ArrayList<Employee> approvalSortList(String sortCondition, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, pi.getBoardLimit());
+		
+		ArrayList<Employee> approvalSortList = adminMapper.approvalSortList(sortCondition, rowBounds);
+		
+		return approvalSortList;
+	}
+	
 	@Override
 	public ArrayList<Department> selectUpperList() throws Exception {
 		
@@ -125,6 +149,12 @@ public class AdminServiceImpl implements AdminService{
 		return adminMapper.selectEmpList(null, rowBounds);
 	}
 
+	@Override
+	public String addUpperDept(String dept_code) {
+		
+		return adminMapper.addUpperDept(dept_code);
+	}
+	
 	@Override
 	public void addEmployee(Employee emp) throws Exception {
 		

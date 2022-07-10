@@ -116,12 +116,5 @@ public interface ApprovalService {
 
 	void deleteDocument(Map<String, Object> map) throws Exception;
 
-	int draftWaitingListCount(int emp_no) throws Exception;
-
-	ArrayList<Approval> selectDraftWaitingList(int emp_no, PageInfo pi);
-
-
-
-	
 
 }

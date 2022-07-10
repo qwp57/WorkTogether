@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<title>회의록 작성</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 	h2, h3, h4, h5, h6{
 		color: black;
