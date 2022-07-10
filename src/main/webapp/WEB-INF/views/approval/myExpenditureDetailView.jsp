@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<title>지출 결의서 상세보기</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 	h2, h3, h4, h5, h6{
 		color: black;
@@ -45,7 +45,7 @@
 		<div class="container">
 			<div class="title mt-5 row">
 				<span><i class="bi bi-clipboard2-check-fill"></i></span>
-				<span><h3>지출 결의서</h3></span> 
+				<span><h3>${map['app'].title}</h3></span> 
 			</div>
 			<div class="float-right">
 				<c:choose>
@@ -179,16 +179,7 @@
 						</thead>
 						<tbody id="exTableTbody">
 							
-						</tbody>
-						<!--  
-						<tfoot>
-							<tr>
-								<td colspan="5">합계 : 
-									<span id="sum">10000원</span>
-								</td>									
-							</tr>
-						</tfoot>
-						-->
+						</tbody>						
 					</table>								
 				</div>													
 				<div>

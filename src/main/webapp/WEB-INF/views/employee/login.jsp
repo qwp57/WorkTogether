@@ -61,25 +61,21 @@ $(function(){
                       비밀번호를 입력해주세요
                     </div>
                  </div>
-
+				<!-- 
                   <div class="form-group">
                     <div class="custom-control custom-checkbox">
                       <input type="checkbox" id="remember" name="remember" class="custom-control-input" tabindex="3">
                       <label class="custom-control-label" for="remember">ID 저장</label>
                     </div>
                   </div>
-
+ -->
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                       Login
                     </button>
                   </div>
                 </form>
-               </div>
-                  
-                <div class="text-center mt-4 mb-3">
-                  <div class="text-job text-muted">비밀번호 찾기</div>
-                </div>
+               </div>            
 
               </div>
             </div>

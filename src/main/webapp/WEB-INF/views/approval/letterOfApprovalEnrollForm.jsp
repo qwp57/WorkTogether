@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<title>품의서 작성</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 	h2, h3, h4, h5, h6{
 		color: black;
@@ -143,15 +143,7 @@
 										</label>
 					    			</div>
 								</td>									
-							</tr>
-							<!-- 
-							<tr>
-								<th>수신참조</th>
-								<td colspan="5" name="referee">
-									<button type="button" class="btn btn-primary mr-3" data-toggle="modal" data-target="#refModal">수신참조자 선택</button>
-								</td>
-							</tr>		
-							 -->				
+							</tr>			
 							<tr>
 								<th>제목</th>
 								<td colspan="5">
@@ -246,8 +238,7 @@
 				<div class="modal-header">
 	   				<h4 class="modal-title text-left" style="color:black">결재선 설정</h4>    
 	   				<input type="image" class="text-right" data-dismiss="modal" src="resources/assets/img/close.png/" style="width:20px"> 				   				
-				</div>
-				
+				</div>	
 				<!-- modal body -->
 				<form>
 				<div class="modal-body">										
@@ -256,8 +247,7 @@
 							<div id="lineList2">
 								<div class="orgListAll mt-3">																				
 									<span><h5 style="color:rgb(111, 118, 237)">워크 투게더</h5></span>
-								</div>
-								
+								</div>								
 								<div id="allWT2" class="collapse show">
 									<div class="my-4 ml-4">
 										<c:forEach items="${ deptList }" var="dl">					
@@ -271,13 +261,13 @@
 													</a>														
 												</c:if>
 												<c:forEach items="${ empList }" var="el">
-														<c:if test="${ dl.deptCode == el.dept_code }">
-															<div id="deptEmp2${dl.deptCode}" class="mx-5 my-2 deptUpper collapse">
-																<input type="radio" class="form-check-input" name="empNo2" id="empNo2" value="${ el.emp_no }"><label for="empNo2">${ el.name }</label>
-																<span>${el.job_name}</span>														
-															</div>
-														</c:if>
-													</c:forEach>
+													<c:if test="${ dl.deptCode == el.dept_code }">
+														<div id="deptEmp2${dl.deptCode}" class="mx-5 my-2 deptUpper collapse">
+															<input type="radio" class="form-check-input" name="empNo2" id="empNo2" value="${ el.emp_no }"><label for="empNo2">${ el.name }</label>
+															<span>${el.job_name}</span>														
+														</div>
+													</c:if>
+												</c:forEach>
 											</div>
 										</c:forEach>
 									</div>

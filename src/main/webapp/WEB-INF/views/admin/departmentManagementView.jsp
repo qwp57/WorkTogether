@@ -236,7 +236,6 @@
 		function update_checked(){
 			var checkBoxArr2 = new Array(); //배열		
 			var updateList = new Array();
-			var deptNameList = new Array();
 			
 			$("input:checkbox[name='deptCheck']:checked").each(function(){ //반복문을 돌려서 체크 된 것을 뽑음
 				checkBoxArr2.push($(this).val()); //체크 된 것을 뽑아서 배열에 push한다. -> push : 배열의 마지막에 새로운 요소를 추가한 후, 변경된 배열의 길이를 반환		 

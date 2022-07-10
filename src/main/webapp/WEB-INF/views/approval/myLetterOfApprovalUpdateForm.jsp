@@ -3,11 +3,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
+<title>품의서 수정</title>
 <jsp:include page="../common/header.jsp"/>
 <jsp:include page="../common/sidebar.jsp"/>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
 <style>
 	h2, h3, h4, h5, h6{
 		color: black;
@@ -67,7 +67,7 @@
 		<div class="container">
 			<div class="title mt-5 row">
 				<span><i class="bi bi-clipboard2-check-fill"></i></span>
-				<span><h3>일반 품의서</h3></span> 
+				<span><h3>${ app.title }</h3></span> 
 			</div>
 			<section class="section-body">
 				<form id="letterOfApprovalForm"  method="post" action="/updateMyLetterOfApproval.do" enctype="multipart/form-data">

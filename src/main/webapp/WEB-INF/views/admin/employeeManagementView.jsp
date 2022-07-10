@@ -176,15 +176,24 @@
 	          		<c:when test="${ pi.currentPage ne 1 }">
 	          			<!-- 검색하지 않는 경우 -->
 	          			<c:if test="${ empty keyword }">
-	          				<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
-	          			</c:if>
+	          				<c:if test="${ !empty statusList }">
+	          					<c:url var="searchUrl" value="searchEmp.do">
+									<c:param name="currentPage" value="${ pi.currentPage-1 }"/>
+									<c:param name="statusList" value="${ statusList }"/>
+								</c:url>
+								<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
+	          				</c:if>
+	          				<c:if test="${ empty statusList }">
+	          					<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage-1 }">Previous</a></li>
+	          				</c:if>	          				
+	          			</c:if>	          			
 	          			<!-- 검색하는 경우 -->
 	          			<c:if test="${ !empty keyword }">	
 	          				<c:url var="searchUrl" value="searchEmp.do">
 							<c:param name="currentPage" value="${pi.currentPage-1 }"/>
 							<c:param name="condition" value="${ condition }"/>
 							<c:param name="keyword" value="${ keyword }"/>	
-							<c:param name="status" value="${ status }"/>							
+							<c:param name="statusList" value="${ statusList }"/>							
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Previous</a></li>
 	          			</c:if>
@@ -198,17 +207,26 @@
 	            <c:forEach begin="${ pi.startPage }" end="${ pi.endPage }" var="p">
 	             	<c:choose>
 		           		<c:when test="${ pi.currentPage ne p }">
-		           			<%-- keyword가 empty -> 검색하지 않는 경우 --%>
-							<c:if test="${ empty keyword }">
-								<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ p }">${ p }</a></li>
-							</c:if>
+		           			<!-- 검색하지 않는 경우 -->
+		          			<c:if test="${ empty keyword }">
+		          				<c:if test="${ !empty statusList }">
+		          					<c:url var="searchUrl" value="searchEmp.do">
+										<c:param name="currentPage" value="${ p }"/>
+										<c:param name="statusList" value="${ statusList }"/>
+									</c:url>
+									<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
+		          				</c:if>
+		          				<c:if test="${ empty statusList }">
+		          					<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ p }">${ p }</a></li>
+		          				</c:if>	          				
+		          			</c:if>
 		              		<%-- keyword가 empty아님 -> 검색하는 경우 --%>
 							<c:if test="${ !empty keyword  }">
 								<c:url var="searchUrl" value="searchEmp.do">
 									<c:param name="currentPage" value="${ p }"/>
 									<c:param name="condition" value="${ condition }"/>
 									<c:param name="keyword" value="${ keyword }"/>
-									<c:param name="status" value="${ status }"/>							
+									<c:param name="statusList" value="${ statusList }"/>							
 								</c:url>
 								<li class="page-item"><a class="page-link" href="${ searchUrl }">${ p }</a></li>
 							</c:if>
@@ -224,7 +242,16 @@
 	          		<c:when test="${ pi.currentPage ne pi.maxPage }">
 	          			<!-- 검색하지 않는 경우 -->
 	          			<c:if test="${ empty keyword }">
-	          				<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          				<c:if test="${ !empty statusList }">
+	          					<c:url var="searchUrl" value="searchEmp.do">
+									<c:param name="currentPage" value="${pi.currentPage+1  }"/>
+									<c:param name="statusList" value="${ statusList }"/>
+								</c:url>
+								<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>
+	          				</c:if>
+	          				<c:if test="${ empty statusList }">
+	          					<li class="page-item"><a class="page-link" href="employeeManagement.do?currentPage=${ pi.currentPage+1 }">Next</a></li>
+	          				</c:if>	          				
 	          			</c:if>
 	          			<!-- 검색 하는 경우 -->
 	          			<c:if test="${ !empty keyword }">	          				
@@ -232,7 +259,7 @@
 								<c:param name="currentPage" value="${pi.currentPage+1  }"/>
 								<c:param name="condition" value="${ condition }"/>
 								<c:param name="keyword" value="${ keyword }"/>
-								<c:param name="status" value="${ status }"/>
+								<c:param name="statusList" value="${ statusList }"/>
 							</c:url>
 							<li class="page-item"><a class="page-link" href="${ searchUrl }">Next</a></li>							
 	          			</c:if>
@@ -303,17 +330,7 @@
 						<div class="requiredTitle mt-3 ml-4 mr-4 row">
 							<span class="col-lg-2 mt-1"><h6>인사정보 입력</h6></span>
 						</div>
-						<div class="inputRequired mt-3 ml-4 mr-4 row">
-							<div class="col-lg-6 form-group">
-								<label for="empDept">부서</label>
-								<select class="form-select custom-select border-1 rounded-1" id="empDept" name="upper_dept_code">
-									<c:forEach items="${ deptList }" var="dl">
-										<c:if test="${ dl.deptLevel == 1 }">
-											<option value="${ dl.deptCode }">${ dl.deptName }</option>
-										</c:if>
-									</c:forEach>
-								</select>
-							</div>
+						<div class="inputRequired mt-3 ml-4 mr-4 row">							
 							<div class="col-lg-6 form-group">
 								<label for="empDeptUpper">하위 부서</label>  
 								<select class="form-select custom-select border-1 rounded-1" id="empDeptUpper" name="dept_code">
@@ -324,8 +341,6 @@
 									</c:forEach>
 								</select>
 							</div>
-						</div>
-						<div class="inputRequired mt-3 ml-4 mr-4 row">
 							<div class="col-lg-6 form-group">
 								<label for="empJob">직위</label>
 								<select class="form-select custom-select border-1 rounded-1" id="empJob" name="job_code">
@@ -338,7 +353,7 @@
 									<option value="J7">사원</option>
 								</select>
 							</div>
-						</div>
+						</div>						
 					</div>
 					
 					<!-- modal footer -->
@@ -361,7 +376,7 @@
 			});
 			console.log('${statusList }')
 			
-			switch("${status}") {
+			switch("${statusList}") {
 			case 'I' :
 				$("input:radio[name='statusList']:input[value='I']").attr("checked", true);
 				break;

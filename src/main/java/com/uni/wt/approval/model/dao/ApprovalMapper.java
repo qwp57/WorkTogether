@@ -109,11 +109,6 @@ public interface ApprovalMapper {
 
 	int deleteDocument(Map<String, Object> map);
 
-	int draftWaitingListCount(int emp_no);
-
-	ArrayList<Approval> selectDraftWaitingList(int emp_no, RowBounds rowBounds);
-
-
 
 
 }

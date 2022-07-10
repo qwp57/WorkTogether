@@ -77,33 +77,19 @@
 								<span class="col-lg-2  mt-4"><h6>인사정보 입력</h6></span>
 							</div>
 							<hr>
-							<div class="inputRequired mt-3 ml-4 mr-4 row">
+							<div class="inputRequired mt-3 ml-4 mr-4 row">								
 								<div class="col-lg-6 form-group">
-									<label for="newEmpDept">부서</label>
-									<select class="form-select custom-select border-1 rounded-1" name="upper_dept_code">
-										<c:forEach items="${ deptList }" var="dl">
-											<c:if test="${ dl.deptLevel == 1 }">
-												<option ${(selectEmp.upper_dept_code == dl.deptCode) ? "selected" : "" } value="${ dl.deptCode }">
-													${ dl.deptName }												
-												</option>
-											</c:if>
-										</c:forEach>
-									</select>
-								</div>
-								<div class="col-lg-6 form-group">
-									<label for="newEmpDeptUpper">하위 부서</label>  
-									<select class="form-select custom-select border-1 rounded-1" name="dept_code">
+									<label for="newEmpDeptUpper">부서</label>  
+									<select class="form-select custom-select border-1 rounded-1" name="dept_code">									 
 										<c:forEach items="${ deptList }" var="dl">																										
 											<c:if test="${ dl.deptLevel == 2 }">					
 												<option ${(selectEmp.dept_code == dl.deptCode) ? "selected" : "" } value="${ dl.deptCode }">
 													${ dl.deptName }
 												</option>
 											</c:if>	
-										</c:forEach>
+										</c:forEach>									
 									</select>
 								</div>
-							</div>
-							<div class="inputRequired mt-3 ml-4 mr-4 row">
 								<div class="col-lg-6 form-group">
 									<label for="newEmpJob">직위</label>
 									<select class="form-select custom-select border-1 rounded-1" id="newEmpJob" name="job_code">
@@ -116,7 +102,8 @@
 										<option ${(selectEmp.job_code == "J7") ? "selected" : "" } value="J7">사원</option>
 									</select>
 								</div>
-							
+							</div>
+							<div class="inputRequired mt-3 ml-4 mr-4 row">
 								<div class="col-lg-6 form-group">
 									<label for="resignationDate">퇴직일</label>  
 									<input type="date" class="form-control" id="resignationDate" name="resignationDate" value="${ selectEmp.resignation_date }" tabindex="8">
@@ -137,6 +124,7 @@
 		$(function(){
 			document.getElementById('birth').valueAsDate = new Date("${ selectEmp.birth }");
 			document.getElementById('join_date').valueAsDate = new Date("${ selectEmp.join_date }");
+						
 		});
 	</script>
 <jsp:include page="../common/footer.jsp"/>
