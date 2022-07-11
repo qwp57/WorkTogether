@@ -155,7 +155,7 @@
 							<td>${ map['app'].title }</td>
 						</tr>
 						<tr>
-							<td colspan="2">${ map['appMm'].meetingContent }</td>
+							<td colspan="2"><br>${ map['appMm'].meetingContent }</td>
 						</tr>
 					</table>	
 				</div>

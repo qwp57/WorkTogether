@@ -148,6 +148,11 @@
 					</tr>
 				</thead>
 				<tbody>
+					<c:if test="${ empty empList }">
+							<tr>
+								<td colspan="8" class="text-center">조회된 사원이 없습니다.</td>
+							</tr>
+						</c:if>
 					<c:forEach items="${ empList }" var="el">
 						<tr>
 							<td>${ el.emp_no }</td>

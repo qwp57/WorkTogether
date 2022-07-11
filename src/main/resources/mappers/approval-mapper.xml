@@ -397,7 +397,7 @@
 			AND C.NAME LIKE '%'||#{asc.appName}||'%'
 			</if>
 			<if test='sortCondition != null &amp;&amp; sortCondition != ""'>
-			AND PROGRESS=#{sortCondition}
+			AND A.PROGRESS=#{sortCondition}
 			</if>
 		</trim>
 		AND (B.FIRST_APPROVER_NO=#{emp_no}
@@ -425,7 +425,7 @@
 			AND C.NAME LIKE '%'||#{asc.appName}||'%'
 			</if>
 			<if test='sortCondition != null &amp;&amp; sortCondition != ""'>
-			AND PROGRESS=#{sortCondition}
+			AND A.PROGRESS=#{sortCondition}
 			</if>	
 		</trim>
 		AND (B.FIRST_APPROVER_NO=#{emp_no}

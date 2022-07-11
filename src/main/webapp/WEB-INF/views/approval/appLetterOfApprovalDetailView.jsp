@@ -140,7 +140,7 @@
 							<td>${map['app'].title}</td>
 						</tr>
 						<tr>
-							<td colspan="2">${map['loa'].content}</td>
+							<td colspan="2"><br>${map['loa'].content}</td>
 						</tr>
 					</table>													
 				</div>
